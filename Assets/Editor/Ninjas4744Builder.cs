@@ -97,22 +97,31 @@ public static class Ninjas4744Builder
         Box(root.transform,"Left shooter side",S(.02f,.365f,.32f),new Vector3(.008f,.43f,.31f));
         Box(root.transform,"Right shooter side",S(.02f,-.365f,.32f),new Vector3(.008f,.43f,.31f));
         Box(root.transform,"Hopper floor",S(.23f,0,.175f),new Vector3(.68f,.012f,.38f));
+        // One-way intake contacts allow inbound fuel to rise through the entry,
+        // then provide a complete, continuous floor beneath stored fuel.
+        var storageFloor=AddRailBox(robot.hopperRail.transform,"Hopper moving storage floor",S(.34f,0,.175f),new Vector3(.68f,.012f,.62f),.22946f);
         AddRailBox(robot.hopperRail.transform,"Hopper left wall",S(.40f,.359f,.37f),new Vector3(.006f,.32f,.5f),.22946f);
         AddRailBox(robot.hopperRail.transform,"Hopper right wall",S(.40f,-.359f,.37f),new Vector3(.006f,.32f,.5f),.22946f);
         AddRailBox(robot.hopperRail.transform,"Hopper end wall",S(.648f,0,.37f),new Vector3(.714f,.32f,.006f),.22946f);
+        robot.intakeHold=AddRailBox(robot.hopperRail.transform,"Intake inlet retention contact",S(.648f,0,.14f),new Vector3(.714f,.16f,.02f),.22946f);
+        robot.intakeHold.excludeLayers=~LayerMask.GetMask("GamePiece1","GamePiece2","GamePieceAlt");
+        var keeper=root.AddComponent<Turbo4744FuelKeeper>();
+        keeper.robot=robot;keeper.floor=storageFloor;keeper.inlet=robot.intakeHold;
         AddRailBox(robot.intakeRail.transform,"Intake left guide",S(.40f,.342f,.16f),new Vector3(.008f,.18f,.4f),.24f);
         AddRailBox(robot.intakeRail.transform,"Intake right guide",S(.40f,-.342f,.16f),new Vector3(.008f,.18f,.4f),.24f);
 
         robot.intakeRollers=new[]{
             Roller(robot.intakeRail.transform,"Intake pickup",S(.52268f,-.0035f,.07545f)-Vector3.forward*.24f,.035f,.56f,0f,false,0f),
+            // A cylindrical leading contact completes the belt's curved entry;
+            // belt mode alone creates a flat core and leaves its nose unsupported.
+            Roller(robot.intakeRail.transform,"Intake belt nose",new Vector3(0,.055f,.54f)-Vector3.forward*.24f,.035f,.52f,0f,false,0f),
             Roller(robot.intakeRail.transform,"Intake transfer",S(.447f,0,.14f)-Vector3.forward*.24f,.05f,.52f,29f,true,.34f)};
         var transport=new List<InteractionRoller>();
         foreach(float z in new[]{.38f,.30f,.22f,.14f})
             transport.Add(Roller(root.transform,"Transport "+z,new Vector3(0,.17f,z),.035f,.66f,0f,false,0f));
-        transport.Add(Roller(root.transform,"Indexer entry",new Vector3(0,.205f,.09f),.035f,.30f,0f,false,0f));
-        transport.Add(Roller(root.transform,"Indexer transition",new Vector3(0,.24f,.045f),.035f,.30f,0f,false,0f));
-        transport.Add(Roller(root.transform,"Indexer low",new Vector3(0,.27f,.02f),.04f,.30f,0f,false,0f));
-        transport.Add(Roller(root.transform,"Indexer high",new Vector3(0,.33f,-.025f),.04f,.30f,0f,false,0f));
+        // A continuous rising surface avoids balls bouncing between isolated
+        // stair-step contacts on their way from storage to the accelerator.
+        transport.Add(Roller(root.transform,"Indexer belt",new Vector3(0,.255f,.035f),.035f,.30f,32.2f,true,.32f));
         robot.floorRollers=transport.ToArray();
         foreach(int side in new[]{-1,1})
         {
@@ -172,7 +181,7 @@ public static class Ninjas4744Builder
         var pack=AssetDatabase.LoadAssetAtPath<RebuiltModpackSO>(PackPath)
             ?? ScriptableObject.CreateInstance<RebuiltModpackSO>();
         Set(pack,"modpackName","Ninjas 4744 Turbo 2026");
-        Set(pack,"modpackVersion","0.2.0");
+        Set(pack,"modpackVersion","0.3.0");
         Set(pack,"authorName","Ninjas 4744");
         Set(pack,"description","Turbo for Rebuilt: original team CAD with physics-driven intake, hopper, shooter and passing. Initial simulation calibration.");
         Set(pack,"thumbnail",ImportPreview());
@@ -283,10 +292,13 @@ public static class Ninjas4744Builder
         return joint;
     }
 
-    private static void AddRailBox(Transform parent,string name,Vector3 deployed,Vector3 size,float travel)
+    private static BoxCollider AddRailBox(Transform parent,string name,Vector3 deployed,Vector3 size,float travel)
     {
         var box=Box(parent,name,Vector3.zero,size);
+        if(name.StartsWith("Hopper moving"))
+            box.excludeLayers=~LayerMask.GetMask("GamePiece1","GamePiece2","GamePieceAlt");
         box.transform.position=parent.parent.TransformPoint(deployed-Vector3.forward*travel);
+        return box;
     }
 
     private static InteractionRoller Roller(Transform parent,string name,Vector3 rootPosition,float radius,float width,float angle,bool belt,float span)
@@ -299,7 +311,7 @@ public static class Ninjas4744Builder
         Set(roller,"length",width/.0254f);
         Set(roller,"useBeltMode",belt);
         Set(roller,"beltLength",span/.0254f);
-        Set(roller,"maxSquish",(name=="Intake transfer"?.042f:name.StartsWith("Shooter")?.025f:belt?.032f:Mathf.Min(radius*.7f,.019f))/.0254f);
+        Set(roller,"maxSquish",(name=="Intake transfer"?.042f:name=="Indexer belt"?.019f:name.StartsWith("Shooter")?.025f:belt?.032f:Mathf.Min(radius*.7f,.019f))/.0254f);
         Set(roller,"rpm",0f);
         Set(roller,"motor",belt?InteractionRoller.RollerMotor.Shooter:InteractionRoller.RollerMotor.FullSize);
         Set(roller,"compressionStiffness",name.StartsWith("Shooter")?2500f:700f);
@@ -454,7 +466,7 @@ public static class Ninjas4744Builder
         var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(RobotPath);
         if(!prefab) throw new InvalidOperationException("Turbo prefab missing");
         var robot=prefab.GetComponent<Turbo4744>();
-        if(!robot||!robot.intakeRail||!robot.hopperRail||!robot.autoAim||!robot.muzzle||!robot.feedHold)
+        if(!robot||!robot.intakeRail||!robot.hopperRail||!robot.autoAim||!robot.muzzle||!robot.feedHold||!robot.intakeHold)
             throw new InvalidOperationException("Required Turbo mechanism references missing");
         var missing=prefab.GetComponentsInChildren<Transform>(true).Sum(t=>GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject));
         if(missing!=0) throw new InvalidOperationException("Missing scripts: "+missing);

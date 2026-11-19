@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ninjas4744
   m_EditorClassIdentifier: 
   modpackName: Ninjas 4744 Turbo 2026
-  modpackVersion: 0.2.0
+  modpackVersion: 0.3.0
   authorName: Ninjas 4744
   description: 'Turbo for Rebuilt: original team CAD with physics-driven intake,
     hopper, shooter and passing. Initial simulation calibration.'

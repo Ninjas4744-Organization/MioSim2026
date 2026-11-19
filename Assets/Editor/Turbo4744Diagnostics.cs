@@ -169,6 +169,8 @@ public static class Turbo4744Diagnostics
             {
                 sampleFrame=sample;
                 report.samples.Add(elapsed.ToString("F2")+" robot "+body.position.ToString("F3")+" angles "+body.rotation.eulerAngles.ToString("F1")+" intake input "+robot.IntakeAction.IsPressed()+" shoot input "+robot.ManualShoot.IsPressed());
+                if(elapsed<1f)foreach(var wheel in robot.GetComponentsInChildren<WheelCollider>())
+                    if(wheel.GetGroundHit(out var hit))report.samples.Add("Wheel ground: "+hit.collider.name);
                 foreach(var piece in fuel.Where(f=>f))
                     report.samples.Add(elapsed.ToString("F2")+" fuel "+fuel.IndexOf(piece)+" local "+robot.transform.InverseTransformPoint(piece.position).ToString("F3")+" vel "+piece.velocity.ToString("F3")+" shooter "+robot.CurrentShooterRpm+" real "+string.Join(",",robot.shooterRollers.Select(r=>r.realRpm.ToString("F0")))+" feeding "+robot.Feeding);
             }

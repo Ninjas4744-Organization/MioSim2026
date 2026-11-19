@@ -39,10 +39,18 @@ $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Build
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention
 .\Tools\Package.ps1 -MoSimProject $project
 ```
 
-The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit any manual prefab edits before using it. Build preserves the current prefab and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test runs the gameplay integration check. Travel tests the built bundle at four headings, including driving, match-state transitions, a load impulse, and stowing. Generated outputs go to `Artifacts/` and `dist/`.
+The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit any manual prefab edits before using it. Build preserves the current prefab and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test runs the gameplay integration check. Travel tests the built bundle at four headings, including driving, match-state transitions, a load impulse, and stowing. Retention collects field fuel and checks that it stays inside through intake release, driving, turning, disable, and stow. Packaging requires a passing retention report for the exact bundle being packaged. Generated outputs go to `Artifacts/` and `dist/`.
+
+## What changed in 0.3
+
+- A continuous moving hopper floor supports stored fuel through the full rail travel.
+- One-way intake contacts let incoming fuel enter while keeping stored fuel inside, including during disable and stow. Balls remain independent physics objects.
+- Releasing intake keeps the transfer belt running inward at a reduced speed while extended or retracting.
+- A new packaged-mod regression follows newly collected field fuel through storage and maneuvering, including real 90°/s turns.
 
 ## What changed in 0.2
 

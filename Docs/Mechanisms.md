@@ -20,6 +20,12 @@ The feed path uses MoSim InteractionRoller contacts and simple collision surface
 
 The storage contact bed is low and level so two layers of fuel fit below the closed roof. A short, narrower rising section lifts fuel into the indexer. Keeping the storage volume separate from that rising feed section avoids squeezing a second layer against the roof during retraction.
 
+The extended hopper has a complete moving storage floor overlapping the fixed bed. A cylindrical entry contact completes the intake belt's curved nose; a continuous inclined contact carries fuel from the storage bed into the accelerator. Added storage contacts affect fuel only, avoiding suspension interference.
+
+The intake uses an explicit one-way contact approximation. During collection, an incoming ball temporarily ignores only this robot's moving storage floor and inlet keeper. Once the whole sphere is above the floor and behind the inlet plane, those contacts become solid for that ball. Collection stays open to new fuel while already stored fuel has a continuous floor and front barrier. Reverse releases the contact pairs; pairs are also restored when fuel exits the area or the keeper is disabled. No global game-piece rules change. Fuel is never parented, frozen, repositioned, or assigned a storage velocity.
+
+This is a collision proxy for intake retention, not an additional modeled mechanism. While extended or retracting, the intake also runs inward at 20% speed after collection is released. Disabled mode stops all rollers while retaining stored fuel through the solid contacts.
+
 Drive and shooter tables come from the team's 2026 code. Motor-to-wheel conversion, contact geometry, friction, launch channel, mass distribution, and moving-shot behavior are simulation calibration. The roof net uses a compressing textile proxy. Shooting accuracy and throughput have not been fitted to match footage.
 
 ## Verification
@@ -27,3 +33,5 @@ Drive and shooter tables come from the team's 2026 code. Motor-to-wheel conversi
 The integration check uses the real preload spawn handler and normal keyboard action bindings. It exercises retained preloads while driving, deployment, pickup, the same ball feeding through the shooter, disabled shutdown, and stowing.
 
 The travel regression loads the Windows asset bundle, rather than the authoring prefab. It samples travel every physics step at 0°, 90°, 180°, and -90° headings. Each case includes a held intake command, driving/turning, disable/enable, and stow. An equal-and-opposite 40 N·s actuator impulse deliberately loads the intake end stop. This fault-injection test checks that physical bounds remain effective even when a controller alone could not stop the mechanism immediately.
+
+The retention regression starts empty and collects a group of nine official field fuel objects. It follows each captured ball through a held intake command, release, forward/reverse driving, 90°/s turns, curved motion, disable, and loaded stow at two initial headings. It requires at least seven pickups, retention of every collected ball, no escapes, stable robot motion, and successful stow. Its report records the tested asset bundle hash. The earlier 0.2.0 reproduction captured nine balls in its first case and subsequently lost all nine. The revised test uses clear neutral-zone carpet with unrelated fuel disabled, keeping field structures and loose background fuel out of the collection route.

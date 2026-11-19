@@ -22,6 +22,7 @@ namespace Ninjas4744.MoSim
         public Transform roofNet;
         public BoxCollider roofCollider;
         public BoxCollider feedHold;
+        public BoxCollider intakeHold;
         public Transform intakeRollerVisual;
 
         [Header("Rail travel (metres; simulation calibration)")]
@@ -34,6 +35,7 @@ namespace Ninjas4744.MoSim
 
         [Header("Roller calibration")]
         public float intakeRpm = 1300f;
+        [Range(0f,1f)] public float intakeHoldFraction = .2f;
         public float floorRpm = 1600f;
         public float acceleratorRpm = 2200f;
         public float shooterMotorToWheelRatio = .52f;
@@ -47,6 +49,8 @@ namespace Ninjas4744.MoSim
         public float CurrentShooterRpm { get; private set; }
         public float TargetShooterRpm { get; private set; }
         public float ShotDistance { get; private set; }
+        public bool Collecting => _intaking;
+        public bool Reversing => _reverse;
 
         private Rigidbody _body;
         private Vector3 _intakeClosedPose,_hopperClosedPose;
@@ -162,7 +166,12 @@ namespace Ninjas4744.MoSim
             Feeding = Deployed && _shooting && spunUp && aligned;
             // Collision proxy for the stopped indexer's retaining contact.
             feedHold.enabled=!Feeding;
-            float intake = Deployed && (_intaking || Feeding) ? -intakeRpm : 0f;
+            // The keeper controls per-fuel contact pairs, so collecting new
+            // balls never opens a path back out for fuel already stored.
+            // Keep the transfer belt drawing inward after the pickup command
+            // is released. Its open inlet otherwise becomes a downhill exit.
+            bool intakeOpen=Deployed||SlideExtension(intakeRail,_intakeClosedPose)>.015f;
+            float intake = intakeOpen ? -intakeRpm*((_intaking||Feeding)?1f:intakeHoldFraction) : 0f;
             float floor = Feeding ? -floorRpm : 0f;
             if (_reverse)
             {
@@ -236,6 +245,7 @@ namespace Ninjas4744.MoSim
                 TargetShooterRpm=0f;
                 Feeding=false;
                 feedHold.enabled=true;
+                if(intakeHold)intakeHold.enabled=true;
                 _intakeVelocity=_hopperVelocity=0f;
                 intakeRail.targetVelocity=hopperRail.targetVelocity=Vector3.zero;
             }
@@ -268,4 +278,5 @@ namespace Ninjas4744.MoSim
             return ys[ys.Length-1];
         }
     }
+
 }

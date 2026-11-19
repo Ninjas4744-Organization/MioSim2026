@@ -1,7 +1,7 @@
 {
   "schema": "ninjas4744.mosim-mod-provenance",
-  "version": "0.2.0",
-  "prepared_utc": "2026-11-19T23:23:05.424634+00:00",
+  "version": "0.3.0",
+  "prepared_utc": "2026-11-19T23:57:09.504435+00:00",
   "robot": {
     "team": 4744,
     "season": 2026,
@@ -32,7 +32,9 @@
     "hopper_stroke_m": 0.22946,
     "actuator_force_limit_N": 120,
     "slide_speed_limit_mps": 0.32,
-    "slide_acceleration_mps2": 1.1
+    "slide_acceleration_mps2": 1.1,
+    "intake_hold_fraction": 0.2,
+    "inlet_keeper": "Per-fuel one-way contacts engage only after the sphere clears the moving floor and inlet planes"
   },
   "verification": {
     "integration": {
@@ -50,18 +52,23 @@
     },
     "runtime_errors": 0,
     "travel_regression": true,
-    "bundle_load": true
+    "bundle_load": true,
+    "retention_regression": true,
+    "retention_bundle_sha256": "c6f80193dd6d22c8d69a5df1cf4508e53e6378874761fce6e4ce89fbf584d571",
+    "retention_runtime_dll_sha256": "dc7db1ed581977af383ec312270edbfc1c5f334427671d5fa51139d1f46f991b"
   },
   "calibration_limits": [
     "Slide strokes and contact proxies are simulation estimates",
+    "Fuel storage uses per-fuel one-way contact proxies for the intake floor and inlet",
     "Shot range and throughput have not been fitted to real match data",
     "Roof net uses a compressing textile proxy; RSL remains visually static"
   ],
   "publication": "Local repository and local game installation; no push or Workshop publication performed",
   "file_hashes": {
     "Models/robot.blend": "cac941db005771933d8200ddb6559ba0a027e6a90e252dbd5d22f3724574aec1",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "46374790e9aa0406aac2ec13a0d4c9a3f74b88bdfceefdaf1639dfaa3918d4b5",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "bcfef41324f8f01c9bb3ec0a1448ef49aa92620ed7baed0514dd3b937606bdf9",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "1db0fcd3e2804aa5e007e31d1ec5560f0a774554a5abe40075a11db384f9a332",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs": "1c92bd8af6ee9f30b496eabd54201c594e92ba012aa366f7ea8f8357156a9c9b",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "9ad3afbdf8326db3a9bd91b6f6b73d3282d368c4b4b095a68d3f9c3f22e3c0b6",
     "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Model/Turbo4744.fbx": "094cccdb3c2d2073889044b276008ff60478e4d6d705f488572a13b274fd6a3b"
   }
 }
