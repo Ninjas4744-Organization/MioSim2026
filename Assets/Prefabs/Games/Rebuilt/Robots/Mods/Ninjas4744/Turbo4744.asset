@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be1409438a6844eea96767966da7413b, type: 3}
+  m_Name: Turbo4744
+  m_EditorClassIdentifier: 
+  teamNumber: 4744
+  teamName: Ninjas
+  robotImage: {fileID: 21300000, guid: 4e533639fe6f48d42ba9533b429800d4, type: 3}
+  mainRobot:
+    displayName: Turbo
+    robotPrefab: {fileID: 2267328597818814721, guid: 5f5a520c777e484418ee2df1cca51660,
+      type: 3}
+    mainMenuPrefab: {fileID: 8485839208033508337, guid: 3420f9a229b331e43a2d8e9c26831fce,
+      type: 3}
+    spawnSelectionPrefab: {fileID: 6744870420099769156, guid: 7a9184d625621184eab0da2b097649e0,
+      type: 3}
+    preloadGamePiece: {fileID: 2886892246794840118, guid: 96adc4350dc09d942b6bf56af73710ca,
+      type: 3}
+    tutorialCards:
+    - {fileID: 2195879421615557198, guid: 5fc3fc02758f9f54e8c4fde619a64c08, type: 3}
+    - {fileID: 2617800223399414745, guid: 2718fab51589dd34c9c132a7ca1535af, type: 3}
+    - {fileID: 1308158237969018287, guid: bd0ba3e63632b6a4299cf25d35f014d5, type: 3}
+  alternateRobots: []

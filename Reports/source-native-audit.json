@@ -1,0 +1,131 @@
+{
+  "schema": "davinci.robot-native-audit",
+  "version": 1,
+  "blender_version": "4.5.16 LTS",
+  "native_file": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\davinci-creator\\projects\\frc-robots-2026\\assets\\robots\\4744-v1.3.1\\robot.blend",
+  "root": "Robot 4744 Turbo 2026",
+  "geometry_scope": "source mesh datablocks; evaluated modifiers excluded",
+  "scene_unit_system": "METRIC",
+  "scene_unit_scale": 1.0,
+  "objects": 1249,
+  "mesh_objects": 1233,
+  "mesh_datablocks": 1232,
+  "polygons": 4151920,
+  "triangles": 4180070,
+  "empty_mesh_objects": [],
+  "world_bounds": {
+    "min": [
+      -0.3753401041030884,
+      -0.44419509172439575,
+      0.0
+    ],
+    "max": [
+      0.6545600891113281,
+      0.44420504570007324,
+      0.5606495141983032
+    ],
+    "size": [
+      1.0299001932144165,
+      0.888400137424469,
+      0.5606495141983032
+    ]
+  },
+  "bounds_include_hidden_meshes": true,
+  "root_location": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "root_rotation_euler": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "root_scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "root_matrix_basis": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "studio_objects_under_root": [],
+  "file_images": [
+    {
+      "name": "intake-front.png",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\Ninjas4744\\davinci-creator\\projects\\robot-4744-sponsors-20261119\\assets\\textures\\intake-front.png",
+      "packed": true
+    },
+    {
+      "name": "side-commercial.png",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\Ninjas4744\\davinci-creator\\projects\\robot-4744-sponsors-20261119\\assets\\textures\\side-commercial.png",
+      "packed": true
+    },
+    {
+      "name": "side-community.png",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\Ninjas4744\\davinci-creator\\projects\\robot-4744-sponsors-20261119\\assets\\textures\\side-community.png",
+      "packed": true
+    }
+  ],
+  "fonts": [
+    {
+      "name": "Rubik Regular",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\DaVinci4744\\davinci-creator\\assets\\brand\\Rubik-Regular.ttf",
+      "packed": true
+    }
+  ],
+  "dependency_scope": "all file textures and fonts in the saved Blender file",
+  "unpacked_dependencies": [],
+  "modifiers": [
+    {
+      "object": "Limelight left mounting foot",
+      "type": "BEVEL",
+      "name": "Small manufactured edge radius"
+    },
+    {
+      "object": "Limelight left mounting tower",
+      "type": "BEVEL",
+      "name": "Small manufactured edge radius"
+    },
+    {
+      "object": "Limelight right mounting foot",
+      "type": "BEVEL",
+      "name": "Small manufactured edge radius"
+    },
+    {
+      "object": "Limelight right mounting tower",
+      "type": "BEVEL",
+      "name": "Small manufactured edge radius"
+    },
+    {
+      "object": "Shooter black flexible front flap",
+      "type": "SOLIDIFY",
+      "name": "2 mm rubber sheet"
+    }
+  ],
+  "valid": true,
+  "errors": []
+}

@@ -1,0 +1,171 @@
+{
+  "asset_id": "frc-2026-4744",
+  "asset_version": "1.3.1",
+  "team": "4744",
+  "team_name": "Ninjas / Da Vinci 4744",
+  "robot_name": "Turbo",
+  "season": 2026,
+  "configuration": "Intake deployed down; sliding hopper extended; empty by default",
+  "method": "original-cad with photo-derived textile, flap and camera-mount additions",
+  "base": {
+    "website_robot_version": "1.2.2",
+    "website_collection_version": "2.3.0",
+    "release": "6f0c4000de3244c9887108efc5cccde6",
+    "native_sha256": "2da761e19d07de349bc7142d7bd2b31d0db665951c10e4562f2fc03d0bd4806d",
+    "source_archive_sha256": "e7e202b5705131ecff0d4626c8df149ba659c294789147f3ebe0a997afb796ce"
+  },
+  "units": "metres",
+  "up_axis": "Z",
+  "intake_axis": "+X",
+  "shooter_axis": "-X",
+  "root_object": "Robot 4744 Turbo 2026",
+  "source_robot_cad_meshes": 1195,
+  "source_robot_cad_polygons_retained": 4116894,
+  "source_cad_geometry_decimated": false,
+  "adaptations": [
+    "75 original intake parts reposed about CAD mounting holes",
+    "Polycarbonate has moderate neutral-grey tint and reflection, increased from the too-clear 1.3.0 revision; original geometry retained",
+    "Open rope net, edging, lacing and flexible shooter flap reconstructed from photographs",
+    "Carbon-fibre roller finishes restored from team photographs",
+    "Two official Limelight housing meshes added at photo-derived front mount poses",
+    "Website 1.2.2 sponsor masks and approved bumper lettering retained",
+    "Optional illustrative fuel repositioned inside the hopper and hidden by default"
+  ],
+  "confirmed_geometry": {
+    "bumper_envelope_m": [
+      0.79548,
+      0.8884
+    ],
+    "hopper_outer_wall_x_m": 0.6496,
+    "hopper_wall_overhang_beyond_bumper_m": 0.22946,
+    "original_cad_coordinate_conversion": "Retained 90-degree Z rotation and +0.0468 m native ground offset from website asset",
+    "limelight_housing_dimensions_mm": [
+      80.1054,
+      48.1054,
+      32.61
+    ],
+    "limelight_scale_conversion": "Uniform 0.001 from manufacturer STL millimetres; raw +Y optical axis mapped to robot -X"
+  },
+  "estimated_details": {
+    "intake_additional_down_angle_degrees": 13,
+    "intake_pivot_m": [
+      0.106,
+      0,
+      0.3535
+    ],
+    "net_spacing_mm": [
+      36,
+      37
+    ],
+    "net_cord_diameter_mm": 2.3,
+    "net_sag_mm": 45,
+    "camera_mount_centres_m": [
+      [
+        -0.245,
+        -0.234,
+        0.259
+      ],
+      [
+        -0.245,
+        0.234,
+        0.259
+      ]
+    ],
+    "camera_pitch_degrees": 18,
+    "camera_outward_yaw_degrees": 12,
+    "other": [
+      "camera mounting towers and hidden cable routes",
+      "flexible flap mount depth"
+    ]
+  },
+  "camera_cad": {
+    "url": "https://downloads.limelightvision.io/cad/LIMELIGHT4CAD_STL.stl",
+    "source_triangles": 3202,
+    "imported_triangles_per_camera": 3194,
+    "degenerate_triangles_removed": 8
+  },
+  "primary_sources": [
+    {
+      "url": "https://knowledge.davinci4744.com/admin/sources/robots",
+      "use": "Current website model and private source archive"
+    },
+    {
+      "url": "https://cad.onshape.com/documents/08494cd89be8e75cfb297a46/w/9654cb87d200c26a987e6c91/e/d64b8d36cbdfc18b7395c311",
+      "use": "Original team CAD"
+    },
+    {
+      "url": "https://www.chiefdelphi.com/t/ninjas-4744-2026-build-thread-open-alliance/505741",
+      "posts": [
+        76,
+        83,
+        85,
+        88,
+        93
+      ],
+      "use": "Close-up intake, shooter, net, camera pair and competition appearance"
+    },
+    {
+      "url": "https://photos.app.goo.gl/tCNAkg8fPMZCYf759",
+      "local_views": [
+        "4744-album-054.jpg",
+        "4744-album-055.jpg",
+        "4744-album-011.jpg"
+      ],
+      "use": "Competition front and intake views"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=FwLTKGDCxgU",
+      "inspected_seconds": [
+        0,
+        1.4,
+        4.2
+      ],
+      "use": "Expanded hopper, net and shooter relationship"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=_TEMiHzBIJk",
+      "inspected_seconds": [
+        15,
+        40,
+        50
+      ],
+      "use": "Open intake and operating silhouette"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=uKcmq5Znl6o",
+      "inspected_seconds": [
+        2.8,
+        3.5,
+        4.2,
+        4.9
+      ],
+      "use": "Later competition appearance"
+    },
+    {
+      "url": "https://docs.limelightvision.io/docs/docs-limelight/getting-started/limelight-4",
+      "use": "Manufacturer dimensions and housing type"
+    },
+    {
+      "url": "https://github.com/Ninjas4744-Organization/Robot-Code-2026/blob/main/src/main/java/frc/robot/constants/SubsystemConstants.java",
+      "use": "Two Limelight entries confirmed; zero transforms not used as mounting measurements"
+    }
+  ],
+  "source_refresh_revision": "4d6fafc33772f70c51aa892905a31db3",
+  "mechanisms_simulated": false,
+  "rights": "Original team CAD, team marks and Limelight geometry retain their owners rights; no new third-party license asserted.",
+  "original_robot_export": {
+    "path": "source/cad/original-export.zip",
+    "bytes": 65747374,
+    "sha256": "64fa3d14fca68627b714a7adf81414fbe2ae4e55ba01b9573a90b4ac4e027398"
+  },
+  "original_limelight_export": {
+    "path": "source/cad/LIMELIGHT4CAD_STL.stl",
+    "bytes": 160184,
+    "sha256": "2c2a09c18bca9e3b9e8601f1ee61d26d4a09f2cae17c616ca6de6007b55cc64d"
+  },
+  "native_audit_passed": true,
+  "fresh_scene_portability_passed": true,
+  "approved_for_publication": true,
+  "previous_asset_record": "source/releases/4744-1.2.2.json",
+  "previous_collection_release": "6f0c4000de3244c9887108efc5cccde6"
+}

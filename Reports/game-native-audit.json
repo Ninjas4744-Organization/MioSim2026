@@ -1,0 +1,99 @@
+{
+  "schema": "davinci.robot-native-audit",
+  "version": 1,
+  "blender_version": "4.5.16 LTS",
+  "native_file": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\davinci-creator\\projects\\mosim-4744-2026\\assets\\model\\robot.blend",
+  "root": "Turbo4744_Game",
+  "geometry_scope": "source mesh datablocks; evaluated modifiers excluded",
+  "scene_unit_system": "METRIC",
+  "scene_unit_scale": 1.0,
+  "objects": 21,
+  "mesh_objects": 7,
+  "mesh_datablocks": 7,
+  "polygons": 796692,
+  "triangles": 819999,
+  "empty_mesh_objects": [],
+  "world_bounds": {
+    "min": [
+      -0.37700000405311584,
+      -0.44699999690055847,
+      0.006928697228431702
+    ],
+    "max": [
+      0.6507407426834106,
+      0.44699999690055847,
+      0.566068172454834
+    ],
+    "size": [
+      1.0277407467365265,
+      0.8939999938011169,
+      0.5591394752264023
+    ]
+  },
+  "bounds_include_hidden_meshes": true,
+  "root_location": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "root_rotation_euler": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "root_scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "root_matrix_basis": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "studio_objects_under_root": [],
+  "file_images": [
+    {
+      "name": "intake-front.png",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\Ninjas4744\\davinci-creator\\projects\\robot-4744-sponsors-20261119\\assets\\textures\\intake-front.png",
+      "packed": true
+    },
+    {
+      "name": "side-commercial.png",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\Ninjas4744\\davinci-creator\\projects\\robot-4744-sponsors-20261119\\assets\\textures\\side-commercial.png",
+      "packed": true
+    },
+    {
+      "name": "side-community.png",
+      "path": "/Users\\realkfiros\\code\\projects\\frc\\Ninjas4744\\davinci-creator\\projects\\robot-4744-sponsors-20261119\\assets\\textures\\side-community.png",
+      "packed": true
+    }
+  ],
+  "fonts": [],
+  "dependency_scope": "all file textures and fonts in the saved Blender file",
+  "unpacked_dependencies": [],
+  "modifiers": [],
+  "valid": true,
+  "errors": []
+}

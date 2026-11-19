@@ -1,0 +1,6531 @@
+{
+  "source_asset_version": "1.3.1",
+  "source_polygons": 4151920,
+  "game_meshes": 7,
+  "game_triangles": 819999,
+  "game_bounds": {
+    "min": [
+      -0.37700000405311584,
+      -0.44699999690055847,
+      0.006928697228431702
+    ],
+    "max": [
+      0.6507407426834106,
+      0.44699999690055847,
+      0.566068172454834
+    ]
+  },
+  "removed": [
+    {
+      "name": "Part0154_M5_Socket_Head_M5X12__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "150 mm fuel",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.001",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.002",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.003",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.004",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.005",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.006",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.007",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.008",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.009",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.010",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.011",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.012",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.013",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.014",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.015",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.016",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.017",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.018",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.019",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "150 mm fuel.020",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "Part0027_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0028_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0029_Nylock_Hex_Nut_M5__Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2088
+    },
+    {
+      "name": "Part0030_Nylock_Hex_Nut_M5__Cut-Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 4628
+    },
+    {
+      "name": "Part0032_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0033_Nylock_Hex_Nut_M5__Cut-Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 4628
+    },
+    {
+      "name": "Part0034_Nylock_Hex_Nut_M5__Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2088
+    },
+    {
+      "name": "Part0035_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0036_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0075_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0079_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0096_Nylock_Hex_Nut_M5__Cut-Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 4628
+    },
+    {
+      "name": "Part0097_Nylock_Hex_Nut_M5__Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2088
+    },
+    {
+      "name": "Part0098_Nylock_Hex_Nut_M5__Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2088
+    },
+    {
+      "name": "Part0099_Nylock_Hex_Nut_M5__Cut-Revolve1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 4628
+    },
+    {
+      "name": "Part0100_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0008_Blind_Rivet",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 1856
+    },
+    {
+      "name": "Part0013_Origin_Cube",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "Part0015_Origin_Cube",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "Part0101_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0102_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0103_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0109_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0110_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0116_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0124_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0129_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0131_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0145_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part0163_M5_Socket_Head_M5X12__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0164_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0165_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0170_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0178_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0179_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0187_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0192_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0197_M5_Socket_Head_M5X20__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0207_M5_Socket_Head_M5X15__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0209_Washer_5mm_M5__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part0239_Washer_5mm_M5__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part0241_M5_Socket_Head_M5X15__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0278_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0296_Origin_Cube",
+      "reason": "Hidden/reference/presentation geometry"
+    },
+    {
+      "name": "Part0317_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0336_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0356_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0357_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0358_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0375_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0386_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0461_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0474_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0479_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0488_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0562_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0565_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0572_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0577_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0644_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0648_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0652_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0656_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0732_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0739_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0741_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0744_Black-Oxide_Alloy_Steel_Socket_Head_Screw",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 950
+    },
+    {
+      "name": "Part0767_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0768_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0771_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0773_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0774_General_Purpose_Washer_M8__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part0786_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0790_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0873_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0874_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0876_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0879_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0889_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0903_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0904_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0916_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0919_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0922_M5_Socket_Head_M5X35__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part0927_General_Purpose_Washer_M8__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part0928_General_Purpose_Washer_M8__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part1046__10_Socket_Head_Cap_Screws_1_500in_Long_STEP__NONE",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 1050
+    },
+    {
+      "name": "Part1047__10_Socket_Head_Cap_Screws_1_500in_Long_STEP__NONE",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 1050
+    },
+    {
+      "name": "Part1048__10-32_Button_Head_Cap_Screws_0_500in_Long_STEP__NONE",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 1750
+    },
+    {
+      "name": "Part1049__10_Socket_Head_Cap_Screws_0_500in_Long_STEP__NONE",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 1050
+    },
+    {
+      "name": "Part1050__10_Socket_Head_Cap_Screws_0_500in_Long_STEP__NONE",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 1050
+    },
+    {
+      "name": "Part1094_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1095_General_Purpose_Washer_M8__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part1096_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part1097_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part1099_General_Purpose_Washer_M8__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part1106_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1107_General_Purpose_Washer_M8__Boss-Extrude1",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 464
+    },
+    {
+      "name": "Part1108_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1109_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1116_92095A216_Button_Head_Hex_Drive_Screw_92095A216__Boss-",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 52432
+    },
+    {
+      "name": "Part1122_M5_Socket_Head_M5X30__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1133_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1139_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1149_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1151_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1153_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1155_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1166_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1167_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1170_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1171_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1176_M5_Socket_Head_M5X45__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    },
+    {
+      "name": "Part1180_M4_Socket_Head_Cap_for_roller_M4X10__Cut-Extrude2",
+      "reason": "Small detailed fastener omitted in game LOD",
+      "polygons": 2808
+    }
+  ],
+  "simplified": [
+    {
+      "name": "Part0156_26-300-031__LPattern2",
+      "source_polygons": 3060,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0157_26-300-025__M5_Clearance_Hole3",
+      "source_polygons": 5612,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0158_26-300-076__Cut-Extrude2",
+      "source_polygons": 2836,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0159_26-300-076__Cut-Extrude2",
+      "source_polygons": 2836,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0160_26-300-075__Fillet3",
+      "source_polygons": 2852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0161_26-300-075__Fillet3",
+      "source_polygons": 2852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0162_26-300-031__LPattern2",
+      "source_polygons": 3060,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0031_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0037_26-300-004-002__Fillet3",
+      "source_polygons": 11092,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0038_26-300-006__Fillet3",
+      "source_polygons": 5208,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0039_26-300-006__Fillet3",
+      "source_polygons": 5208,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0041_26-300-004-002__Fillet3",
+      "source_polygons": 11092,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0058_26-300-001__Fillet73",
+      "source_polygons": 9696,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0060_15t_PULLEY_2__Cut-Extrude2",
+      "source_polygons": 4704,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0061_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0063_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0064_26-300-043__M5_Clearance_Hole1",
+      "source_polygons": 9184,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0068_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "source_polygons": 3852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0069_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0070_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0078_26-300-043__M5_Clearance_Hole1",
+      "source_polygons": 9184,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0080_26-300-001__Fillet73",
+      "source_polygons": 9696,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0083_15t_PULLEY_2__Cut-Extrude2",
+      "source_polygons": 4704,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0085_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0090_26-300-061__Fillet1",
+      "source_polygons": 3852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0091_Mgnetic_Limit_Switch__REV-40-1467___NONE",
+      "source_polygons": 3720,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0092_Mgnetic_Limit_Switch__REV-40-1467___NONE",
+      "source_polygons": 30754,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0093_26-300-061__Fillet1",
+      "source_polygons": 3852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0094_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "source_polygons": 3852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0095_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "source_polygons": 3852,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Limelight left original manufacturer mesh",
+      "source_polygons": 3194,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Limelight right original manufacturer mesh",
+      "source_polygons": 3194,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0017_26-76-007__Fillet2",
+      "source_polygons": 5436,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0019_26-76-007__Fillet2",
+      "source_polygons": 5436,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0111_Mirror26-420-012___26-420-012_-_Fillet25_",
+      "source_polygons": 6512,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0112_Mirror26-420-035___26-420-035_-_Tap_Drill_for_M5x0_8_T",
+      "source_polygons": 2834,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0118_26-420-040__M6_Clearance_Hole2",
+      "source_polygons": 4152,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0121_pulley_insert_16T_9mm_weird_V3__Cut-Extrude12",
+      "source_polygons": 9246,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0122_pulley_insert_16T_last_ver_AHH__Cut-Extrude6",
+      "source_polygons": 7472,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0123_pulley_insert_16T_15mm__Cut-Extrude12",
+      "source_polygons": 11408,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0127_pulley_insert_16T_15mm__Cut-Extrude12",
+      "source_polygons": 11408,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0128_26-420-035__Tap_Drill_for_M5x0_8_Tap2",
+      "source_polygons": 2832,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0135_pulley_insert_16T_9mm_weird_V3__Cut-Extrude12",
+      "source_polygons": 9246,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0136_pulley_insert_16T_last_ver_AHH__Cut-Extrude6",
+      "source_polygons": 7472,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0139_pulley_insert_16T_15mm__Cut-Extrude12",
+      "source_polygons": 11408,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0141_26-420-012__Fillet25",
+      "source_polygons": 6432,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0143_pulley_insert_16T_15mm__Cut-Extrude12",
+      "source_polygons": 11408,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0144_26-420-040__M6_Clearance_Hole2",
+      "source_polygons": 4152,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0146_26-420-040__M6_Clearance_Hole2",
+      "source_polygons": 4152,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0167_26-300-074__Fillet4",
+      "source_polygons": 2940,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0172_26-300-078__Fillet1",
+      "source_polygons": 3544,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0176_26-420-047__M5_Clearance_Hole3",
+      "source_polygons": 5256,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0180_26-300-074__Fillet4",
+      "source_polygons": 2940,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0181_26-420-047__M5_Clearance_Hole3",
+      "source_polygons": 5256,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0184_Mirror26-300-027___26-300-027_-__5_0mm_Dowel_Hole1_",
+      "source_polygons": 11100,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0186_Mirror26-300-078___26-300-078_-_Fillet1_",
+      "source_polygons": 3558,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0190_26-300-027___5_0mm_Dowel_Hole1",
+      "source_polygons": 10960,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0193_26-300-076__Cut-Extrude2",
+      "source_polygons": 2836,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0198_26-300-076__Cut-Extrude2",
+      "source_polygons": 2836,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0206_Custom_Pulley_17t__Cut-Extrude2",
+      "source_polygons": 4704,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0226_Custom_Pulley_32t__Cut-Extrude2",
+      "source_polygons": 8552,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0230_26-203-001__Fillet1",
+      "source_polygons": 2716,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0234_Custom_Pulley_17t__Cut-Extrude2",
+      "source_polygons": 4704,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0236_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0246_26-203-012__Fillet9",
+      "source_polygons": 5642,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0260_Custom_Pulley_16t__Cut-Extrude2",
+      "source_polygons": 4456,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0266_Custom_Pulley_15t__Cut-Extrude2",
+      "source_polygons": 4456,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0268_30T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2705",
+      "source_polygons": 5888,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0289_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0295_36T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3214",
+      "source_polygons": 6536,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0304_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0305_Custom_Pulley_21__Cut-Extrude2",
+      "source_polygons": 5696,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0308_26-202-001__Fillet31",
+      "source_polygons": 18444,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0328_Custom_Pulley_32t__Cut-Extrude2",
+      "source_polygons": 8552,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0332_18T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3209",
+      "source_polygons": 4376,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0333_26-202-036___5_0mm_Dowel_Hole3",
+      "source_polygons": 10832,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0334_Custom_Pulley_20t__Cut-Extrude2",
+      "source_polygons": 4704,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0337_26-202-036___5_0mm_Dowel_Hole3",
+      "source_polygons": 10832,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0343_24T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2704",
+      "source_polygons": 5288,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0344_26-202-027__Fillet7",
+      "source_polygons": 4332,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0347_18T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3209",
+      "source_polygons": 4376,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0354_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0355_30T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2705",
+      "source_polygons": 5888,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0361_26-202-035__Fillet4",
+      "source_polygons": 3424,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0362_Custom_Pulley_20t__Cut-Extrude2",
+      "source_polygons": 4704,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0363_18T_x_9mm_Wide_Double_Flange_Aluminum_Pulley__HTD_5mm_",
+      "source_polygons": 5848,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0364_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0373_26-202-002__Fillet9",
+      "source_polygons": 16940,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0389_60T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3574",
+      "source_polygons": 10088,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0393_Custom_Pulley_21__Cut-Extrude2",
+      "source_polygons": 5696,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0396_26-100-002___5_0mm_Dowel_Hole5",
+      "source_polygons": 34496,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0397_26-100-004___5_0mm_Dowel_Hole7",
+      "source_polygons": 24224,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0398_26-100-001___5_0mm_Dowel_Hole4",
+      "source_polygons": 28576,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0399_Belipen",
+      "source_polygons": 23824,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0400_26-100-005___5_0mm_Dowel_Hole4",
+      "source_polygons": 34496,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0410_MK4n_Top_Plate_B",
+      "source_polygons": 31674,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0421_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 10014,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0428_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0429_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0432_MK4n_Base_Plate_B",
+      "source_polygons": 20786,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0436_MK4i_Steering_Shaft_Tall",
+      "source_polygons": 5040,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0445_Gear__50T__20DP___375Hex",
+      "source_polygons": 15512,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0448_Gear__50T__20DP___375Hex_1",
+      "source_polygons": 15512,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0452_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 3064,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0456_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0457_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 998
+    },
+    {
+      "name": "Part0458_Double_Gear__20DP__27T__50T",
+      "source_polygons": 10536,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0463_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "source_polygons": 10116,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0467_Gear__17T__20DP___375Hex",
+      "source_polygons": 3568,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0473_MK3_Base_Pulley_V3",
+      "source_polygons": 16352,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0477_Bevel_Gear__4515",
+      "source_polygons": 8516,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0487_Bevel_Gear__1545",
+      "source_polygons": 5198,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0490_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "source_polygons": 17724,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0498_Gear__50T__20DP___375Hex",
+      "source_polygons": 15512,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0508_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 3064,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0512_Gear__50T__20DP___375Hex_1",
+      "source_polygons": 15512,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0515_MK4n_Base_Plate_B",
+      "source_polygons": 20786,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0531_MK4n_Top_Plate_B",
+      "source_polygons": 31674,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0533_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 10014,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0534_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0535_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0541_MK4i_Steering_Shaft_Tall",
+      "source_polygons": 5040,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0544_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0545_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0555_Bevel_Gear__1545",
+      "source_polygons": 5198,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0557_MK3_Base_Pulley_V3",
+      "source_polygons": 16352,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0558_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "source_polygons": 10116,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0560_Double_Gear__20DP__27T__50T",
+      "source_polygons": 10536,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0566_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "source_polygons": 17724,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0575_Gear__17T__20DP___375Hex",
+      "source_polygons": 3568,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0581_Bevel_Gear__4515",
+      "source_polygons": 8516,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0591_MK4n_Top_Plate_A",
+      "source_polygons": 31444,
+      "game_polygons": 998
+    },
+    {
+      "name": "Part0593_MK4n_Base_Plate_A",
+      "source_polygons": 20238,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0613_Gear__50T__20DP___375Hex_1",
+      "source_polygons": 15512,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0621_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0624_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0626_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 3064,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0627_Gear__50T__20DP___375Hex",
+      "source_polygons": 15512,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0631_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 10014,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0633_MK4i_Steering_Shaft_Tall",
+      "source_polygons": 5040,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0637_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0638_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0647_Bevel_Gear__4515",
+      "source_polygons": 8516,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0650_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "source_polygons": 10116,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0660_Gear__17T__20DP___375Hex",
+      "source_polygons": 3568,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0664_Bevel_Gear__1545",
+      "source_polygons": 5198,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0668_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "source_polygons": 17724,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0669_MK3_Base_Pulley_V3",
+      "source_polygons": 16352,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0671_Double_Gear__20DP__27T__50T",
+      "source_polygons": 10536,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0679_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 10014,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0682_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "source_polygons": 3064,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0685_Gear__50T__20DP___375Hex_1",
+      "source_polygons": 15512,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0702_MK4n_Top_Plate_A",
+      "source_polygons": 31444,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0703_MK4i_Steering_Shaft_Tall",
+      "source_polygons": 5040,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0714_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0716_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0728_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "source_polygons": 17724,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0731_MK3_Base_Pulley_V3",
+      "source_polygons": 16352,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0737_Bevel_Gear__1545",
+      "source_polygons": 5198,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0746_Double_Gear__20DP__27T__50T",
+      "source_polygons": 10536,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0750_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "source_polygons": 10116,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0754_Bevel_Gear__4515",
+      "source_polygons": 8516,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0755_Gear__17T__20DP___375Hex",
+      "source_polygons": 3568,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0757_MK4n_Base_Plate_A",
+      "source_polygons": 20238,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0758_Gear__50T__20DP___375Hex",
+      "source_polygons": 15512,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0762_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0763_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "source_polygons": 10320,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0765_26-420-024-001__LPattern2",
+      "source_polygons": 4660,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0766_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0772_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0776_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0779_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0781_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0791_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0794_26-420-010__Fillet133",
+      "source_polygons": 24216,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0801_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0802_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0803_26-420-010-002__Cut-Extrude24",
+      "source_polygons": 24702,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0804_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0806_26-420-024__LPattern2",
+      "source_polygons": 4660,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0810_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "source_polygons": 3296,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0818_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "source_polygons": 44484,
+      "game_polygons": 1112
+    },
+    {
+      "name": "Part0828_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "source_polygons": 7212,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0831_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "source_polygons": 24694,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0837_26-413-001__LPattern1",
+      "source_polygons": 3164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0840_26-413-001__LPattern1",
+      "source_polygons": 3164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0875_26-420-004__M5_Clearance_Hole1",
+      "source_polygons": 9258,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0877_26-420-040__M6_Clearance_Hole2",
+      "source_polygons": 4152,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0878_pulley_insert_15T_last_ver__Cut-Extrude11",
+      "source_polygons": 10316,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0885_spacer_plate_1__Fillet3",
+      "source_polygons": 3976,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0896_30T_Pulley_new_real__Cut-Extrude7",
+      "source_polygons": 15162,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0898_26-420-004-002__Fillet10",
+      "source_polygons": 6242,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0899_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0900_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0907_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0910_Custom_Pulley_HA_15t__Cut-Extrude2",
+      "source_polygons": 4208,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0911_pulley_insert_15T_last_ver__Cut-Extrude11",
+      "source_polygons": 10316,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0913_pulley_insert_15T_last_ver__Cut-Extrude11",
+      "source_polygons": 10316,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0923_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0938_26-413-001__LPattern1",
+      "source_polygons": 3164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0943_26-413-001__LPattern1",
+      "source_polygons": 3164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0968_Kraken__NONE",
+      "source_polygons": 3461,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0969_Kraken__NONE",
+      "source_polygons": 3459,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0972_REV-21-2102_STEP__NONE",
+      "source_polygons": 4504,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0973_REV-21-2102_STEP__NONE",
+      "source_polygons": 4504,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0974_REV-21-2102_STEP__NONE",
+      "source_polygons": 4504,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0975_REV-21-2102_STEP__NONE",
+      "source_polygons": 4968,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0976_REV-21-2102_STEP__NONE",
+      "source_polygons": 4164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0977_REV-21-2102_STEP__NONE",
+      "source_polygons": 2872,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0978_REV-21-2102_STEP__NONE",
+      "source_polygons": 4652,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0979_REV-21-2102_STEP__NONE",
+      "source_polygons": 2872,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0980_REV-21-2102_STEP__NONE",
+      "source_polygons": 22736,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0984_REV-21-2102_STEP__NONE",
+      "source_polygons": 4504,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0986_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0988_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0989_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0990_REV-21-2101_STEP__NONE",
+      "source_polygons": 22736,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0991_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part0992_REV-21-2101_STEP__NONE",
+      "source_polygons": 3516,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0995_REV-21-2101_STEP__NONE",
+      "source_polygons": 2872,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0996_REV-21-2101_STEP__NONE",
+      "source_polygons": 7128,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0998_REV-21-2101_STEP__NONE",
+      "source_polygons": 2872,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part0999_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1001_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1002_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1006_REV-21-2101_STEP__NONE",
+      "source_polygons": 3784,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1008_REV-21-2106_STEP__NONE",
+      "source_polygons": 7132,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1011_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1013_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1014_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1016_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1017_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1018_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1019_REV-21-2104_STEP__NONE",
+      "source_polygons": 2916,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1020_REV-21-2104_STEP__NONE",
+      "source_polygons": 2916,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1021_REV-21-2104_STEP__NONE",
+      "source_polygons": 6892,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1022_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1023_REV-21-2104_STEP__NONE",
+      "source_polygons": 5046,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1024_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1025_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1026_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1027_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1028_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1029_REV-21-2104_STEP__NONE",
+      "source_polygons": 2916,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1030_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1031_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1032_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1033_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1034_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1035_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1036_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1037_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1038_REV-21-2104_STEP__NONE",
+      "source_polygons": 2916,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1039_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1041_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1044_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1045_REV-21-2104_STEP__NONE",
+      "source_polygons": 3248,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1069_26-413-001__LPattern1",
+      "source_polygons": 3164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1078_26-413-001__LPattern1",
+      "source_polygons": 3164,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1102_Mirror26-300-007___26-300-007_-_Fillet15_",
+      "source_polygons": 6522,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1121_26-300-007__Fillet15",
+      "source_polygons": 6558,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1134_40T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2708",
+      "source_polygons": 7048,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1135_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1142_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1143_26-420-001-003___5_0mm_Dowel_Hole2",
+      "source_polygons": 3216,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1146_26-420-040__M6_Clearance_Hole2",
+      "source_polygons": 4152,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1148_26-420-028__Fillet33",
+      "source_polygons": 6546,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1152_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1156_Kraken_X60_Brushless_Motor",
+      "source_polygons": 20116,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1163_26-420-001-002___4_0mm_Dowel_Hole2",
+      "source_polygons": 6800,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1172_pulley_insert_16T_9mm__Cut-Extrude13",
+      "source_polygons": 11424,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1173_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1174_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1175_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1177_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "source_polygons": 10222,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1178_20T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2702",
+      "source_polygons": 4808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1183_26-420-003-001__M4_Clearance_Hole1",
+      "source_polygons": 4732,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1188_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1191_26-420-003___4_0mm_Dowel_Hole2",
+      "source_polygons": 10192,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1192_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "source_polygons": 2808,
+      "game_polygons": 999
+    },
+    {
+      "name": "Part1193_Custom_Pulley_HA_15t__Cut-Extrude2",
+      "source_polygons": 4208,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Part1195_26-420-040__M6_Clearance_Hole2",
+      "source_polygons": 4152,
+      "game_polygons": 1000
+    },
+    {
+      "name": "Chassis_Geometry",
+      "stage": "assembly LOD",
+      "source_triangles": 918077,
+      "game_triangles": 720460
+    },
+    {
+      "name": "Hopper_Geometry",
+      "stage": "assembly LOD",
+      "source_triangles": 14637,
+      "game_triangles": 11486
+    },
+    {
+      "name": "Intake_Geometry",
+      "stage": "assembly LOD",
+      "source_triangles": 53313,
+      "game_triangles": 41837
+    },
+    {
+      "name": "IntakeRoller_Geometry",
+      "stage": "assembly LOD",
+      "source_triangles": 464,
+      "game_triangles": 364
+    }
+  ],
+  "assembly_assignments": [
+    {
+      "name": "4744 number \u2022 Team stencil 4744",
+      "assembly": "Lettering"
+    },
+    {
+      "name": "4744 number \u2022 Team stencil 4744.001",
+      "assembly": "Lettering"
+    },
+    {
+      "name": "4744 number \u2022 Team stencil 4744.002",
+      "assembly": "Lettering"
+    },
+    {
+      "name": "4744 number \u2022 Team stencil 4744.003",
+      "assembly": "Lettering"
+    },
+    {
+      "name": "Part0151_26-300-070__Mirror1",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0152_26-300-079___5_0__5__Diameter_Hole1",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0153_Mirror26-300-66___26-300-66_-_Cut-Extrude16_",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0155_26-300-66__Cut-Extrude16",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0156_26-300-031__LPattern2",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0157_26-300-025__M5_Clearance_Hole3",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "4744 intake sponsor graphics \u2022 all photographed marks",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0158_26-300-076__Cut-Extrude2",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0159_26-300-076__Cut-Extrude2",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0160_26-300-075__Fillet3",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0161_26-300-075__Fillet3",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0162_26-300-031__LPattern2",
+      "assembly": "Hopper"
+    },
+    {
+      "name": "Part0025_26-300-059__Fillet5",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0026_26-300-059__Fillet5",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0031_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0037_26-300-004-002__Fillet3",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0038_26-300-006__Fillet3",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0039_26-300-006__Fillet3",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0040_26-300-059-002__Fillet4",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0041_26-300-004-002__Fillet3",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0042_26-300-059-002__Fillet4",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0043_Mirrorrandom_ahh___random_ahh_-_Revolve1_",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0044_Mirrorprint_shaft_3_2___print_shaft_3_2_-_Cut-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0045_MirrorPart1___Part1_-_Fillet1_",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0046_Mirrorprint_shaft___print_shaft_-_Fillet1_",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0047_print_shaft__Fillet1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0048_Part1__Fillet1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0049_random_ahh__Revolve1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0050_print_shaft_3_2__Cut-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0051_26-300-002__Mirror1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0052_26-300-041__Boss-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0053_26-300-063__Boss-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0054_26-300-032-003__Boss-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0055_26-300-033-001__Cut-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0056_26-300-032-001__Boss-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0057_26-300-064__Boss-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0058_26-300-001__Fillet73",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0059_26-300-067__Fillet1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0060_15t_PULLEY_2__Cut-Extrude2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0061_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0062_Mirror26-300-034___26-300-034_-_M5_Clearance_Hole1_",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0063_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0064_26-300-043__M5_Clearance_Hole1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0065_26-300-067__Fillet1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0066_26-300-045__M5_Clearance_Hole1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0067_26-300-045__M5_Clearance_Hole1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0068_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0069_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0070_Kraken_X60_Brushless_Motor",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0071_WCP-1380_step__NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0072_WCP-1380_step__NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0073_WCP-1380_step__NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0076_26-300-024__Mirror1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0077_26-300-062__Cut-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0078_26-300-043__M5_Clearance_Hole1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0080_26-300-001__Fillet73",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0081_26-300-041__Boss-Extrude1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0082_intake_rooler",
+      "assembly": "IntakeRoller"
+    },
+    {
+      "name": "Part0083_15t_PULLEY_2__Cut-Extrude2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0084_26-300-034__M5_Clearance_Hole1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0085_Kraken_X60_Brushless_Motor",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0086_Part_1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0087_WCP-1380_step__NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0088_WCP-1380_step__NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0089_WCP-1380_step__NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0090_26-300-061__Fillet1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0091_Mgnetic_Limit_Switch__REV-40-1467___NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0092_Mgnetic_Limit_Switch__REV-40-1467___NONE",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0093_26-300-061__Fillet1",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0094_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Part0095_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "assembly": "Intake"
+    },
+    {
+      "name": "Front camera +1 Ethernet service loop",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Front camera +1 power leads",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Front camera -1 Ethernet service loop",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Front camera -1 power leads",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight left etched name",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight left original manufacturer mesh",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight right etched name",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight right original manufacturer mesh",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Gathered net hems",
+      "assembly": "RoofNet"
+    },
+    {
+      "name": "Hopper retention net \u2014 open 36\u201337 mm rope lattice",
+      "assembly": "RoofNet"
+    },
+    {
+      "name": "Limelight left mounting foot",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight left mounting tower",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight right mounting foot",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Limelight right mounting tower",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Net lacing and rail ties",
+      "assembly": "RoofNet"
+    },
+    {
+      "name": "Shooter black flexible front flap",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0001_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0002_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0003_Mirror26-300-005___26-300-005_-_Fillet2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0004_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0005_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0006_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0007_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0009_26-76-003__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0010_26-76-009__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0011_26-76-006__Boss-Extrude1",
+      "assembly": "Bumpers"
+    },
+    {
+      "name": "Part0012_26-76-004__Fillet1",
+      "assembly": "Bumpers"
+    },
+    {
+      "name": "Part0014_26-76-006__Boss-Extrude1",
+      "assembly": "Bumpers"
+    },
+    {
+      "name": "Part0016_26-76-003__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0017_26-76-007__Fillet2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0018_26-76-005__Boss-Extrude1",
+      "assembly": "Bumpers"
+    },
+    {
+      "name": "Part0019_26-76-007__Fillet2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0020_26-76-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0021_26-76-005__Boss-Extrude1",
+      "assembly": "Bumpers"
+    },
+    {
+      "name": "Part0022_26-76-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0023_26-76-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0024_26-76-004__Fillet1",
+      "assembly": "Bumpers"
+    },
+    {
+      "name": "Part0104_26-420-044__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0105_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0106_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0107_26-420-006-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0108_26-420-044__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0111_Mirror26-420-012___26-420-012_-_Fillet25_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0112_Mirror26-420-035___26-420-035_-_Tap_Drill_for_M5x0_8_T",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0113_26-420-044__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0114_26-420-044-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0115_26-420-006-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0117_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0118_26-420-040__M6_Clearance_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0119_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0120_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0121_pulley_insert_16T_9mm_weird_V3__Cut-Extrude12",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0122_pulley_insert_16T_last_ver_AHH__Cut-Extrude6",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0123_pulley_insert_16T_15mm__Cut-Extrude12",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0125_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0126_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0127_pulley_insert_16T_15mm__Cut-Extrude12",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0128_26-420-035__Tap_Drill_for_M5x0_8_Tap2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0130_26-420-006-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0132_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0133_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0134_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0135_pulley_insert_16T_9mm_weird_V3__Cut-Extrude12",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0136_pulley_insert_16T_last_ver_AHH__Cut-Extrude6",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0137_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0138_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0139_pulley_insert_16T_15mm__Cut-Extrude12",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0140_26-420-042__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0141_26-420-012__Fillet25",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0142_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0143_pulley_insert_16T_15mm__Cut-Extrude12",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0144_26-420-040__M6_Clearance_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0146_26-420-040__M6_Clearance_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0147_26-420-006-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0148_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0149_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0150_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0166_26-300-048-001__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0167_26-300-074__Fillet4",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0168_print_shaft_spacer__Boss-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0169_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0171_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0172_26-300-078__Fillet1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0173_print_shaft_spacer__Boss-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0174_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0175_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0176_26-420-047__M5_Clearance_Hole3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0177_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0180_26-300-074__Fillet4",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0181_26-420-047__M5_Clearance_Hole3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0182_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0183_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0184_Mirror26-300-027___26-300-027_-__5_0mm_Dowel_Hole1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "4744 commercial sponsors \u2022 Blossom SOLIDWORKS AYT",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0185_26-300-048-001__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0186_Mirror26-300-078___26-300-078_-_Fillet1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0188_26-300-048-001__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0189_26-300-072__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0190_26-300-027___5_0mm_Dowel_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "4744 community sponsors \u2022 Amal Hadera FIRST",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0191_print_shaft_spacer__Boss-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0193_26-300-076__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0194_26-300-048-001__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0195_random_ahh__Revolve1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0196_print_shaft_spacer__Boss-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0198_26-300-076__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0199_26-202-038__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0200_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0201_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0202_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0203_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0204_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0205_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0206_Custom_Pulley_17t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0208_26-203-013__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0210_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0211_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0212_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0213_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0214_26-203-015__Fillet1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0215_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0216_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0217_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0218_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0219_26-203-014__Boss-Extrude4",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0220_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0221_26-203-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0222_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0223_26-203-005__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0224_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0225_26-202-012__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0226_Custom_Pulley_32t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0227_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0228_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0229_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0230_26-203-001__Fillet1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0231_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0232_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0233_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0234_Custom_Pulley_17t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0235_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0236_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0237_26-203-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0238_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0240_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0242_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0243_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0244_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0245_26-203-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0246_26-203-012__Fillet9",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0247_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0248_26-203-004__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0249_26-202-012__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0250_WCP-1118_8mm_SplineXS_to_1_2in_Rounded_Hex_Adapter__1i",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0251_26-203-005__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0252_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0253_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0254_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0255_26-203-008__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0256_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0257_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0258_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0259_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0260_Custom_Pulley_16t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0261_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0262_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0263_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0264_26-202-010__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0265_26-202-025__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0266_Custom_Pulley_15t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0267_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0268_30T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2705",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0269_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0270_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0271_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0272_26-203-007__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0273_26-202-022__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0274_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0275_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0276_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0277_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0279_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0280_26-202-032__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0281_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0282_OutsideRubberWheel4Inch_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0283_4InchRubberSolidWheel_Core_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0284_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0285_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0286_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0287_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0288_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0289_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0290_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0291_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0292_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0293_26-202-006__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0294_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0295_36T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3214",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0297_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0298_26-202-009__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0299_26-202-004___10_0mm_Dowel_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0300_26-202-025__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0301_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0302_26-202-037__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0303_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0304_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0305_Custom_Pulley_21__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0306_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0307_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0308_26-202-001__Fillet31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0309_Mirror26-202-003___26-202-003_-__10_0mm_Dowel_Hole1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0310_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0311_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0312_WCP-1118_8mm_SplineXS_to_1_2in_Rounded_Hex_Adapter__1i",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0313_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0314_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0315_26-202-015__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0316_26-202-015__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0318_26-202-037__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0319_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0320_26-203-007__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0321_OutsideRubberWheel4Inch_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0322_4InchRubberSolidWheel_Core_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0323_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0324_OutsideRubberWheel4Inch_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0325_4InchRubberSolidWheel_Core_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0326_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0327_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0328_Custom_Pulley_32t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0329_26-202-024__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0330_26-202-028__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0331_26-202-031__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0332_18T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3209",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0333_26-202-036___5_0mm_Dowel_Hole3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0334_Custom_Pulley_20t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0335_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0337_26-202-036___5_0mm_Dowel_Hole3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0338_26-203-007__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0339_26-202-004___10_0mm_Dowel_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0340_4InchRubberSolidWheel_Core_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0341_OutsideRubberWheel4Inch_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0342_26-203-007__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0343_24T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2704",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0344_26-202-027__Fillet7",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0345_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0346_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0347_18T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3209",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0348_26-202-009__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0349_26-202-017__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0350_26-202-010__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0351_26-202-037__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0352_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0353_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0354_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0355_30T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2705",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0359_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0360_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0361_26-202-035__Fillet4",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0362_Custom_Pulley_20t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0363_18T_x_9mm_Wide_Double_Flange_Aluminum_Pulley__HTD_5mm_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0364_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0365_WCP-1118_8mm_SplineXS_to_1_2in_Rounded_Hex_Adapter__1i",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0366_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0367_26-202-007__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0368_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0369_26-202-003___10_0mm_Dowel_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0370_26-202-014__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0371_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0372_26-202-011__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0373_26-202-002__Fillet9",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0374_26-202-013__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0376_OutsideRubberWheel4Inch_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0377_4InchRubberSolidWheel_Core_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0378_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0379_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0380_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0381_26-202-008__Fillet2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0382_26-203-007__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0383_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0384_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0385_2_OD_Straight_Flex_Wheel__217-6353___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0387_OutsideRubberWheel4Inch_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0388_4InchRubberSolidWheel_Core_stp__Solid1_1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0389_60T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-3574",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0390_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0391_TTB_2_Inch_Solid_Urethane_Wheel__2InchRoller__1__1_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0392_26-202-010__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0393_Custom_Pulley_21__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0394_1_2__Hex_Bore_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0395_26-202-030__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0396_26-100-002___5_0mm_Dowel_Hole5",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0397_26-100-004___5_0mm_Dowel_Hole7",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0398_26-100-001___5_0mm_Dowel_Hole4",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0399_Belipen",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0400_26-100-005___5_0mm_Dowel_Hole4",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0401__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0402_MK4n_Belt",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0403__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0404_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0405_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0406__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0407_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0408__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0409__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0410_MK4n_Top_Plate_B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0411_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0412__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0413__10-32_x_0_25__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0414_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0415_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0416_0_196__ID_x_0_3125__OD_x_0_625__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0417_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0418_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0419_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0420__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0421_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0422__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0423_0_375__ID_x_0_526__OD_x_0_5__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0424_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0425_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0426_MK4i_Shaft__Drive_Idler",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0427_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0428_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0429_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0430__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0431_0_335__ID_Custom_Spacer__0_5__OD_0_5__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0432_MK4n_Base_Plate_B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0433__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0434_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0435_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0436_MK4i_Steering_Shaft_Tall",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0437_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0438_0_250__ID_Bearing__0_500__OD__0_188__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0439_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0440__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0441_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0442__10-32_x_1__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0443__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0444__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0445_Gear__50T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0446_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0447__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0448_Gear__50T__20DP___375Hex_1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0449_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0450_cancoder_1_2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0451_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0452_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0453__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0454_0_335__ID_Custom_Spacer__0_5__OD_0_314__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0455_0_335__ID_Custom_Spacer__0_5__OD_0_187__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0456_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0457_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0458_Double_Gear__20DP__27T__50T",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0459_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0460_Tread__Black_Nitrile_4in_X_1_5in",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0462_Wheel_Mount_B_Gen2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0463_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0464__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0465__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0466_MK3_Center_Column",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0467_Gear__17T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0468_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0469_MK4_Wheel_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0470_3_5__ID_X-Contact_Bearing__4__OD__0_25__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0471_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0472_Shim__8mm_ID_X_14mm_OD_X__5mm_Thick__98055A115_98055A1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0473_MK3_Base_Pulley_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0475__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0476__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0477_Bevel_Gear__4515",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0478_0_375__ID_Bearing__0_875__OD__0_281__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0480_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0481_E_Clip___03125__97431A310_97431A310",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0482_0_25__OD_x_0_5__Diametric_Magnet",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0483_Wheel_Mount_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0484_MK4_Intermediate_Shaft_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0485__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0486_0_500__ID_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0487_Bevel_Gear__1545",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0489__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0490_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0491_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0492__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0493__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0494_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0495_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0496__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0497_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0498_Gear__50T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0499_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0500_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0501_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0502_MK4i_Shaft__Drive_Idler",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0503_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0504__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0505__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0506_0_250__ID_Bearing__0_500__OD__0_188__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0507__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0508_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0509_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0510_cancoder_1_2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0511_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0512_Gear__50T__20DP___375Hex_1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0513_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0514_MK4n_Belt",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0515_MK4n_Base_Plate_B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0516__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0517_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0518__10-32_x_1__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0519_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0520_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0521_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0522_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0523__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0524_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0525__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0526_0_196__ID_x_0_3125__OD_x_0_625__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0527_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0528_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0529__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0530_0_375__ID_x_0_526__OD_x_0_5__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0531_MK4n_Top_Plate_B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0532__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0533_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0534_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0535_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0536_0_335__ID_Custom_Spacer__0_5__OD_0_187__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0537_0_335__ID_Custom_Spacer__0_5__OD_0_314__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0538__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0539__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0540_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0541_MK4i_Steering_Shaft_Tall",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0542__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0543_0_335__ID_Custom_Spacer__0_5__OD_0_5__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0544_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0545_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0546_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0547_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0548__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0549__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0550__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0551_Tread__Black_Nitrile_4in_X_1_5in",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0552_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0553_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0554_MK3_Center_Column",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0555_Bevel_Gear__1545",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0556__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0557_MK3_Base_Pulley_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0558_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0559_E_Clip___03125__97431A310_97431A310",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0560_Double_Gear__20DP__27T__50T",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0561_0_25__OD_x_0_5__Diametric_Magnet",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0563_0_375__ID_Bearing__0_875__OD__0_281__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0564_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0566_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0567_Wheel_Mount_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0568_MK4_Intermediate_Shaft_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0569__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0570_MK4_Wheel_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0571__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0573__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0574_0_500__ID_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0575_Gear__17T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0576_Wheel_Mount_B_Gen2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0578_3_5__ID_X-Contact_Bearing__4__OD__0_25__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0579_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0580_Shim__8mm_ID_X_14mm_OD_X__5mm_Thick__98055A115_98055A1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0581_Bevel_Gear__4515",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0582__10-32_x_0_25__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0583_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0584_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0585__10-32_x_0_25__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0586_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0587__10-32_x_1__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0588_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0589_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0590_0_375__ID_x_0_526__OD_x_0_5__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0591_MK4n_Top_Plate_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0592_0_196__ID_x_0_3125__OD_x_0_625__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0593_MK4n_Base_Plate_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0594__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0595_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0596_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0597__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0598__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0599_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0600__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0601_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0602_MK4n_Belt",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0603_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0604_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0605_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0606_0_250__ID_Bearing__0_500__OD__0_188__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0607__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0608_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0609_cancoder_1_2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0610_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0611_MK4i_Shaft__Drive_Idler",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0612__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0613_Gear__50T__20DP___375Hex_1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0614__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0615__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0616_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0617__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0618_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0619_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0620__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0621_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0622_0_335__ID_Custom_Spacer__0_5__OD_0_187__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0623_0_335__ID_Custom_Spacer__0_5__OD_0_314__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0624_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0625__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0626_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0627_Gear__50T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0628_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0629__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0630_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0631_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0632__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0633_MK4i_Steering_Shaft_Tall",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0634_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0635_0_335__ID_Custom_Spacer__0_5__OD_0_5__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0636__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0637_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0638_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0639_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0640_0_375__ID_Bearing__0_875__OD__0_281__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0641_Wheel_Mount_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0642_MK4_Intermediate_Shaft_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0643_E_Clip___03125__97431A310_97431A310",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0645__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0646_Shim__8mm_ID_X_14mm_OD_X__5mm_Thick__98055A115_98055A1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0647_Bevel_Gear__4515",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0649_MK4_Wheel_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0650_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0651_3_5__ID_X-Contact_Bearing__4__OD__0_25__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0653_0_500__ID_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0654_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0655__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0657_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0658_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0659_Wheel_Mount_B_Gen2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0660_Gear__17T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0661__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0662_MK3_Center_Column",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0663__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0664_Bevel_Gear__1545",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0665__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0666_Tread__Black_Nitrile_4in_X_1_5in",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0667_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0668_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0669_MK3_Base_Pulley_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0670_0_25__OD_x_0_5__Diametric_Magnet",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0671_Double_Gear__20DP__27T__50T",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0672__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0673__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0674__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0675__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0676_MK4n_Belt",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0677__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0678__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0679_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0680__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0681_0_375__ID_x_0_526__OD_x_0_5__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0682_MK4i_Master_Part_V2_Default_Falcon_500_Config",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0683_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0684_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0685_Gear__50T__20DP___375Hex_1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0686_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0687__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0688_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0689_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0690_0_250__ID_Bearing__0_500__OD__0_188__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0691_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0692_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0693_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0694__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0695_MK4n_Support_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0696_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0697_0_196__ID_x_0_3125__OD_x_0_625__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0698_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0699_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0700__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0701_MK4i_Shaft__Drive_Idler",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0702_MK4n_Top_Plate_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0703_MK4i_Steering_Shaft_Tall",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0704_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0705__10-32_x_1_5__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0706__10-32_x_0_25__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0707_Semicircle_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0708_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0709_cancoder_1_2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0710_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0711__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0712__8-32_x_7_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0713_0_335__ID_Custom_Spacer__0_5__OD_0_187__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0714_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0715_0_335__ID_Custom_Spacer__0_5__OD_0_314__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0716_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0717__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0718__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0719_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0720__10-32_x_1__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0721_0_196__ID_x_0_3125__OD_x_1_875__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0722_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0723_0_172__ID_x_0_53125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0724__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0725__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0726__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0727_3_5__ID_X-Contact_Bearing__4__OD__0_25__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0728_Screw__Shoulder___375_X_2_5__5_16-18__91259A634_91259A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0729_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0730_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0731_MK3_Base_Pulley_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0733_Wheel_Mount_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0734__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0735_E_Clip___03125__97431A310_97431A310",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0736_MK4_Intermediate_Shaft_V3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0737_Bevel_Gear__1545",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0738_0_375__ID_Bearing__0_875__OD__0_281__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0740_0_25__OD_x_0_5__Diametric_Magnet",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0742_8mm_ID_Bearing__16mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0743_15mm_ID_Bearing__24mm_OD__5mm_WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0745_Wheel_Mount_B_Gen2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0746_Double_Gear__20DP__27T__50T",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0747__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0748_0_500__ID_Bearing__1_125__OD__0_313__WD__Shielded_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0749_Tread__Black_Nitrile_4in_X_1_5in",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0750_Wheel__SDS__Nitrile_Tread__4in_X_1_5in__Bearing_Bore",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0751_MK3_Center_Column",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0752_MK4_Wheel_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0753_Shim__8mm_ID_X_14mm_OD_X__5mm_Thick__98055A115_98055A1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0754_Bevel_Gear__4515",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0755_Gear__17T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0756__10-32_x_0_75__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0757_MK4n_Base_Plate_A",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0758_Gear__50T__20DP___375Hex",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0759_0_196__ID_x_0_3125__OD_x_1_125__LN_Aluminum_Spacer",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0760_0_335__ID_Custom_Spacer__0_5__OD_0_5__L_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0761__10-32_x_3_8__L_BHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0762_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0763_16t_Steel_Spur_Gear__20_DP__SplineXS_Bore_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0764__10-32_x_2_25__L_SHCS__Steel__Black_Oxide_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0765_26-420-024-001__LPattern2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0766_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0769_26-420-017-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0770_26-420-020__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0772_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0775_26-420-025-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0776_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0777_26-420-016__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0778_26-420-017-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0779_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0780_26-420-025-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0781_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0782_26-420-025__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0783_26-420-025__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0784_26-420-017-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0785_26-420-033__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0787_26-300-040__Cut-Extrude5",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0788_26-420-017-002SLDPRT__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0789_26-420-017-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0791_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0792_26-420-015___5_0mm_Dowel_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0793_26-300-057__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0794_26-420-010__Fillet133",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0795_26-420-017-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0796_26-300-057__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0797_26-420-033__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0798_26-300-077__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0799_26-420-025__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0800_26-420-033__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0801_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0802_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0803_26-420-010-002__Cut-Extrude24",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0804_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0805_26-420-017-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0806_26-420-024__LPattern2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0807_26-300-057__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0808_26-420-015___5_0mm_Dowel_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0809_26-300-057__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0810_16T_Aluminum_Hub_Sprocket___25_Chain__1_2_Hex_Bore___2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0811_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0812_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0813_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0814_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0815_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0816_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0817_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0818_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0819_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0820_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0821_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0822_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0823_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0824_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0825_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0826_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0827_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0828_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0829_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0830_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0831_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0832_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0833_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0834_Magnetic_Limit_Switch_REV-31-1462___NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0835_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0836_26-413-003__Fillet2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0837_26-413-001__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0838_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0839_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0840_26-413-001__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0841_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0842_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0843_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0844_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0845_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0846_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0847_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0848_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0849_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0850_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0851_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0852_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0853_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0854_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0855_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0856_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0857_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0858_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0859_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0860_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0861_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0862_26-413-002-001__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0863_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0864_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0865_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0866_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0867_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0868_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0869_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0870_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0871_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0872_26-420-017-002SLDPRT__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0875_26-420-004__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0877_26-420-040__M6_Clearance_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0878_pulley_insert_15T_last_ver__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0880_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0881_26-420-043-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0882_26-420-014__Fillet1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0883_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0884_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0885_spacer_plate_1__Fillet3",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0886_26-420-023__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0887_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0888_26-420-043-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0890_26-420-043-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0891_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0892_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0893_26-420-043__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0894_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0895_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0896_30T_Pulley_new_real__Cut-Extrude7",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0897_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0898_26-420-004-002__Fillet10",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0899_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0900_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0901_26-420-039__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0902_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0905_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0906_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0907_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0908_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0909_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0910_Custom_Pulley_HA_15t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0911_pulley_insert_15T_last_ver__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0912_26-420-037__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0913_pulley_insert_15T_last_ver__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0914_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0915_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0917_26-420-008__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0918_26-420-008-001__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0920_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0921_26-420-048__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0923_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0924_26-420-008__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0925_26-420-008-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0926_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0929_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0930_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0931_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0932_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0933_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0934_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0935_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0936_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0937_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0938_26-413-001__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0939_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0940_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0941_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0942_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0943_26-413-001__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0944_26-413-003__Fillet2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0945_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0946_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0947_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0948_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0949_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0950_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0951_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0952_26-413-002-001__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0953_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0954_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0955_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0956_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0957_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0958_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0959_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0960_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0961_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0962_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0963_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0964_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0965_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0966_WCP-1118_8mm_SplineXS_to_1_2in_Rounded_Hex_Adapter__1i",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0968_Kraken__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0969_Kraken__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0970_Kraken__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0971_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0972_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0973_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0974_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0975_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0976_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0977_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0978_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0979_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0980_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0981_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0982_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0983_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0984_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0985_REV-21-2102_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0986_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0987_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0988_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0989_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0990_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0991_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0992_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0993_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0994_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0995_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0996_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0997_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0998_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part0999_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1000_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1001_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1002_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1003_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1004_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1005_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1006_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1007_REV-21-2101_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1008_REV-21-2106_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1009_REV-21-2108_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1010_REV-21-2108_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1011_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1012_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1013_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1014_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1015_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1016_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1017_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1018_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1019_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1020_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1021_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1022_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1023_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1024_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1025_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1026_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1027_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1028_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1029_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1030_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1031_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1032_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1033_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1034_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1035_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1036_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1037_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1038_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1039_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1040_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1041_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1042_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1043_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1044_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1045_REV-21-2104_STEP__NONE",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1051_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1052_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1053_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1054_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1055_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1056_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1057_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1058_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1059_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1060_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1061_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1062_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1063_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1064_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1065_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1066_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1067_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1068_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1069_26-413-001__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1070_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1071_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1072_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1073_26-413-003__Fillet2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1074_26-413-002-001__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1075_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1076_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1077_26-413-002__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1078_26-413-001__LPattern1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1079_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1080_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1081_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1082_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1083_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1084_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1085_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1086_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1087_26-420-026__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1088_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1089_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1090_26-300-015__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1091_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1092_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1093_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1098_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1100_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1101_10dp_gear_keilo__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1102_Mirror26-300-007___26-300-007_-_Fillet15_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1103_10dp_gear_keilo__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1104_26-300-015__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1105_26-300-015__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1110_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1111_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1112_Mirror26-300-005___26-300-005_-_Fillet2_",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1113_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1114_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1115_26-300-010__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1117_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1118_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1119_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1120_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1121_26-300-007__Fillet15",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1123_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1124_26-300-015__Mirror1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1125_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1126_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1127_26-300-010__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1128_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1129_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1130_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ___Bos",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1131_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1132_26-420-006-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1134_40T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2708",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1135_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1136_26-420-038__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1137_26-420-006__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1138_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1140_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1141_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1142_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1143_26-420-001-003___5_0mm_Dowel_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1144_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1145_26-420-011__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1146_26-420-040__M6_Clearance_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1147_26-420-034__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1148_26-420-028__Fillet33",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1150_26-420-006__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1152_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1154_26-420-023-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1156_Kraken_X60_Brushless_Motor",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1157_26-420-031__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1158_26-420-030__M5_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1159_26-420-036__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1160_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1161_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1162_26-420-023-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1163_26-420-001-002___4_0mm_Dowel_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1164_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1165_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1168_26-420-011-003__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1169_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1172_pulley_insert_16T_9mm__Cut-Extrude13",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1173_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1174_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1175_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1177_pulley_insert_15T_last_ver_longboy__Cut-Extrude11",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1178_20T_Aluminum_Spur_Gear__20_DP__1_2_Hex_Bore___217-2702",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1179_26-420-029__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1181_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1182_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1183_26-420-003-001__M4_Clearance_Hole1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1184_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1185_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1186_26-420-011-002__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1187_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1188_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1189_26-420-006-004__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1190_26-420-011__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1191_26-420-003___4_0mm_Dowel_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1192_M5_Socket_Head_M5X50__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1193_Custom_Pulley_HA_15t__Cut-Extrude2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1194_1_2__Rounded_Hex__13_75mm__ID_Bearing__1_125__OD__0_31",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1195_26-420-040__M6_Clearance_Hole2",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1196_siyba__Boss-Extrude1",
+      "assembly": "Chassis"
+    },
+    {
+      "name": "Part1197_am-4724_5_mm_ID_13_mm_OD_Shielded_Bearing__695ZZ__e__B",
+      "assembly": "Chassis"
+    }
+  ],
+  "native_units": "metres",
+  "native_up": "Z",
+  "native_front": "+X",
+  "source_unchanged": true,
+  "mechanism_note": "Assembly separation is for game articulation; travel and dynamics require MoSim calibration."
+}

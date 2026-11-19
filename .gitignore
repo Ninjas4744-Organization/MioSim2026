@@ -1,0 +1,34 @@
+# Unity / generated build state
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]serSettings/
+BuildArtifacts/
+BuiltMods/
+Artifacts/
+dist/
+*.log
+*.csproj
+*.sln
+*.suo
+.vs/
+.idea/
+
+# Local tools and private configuration
+Tools/cache/
+.venv/
+__pycache__/
+.env
+.env.*
+auth.json
+.davinci-creator/
+*.key
+*.pfx
+
+# Native editor backups
+*.blend1
+*.blend2
+*.tmp
+Thumbs.db
+.DS_Store

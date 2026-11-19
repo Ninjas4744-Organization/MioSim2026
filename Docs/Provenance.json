@@ -1,0 +1,67 @@
+{
+  "schema": "ninjas4744.mosim-mod-provenance",
+  "version": "0.2.0",
+  "prepared_utc": "2026-11-19T23:23:05.424634+00:00",
+  "robot": {
+    "team": 4744,
+    "season": 2026,
+    "name": "Turbo"
+  },
+  "source_model": {
+    "collection": "frc-robots-2026",
+    "collection_version": "2.4.0",
+    "asset_version": "1.3.1",
+    "original_blend_sha256": "f334982a828541d3e19354390312a962a54ea23c38418d67c31f43ecd90a2625",
+    "game_geometry_version": "0.1.0",
+    "geometry_unchanged_in_this_fix": true
+  },
+  "tools": {
+    "unity": "2023.2.22f1",
+    "blender": "4.5.16 LTS"
+  },
+  "framework": {
+    "url": "https://github.com/MoSimulator/MoSimulator-Public",
+    "commit": "d7e2f2bb2af1eb8c46cd5ff3697f25392d6004d1",
+    "game": "Rebuilt",
+    "version": "26.6"
+  },
+  "coordinate_conversion": "Unity metres = (-nativeY, nativeZ, nativeX - 0.0223825)",
+  "physics": {
+    "robot_mass_kg": 62,
+    "intake_stroke_m": 0.24,
+    "hopper_stroke_m": 0.22946,
+    "actuator_force_limit_N": 120,
+    "slide_speed_limit_mps": 0.32,
+    "slide_acceleration_mps2": 1.1
+  },
+  "verification": {
+    "integration": {
+      "completed": true,
+      "finiteAndStable": true,
+      "driveMoved": true,
+      "railsDeployed": true,
+      "pickedUp": true,
+      "shotReleased": true,
+      "disabledStopped": true,
+      "inputsBound": true,
+      "endToEndCycle": true,
+      "stowed": true,
+      "preloadsRetained": true
+    },
+    "runtime_errors": 0,
+    "travel_regression": true,
+    "bundle_load": true
+  },
+  "calibration_limits": [
+    "Slide strokes and contact proxies are simulation estimates",
+    "Shot range and throughput have not been fitted to real match data",
+    "Roof net uses a compressing textile proxy; RSL remains visually static"
+  ],
+  "publication": "Local repository and local game installation; no push or Workshop publication performed",
+  "file_hashes": {
+    "Models/robot.blend": "cac941db005771933d8200ddb6559ba0a027e6a90e252dbd5d22f3724574aec1",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "46374790e9aa0406aac2ec13a0d4c9a3f74b88bdfceefdaf1639dfaa3918d4b5",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "bcfef41324f8f01c9bb3ec0a1448ef49aa92620ed7baed0514dd3b937606bdf9",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Model/Turbo4744.fbx": "094cccdb3c2d2073889044b276008ff60478e4d6d705f488572a13b274fd6a3b"
+  }
+}

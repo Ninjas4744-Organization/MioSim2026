@@ -1,0 +1,724 @@
+{
+  "materials": [
+    {
+      "name": "M_79ca8c3498",
+      "source_name": "0.000000_0.000000_0.000000_0.000000_0.000000",
+      "base_color": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.11999999731779099,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_4df620508c",
+      "source_name": "0.000000_1.000000_0.000000_0.000000_0.000000",
+      "base_color": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_62166f7c5b",
+      "source_name": "0.101961_0.101961_0.101961_0.000000_0.000000",
+      "base_color": [
+        0.010336018167436123,
+        0.010336018167436123,
+        0.010336018167436123,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.11999999731779099,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_87169d4c42",
+      "source_name": "0.215686_0.215686_0.215686_0.000000_0.000000",
+      "base_color": [
+        0.03820902109146118,
+        0.03820902109146118,
+        0.03820902109146118,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.11999999731779099,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_c9f42bcc01",
+      "source_name": "0.250980_0.250980_0.250980_0.000000_0.000000",
+      "base_color": [
+        0.051277339458465576,
+        0.051277339458465576,
+        0.051277339458465576,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.11999999731779099,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_9c6018e256",
+      "source_name": "0.301961_0.290196_0.262745_0.000000_0.000000",
+      "base_color": [
+        0.07423312962055206,
+        0.06848003715276718,
+        0.05610936880111694,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_12feb37664",
+      "source_name": "0.301961_0.301961_0.301961_0.000000_0.000000",
+      "base_color": [
+        0.07423312962055206,
+        0.07423312962055206,
+        0.07423312962055206,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_6fcf26ee10",
+      "source_name": "0.400000_0.388235_0.349020_0.000000_0.000000",
+      "base_color": [
+        0.13286831974983215,
+        0.12474798411130905,
+        0.09988709539175034,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_9dd9fe25dd",
+      "source_name": "0.474510_0.352941_0.000000_0.000000_0.000000",
+      "base_color": [
+        0.19119319319725037,
+        0.10221696645021439,
+        0.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_b9e394c20c",
+      "source_name": "0.501961_0.486275_0.439216_0.000000_0.000000",
+      "base_color": [
+        0.21589694917201996,
+        0.2015790343284607,
+        0.16201704740524292,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_91fb6a8fde",
+      "source_name": "0.529412_0.549020_0.549020_0.000000_0.000000",
+      "base_color": [
+        0.24226941168308258,
+        0.26223024725914,
+        0.26223024725914,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_aca94e6341",
+      "source_name": "0.592157_0.843137_0.000000_0.000000_0.000000",
+      "base_color": [
+        0.30951839685440063,
+        0.6794748306274414,
+        0.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_3c34fba68b",
+      "source_name": "0.615686_0.811765_0.929412_0.000000_0.000000",
+      "base_color": [
+        0.3371801972389221,
+        0.6240213513374329,
+        0.8468490242958069,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_04ef77b0c3",
+      "source_name": "0.701961_0.701961_0.701961_0.000000_0.000000",
+      "base_color": [
+        0.45084187388420105,
+        0.45084187388420105,
+        0.45084187388420105,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_8bf0afd0bc",
+      "source_name": "0.752941_0.752941_0.752941_0.000000_0.000000",
+      "base_color": [
+        0.5270506739616394,
+        0.5270506739616394,
+        0.5270506739616394,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_d7ec946c7c",
+      "source_name": "0.776471_0.776471_0.776471_0.000000_0.000000",
+      "base_color": [
+        0.5647594332695007,
+        0.5647594332695007,
+        0.5647594332695007,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_217b0a182b",
+      "source_name": "0.788235_0.752941_0.639216_0.000000_0.000000",
+      "base_color": [
+        0.5840197801589966,
+        0.5270506739616394,
+        0.366232693195343,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_2c21f3d2a8",
+      "source_name": "0.792157_0.819608_0.933333_0.000000_0.000000",
+      "base_color": [
+        0.590691089630127,
+        0.6375831365585327,
+        0.85492342710495,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_14eb4316ca",
+      "source_name": "0.800000_0.800000_0.800000_0.000000_0.000000",
+      "base_color": [
+        0.6038273572921753,
+        0.6038273572921753,
+        0.6038273572921753,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_5e318a2322",
+      "source_name": "0.901961_0.901961_0.901961_0.000000_0.000000",
+      "base_color": [
+        0.7913758158683777,
+        0.7913758158683777,
+        0.7913758158683777,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_dd32d0ec33",
+      "source_name": "0.910000_0.910000_0.910000_0.000000_0.000000",
+      "base_color": [
+        0.807345986366272,
+        0.807345986366272,
+        0.807345986366272,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_92fe3d1266",
+      "source_name": "0.917647_0.917647_0.917647_0.000000_0.000000",
+      "base_color": [
+        0.8226901888847351,
+        0.8226901888847351,
+        0.8226901888847351,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_a9d78007fd",
+      "source_name": "0.980392_0.713725_0.003922_0.000000_0.000000",
+      "base_color": [
+        0.9559907913208008,
+        0.4677465558052063,
+        0.000303560373140499,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_22a7b29a60",
+      "source_name": "0.980392_0.796078_0.262745_0.000000_0.000000",
+      "base_color": [
+        0.9559907913208008,
+        0.5972381234169006,
+        0.05610936880111694,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_c30b14e7af",
+      "source_name": "1.000000_0.000000_0.000000_0.000000_0.000000",
+      "base_color": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_78cf85a6c5",
+      "source_name": "1.000000_0.756863_0.054902_0.000000_0.000000",
+      "base_color": [
+        1.0,
+        0.5333351492881775,
+        0.0043912543915212154,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_771ed0d1e2",
+      "source_name": "1.000000_1.000000_0.000000_0.000000_0.000000",
+      "base_color": [
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_009e20b450",
+      "source_name": "1.000000_1.000000_1.000000_0.000000_0.000000",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.6499999761581421,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_63f96ddda8",
+      "source_name": "4744 commercial sponsors \u2022 Blossom SOLIDWORKS AYT white vinyl",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roughness": 0.46000000834465027,
+      "metallic": 0.0,
+      "transparent": true,
+      "decal": true,
+      "texture": "side-commercial.png",
+      "bumper": false
+    },
+    {
+      "name": "M_218d40ea5f",
+      "source_name": "4744 community sponsors \u2022 Amal Hadera FIRST white vinyl",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roughness": 0.46000000834465027,
+      "metallic": 0.0,
+      "transparent": true,
+      "decal": true,
+      "texture": "side-community.png",
+      "bumper": false
+    },
+    {
+      "name": "M_895a6844e5",
+      "source_name": "4744 intake sponsor graphics \u2022 all photographed marks white v",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roughness": 0.46000000834465027,
+      "metallic": 0.0,
+      "transparent": true,
+      "decal": true,
+      "texture": "intake-front.png",
+      "bumper": false
+    },
+    {
+      "name": "M_1f765ba3d4",
+      "source_name": "4744 white bumper number fabric print",
+      "base_color": [
+        0.9300000071525574,
+        0.9300000071525574,
+        0.8999999761581421,
+        1.0
+      ],
+      "roughness": 0.7799999713897705,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_a0d2fda6a8",
+      "source_name": "Clyde black skateboard grip tape",
+      "base_color": [
+        0.009721217676997185,
+        0.010960093699395657,
+        0.011612244881689548,
+        1.0
+      ],
+      "roughness": 0.8999999761581421,
+      "metallic": 0.029999999329447746,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_1f930d0ecf",
+      "source_name": "Front left camera light Ethernet jacket",
+      "base_color": [
+        0.44999998807907104,
+        0.47999998927116394,
+        0.47999998927116394,
+        1.0
+      ],
+      "roughness": 0.5799999833106995,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_8382a14e7f",
+      "source_name": "Front right camera blue Ethernet jacket",
+      "base_color": [
+        0.02500000037252903,
+        0.30000001192092896,
+        0.6499999761581421,
+        1.0
+      ],
+      "roughness": 0.47999998927116394,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_eb2f23bb98",
+      "source_name": "Limelight black anodised aluminium",
+      "base_color": [
+        0.014000000432133675,
+        0.017000000923871994,
+        0.01899999938905239,
+        1.0
+      ],
+      "roughness": 0.3799999952316284,
+      "metallic": 0.3799999952316284,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_acfcb400dc",
+      "source_name": "Limelight optical lens glass",
+      "base_color": [
+        0.008999999612569809,
+        0.02500000037252903,
+        0.029999999329447746,
+        1.0
+      ],
+      "roughness": 0.06499999761581421,
+      "metallic": 0.30000001192092896,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_0797a2b380",
+      "source_name": "Limelight red power lead",
+      "base_color": [
+        0.47999998927116394,
+        0.01600000075995922,
+        0.017999999225139618,
+        1.0
+      ],
+      "roughness": 0.5,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_2f1e229a2a",
+      "source_name": "Limelight white etched name",
+      "base_color": [
+        0.8299999833106995,
+        0.8500000238418579,
+        0.8399999737739563,
+        1.0
+      ],
+      "roughness": 0.6000000238418579,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_e405e9ca88",
+      "source_name": "Photographed Limelight printed mounts",
+      "base_color": [
+        0.017999999225139618,
+        0.019999999552965164,
+        0.023000000044703484,
+        1.0
+      ],
+      "roughness": 0.6299999952316284,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_9a6d27a146",
+      "source_name": "Red woven bumper fabric",
+      "base_color": [
+        0.34191441535949707,
+        0.00802319310605526,
+        0.021219009533524513,
+        1.0
+      ],
+      "roughness": 0.7699999809265137,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": true
+    },
+    {
+      "name": "M_946413fad6",
+      "source_name": "Turbo black braided retention cord",
+      "base_color": [
+        0.008999999612569809,
+        0.010999999940395355,
+        0.013000000268220901,
+        1.0
+      ],
+      "roughness": 0.7699999809265137,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_98e59ef682",
+      "source_name": "Turbo carbon fibre indexer tubes",
+      "base_color": [
+        0.017999999225139618,
+        0.02199999988079071,
+        0.02500000037252903,
+        1.0
+      ],
+      "roughness": 0.30000001192092896,
+      "metallic": 0.18000000715255737,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_5013491540",
+      "source_name": "Turbo clear polycarbonate \u2014 subtle reflective sheet",
+      "base_color": [
+        0.23,
+        0.29,
+        0.32,
+        0.22
+      ],
+      "roughness": 0.22,
+      "metallic": 0.05,
+      "transparent": true,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    },
+    {
+      "name": "M_dc583edab0",
+      "source_name": "Turbo rubber rollers",
+      "base_color": [
+        0.014999999664723873,
+        0.017999999225139618,
+        0.02199999988079071,
+        1.0
+      ],
+      "roughness": 0.6200000047683716,
+      "metallic": 0.0,
+      "transparent": false,
+      "decal": false,
+      "texture": null,
+      "bumper": false
+    }
+  ]
+}

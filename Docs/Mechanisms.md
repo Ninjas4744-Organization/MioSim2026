@@ -1,0 +1,29 @@
+# Mechanisms and calibration
+
+The native model is metres/Z-up, intake +X, shooter -X. Unity metres are `(-nativeY, nativeZ, nativeX - 0.0223825)`. Exported axis markers verify scale and handedness. The bumper envelope is 0.8884 m wide by 0.79548 m long.
+
+## Bounded slides
+
+Each slide's configurable joint connects directly to the chassis. X/Y translation and all angular motion are locked. Z translation is **Limited**, with a symmetric limit of half the stroke and the connected anchor located halfway between closed and open. This defines a physical range of 0…0.240 m for the intake and 0…0.22946 m for the hopper.
+
+The runtime reads each moving body's position in the chassis rigidbody frame, rather than relying on a versioned encoder offset. Velocity commands use a braking-aware speed profile, limited to 0.32 m/s, 1.1 m/s², and 120 N. The same finite force cap and physical stops remain active when disabled; the disable path commands zero velocity without re-homing the joint or restoring infinite force.
+
+Turbo configures solver settings for its three robot bodies directly. The automatically attached JointStackStabilizer is disabled on this robot because it caches child fuel bodies before the spawn handler detaches them. Detached or destroyed fuel must not remain part of the robot's physics-helper cache. Other robots and the game framework are not modified.
+
+The game model's fully deployed pose is the source pose. Closing translates each selected moving assembly toward the chassis. These stroke lengths are simulation estimates based on the CAD envelope, not a conversion of the team's motor-rotation limits.
+
+## Fuel and shooting
+
+Eight instances of the official fuel prefab are stored in `RebuiltRobotBase.preloads`. MoSim's `RebuiltSpawnInitializer` detaches them into the game-piece world and removes the matching number of field pieces. Empty markers are not valid preloads. Fuel layers and colliders are preserved.
+
+The feed path uses MoSim InteractionRoller contacts and simple collision surfaces. The retention contact opens after alignment and flywheel readiness. Fuel rigidbodies are excluded from robot self-collision ignoring. The actual CAD intake roller mesh rotates with its contact roller.
+
+The storage contact bed is low and level so two layers of fuel fit below the closed roof. A short, narrower rising section lifts fuel into the indexer. Keeping the storage volume separate from that rising feed section avoids squeezing a second layer against the roof during retraction.
+
+Drive and shooter tables come from the team's 2026 code. Motor-to-wheel conversion, contact geometry, friction, launch channel, mass distribution, and moving-shot behavior are simulation calibration. The roof net uses a compressing textile proxy. Shooting accuracy and throughput have not been fitted to match footage.
+
+## Verification
+
+The integration check uses the real preload spawn handler and normal keyboard action bindings. It exercises retained preloads while driving, deployment, pickup, the same ball feeding through the shooter, disabled shutdown, and stowing.
+
+The travel regression loads the Windows asset bundle, rather than the authoring prefab. It samples travel every physics step at 0°, 90°, 180°, and -90° headings. Each case includes a held intake command, driving/turning, disable/enable, and stow. An equal-and-opposite 40 N·s actuator impulse deliberately loads the intake end stop. This fault-injection test checks that physical bounds remain effective even when a controller alone could not stop the mechanism immediately.

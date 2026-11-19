@@ -1,0 +1,26 @@
+* text=auto
+*.cs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.ps1 text eol=crlf
+*.shader text eol=lf
+*.asmdef text eol=lf
+*.meta text eol=lf
+*.prefab text eol=lf
+*.mat text eol=lf
+*.asset text eol=lf
+*.blend binary
+*.fbx binary
+*.png binary
+*.gif binary
+*.mp4 binary
+*.unitypackage binary
+*.zip binary
+
+# Preserve Unity serialization and upstream source/license formatting.
+*.meta -whitespace
+*.prefab -whitespace
+*.mat -whitespace
+*.asset -whitespace
+Docs/TeamCode/* -whitespace
+Licenses/* -whitespace
