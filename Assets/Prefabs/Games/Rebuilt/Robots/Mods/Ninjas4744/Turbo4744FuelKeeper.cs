@@ -20,6 +20,7 @@ namespace Ninjas4744.MoSim
         private readonly List<Rigidbody> remove=new List<Rigidbody>();
         private readonly Collider[] overlaps=new Collider[256];
         private int fuelMask;
+        public bool IsCaptured(Rigidbody body)=>tracked.TryGetValue(body,out var fuel)&&fuel.captured;
 
         private void Awake()=>fuelMask=LayerMask.GetMask("GamePiece1","GamePiece2","GamePieceAlt");
         private void FixedUpdate()
@@ -59,7 +60,7 @@ namespace Ninjas4744.MoSim
                     }
                 // Engage only once the whole sphere clears both keeper planes.
                 // Enabling contacts here cannot push a half-entered ball upward.
-                if(!reverse&&Mathf.Abs(local.x)<floor.size.x*.5f-radius&&local.y-radius>top+.002f&&
+                if(!reverse&&Mathf.Abs(local.x)<floor.size.x*.5f-.01f&&local.y-radius>top+.002f&&
                     local.z>radius+.02f&&local.z+radius<front-.002f)state.captured=true;
                 if(reverse)state.captured=false;
                 bool pass=reverse||(!state.captured&&(collecting||state.ignored));

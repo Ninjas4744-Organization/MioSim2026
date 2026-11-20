@@ -159,8 +159,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<b>Shoot or pass</b>
 
-    Auto Shoot aims the rear-facing shooter. Auto
-    Pass feeds toward a pass target. Manual Shoot bypasses aiming.'
+    Press Auto Shoot to latch hub aiming and shooting;
+    press again for three hard pump cycles. Auto Pass selects delivery. Intake restores
+    normal driving after hub aiming.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 239ba7782d5cbc94e9bb18c11ccbef4e, type: 2}
   m_sharedMaterial: {fileID: -7527997313119376473, guid: 239ba7782d5cbc94e9bb18c11ccbef4e,

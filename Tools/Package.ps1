@@ -7,13 +7,19 @@ $physics=Get-Content -LiteralPath (Join-Path $artifacts 'physics-diagnostics.jso
 $travel=Get-Content -LiteralPath (Join-Path $artifacts 'travel-after.json') -Raw|ConvertFrom-Json
 $bundle=Get-Content -LiteralPath (Join-Path $artifacts 'bundle-audit.json') -Raw|ConvertFrom-Json
 $retention=Get-Content -LiteralPath (Join-Path $artifacts 'retention-after.json') -Raw|ConvertFrom-Json
+$systems=Get-Content -LiteralPath (Join-Path $artifacts 'systems-after.json') -Raw|ConvertFrom-Json
+$jam=Get-Content -LiteralPath (Join-Path $artifacts 'systems-jam.json') -Raw|ConvertFrom-Json
 $checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained')
 foreach($check in $checks){if(-not $physics.$check){throw ('Integration check failed: '+$check)}}
-if($physics.errors.Count -gt 0 -or -not $travel.passed -or -not $bundle.passed -or -not $retention.passed){throw 'Verification reports are not passing. Run Build, Test, Travel, and Retention before packaging.'}
+if($physics.errors.Count -gt 0 -or -not $travel.passed -or -not $bundle.passed -or -not $retention.passed -or -not $systems.passed -or -not $jam.passed){throw 'Verification reports are not passing. Run Build, Test, Travel, Retention, Systems, and Jam before packaging.'}
+if($systems.cases.Count -ne 7 -or $systems.simulationSpeed -ne 1){throw 'Systems must complete the seven release cases at normal simulation speed.'}
 $platform=Join-Path $projectRoot 'BuiltMods\rebuilt_ninjas_4744_turbo_2026\standalonewindows64'
 $manifest=Get-Content -LiteralPath (Join-Path $platform 'modpack.json') -Raw|ConvertFrom-Json
 if($retention.bundleSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower()){throw 'The retention report does not match this asset bundle. Run Retention again.'}
 if($retention.runtimeDllSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()){throw 'The retention report does not match this mod DLL. Run Retention again.'}
+foreach($report in @($systems,$jam)){
+    if($report.bundleSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower() -or $report.runtimeDllSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()){throw 'A systems report does not match this bundle and DLL. Run Systems and Jam again.'}
+}
 $version=$manifest.version
 $dist=Join-Path $repoRoot 'dist'
 $staging=Join-Path $dist ('staging-'+$version)

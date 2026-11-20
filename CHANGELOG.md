@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0
+
+Corrects net deployment, pumping, loaded motion, and shooting behavior against the team's 2026 source.
+
+- Added a pinned, deforming MoSim NetSolver cloth surface that folds with the sliding hopper.
+- Ported latched prepare/ready/feed states, hard and soft pumping, rotor-speed tables, delivery timing, moving aim calculation, and hub drive slowdown from team commit `2bd3488`.
+- Coupled hopper travel to the intake's measured position and velocity, so pumping acts on stored fuel.
+- Corrected drive motor gains from metres per second to rotor units; added the team's joystick curve with explicit zero handling.
+- Revised the storage/indexer contact layout and physical release hood; calibrated wheel contact speed separately from source rotor goals.
+- Added source snapshots and behavior mapping, loaded-drive measurements, cloth checks, pump-cycle checks, and actual hub-score tests.
+- Applied regression drive commands every physics step and tied release verification to the built bundle and DLL.
+
 ## 0.3.0
 
 Corrects fuel spilling back out after collection.

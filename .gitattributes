@@ -23,4 +23,5 @@
 *.mat -whitespace
 *.asset -whitespace
 Docs/TeamCode/* -whitespace
+Docs/TeamCode/** -text -whitespace
 Licenses/* -whitespace

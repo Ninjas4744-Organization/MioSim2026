@@ -1,7 +1,7 @@
 {
   "schema": "ninjas4744.mosim-mod-provenance",
-  "version": "0.3.0",
-  "prepared_utc": "2026-11-19T23:57:09.504435+00:00",
+  "version": "0.4.0",
+  "prepared_utc": "2026-11-20T02:30:11.857041+00:00",
   "robot": {
     "team": 4744,
     "season": 2026,
@@ -13,7 +13,8 @@
     "asset_version": "1.3.1",
     "original_blend_sha256": "f334982a828541d3e19354390312a962a54ea23c38418d67c31f43ecd90a2625",
     "game_geometry_version": "0.1.0",
-    "geometry_unchanged_in_this_fix": true
+    "source_mesh_unchanged": true,
+    "generated_textile_and_contact_proxies_updated": true
   },
   "tools": {
     "unity": "2023.2.22f1",
@@ -25,15 +26,28 @@
     "game": "Rebuilt",
     "version": "26.6"
   },
+  "team_code": {
+    "url": "https://github.com/Ninjas4744-Organization/Robot-Code-2026",
+    "commit": "2bd34881f2c39f86a74cc7d3ea18ba6e00678493",
+    "snapshot": "Docs/TeamCode",
+    "behavior_notes": "Docs/RobotCodePort.md"
+  },
   "coordinate_conversion": "Unity metres = (-nativeY, nativeZ, nativeX - 0.0223825)",
   "physics": {
     "robot_mass_kg": 62,
     "intake_stroke_m": 0.24,
     "hopper_stroke_m": 0.22946,
     "actuator_force_limit_N": 120,
-    "slide_speed_limit_mps": 0.32,
-    "slide_acceleration_mps2": 1.1,
-    "intake_hold_fraction": 0.2,
+    "slide_speed_limit_mps": 0.16,
+    "slide_acceleration_mps2": 1.8,
+    "net": "MoSim NetSolver with fixed, moving, and side lacing; no mesh scaling",
+    "traction_force_limits_N": {
+      "intake_per_piece": 35,
+      "storage_per_piece": 12,
+      "indexer_per_piece": 120,
+      "shooter_per_piece": 240
+    },
+    "pumping": "11/8 hard x3, 10/9 soft, coupled hopper; motor rotations mapped to CAD stroke",
     "inlet_keeper": "Per-fuel one-way contacts engage only after the sphere clears the moving floor and inlet planes"
   },
   "verification": {
@@ -54,21 +68,54 @@
     "travel_regression": true,
     "bundle_load": true,
     "retention_regression": true,
-    "retention_bundle_sha256": "c6f80193dd6d22c8d69a5df1cf4508e53e6378874761fce6e4ce89fbf584d571",
-    "retention_runtime_dll_sha256": "dc7db1ed581977af383ec312270edbfc1c5f334427671d5fa51139d1f46f991b"
+    "retention_bundle_sha256": "d5fdbb4c1773cfdb69cccd7ca23a4e5ddbdc91f4864b5295358b048a20d9a964",
+    "retention_runtime_dll_sha256": "facba85c3663271fca4235ba54632bdaacb51f439e36f0391f3803316645e518",
+    "systems_regression": true,
+    "jam_regression": true,
+    "shooting": [
+      {
+        "range": 2.25,
+        "launched": 8,
+        "scored": 8
+      },
+      {
+        "range": 3.0,
+        "launched": 8,
+        "scored": 8
+      },
+      {
+        "range": 4.0,
+        "launched": 8,
+        "scored": 8
+      },
+      {
+        "range": 4.5,
+        "launched": 8,
+        "scored": 8
+      },
+      {
+        "range": 5.0,
+        "launched": 8,
+        "scored": 8
+      }
+    ]
   },
   "calibration_limits": [
     "Slide strokes and contact proxies are simulation estimates",
     "Fuel storage uses per-fuel one-way contact proxies for the intake floor and inlet",
     "Shot range and throughput have not been fitted to real match data",
-    "Roof net uses a compressing textile proxy; RSL remains visually static"
+    "Release measurements cover alliance-side stationary shots and the recorded loading/drive fixtures",
+    "No CAN current, vision estimation, autonomous paths, or climbing simulation; RSL remains visually static"
   ],
   "publication": "Local repository and local game installation; no push or Workshop publication performed",
   "file_hashes": {
     "Models/robot.blend": "cac941db005771933d8200ddb6559ba0a027e6a90e252dbd5d22f3724574aec1",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "1db0fcd3e2804aa5e007e31d1ec5560f0a774554a5abe40075a11db384f9a332",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs": "1c92bd8af6ee9f30b496eabd54201c594e92ba012aa366f7ea8f8357156a9c9b",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "9ad3afbdf8326db3a9bd91b6f6b73d3282d368c4b4b095a68d3f9c3f22e3c0b6",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "248a49e06a669f053401c42f09f9e87b0834dddb694a80020e4a8e96503fe043",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs": "023084e2e478eaa8287f9b888730bf3f5b25f98cc20236aa3580a0fbf7abe83c",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744DriveController.cs": "dc66e3bb2c9f2a1ec93648a6200ea005768575eca88435f1d32a0f975c81f138",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetRig.cs": "86d09817c39bcbe6f94dc3627df61c21bb6cfe56b2ca4a3c26db2e22f2466ef2",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744ShooterContact.cs": "eb9ce8d74412a65d97fda39784a8f9bfb416ec3c9bfe529ed458beefa4c4b503",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "6a7dc1040b239d812e6bb4a810f0285f3f514878575c477ed710b8db07bb60d1",
     "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Model/Turbo4744.fbx": "094cccdb3c2d2073889044b276008ff60478e4d6d705f488572a13b274fd6a3b"
   }
 }

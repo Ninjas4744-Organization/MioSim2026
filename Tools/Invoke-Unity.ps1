@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Build','Test','Travel','Retention','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Build','Test','Travel','Retention','Systems','Jam','Preview')][string]$Task='Build',
     [switch]$SyncOnly
 )
 $ErrorActionPreference='Stop'
@@ -22,7 +22,7 @@ New-Item -ItemType Directory -Path $editorTarget -Force|Out-Null
 Get-ChildItem -LiteralPath (Join-Path $repoRoot 'Assets\Editor') -File|Copy-Item -Destination $editorTarget -Force
 if($SyncOnly){Write-Output 'Turbo assets and editor tools synchronized.';return}
 
-$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Retention='Turbo4744RetentionRegression.Run';Preview='Ninjas4744Builder.RenderPreview'}
+$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Retention='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
 $artifactRoot=Join-Path $repoRoot 'Artifacts'
 New-Item -ItemType Directory -Path $artifactRoot -Force|Out-Null
 $logPath=Join-Path $artifactRoot ($Task+'-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'.log')
@@ -41,13 +41,15 @@ try {
     }
     $arguments=@('-batchmode','-projectPath',('"'+$runProject+'"'),'-logFile',('"'+$logPath+'"'),'-executeMethod',$methods[$Task])
     if($Task -in @('Travel','Retention')){$arguments+='-turboFixed'}
+    if($Task -in @('Systems','Jam')){$arguments+=@('-turboBundle','-turboStrict')}
+    if($Task -eq 'Jam'){$arguments+='-turboJam'}
     if($Task -in @('Assemble','Build','Preview')){$arguments+='-quit'}
     Write-Output ('Running '+$Task+'. Log: '+$logPath)
     $process=Start-Process -FilePath $editorPath -ArgumentList $arguments -WindowStyle Hidden -PassThru
     $process.WaitForExit()
     if($process.ExitCode -ne 0){throw ('Unity exited with code '+$process.ExitCode+'. See '+$logPath)}
     $buildArtifacts=Join-Path $projectRoot 'BuildArtifacts'
-    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','retention-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png')){
+    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','retention-after.json','systems-after.json','systems-jam.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
         $file=Join-Path $buildArtifacts $name
         if(Test-Path -LiteralPath $file){Copy-Item -LiteralPath $file -Destination $artifactRoot -Force}
     }

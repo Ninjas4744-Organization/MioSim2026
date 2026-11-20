@@ -234,8 +234,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<b>Clear a jam</b>
 
-    Robot Special agitates the intake rail. Face Down
-    reverses intake and transport rollers. Turbo has no simulated climber.'
+    Soft pumping starts automatically while firing.
+    Robot Special requests three hard cycles. Face Down is a held reverse override.
+    Manual Shoot bypasses aiming. Turbo has no simulated climber.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 239ba7782d5cbc94e9bb18c11ccbef4e, type: 2}
   m_sharedMaterial: {fileID: -7527997313119376473, guid: 239ba7782d5cbc94e9bb18c11ccbef4e,

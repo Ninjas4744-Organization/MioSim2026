@@ -56,6 +56,7 @@ public static class Turbo4744RetentionRegression
     private static Report report;
     private static Case current;
     private static Turbo4744 robot;
+    private static Turbo4744BenchDriver input;
     private static BaseTimerManager timer;
     private static Keyboard keyboard;
     private static AssetBundle bundle;
@@ -64,6 +65,8 @@ public static class Turbo4744RetentionRegression
     private static float began,hopperClosed,intakeClosed;
     private static double wallStart;
     private static string label;
+    private static Turbo4744RetentionView liveView;
+    private static bool Visible=>Environment.GetCommandLineArgs().Contains("-turboVisible");
 
     static Turbo4744RetentionRegression(){EditorApplication.playModeStateChanged+=Mode;}
     public static void Run()
@@ -118,9 +121,18 @@ public static class Turbo4744RetentionRegression
         var parent=Object.FindFirstObjectByType<RobotSpawnController>().transform;
         robot=Object.Instantiate(prefab,new Vector3(-1.2f,.04f,-1.5f),Quaternion.Euler(0,Headings[caseIndex],0),parent).GetComponent<Turbo4744>();
         robot.SetAlliance(Alliance.Blue);
+        input=robot.gameObject.AddComponent<Turbo4744BenchDriver>();input.drive=robot.GetComponent<DriveController>();
         hopperClosed=robot.hopperRail.transform.localPosition.z;
         intakeClosed=robot.intakeRail.transform.localPosition.z;
         current=new Case{heading=Headings[caseIndex],stable=true};report.cases.Add(current);
+        if(Visible)
+        {
+            if(!liveView)liveView=new GameObject("Live collection test camera").AddComponent<Turbo4744RetentionView>();
+            liveView.target=robot.transform;
+            liveView.GetComponent<Camera>().enabled=true;
+            liveView.caption=()=>"Turbo v0.4 — LIVE AUTOMATED TEST\n"+Phase(Time.time-began)+" | "+(Time.time-began).ToString("F1")+" s\nCollected "+current.collected+" / "+current.offered+" | Escapes "+current.escapes.Count+"\nControls are scripted during this check.";
+            EditorApplication.ExecuteMenuItem("Window/General/Game");
+        }
         var manager=Object.FindFirstObjectByType<RebuiltFuelPreloadManager>();
         var fieldFuel=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Games/Rebuilt/Fuel.prefab");
         var removable=Enumerable.Range(0,8).Select(i=>Object.Instantiate(fieldFuel,new Vector3(7,.075f,3),Quaternion.identity)).ToArray();
@@ -167,15 +179,23 @@ public static class Turbo4744RetentionRegression
         {
             lastSample=sample;
             current.samples.Add(t.ToString("F2")+" robot "+rb.position.ToString("F3")+" intake "+robot.IntakeAction.IsPressed()+" collected "+current.collected);
+                if(robot.intakeContact&&t>2.5f&&t<7&&Environment.GetCommandLineArgs().Contains("-turboInspect"))
+                {
+                    var c=robot.intakeContact;var b=fuel[0].body;
+                    Debug.Log("TURBO_ENTRY "+t.ToString("F2")+" rail "+robot.IntakeEncoderRotations.ToString("F2")+" deployed "+robot.Deployed+" contact "+robot.transform.InverseTransformPoint(c.transform.position).ToString("F3")+" rpm "+c.TargetRpm+"/"+c.CurrentRpm+" hits "+c.Contacts+" ball "+c.transform.InverseTransformPoint(b.position).ToString("F3")+" velocity "+b.velocity.ToString("F3")+" captured "+robot.GetComponent<Turbo4744FuelKeeper>().IsCaptured(b));
+                }
             foreach(var piece in fuel)current.samples.Add(t.ToString("F2")+" fuel "+fuel.IndexOf(piece)+" local "+robot.transform.InverseTransformPoint(piece.body.position).ToString("F3")+" captured "+piece.collected);
         }
     }
     private static void Cleanup()
     {
         foreach(var outpost in Object.FindObjectsByType<Outpost>(FindObjectsSortMode.None))outpost.Robots.Remove(robot);
-        foreach(var piece in fuel)if(piece.body)Object.Destroy(piece.body.gameObject);
-        Object.Destroy(robot.gameObject);robot=null;
+        foreach(var piece in fuel)if(piece.body){piece.body.gameObject.SetActive(false);Object.Destroy(piece.body.gameObject);}
+        robot.gameObject.SetActive(false);Object.Destroy(robot.gameObject);robot=null;
     }
+    private static void Drive(float x,float y,float omega,DriveController.DrivePerspective perspective)
+    {input.vx=x;input.vy=y;input.omega=omega;}
+    private static string Phase(float t)=>t<2.5f?"Deploying":t<7?"Collecting fuel":t<10?"Holding fuel":t<19?"Driving and turning":t<21?"Disabled retention":t<23?"Stowing":"Final retention";
     private static string Digest(string file)
     {
         using(var stream=File.OpenRead(file))using(var hash=SHA256.Create())
@@ -203,25 +223,25 @@ public static class Turbo4744RetentionRegression
             }
             float t=Time.time-began;Measure(t);
             var drive=robot.GetComponent<DriveController>();
-            if(t<1){Press();drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<2.5f){Press(Key.LeftShift);drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<7){Press(Key.LeftShift);drive.OverrideInput(.5f,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<10){Press(Key.LeftShift);drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<10.5f){Press();drive.OverrideInput(.8f,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<11.5f){Press();drive.OverrideInput(-.8f,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<13){Press();drive.OverrideInput(0,0,90f,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<16){Press();drive.OverrideInput(.3f,0,60f,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<19){Press();drive.OverrideInput(0,.35f,-60f,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<21){Press();drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);Enabled(false);}
-            else if(t<23){Enabled(true);Press(Key.Z);drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<25){Press();drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            if(t<1){Press();Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<2.5f){Press(Key.LeftShift);Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<7){Press(Key.LeftShift);Drive(.5f,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<10){Press(Key.LeftShift);Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<10.5f){Press();Drive(.8f,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<11.5f){Press();Drive(-.8f,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<13){Press();Drive(0,0,90f,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<16){Press();Drive(.3f,0,60f,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<19){Press();Drive(0,.35f,-60f,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<21){Press();Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);Enabled(false);}
+            else if(t<23){Enabled(true);Press(Key.Z);Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<25){Press();Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
             else
             {
                 current.stowed=Mathf.Abs(robot.intakeRail.transform.localPosition.z-intakeClosed)<.035f&&Mathf.Abs(robot.hopperRail.transform.localPosition.z-hopperClosed)<.035f;
                 current.retained=fuel.Count(piece=>piece.collected&&!piece.escaped&&InsideClosed(robot.transform.InverseTransformPoint(piece.body.position)));
                 Debug.Log("TURBO_RETENTION_CASE "+JsonUtility.ToJson(current));
                 Press();Cleanup();caseIndex++;
-                if(caseIndex<Headings.Length)Spawn();else Finish();
+                if(caseIndex<Headings.Length&&!Environment.GetCommandLineArgs().Contains("-turboInspect"))Spawn();else Finish();
             }
         }
         catch(Exception error){report.errors.Add(error.ToString());Finish();}
@@ -233,5 +253,24 @@ public static class Turbo4744RetentionRegression
         report.passed=report.cases.Count==Headings.Length&&report.cases.All(c=>c.collected>=7&&c.retained==c.collected&&c.escapes.Count==0&&c.stowed&&c.stable)&&report.errors.Count==0;
         Directory.CreateDirectory(Out);File.WriteAllText(Out+"/retention-"+label+".json",JsonUtility.ToJson(report,true));
         SessionState.SetInt("Turbo.RetentionExit",report.passed?0:1);EditorApplication.ExitPlaymode();
+    }
+}
+
+public sealed class Turbo4744RetentionView:MonoBehaviour
+{
+    public Transform target;
+    public Func<string> caption;
+    private Camera view;
+    private void Awake(){view=gameObject.AddComponent<Camera>();view.fieldOfView=45;view.nearClipPlane=.03f;}
+    private void LateUpdate()
+    {
+        if(!target)return;
+        transform.position=target.TransformPoint(new Vector3(1.35f,1.05f,1.65f));
+        transform.LookAt(target.TransformPoint(new Vector3(0,.22f,.25f)));
+    }
+    private void OnGUI()
+    {
+        var style=new GUIStyle(GUI.skin.box){fontSize=19,alignment=TextAnchor.UpperLeft,padding=new RectOffset(12,12,10,10)};
+        GUI.Box(new Rect(14,14,570,125),caption?.Invoke()??"Starting collection check",style);
     }
 }

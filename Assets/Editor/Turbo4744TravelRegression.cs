@@ -32,6 +32,7 @@ public static class Turbo4744TravelRegression
         public bool bounded,stowed,spawnedRealFuel,physicalLimits,impactApplied;
         public float maxIntake,maxHopper,minIntake,minHopper,maxLocalLateral,maxLocalRotation,maxRobotSpeed;
         public List<string> samples=new List<string>();
+        public List<string> impactFrames=new List<string>();
     }
     [Serializable] private sealed class Report
     {
@@ -44,6 +45,7 @@ public static class Turbo4744TravelRegression
     private static Report report;
     private static Case current;
     private static Turbo4744 robot;
+    private static Turbo4744BenchDriver input;
     private static BaseTimerManager timer;
     private static Keyboard keyboard;
     private static AssetBundle bundle;
@@ -53,6 +55,7 @@ public static class Turbo4744TravelRegression
     private static float began;
     private static double wallStart;
     private static string label;
+    private static float lastImpactSample=-1;
     private static readonly string Out=Path.GetFullPath(Application.dataPath+"/../BuildArtifacts");
     static Turbo4744TravelRegression(){EditorApplication.playModeStateChanged+=Mode;}
 
@@ -113,8 +116,10 @@ public static class Turbo4744TravelRegression
         var parent=Object.FindFirstObjectByType<RobotSpawnController>().transform;
         var instance=Object.Instantiate(prefab,new Vector3(-6f,.04f,-1.5f),Quaternion.Euler(0,Headings[caseIndex],0),parent);
         robot=instance.GetComponent<Turbo4744>();robot.SetAlliance(Alliance.Blue);
+        input=robot.gameObject.AddComponent<Turbo4744BenchDriver>();input.drive=robot.GetComponent<DriveController>();
         intakeClosed=robot.intakeRail.transform.localPosition;hopperClosed=robot.hopperRail.transform.localPosition;
         current=new Case{heading=Headings[caseIndex],bounded=true};report.cases.Add(current);
+        lastImpactSample=-1;
         current.physicalLimits=robot.intakeRail.GetComponent<ConfigurableJoint>().zMotion==ConfigurableJointMotion.Limited&&robot.hopperRail.GetComponent<ConfigurableJoint>().zMotion==ConfigurableJointMotion.Limited;
         current.spawnedRealFuel=robot.preloads.Length==8&&robot.preloads.All(p=>p.GetComponent<Rigidbody>()!=null);
         var manager=Object.FindFirstObjectByType<RebuiltFuelPreloadManager>();
@@ -149,14 +154,24 @@ public static class Turbo4744TravelRegression
         current.maxLocalLateral=Mathf.Max(current.maxLocalLateral,Mathf.Abs(i.x),Mathf.Abs(h.x),Mathf.Abs(i.y),Mathf.Abs(h.y));
         current.maxLocalRotation=Mathf.Max(current.maxLocalRotation,angle);
         current.maxRobotSpeed=Mathf.Max(current.maxRobotSpeed,rb.velocity.magnitude);
+        float elapsed=Time.time-began;
+        if(elapsed>7.49f&&elapsed<7.58f&&Time.fixedTime!=lastImpactSample)
+        {
+            lastImpactSample=Time.fixedTime;
+            float physical=(Quaternion.Inverse(rb.rotation)*(robot.intakeRail.GetComponent<Rigidbody>().position-rb.position)-intakeClosed).z;
+            string trace=elapsed.ToString("F5")+" transform "+i.z.ToString("F6")+" physical "+physical.ToString("F6")+" velocity "+robot.intakeRail.GetComponent<Rigidbody>().velocity.ToString("F3")+" interpolation "+rb.interpolation;
+            current.impactFrames.Add(trace);if(Environment.GetCommandLineArgs().Contains("-turboInspect"))Debug.Log("TURBO_LIMIT "+trace);
+        }
         current.bounded &= i.z<.245f&&i.z>-.005f&&h.z<.235f&&h.z>-.005f&&current.maxLocalLateral<.015f&&angle<3f;
     }
     private static void Cleanup()
     {
         foreach(var outpost in Object.FindObjectsByType<Outpost>(FindObjectsSortMode.None))outpost.Robots.Remove(robot);
-        foreach(var fuel in robot.preloads)if(fuel)Object.Destroy(fuel);
-        Object.Destroy(robot.gameObject);
+        foreach(var fuel in robot.preloads)if(fuel){fuel.SetActive(false);Object.Destroy(fuel);}
+        robot.gameObject.SetActive(false);Object.Destroy(robot.gameObject);
     }
+    private static void Drive(float x,float y,float omega,DriveController.DrivePerspective perspective)
+    {input.vx=x;input.vy=y;input.omega=omega;}
     private static void Tick()
     {
         try
@@ -193,11 +208,11 @@ public static class Turbo4744TravelRegression
                 current.samples.Add(t.ToString("F2")+" intake "+i.ToString("F4")+" hopper "+h.ToString("F4")+" body "+rb.position.ToString("F3")+" yaw "+rb.rotation.eulerAngles.y.ToString("F1"));
             }
             var drive=robot.GetComponent<DriveController>();
-            if(t<1) {Press();drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<8) {Press(Key.LeftShift);drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
-            else if(t<11){Press(Key.LeftShift);drive.OverrideInput(.6f,0,1f,DriveController.DrivePerspective.RobotRelative);}
+            if(t<1) {Press();Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<8) {Press(Key.LeftShift);Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<11){Press(Key.LeftShift);Drive(.6f,0,1f,DriveController.DrivePerspective.RobotRelative);}
             else if(t<12){Press();Enabled(false);}
-            else if(t<15){Enabled(true);Press(Key.LeftShift);drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);}
+            else if(t<15){Enabled(true);Press(Key.LeftShift);Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);}
             else if(t<17){Press(Key.Z);}
             else
             {
@@ -205,7 +220,7 @@ public static class Turbo4744TravelRegression
                 Press();Cleanup();
                 Debug.Log("TURBO_TRAVEL_CASE "+JsonUtility.ToJson(current));
                 caseIndex++;
-                if(caseIndex<Headings.Length)Spawn();else Finish();
+                if(caseIndex<Headings.Length&&!Environment.GetCommandLineArgs().Contains("-turboInspect"))Spawn();else Finish();
             }
             if(i.magnitude>3||h.magnitude>3||!float.IsFinite(i.z))
             {

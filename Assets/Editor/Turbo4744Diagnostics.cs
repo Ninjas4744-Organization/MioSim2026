@@ -39,6 +39,7 @@ public static class Turbo4744Diagnostics
     private static Rigidbody body;
     private static Rigidbody collectedFuel;
     private static DriveController drive;
+    private static Turbo4744BenchDriver input;
     private static BaseTimerManager timer;
     private static double startTime;
     private static float simulationStart;
@@ -146,6 +147,7 @@ public static class Turbo4744Diagnostics
                 report.inputsBound=robot.TranslateAction!=null && robot.RestartAction!=null;
                 body=instance.GetComponent<Rigidbody>();
                 drive=instance.GetComponent<DriveController>();
+                input=instance.AddComponent<Turbo4744BenchDriver>();input.drive=drive;
                 intakeStart=robot.intakeRail.transform.localPosition.z;
                 hopperStart=robot.hopperRail.transform.localPosition.z;
                 simulationStart=Time.time;
@@ -179,11 +181,11 @@ public static class Turbo4744Diagnostics
             if(elapsed<1.5f)
             {
                 driveStart=body.position;
-                drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);
+                Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);
             }
             else if(elapsed<3.5f)
             {
-                drive.OverrideInput(1.2f,0,0,DriveController.DrivePerspective.RobotRelative);
+                Drive(1.2f,0,0,DriveController.DrivePerspective.RobotRelative);
             }
             else if(elapsed<6f)
             {
@@ -193,13 +195,13 @@ public static class Turbo4744Diagnostics
                     report.driveMoved=report.driveDistance>.5f;
                     report.preloadsRetained=fuel.Count==8 && fuel.All(f=>{
                         var p=robot.transform.InverseTransformPoint(f.position);
-                        return Mathf.Abs(p.x)<.36f && p.y>.16f && p.y<.55f && p.z>.05f && p.z<.41f;
+                        return Mathf.Abs(p.x)<.36f && p.y>.16f && p.y<.60f && p.z>.03f && p.z<.65f;
                     });
                     foreach(var piece in fuel)Object.Destroy(piece.gameObject);
                     fuel.Clear();
                     phase=1;
                 }
-                drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);
+                Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);
                 Press(Key.LeftShift);
             }
             else if(elapsed<9f)
@@ -213,7 +215,7 @@ public static class Turbo4744Diagnostics
                     collectedFuel=fuel.Last();
                     phase=2;
                 }
-                drive.OverrideInput(.35f,0,0,DriveController.DrivePerspective.RobotRelative);
+                Drive(.35f,0,0,DriveController.DrivePerspective.RobotRelative);
                 foreach(var piece in fuel.Where(f=>f))
                 {
                     var local=robot.transform.InverseTransformPoint(piece.position);
@@ -229,7 +231,7 @@ public static class Turbo4744Diagnostics
                     SpawnFuel(new Vector3(0,.461f,-.055f));
                     phase=3;
                 }
-                drive.OverrideInput(0,0,0,DriveController.DrivePerspective.RobotRelative);
+                Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);
                 Press(Key.Q);
                 foreach(var piece in fuel.Where(f=>f))
                 {
@@ -247,7 +249,7 @@ public static class Turbo4744Diagnostics
                 Press();
                 ForceEnabled(false);
             }
-            else if(elapsed<15.5f)
+            else if(elapsed<16.5f)
             {
                 if(phase<4)
                 {
@@ -282,6 +284,8 @@ public static class Turbo4744Diagnostics
         InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(keys));
         InputSystem.Update();
     }
+    private static void Drive(float x,float y,float omega,DriveController.DrivePerspective perspective)
+    {input.vx=x;input.vy=y;input.omega=omega;}
 
     private static void SpawnFuel(Vector3 local)
     {

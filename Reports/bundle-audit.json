@@ -5,8 +5,8 @@
     "team": 4744,
     "robots": 1,
     "missingScripts": 0,
-    "renderers": 15,
-    "materials": 46,
+    "renderers": 16,
+    "materials": 47,
     "preloads": 8,
     "tutorialCards": 3,
     "assemblyReferences": [
@@ -17,6 +17,7 @@
         "RobotFramework",
         "MoSimLib",
         "UnityEngine.VehiclesModule",
-        "MoSimCore"
+        "MoSimCore",
+        "Unity.InputSystem"
     ]
 }
