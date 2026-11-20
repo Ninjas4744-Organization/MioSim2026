@@ -1,0 +1,19 @@
+{
+  "bumper_top_m": 0.15929999947547913,
+  "deployed_intake_clearance_m": 0.01199999451637268,
+  "support_lift_m": 0.06691510033607484,
+  "modified_native_x_m": [
+    0.32,
+    0.444
+  ],
+  "vertices_before": 42869,
+  "vertices_after": 43685,
+  "pickup_roller_unchanged": true,
+  "bumper_unchanged": true,
+  "Bumpers_Geometry_vertices_identical": true,
+  "IntakeRoller_Geometry_vertices_identical": true,
+  "deployed_triangle_intersections": 0,
+  "deployed_triangle_clearance_m": 0.018702462315559387,
+  "game_triangles": 821507,
+  "fbx_unit_scale_factor": 0.9999999776482582
+}

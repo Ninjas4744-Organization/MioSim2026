@@ -5,7 +5,7 @@
     "team": 4744,
     "robots": 1,
     "missingScripts": 0,
-    "renderers": 16,
+    "renderers": 18,
     "materials": 47,
     "preloads": 8,
     "tutorialCards": 3,
@@ -18,8 +18,8 @@
         "Unity.InputSystem",
         "UnityEngine.IMGUIModule",
         "MoSimCore",
-        "MoSimLib",
         "UnityEngine.VehiclesModule",
+        "MoSimLib",
         "UnityEngine.TextRenderingModule"
     ]
 }

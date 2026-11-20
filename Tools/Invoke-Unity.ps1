@@ -1,8 +1,12 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Build','Test','Travel','Retention','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pulse','Preview')][string]$Task='Build',
-    [switch]$SyncOnly
+    [ValidateSet('Assemble','Build','Test','Travel','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','Pulse','Preview')][string]$Task='Build',
+    [switch]$SyncOnly,
+    [switch]$Authoring,
+    [switch]$Baseline,
+    [switch]$Heading90,
+    [switch]$UseProjectSnapshot
 )
 $ErrorActionPreference='Stop'
 $repoRoot=Split-Path -Parent $PSScriptRoot
@@ -11,6 +15,9 @@ $editorPath=(Resolve-Path -LiteralPath $UnityEditor).Path
 $versionFile=Join-Path $projectRoot 'ProjectSettings\ProjectVersion.txt'
 if(-not(Test-Path -LiteralPath $versionFile)){throw 'MoSimProject must be the root of the official Unity project.'}
 if((Get-Content -LiteralPath $versionFile -Raw)-notmatch '2023\.2\.22f1'){throw 'This mod targets Unity 2023.2.22f1. Use the pinned MoSim project.'}
+$UseProjectSnapshot = $UseProjectSnapshot -or (Test-Path -LiteralPath (Join-Path $projectRoot '.turbo-source-snapshot'))
+if($UseProjectSnapshot -and ($Task -in @('Assemble','Build') -or $SyncOnly)){throw 'Snapshot mode is for validating an existing build. Remove .turbo-source-snapshot or omit -UseProjectSnapshot before authoring/building.'}
+if(-not $UseProjectSnapshot){
 $modRelative='Assets\Prefabs\Games\Rebuilt\Robots\Mods\Ninjas4744'
 $modTarget=Join-Path $projectRoot $modRelative
 New-Item -ItemType Directory -Path $modTarget -Force|Out-Null
@@ -20,27 +27,55 @@ if(Test-Path -LiteralPath $folderMeta){Copy-Item -LiteralPath $folderMeta -Desti
 $editorTarget=Join-Path $projectRoot 'Assets\Editor'
 New-Item -ItemType Directory -Path $editorTarget -Force|Out-Null
 Get-ChildItem -LiteralPath (Join-Path $repoRoot 'Assets\Editor') -File|Copy-Item -Destination $editorTarget -Force
+}
+else {Write-Output 'Using the frozen project source snapshot.'}
 if($SyncOnly){Write-Output 'Turbo assets and editor tools synchronized.';return}
 
-$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Retention='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
+$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
 $artifactRoot=Join-Path $repoRoot 'Artifacts'
 New-Item -ItemType Directory -Path $artifactRoot -Force|Out-Null
 $logPath=Join-Path $artifactRoot ($Task+'-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'.log')
 $mappedDrive=$null
 $runProject=$projectRoot
 try {
-    # Keep Unity's nested package paths short without moving the user's project.
-    foreach($letter in @('M','N','P','Q','R','S')){
-        if(-not(Get-PSDrive -Name $letter -ErrorAction SilentlyContinue)){
-            $mappedDrive=$letter+':'
-            subst $mappedDrive $projectRoot
-            if($LASTEXITCODE -ne 0){throw 'Could not create a temporary short project path.'}
-            $runProject=$mappedDrive+'/'
-            break
+    # PowerShell's drive inventory can be stale when another shell creates a
+    # subst mapping. Reserve paths against the OS, serializing concurrent runs.
+    $driveLock=[Threading.Mutex]::new($false,'Local\MoSim2026UnityProjectPath')
+    $driveLockHeld=$false
+    try {
+        $driveLockHeld=$driveLock.WaitOne(10000)
+        if(-not $driveLockHeld){throw 'Timed out reserving a short Unity project path.'}
+        foreach($mapping in @(& subst)){
+            if($mapping -match '^([A-Z]):\\: => (.+)$' -and $matches[2].TrimEnd('\') -ieq $projectRoot.TrimEnd('\')){
+                $runProject=$matches[1]+':/'
+                break
+            }
         }
+        if($runProject -eq $projectRoot){
+            foreach($letter in @('M','N','P','Q','R','S','T','U','V')){
+                $candidate=$letter+':'
+                if([IO.Directory]::Exists($candidate+'\')){continue}
+                & subst $candidate $projectRoot
+                if($LASTEXITCODE -ne 0){continue}
+                $mappedDrive=$candidate
+                $runProject=$mappedDrive+'/'
+                break
+            }
+        }
+    }
+    finally {
+        if($driveLockHeld){$driveLock.ReleaseMutex()}
+        $driveLock.Dispose()
     }
     $arguments=@('-batchmode','-projectPath',('"'+$runProject+'"'),'-logFile',('"'+$logPath+'"'),'-executeMethod',$methods[$Task])
     if($Task -in @('Travel','Retention','Capacity')){$arguments+='-turboFixed'}
+    if($Task -eq 'Approach'){$arguments+='-turboApproach'}
+    if($Task -eq 'Approach' -and -not $Baseline){$arguments+='-turboFixed'}
+    if($Task -in @('Pile','WheelPile','Load')){$arguments+='-turboPile';if(-not $Baseline){$arguments+='-turboFixed'}}
+    if($Task -eq 'WheelPile'){$arguments+='-turboWheelPile'}
+    if($Task -eq 'Load'){$arguments+='-turboLoadOnly'}
+    if($Authoring){$arguments+='-turboAuthoring'}
+    if($Heading90){$arguments+='-turboHeading90'}
     if($Task -in @('Systems','Jam','Moving','Delivery','Matrix','Pulse')){$arguments+=@('-turboBundle','-turboStrict')}
     if($Task -eq 'Jam'){$arguments+='-turboJam'}
     if($Task -eq 'Moving'){$arguments+='-turboMoving'}
@@ -59,11 +94,20 @@ try {
         if($sync.ExitCode -ne 0){throw 'Runtime synchronization failed; inspect the runtime log.'}
     }
     $buildArtifacts=Join-Path $projectRoot 'BuildArtifacts'
-    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','retention-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
+    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
         $file=Join-Path $buildArtifacts $name
         if(Test-Path -LiteralPath $file){Copy-Item -LiteralPath $file -Destination $artifactRoot -Force}
     }
     Get-ChildItem -LiteralPath $buildArtifacts -Filter 'Turbo4744-v5-*.png' -File|Copy-Item -Destination $artifactRoot -Force
     Write-Output ($Task+' passed.')
 }
-finally {if($mappedDrive){subst $mappedDrive /D}}
+finally {
+    if($mappedDrive){
+        foreach($mapping in @(& subst)){
+            if($mapping -match '^([A-Z]):\\: => (.+)$' -and ($matches[1]+':') -eq $mappedDrive -and $matches[2].TrimEnd('\') -ieq $projectRoot.TrimEnd('\')){
+                & subst $mappedDrive /D
+                break
+            }
+        }
+    }
+}

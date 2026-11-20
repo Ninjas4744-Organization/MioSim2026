@@ -36,7 +36,12 @@ public static class Turbo4744RetentionRegression
             retained;
         public bool stowed,
             stable;
-        public float maxRobotSpeed;
+        public float maxRobotSpeed,
+            approachSpeed,
+            approachDistance,
+            maxTilt,
+            intakeRemaining,
+            hopperRemaining;
         public List<string> escapes = new List<string>();
         public List<string> samples = new List<string>();
         public List<string> contacts = new List<string>();
@@ -63,7 +68,11 @@ public static class Turbo4744RetentionRegression
             escaped;
     }
 
-    private static readonly int[] Headings = { 0, 90 };
+    private static bool Approach => Environment.GetCommandLineArgs().Contains("-turboApproach");
+    private static bool Authoring => Environment.GetCommandLineArgs().Contains("-turboAuthoring");
+    private static int[] Headings => Approach ? new[] { 0, 0, 90, 0, 90, 45 } : new[] { 0, 90 };
+    private static readonly float[] ApproachSpeeds = { .5f, 2f, 2f, 4f, 4f, 2f };
+    private static Vector3 approachStart;
     private static readonly string Out = Path.GetFullPath(
         Application.dataPath + "/../BuildArtifacts"
     );
@@ -81,6 +90,9 @@ public static class Turbo4744RetentionRegression
     private static float began,
         hopperClosed,
         intakeClosed;
+    private static float deploymentDelay;
+    private static bool collectionStarted;
+    private static float CaseTime => Time.time - began - deploymentDelay;
     private static double wallStart;
     private static string label;
     private static Turbo4744RetentionView liveView;
@@ -128,6 +140,9 @@ public static class Turbo4744RetentionRegression
         if (state == PlayModeStateChange.EnteredPlayMode)
         {
             report = new Report();
+            if (Approach)
+                report.fixture =
+                    "Nine field balls across the intake width; 0.5, 2 and 4 m/s approaches at four headings, braking, disable and loaded stow";
             caseIndex = 0;
             wallStart = EditorApplication.timeSinceStartup;
             robot = null;
@@ -187,7 +202,13 @@ public static class Turbo4744RetentionRegression
         input.drive = robot.GetComponent<DriveController>();
         hopperClosed = robot.hopperRail.transform.localPosition.z;
         intakeClosed = robot.intakeRail.transform.localPosition.z;
-        current = new Case { heading = Headings[caseIndex], stable = true };
+        current = new Case
+        {
+            heading = Headings[caseIndex],
+            approachSpeed = Approach ? ApproachSpeeds[caseIndex] : .5f,
+            stable = true,
+        };
+        approachStart = robot.transform.position;
         report.cases.Add(current);
         if (Visible)
         {
@@ -243,7 +264,13 @@ public static class Turbo4744RetentionRegression
         {
             var go = Object.Instantiate(
                 fieldFuel,
-                robot.transform.TransformPoint(new Vector3(col * .16f, .075f, .78f + row * .22f)),
+                robot.transform.TransformPoint(
+                    new Vector3(
+                        col * (Approach && caseIndex > 0 ? .25f : .16f),
+                        .075f,
+                        .78f + row * .22f
+                    )
+                ),
                 Quaternion.identity
             );
             go.transform.SetParent(GameObject.FindWithTag("GamePieceWorld").transform, true);
@@ -260,6 +287,8 @@ public static class Turbo4744RetentionRegression
         }
         current.offered = fuel.Count;
         began = Time.time;
+        deploymentDelay = 0;
+        collectionStarted = false;
         lastSample = -1;
         Enabled(true);
     }
@@ -268,6 +297,12 @@ public static class Turbo4744RetentionRegression
     {
         var rb = robot.GetComponent<Rigidbody>();
         current.maxRobotSpeed = Mathf.Max(current.maxRobotSpeed, rb.velocity.magnitude);
+        current.maxTilt = Mathf.Max(current.maxTilt, Vector3.Angle(robot.transform.up, Vector3.up));
+        if (Approach && t < 7)
+            current.approachDistance = Vector3.Dot(
+                rb.position - approachStart,
+                Quaternion.Euler(0, current.heading, 0) * Vector3.forward
+            );
         current.stable &=
             float.IsFinite(rb.position.y)
             && Mathf.Abs(rb.position.y) < .2f
@@ -420,8 +455,8 @@ public static class Turbo4744RetentionRegression
     {
         try
         {
-            if (EditorApplication.timeSinceStartup - wallStart > 300)
-                throw new TimeoutException("Retention regression exceeded 300 seconds");
+            if (EditorApplication.timeSinceStartup - wallStart > (Approach ? 480 : 300))
+                throw new TimeoutException("Collection regression exceeded its time budget");
             if (!robot)
             {
                 if (EditorApplication.timeSinceStartup - wallStart < 5 || !BaseGameManager.Instance)
@@ -432,6 +467,13 @@ public static class Turbo4744RetentionRegression
                     camera.enabled = false;
                 foreach (var old in Object.FindObjectsByType<RobotBase>(FindObjectsSortMode.None))
                     old.gameObject.SetActive(false);
+                if (Authoring)
+                {
+                    prefab = AssetDatabase.LoadAssetAtPath<GameObject>(Ninjas4744Builder.RobotPath);
+                    report.prefabSource = Ninjas4744Builder.RobotPath;
+                    Spawn();
+                    return;
+                }
                 string file = Path.Combine(
                     Application.dataPath,
                     "../BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets"
@@ -454,8 +496,25 @@ public static class Turbo4744RetentionRegression
                 Spawn();
                 return;
             }
-            float t = Time.time - began;
+            float t = CaseTime;
+            if (!collectionStarted && t >= 2.5f)
+            {
+                var kicker = robot.GetComponent<Turbo4744KickerRig>();
+                if (robot.IntakeEncoderRotations < 10.5f || (kicker && kicker.Deployment < .99f))
+                {
+                    deploymentDelay = Time.time - began - 2.5f;
+                    Press(Key.LeftShift);
+                    Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
+                    return;
+                }
+                collectionStarted = true;
+            }
             Measure(t);
+            if (Approach)
+            {
+                TickApproach(t);
+                return;
+            }
             var drive = robot.GetComponent<DriveController>();
             if (t < 1)
             {
@@ -552,6 +611,46 @@ public static class Turbo4744RetentionRegression
     private static bool InsideClosed(Vector3 p) =>
         Mathf.Abs(p.x) < .36f && p.y > .17f && p.y < .55f && p.z > .03f && p.z < .42f;
 
+    private static void TickApproach(float t)
+    {
+        Press(
+            t < 8 ? new[] { Key.LeftShift }
+            : t >= 9 ? new[] { Key.Z }
+            : Array.Empty<Key>()
+        );
+        Enabled(t < 8 || t >= 9);
+        Drive(
+            t >= 2.5f && t < 7 && current.approachDistance < 1.35f ? current.approachSpeed : 0,
+            0,
+            0,
+            DriveController.DrivePerspective.RobotRelative
+        );
+        if (t < 13)
+            return;
+        current.intakeRemaining = Mathf.Abs(
+            robot.intakeRail.transform.localPosition.z - intakeClosed
+        );
+        current.hopperRemaining = Mathf.Abs(
+            robot.hopperRail.transform.localPosition.z - hopperClosed
+        );
+        current.stowed = current.intakeRemaining < .035f && current.hopperRemaining < .035f;
+        current.retained = fuel.Count(piece =>
+            piece.collected
+            && !piece.escaped
+            && InsideClosed(robot.transform.InverseTransformPoint(piece.body.position))
+        );
+        Debug.Log(
+            $"TURBO_APPROACH_CASE {current.heading} deg {current.approachSpeed:F1} m/s: {current.collected}/{current.offered} collected, {current.retained} retained, {current.maxTilt:F2} deg tilt"
+        );
+        Press();
+        Cleanup();
+        caseIndex++;
+        if (caseIndex < Headings.Length)
+            Spawn();
+        else
+            Finish();
+    }
+
     private static void Finish()
     {
         EditorApplication.update -= Tick;
@@ -560,15 +659,19 @@ public static class Turbo4744RetentionRegression
         report.passed =
             report.cases.Count == Headings.Length
             && report.cases.All(c =>
-                c.collected >= 7
+                c.collected >= (Approach ? c.offered : 7)
                 && c.retained == c.collected
                 && c.escapes.Count == 0
                 && c.stowed
                 && c.stable
+                && (!Approach || c.approachDistance >= 1.1f && c.maxTilt < 12)
             )
             && report.errors.Count == 0;
         Directory.CreateDirectory(Out);
-        File.WriteAllText(Out + "/retention-" + label + ".json", JsonUtility.ToJson(report, true));
+        File.WriteAllText(
+            Out + (Approach ? "/approach-" : "/retention-") + label + ".json",
+            JsonUtility.ToJson(report, true)
+        );
         SessionState.SetInt("Turbo.RetentionExit", report.passed ? 0 : 1);
         EditorApplication.ExitPlaymode();
     }

@@ -41,7 +41,8 @@ public static class Turbo4744TravelRegression
             minHopper,
             maxLocalLateral,
             maxLocalRotation,
-            maxRobotSpeed;
+            maxRobotSpeed,
+            stowSeconds = -1;
         public List<string> samples = new List<string>();
         public List<string> impactFrames = new List<string>();
     }
@@ -368,6 +369,13 @@ public static class Turbo4744TravelRegression
             current.maxLocalRotation = Mathf.Max(current.maxLocalRotation, angle);
             current.maxRobotSpeed = Mathf.Max(current.maxRobotSpeed, rb.velocity.magnitude);
             Measure();
+            if (
+                t >= 15
+                && current.stowSeconds < 0
+                && Mathf.Abs(i.z) < .035f
+                && Mathf.Abs(h.z) < .035f
+            )
+                current.stowSeconds = t - 15;
             int sample = (int)(t * 2);
             if (sample != lastSample)
             {
@@ -411,7 +419,9 @@ public static class Turbo4744TravelRegression
                 Press(Key.LeftShift);
                 Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
             }
-            else if (t < 17)
+            // Match the retention fixture's four-second stow window: the
+            // kicker folds before either loaded slide can retract.
+            else if (t < 19)
             {
                 Press(Key.Z);
             }

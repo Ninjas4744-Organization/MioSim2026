@@ -1,0 +1,263 @@
+{
+  "method": "Original complete CAD parts; original pose restored by undoing the inferred 13-degree tilt",
+  "original_part_count": 59,
+  "hinge_native_m": [
+    0.5720400214195251,
+    0.0,
+    0.24404999613761902
+  ],
+  "stowed_angle_degrees": 60,
+  "fixed_structure": "Original clear structural plates, motor housings, pulleys and front frame",
+  "moving_structure": "Original lower bearing plates, bearings and shaft; original roller remains separately driven",
+  "invented_supports_removed": true,
+  "synthetic_mesh_cuts_removed": true,
+  "lower_kicker_parts": [
+    51,
+    54,
+    56,
+    64,
+    68,
+    78,
+    82,
+    94,
+    95
+  ],
+  "parts": [
+    {
+      "part": "Part0025_26-300-059__Fillet5",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0026_26-300-059__Fillet5",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0031_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0037_26-300-004-002__Fillet3",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0038_26-300-006__Fillet3",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0039_26-300-006__Fillet3",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0040_26-300-059-002__Fillet4",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0041_26-300-004-002__Fillet3",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0042_26-300-059-002__Fillet4",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0043_Mirrorrandom_ahh___random_ahh_-_Revolve1_",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0044_Mirrorprint_shaft_3_2___print_shaft_3_2_-_Cut-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0045_MirrorPart1___Part1_-_Fillet1_",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0046_Mirrorprint_shaft___print_shaft_-_Fillet1_",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0047_print_shaft__Fillet1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0048_Part1__Fillet1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0049_random_ahh__Revolve1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0050_print_shaft_3_2__Cut-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0051_26-300-002__Mirror1",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0052_26-300-041__Boss-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0053_26-300-063__Boss-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0054_26-300-032-003__Boss-Extrude1",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0055_26-300-033-001__Cut-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0056_26-300-032-001__Boss-Extrude1",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0057_26-300-064__Boss-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0058_26-300-001__Fillet73",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0059_26-300-067__Fillet1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0060_15t_PULLEY_2__Cut-Extrude2",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0061_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0062_Mirror26-300-034___26-300-034_-_M5_Clearance_Hole1_",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0063_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0064_26-300-043__M5_Clearance_Hole1",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0065_26-300-067__Fillet1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0066_26-300-045__M5_Clearance_Hole1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0067_26-300-045__M5_Clearance_Hole1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0068_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0069_M5_Socket_Head_M5X55__Cut-Extrude2",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0070_Kraken_X60_Brushless_Motor",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0071_WCP-1380_step__NONE",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0072_WCP-1380_step__NONE",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0073_WCP-1380_step__NONE",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0076_26-300-024__Mirror1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0077_26-300-062__Cut-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0078_26-300-043__M5_Clearance_Hole1",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0080_26-300-001__Fillet73",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0081_26-300-041__Boss-Extrude1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0082_intake_rooler",
+      "assembly": "IntakeRoller_Geometry"
+    },
+    {
+      "part": "Part0083_15t_PULLEY_2__Cut-Extrude2",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0084_26-300-034__M5_Clearance_Hole1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0085_Kraken_X60_Brushless_Motor",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0086_Part_1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0087_WCP-1380_step__NONE",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0088_WCP-1380_step__NONE",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0089_WCP-1380_step__NONE",
+      "assembly": "Intake_Geometry"
+    },
+    {
+      "part": "Part0090_26-300-061__Fillet1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0091_Mgnetic_Limit_Switch__REV-40-1467___NONE",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0092_Mgnetic_Limit_Switch__REV-40-1467___NONE",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0093_26-300-061__Fillet1",
+      "assembly": "KickerMount_Geometry"
+    },
+    {
+      "part": "Part0094_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "assembly": "Kicker_Geometry"
+    },
+    {
+      "part": "Part0095_0_500_Hex_ID_x_1_125_OD_x_0_313_WD__Flanged_Bearing_v2",
+      "assembly": "Kicker_Geometry"
+    }
+  ]
+}

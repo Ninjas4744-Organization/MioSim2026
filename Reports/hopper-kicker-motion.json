@@ -1,0 +1,160 @@
+{
+  "passed": true,
+  "samples": 185,
+  "front_bumper_intersections": [],
+  "sequence": [
+    "Hopper out with kicker tucked",
+    "Kicker down with hopper held out",
+    "Kicker up with hopper held out",
+    "Hopper in with kicker tucked",
+    "Short pump strokes with kicker staying deployed"
+  ],
+  "hopper_attachment": "Hopper",
+  "roller_attachment": "Kicker",
+  "poses": [
+    {
+      "phase": "hopper_extending",
+      "open": 0.0,
+      "deployment": 0,
+      "angle_degrees": 59.99999999999999,
+      "min_native_m": [
+        0.3756811080890836,
+        -0.3245451748371124,
+        0.18559481291016203
+      ],
+      "max_native_m": [
+        0.4291476125306567,
+        0.33255475759506226,
+        0.23880552544074918
+      ]
+    },
+    {
+      "phase": "hopper_extending",
+      "open": 0.5,
+      "deployment": 0,
+      "angle_degrees": 59.99999999999999,
+      "min_native_m": [
+        0.4904111080890836,
+        -0.3245451748371124,
+        0.18559481291016203
+      ],
+      "max_native_m": [
+        0.5438776125306567,
+        0.33255475759506226,
+        0.23880552544074918
+      ]
+    },
+    {
+      "phase": "hopper_extending",
+      "open": 1.0,
+      "deployment": 0,
+      "angle_degrees": 59.99999999999999,
+      "min_native_m": [
+        0.6051411080890836,
+        -0.3245451748371124,
+        0.18559481291016203
+      ],
+      "max_native_m": [
+        0.6586076125306567,
+        0.33255475759506226,
+        0.23880552544074918
+      ]
+    },
+    {
+      "phase": "kicker_deploying",
+      "open": 1,
+      "deployment": 0.5,
+      "angle_degrees": 29.999999999999996,
+      "min_native_m": [
+        0.5812754511065218,
+        -0.3245451748371124,
+        0.1602167691369158
+      ],
+      "max_native_m": [
+        0.6347498356196968,
+        0.33255475759506226,
+        0.21345426890710123
+      ]
+    },
+    {
+      "phase": "kicker_deploying",
+      "open": 1,
+      "deployment": 1.0,
+      "angle_degrees": 0.0,
+      "min_native_m": [
+        0.5478945374488831,
+        -0.3245451748371124,
+        0.14979395270347595
+      ],
+      "max_native_m": [
+        0.6009956002235413,
+        0.33255475759506226,
+        0.2030712068080902
+      ]
+    },
+    {
+      "phase": "kicker_retracting",
+      "open": 1,
+      "deployment": 0.5,
+      "angle_degrees": 29.999999999999996,
+      "min_native_m": [
+        0.5812754511065218,
+        -0.3245451748371124,
+        0.1602167691369158
+      ],
+      "max_native_m": [
+        0.6347498356196968,
+        0.33255475759506226,
+        0.21345426890710123
+      ]
+    },
+    {
+      "phase": "kicker_retracting",
+      "open": 1,
+      "deployment": 0.0,
+      "angle_degrees": 59.99999999999999,
+      "min_native_m": [
+        0.6051411080890836,
+        -0.3245451748371124,
+        0.18559481291016203
+      ],
+      "max_native_m": [
+        0.6586076125306567,
+        0.33255475759506226,
+        0.23880552544074918
+      ]
+    },
+    {
+      "phase": "hopper_retracting",
+      "open": 0.5,
+      "deployment": 0,
+      "angle_degrees": 59.99999999999999,
+      "min_native_m": [
+        0.4904111080890836,
+        -0.3245451748371124,
+        0.18559481291016203
+      ],
+      "max_native_m": [
+        0.5438776125306567,
+        0.33255475759506226,
+        0.23880552544074918
+      ]
+    },
+    {
+      "phase": "hopper_retracting",
+      "open": 0.0,
+      "deployment": 0,
+      "angle_degrees": 59.99999999999999,
+      "min_native_m": [
+        0.3756811080890836,
+        -0.3245451748371124,
+        0.18559481291016203
+      ],
+      "max_native_m": [
+        0.4291476125306567,
+        0.33255475759506226,
+        0.23880552544074918
+      ]
+    }
+  ]
+}

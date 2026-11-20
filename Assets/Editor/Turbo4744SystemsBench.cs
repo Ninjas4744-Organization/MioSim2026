@@ -35,7 +35,9 @@ public static class Turbo4744SystemsBench
         public int delivered;
         public float closedVisual,
             openedVisual,
-            stowedVisual;
+            stowedVisual,
+            closedFrameSpan,
+            openedFrameSpan;
         public float visualMin = 100,
             visualMax = -100;
         public float range,
@@ -426,6 +428,14 @@ public static class Turbo4744SystemsBench
     private static void Measure(float t)
     {
         result.netScaleOne &= robot.roofNet.localScale == Vector3.one;
+        var lacing = robot.GetComponent<Turbo4744NetRig>();
+        float frameSpan =
+            robot.transform.InverseTransformPoint(lacing.frontLeft.position).z
+            - robot.transform.InverseTransformPoint(lacing.rearLeft.position).z;
+        if (index == 0 && t < .4f)
+            result.closedFrameSpan = frameSpan;
+        if (index == 0 && t > 2.4f && t < 2.6f)
+            result.openedFrameSpan = frameSpan;
         var solver = robot.GetComponentInChildren<NetSolver>();
         if (solver)
         {
@@ -467,7 +477,7 @@ public static class Turbo4744SystemsBench
             backoffBegan = -1;
         }
         var visual = robot
-            .intakeRail.GetComponentsInChildren<MeshFilter>()
+            .GetComponentsInChildren<MeshFilter>()
             .First(m => m.name == "Intake_Geometry");
         float visualZ = robot
             .transform.InverseTransformPoint(
@@ -717,7 +727,7 @@ public static class Turbo4744SystemsBench
                     old.gameObject.SetActive(false);
                 if (!prefab)
                 {
-                    if (Flag("-turboBundle"))
+                    if (Flag("-turboBundle") && !Flag("-turboAuthoring"))
                     {
                         string file = Path.GetFullPath(
                             Application.dataPath
@@ -767,7 +777,7 @@ public static class Turbo4744SystemsBench
                     return;
                 result.closedNetSpan = result.netSpan;
                 var mesh = robot
-                    .intakeRail.GetComponentsInChildren<MeshFilter>()
+                    .GetComponentsInChildren<MeshFilter>()
                     .First(m => m.name == "Intake_Geometry");
                 result.closedVisual = robot
                     .transform.InverseTransformPoint(
@@ -987,8 +997,11 @@ public static class Turbo4744SystemsBench
                             && c.strafeSpeed > 2.3f
                             && (
                                 c.payload == 0
-                                    ? c.closedNetSpan > .36f
-                                        && c.closedNetSpan < .41f
+                                    ? c.closedFrameSpan > .36f
+                                        && c.closedFrameSpan < .41f
+                                        && c.openedFrameSpan > .59f
+                                        && c.closedNetSpan >= c.closedFrameSpan - .02f
+                                        && c.closedNetSpan < .8f
                                         && c.openedNetSpan > .59f
                                     : c.payloadAtStart == c.payload
                                         && c.payloadAfterDrive == c.payload

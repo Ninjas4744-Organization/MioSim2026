@@ -1,0 +1,64 @@
+{
+  "version": "0.5.6",
+  "verifiedUtc": "2026-11-20T14:29:55.1974339Z",
+  "passed": true,
+  "bundleSha256": "14c11ee817683954e30eeff4cb2085cd5eae5da7b8df0432488ec4636f0acd06",
+  "runtimeDllSha256": "81b2af550ae2c02cf810fc583df0548384ad3dc1df7d1c3168a39388a13ef8cf",
+  "singleHopperCases": [
+    {
+      "heading": 0,
+      "offered": 53,
+      "collected": 53,
+      "storedBeforeDrive": 53,
+      "retainedAfterDrive": 53,
+      "released": 53,
+      "retained": 0,
+      "maxLoadedNativeSpeed": 3.9358580112457275,
+      "maxTilt": 6.399602890014648,
+      "maxCollectionYaw": 0.5006018877029419,
+      "netPeakHeight": 0.8115839958190918
+    },
+    {
+      "heading": 90,
+      "offered": 53,
+      "collected": 53,
+      "storedBeforeDrive": 53,
+      "retainedAfterDrive": 53,
+      "released": 53,
+      "retained": 0,
+      "maxLoadedNativeSpeed": 3.9263925552368164,
+      "maxTilt": 0.6192882657051086,
+      "maxCollectionYaw": 0.47930908203125,
+      "netPeakHeight": 0.828082263469696
+    }
+  ],
+  "wheelPileCases": [
+    {
+      "heading": 0,
+      "offered": 90,
+      "collected": 45,
+      "retainedAfterDrive": 45,
+      "released": 45,
+      "maxTilt": 2.657559633255005,
+      "maxCollectionYaw": 1.088531494140625,
+      "maxCrossTrack": 0.011127591133117676
+    },
+    {
+      "heading": 90,
+      "offered": 90,
+      "collected": 48,
+      "retainedAfterDrive": 48,
+      "released": 48,
+      "maxTilt": 0.6199198961257935,
+      "maxCollectionYaw": 1.48919677734375,
+      "maxCrossTrack": 0.011797214858233929
+    }
+  ],
+  "wheelPileHeadingToleranceDegrees": 3,
+  "maxDensePileHeadingDriftObserved": 2.462493896484375,
+  "maxLoadedStowSeconds": 2.2648372650146484,
+  "stationaryScored": 40.0,
+  "allianceScored": 64.0,
+  "movingScored": 15.0,
+  "delivered": 32.0
+}

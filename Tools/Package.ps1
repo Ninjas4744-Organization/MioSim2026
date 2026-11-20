@@ -9,9 +9,9 @@ $bundle=Get-Content -LiteralPath (Join-Path $artifacts 'bundle-audit.json') -Raw
 $retention=Get-Content -LiteralPath (Join-Path $artifacts 'retention-after.json') -Raw|ConvertFrom-Json
 $systems=Get-Content -LiteralPath (Join-Path $artifacts 'systems-after.json') -Raw|ConvertFrom-Json
 $jam=Get-Content -LiteralPath (Join-Path $artifacts 'systems-jam.json') -Raw|ConvertFrom-Json
-$extra=@('systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json')|ForEach-Object {Get-Content -LiteralPath (Join-Path $artifacts $_) -Raw|ConvertFrom-Json}
+$extra=@('approach-after.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','pile-after.json','wheel-pile-after.json','systems-pulse-after.json')|ForEach-Object {Get-Content -LiteralPath (Join-Path $artifacts $_) -Raw|ConvertFrom-Json}
 foreach($report in $extra){if(-not $report.passed){throw 'A moving, delivery, alliance or capacity check failed'}}
-$checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained')
+$checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained','reverseSupportsLoad')
 foreach($check in $checks){if(-not $physics.$check){throw ('Integration check failed: '+$check)}}
 if($physics.errors.Count -gt 0 -or -not $travel.passed -or -not $bundle.passed -or -not $retention.passed -or -not $systems.passed -or -not $jam.passed){throw 'Verification reports are not passing. Run Build, Test, Travel, Retention, Systems, and Jam before packaging.'}
 if($systems.cases.Count -ne 7 -or $systems.simulationSpeed -ne 1){throw 'Systems must complete the seven release cases at normal simulation speed.'}

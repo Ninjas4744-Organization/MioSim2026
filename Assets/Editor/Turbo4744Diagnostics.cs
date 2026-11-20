@@ -37,12 +37,19 @@ public static class Turbo4744Diagnostics
         public bool inputsBound,
             endToEndCycle,
             stowed,
-            preloadsRetained;
+            preloadsRetained,
+            reverseSupportsLoad;
         public float driveDistance,
             intakeExtension,
             hopperExtension,
             maxFuelSpeed;
         public Vector3 finalPosition;
+        public bool stagedKickerValid = true,
+            kickerDeployed,
+            kickerRetracted;
+        public float minimumHopperWhileKickerOut = 100f;
+        public bool kickerStayedDeployedDuringPumping = true;
+        public int pumpKickerSamples;
         public List<string> errors = new List<string>();
         public List<string> samples = new List<string>();
         public List<string> contacts = new List<string>();
@@ -52,6 +59,7 @@ public static class Turbo4744Diagnostics
     private static Turbo4744 robot;
     private static Rigidbody body;
     private static Rigidbody collectedFuel;
+    private static Rigidbody reverseProbe;
     private static DriveController drive;
     private static Turbo4744BenchDriver input;
     private static BaseTimerManager timer;
@@ -232,6 +240,40 @@ public static class Turbo4744Diagnostics
                     "Turbo was destroyed during the diagnostic run"
                 );
             float elapsed = Time.time - simulationStart;
+            var kicker = robot.GetComponent<Turbo4744KickerRig>();
+            if (kicker)
+            {
+                float hopperExtension =
+                    robot.transform.InverseTransformPoint(kicker.hopper.position).z
+                    - kicker.hopperClosedPosition.z;
+                if (kicker.Deployment > .001f)
+                {
+                    report.minimumHopperWhileKickerOut = Mathf.Min(
+                        report.minimumHopperWhileKickerOut,
+                        hopperExtension
+                    );
+                    report.stagedKickerValid &=
+                        hopperExtension >= kicker.pumpClearanceExtension - .003f;
+                    if (!report.kickerDeployed)
+                        report.stagedKickerValid &= hopperExtension >= kicker.travel - .003f;
+                }
+                report.kickerDeployed |= kicker.Deployment > .99f;
+                if (
+                    report.kickerDeployed
+                    && (
+                        robot.PumpMode == Turbo4744.RailState.HardPumping
+                        || robot.PumpMode == Turbo4744.RailState.SoftPumping
+                    )
+                )
+                {
+                    report.pumpKickerSamples++;
+                    report.kickerStayedDeployedDuringPumping &= kicker.Deployment > .99f;
+                }
+                if (robot.PumpMode == Turbo4744.RailState.Closed && report.kickerDeployed)
+                    report.kickerRetracted |= kicker.Retracted;
+            }
+            else
+                report.stagedKickerValid = false;
             int sample = (int)(elapsed * 5);
             if (sample > sampleFrame)
             {
@@ -367,8 +409,31 @@ public static class Turbo4744Diagnostics
             }
             else if (elapsed < 25f)
             {
-                Press();
-                ForceEnabled(false);
+                if (!reverseProbe)
+                {
+                    SpawnFuel(new Vector3(.20f, .28f, .20f));
+                    reverseProbe = fuel.Last();
+                }
+                if (elapsed < 24.2f)
+                    Press(Key.LeftShift);
+                else if (elapsed < 24.4f)
+                {
+                    Press(Key.U);
+                    var keeper = robot.GetComponent<Turbo4744FuelKeeper>();
+                    if (robot.Reversing)
+                        report.reverseSupportsLoad = reverseProbe
+                            .GetComponentsInChildren<Collider>()
+                            .Where(c => !c.isTrigger)
+                            .All(c =>
+                                !Physics.GetIgnoreCollision(keeper.floor, c)
+                                && !Physics.GetIgnoreCollision(keeper.fixedFloor, c)
+                            );
+                }
+                else
+                {
+                    Press();
+                    ForceEnabled(false);
+                }
             }
             else if (elapsed < 27.5f)
             {
@@ -492,6 +557,12 @@ public static class Turbo4744Diagnostics
             && report.endToEndCycle
             && report.stowed
             && report.preloadsRetained
+            && report.reverseSupportsLoad
+            && report.stagedKickerValid
+            && report.kickerDeployed
+            && report.kickerRetracted
+            && report.kickerStayedDeployedDuringPumping
+            && report.pumpKickerSamples > 0
             && report.errors.Count == 0;
         Debug.Log("TURBO_PHYSICS_DIAGNOSTICS " + JsonUtility.ToJson(report));
         SessionState.SetInt("Turbo.DiagnosticExit", passed ? 0 : 1);
@@ -506,9 +577,9 @@ public sealed class TurboFuelContactAudit : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (seen.Add(collision.collider.name))
+        if (collision.contactCount > 0 && seen.Add(collision.collider.name))
             record?.Invoke(
-                collision.collider.name + " normal " + collision.contacts[0].normal.ToString("F2")
+                collision.collider.name + " normal " + collision.GetContact(0).normal.ToString("F2")
             );
     }
 }

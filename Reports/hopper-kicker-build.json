@@ -1,0 +1,18 @@
+{
+  "version": "0.5.5",
+  "variant": "footage-corrected",
+  "bundleReferenceValidationPassed": true,
+  "authoringIntegrationReport": "hopper-kicker-integration.json",
+  "motionReport": "hopper-kicker-motion.json",
+  "controlsReport": "hopper-kicker-controls.json",
+  "files": [
+    {
+      "file": "rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "c2e2834d32be23136a5f3939d92b21f9ec3adcd936f346e7e4a1d79eebe81bd0"
+    },
+    {
+      "file": "Ninjas4744.dll",
+      "sha256": "f7ca946a89560322a0e99113acb311734efdbe6cd731d0fb2f713ef9c73e8f71"
+    }
+  ]
+}
