@@ -32,6 +32,26 @@ MoSim's control rebinding applies normally. The shooter faces the rear of the ro
 
 ## Build and test
 
+### Code formatting
+
+[CSharpier](https://csharpier.com/docs/Installation) is pinned in `.config/dotnet-tools.json`.
+Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), then run:
+
+```powershell
+.\Tools\Format.ps1        # Restore CSharpier and format the code
+.\Tools\Format.ps1 -Check # Check formatting without changing files
+```
+
+The helper also supports a local SDK in `.dotnet/`. With an SDK on your
+PATH, the equivalent commands are `dotnet tool restore`, `dotnet csharpier format .`,
+and `dotnet csharpier check .`. `.editorconfig` sets four-space indentation,
+100-column wrapping, and LF line endings. Generated files and tool caches are excluded
+through `.gitignore`; upstream source records and licenses through `.csharpierignore`.
+Editor format-on-save support is available through the CSharpier plugin for Rider,
+Visual Studio, or VS Code.
+
+### Unity build and regression checks
+
 Use **Unity 2023.2.22f1** and the [official MoSim modding project](https://github.com/MoSimulator/MoSimulator-Public) at commit `d7e2f2bb2af1eb8c46cd5ff3697f25392d6004d1` (v26.6). An activated Unity editor and Windows build support are required.
 
 ```powershell

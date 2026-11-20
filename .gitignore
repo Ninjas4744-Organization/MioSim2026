@@ -16,6 +16,7 @@ dist/
 .idea/
 
 # Local tools and private configuration
+.dotnet/
 Tools/cache/
 .venv/
 __pycache__/

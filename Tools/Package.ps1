@@ -34,7 +34,7 @@ $windowsZip=Join-Path $dist ('Ninjas4744-Turbo2026-'+$version+'-Windows.zip')
 Compress-Archive -LiteralPath $mod -DestinationPath $windowsZip -Force
 Copy-Item -LiteralPath (Join-Path $artifacts 'Ninjas4744-Turbo2026.unitypackage') -Destination $dist -Force
 $sourceZip=Join-Path $dist ('Ninjas4744-Turbo2026-'+$version+'-Editable.zip')
-$sourcePaths=@('Assets','Models','Tools','Docs','Reports','Licenses','README.md','CHANGELOG.md','.gitignore','.gitattributes')|ForEach-Object{Join-Path $repoRoot $_}
+$sourcePaths=@('Assets','Models','Tools','Docs','Reports','Licenses','README.md','CHANGELOG.md','.gitignore','.gitattributes','.config','.editorconfig','.csharpierignore')|ForEach-Object{Join-Path $repoRoot $_}
 Compress-Archive -LiteralPath $sourcePaths -DestinationPath $sourceZip -Force
 Get-FileHash -LiteralPath $windowsZip,$sourceZip,(Join-Path $dist 'Ninjas4744-Turbo2026.unitypackage')|ForEach-Object{[PSCustomObject]@{file=Split-Path -Leaf $_.Path;sha256=$_.Hash.ToLower()}}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $dist 'checksums.json') -Encoding utf8
 Write-Output $windowsZip
