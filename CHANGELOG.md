@@ -1,5 +1,44 @@
 # Changelog
 
+## 0.5.6
+
+- Excluded fuel from Turbo's wheel support queries and rigid wheel cores, preventing moving balls from steering or lifting individual swerve modules.
+- Confined powered intake contact to a narrow roller/throat path, raised its handoff over the kicker and bounded contact force and surface speed.
+- Latched floor support after each ball clears the tray, so pressure and bouncing cannot reopen the floor beneath stored fuel.
+- Added continuous intake backing support that clears the feed path when the kicker folds for stow.
+- Added textile slack and physical frame-edge contacts; the net deforms around a larger load.
+- Opened the upper rear storage bays and lowered the funnel lips, with sloped shoulder floors to return corner fuel to the indexer.
+- Removed indexer downforce that pinned packed fuel against its support ramp, and shared tangential traction across the full load.
+- Added separate single-hopper capacity and wide wheel-path pile checks, including loaded driving, braking and complete unloading.
+- Corrected moving-shot lead for launch-point rotation while keeping heading feedforward stable.
+
+## 0.5.5
+
+- Replaced inferred supports and mesh cuts with 59 original CAD parts, restoring the compact front assembly by removing the source model's unsupported 13-degree down-tilt.
+- Matched the supplied shooting footage by keeping the lower kicker deployed during short hopper pump strokes.
+- Kept the hopper frame, front beam and upper bearing structure rigidly attached to the box; only the lower kicker swings.
+- Added staged motion: hopper out first, then kicker down. Retraction raises the kicker before either slide moves inward.
+- Added runtime sequence/pumping checks and a comparison against the supplied footage.
+
+## 0.5.4
+
+- Attached the transfer frame and lower kicker to the moving hopper with support rails, hinge bearings and mounting flanges.
+- Matched the opened-assembly photo with a full-width aluminium beam above the roller and bolted clear side bearing plates.
+- Folded the kicker back with actual hopper travel, lifting it before it crosses the bumper. Verified clearance through 101 positions.
+
+## 0.5.3
+
+- Added a local clearance rise in the deployed intake belt/support mesh so it passes 12 mm above the front bumper; the ground pickup roller stays in place.
+- Reworked intake contact around a curved pickup-to-tray path and separated the front gate from storage-floor support, including during reverse.
+- Removed duplicate fuel collisions and traction from helper rollers and limited indexer entry speed.
+- Added continuous physical indexer support and a sloped return lip so fuel cannot drop below the feed path or jam loaded retraction.
+- Added full-width pickup checks at 0.5, 2 and 4 m/s, including braking, disable and loaded stow.
+
+## 0.5.2
+
+- Made the hopper roof visible using MoSim's supplied net texture with larger openings and its original texture color.
+- Rendered the net from both sides with alpha-clipped holes, depth and shadows. The cloth still folds with the sliding hopper.
+
 ## 0.5.1
 
 Addresses zone selection, moving aim, full-hopper contacts and visible pumping.

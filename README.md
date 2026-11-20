@@ -2,7 +2,7 @@
 
 An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo CAD asset. This repository contains the robot assets, runtime code, authoring tools, and regression checks. Unity, the MoSim framework, and generated caches stay outside the repository.
 
-![Turbo with intake and hopper stowed](Reports/Turbo4744-v5-closed.png)
+![Turbo with hopper and kicker stowed and visible MoSim net roof](Reports/Turbo4744-kicker-closed.png)
 
 ## Install
 
@@ -62,17 +62,53 @@ $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Approach
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Systems
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Jam
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Moving
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Delivery
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Matrix
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Capacity
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pile
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task WheelPile
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pulse
 .\Tools\Package.ps1 -MoSimProject $project
 ```
 
 The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab, runs a fresh-session SDK runtime synchronization, and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
+
+## What changed in 0.5.6
+
+- Fuel no longer counts as a tread surface for the swerve modules, and wheel cores do not climb rigid balls.
+- A narrow powered throat follows the upper kicker before handing balls into storage.
+- Floor support stays closed after entry. An elastic net, frame-edge contacts and sloped rear shoulders retain a larger load.
+- Two capacity runs each retained 53 balls through loaded driving and released all 53 through the shooter before empty stow.
+- Jam detection measures ball travel so slow pumping does not repeatedly reverse progress.
+- `Pile` verifies at least 50 stored balls at each heading and a load above 50 before loaded driving and complete unloading; `WheelPile` checks a faster approach across ball-filled wheel paths. [Verification](Docs/Verification.md).
+
+Dense piles can still cause a small heading change: the largest observed was 2.46 degrees, with 12 mm of sideways drift. The drivetrain commands turn rate rather than holding an absolute heading. The verification report preserves the initial stricter heading check as well as the final measurements.
+
+## What changed in 0.5.5
+
+- The compact original CAD roller/bearing assembly replaces the inferred hanging supports. [Footage comparison](Reports/Turbo4744-kicker-reference-comparison.png).
+- The lower kicker stays deployed during short hopper pump strokes. [Pumping preview](Reports/Turbo4744-kicker-pumping.gif).
+- The structure stays rigid on the hopper. The hopper clears the bumper before only the lower kicker swings down.
+- Closing raises the kicker first, then retracts the hopper. [Staged motion preview](Reports/Turbo4744-kicker-motion.gif).
+
+## What changed in 0.5.4
+
+- The lower kicker is attached to the moving hopper with visible support rails, hinge bearings, a front beam and bolted clear side plates.
+- The kicker folds back with actual hopper travel and clears the bumper throughout deployment and retraction.
+- [Motion preview](Reports/Turbo4744-kicker-motion.gif) · [Opened view](Reports/Turbo4744-kicker-open.png).
+
+## What changed in 0.5.3
+
+- Intake contact follows a curved pickup-to-tray path, with separate floor support and front-gate handoff. Reverse keeps the storage floor solid.
+- Feed rollers use one force model per stage, with a slower indexer approach to the shooter. Fast and full-width approaches have a dedicated regression.
+
+## What changed in 0.5.2
+- The hopper roof uses MoSim's supplied net texture with larger, visible openings, rendering from both sides with depth and shadows.
+- Unity previews verify the roof with the hopper [open](Reports/Turbo4744-net-open.png) and [closed](Reports/Turbo4744-net-closed.png).
 
 ## What changed in 0.5.1
 

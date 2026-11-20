@@ -14,6 +14,14 @@ Turbo configures solver settings for its three robot bodies directly. The automa
 
 The game model's fully deployed pose is the source pose. Closing translates each selected moving assembly toward the chassis. These stroke lengths are simulation estimates based on the CAD envelope, not a conversion of the team's motor-rotation limits.
 
+The shooting/pumping footage supplied by the user shows a compact front roller assembly directly beneath the hopper. The earlier 13-degree downward adjustment in source asset 1.3.1 was inferred from photos; undoing that adjustment restores the original CAD alignment. The current game model reconstructs 59 original CAD parts and removes the invented supports, shaped clearance bump and arbitrary mesh cuts from earlier visual attempts. `Tools/Blender/restore_cad_kicker.py` records this reconstruction; `Reports/hopper-kicker-model.json` lists every part and its assembly.
+
+The original structural plates, motor housings and upper pulleys stay rigidly attached to the hopper. Original lower bearing plates, bearings and shaft (parts 51, 54, 56, 64, 68, 78, 94 and 95) form the lower carrier; the original roller (part 82) remains separately driven. The deployed assembly retains its original CAD geometry, including its actual holes, fasteners and motor mounts.
+
+The lower carrier stays deployed during normal hard and soft pump strokes, matching the footage. Full stow still raises it before either slide retracts. Initial opening retains the user's stated order: box out, then lower kicker down. A 60-degree visual retraction about native `(0.57204, 0, 0.24405)` m clears the bumper; this is clearance calibration, since the footage does not show a complete opening or closing. Fuel contacts and rail limits retain their calibration. The integration check verifies that the kicker remains down while pumping, and the mesh audit covers both the complete stow sequence and the pump window.
+
+`Reports/Turbo4744-kicker-reference-comparison.png` compares the model against a frame from the supplied footage. `Reports/Turbo4744-kicker-pumping.gif` shows the matching compact assembly moving with the hopper during a short pump stroke.
+
 ## Fuel and shooting
 
 Eight instances of the official fuel prefab are stored in `RebuiltRobotBase.preloads`. MoSim's `RebuiltSpawnInitializer` detaches them into the game-piece world and removes the matching number of field pieces. Empty markers are not valid preloads. Fuel layers and colliders are preserved.
@@ -24,13 +32,31 @@ The storage contact bed is low and level so two layers of fuel fit below the clo
 
 The extended hopper has a complete moving storage floor overlapping the fixed bed. A cylindrical entry contact completes the intake belt's curved nose; retracting-tray contact and inclined indexer contacts carry fuel toward the accelerator. Added storage contacts affect fuel only, avoiding suspension interference. The hopper follows the actual intake extension and velocity, so hard and soft pumping move the stored load as well as the external intake.
 
-The intake uses an explicit one-way contact approximation. During collection, an incoming ball temporarily ignores only this robot's moving storage floor and inlet keeper. Once the whole sphere is above the floor and behind the inlet plane, those contacts become solid for that ball. Collection stays open to new fuel while already stored fuel has a continuous floor and front barrier. Reverse releases the contact pairs; pairs are also restored when fuel exits the area or the keeper is disabled. No global game-piece rules change. Fuel is never parented, frozen, repositioned, or assigned a storage velocity.
+The intake uses an explicit one-way contact approximation. Incoming fuel follows a local curved contact path from the ground pickup into the tray. During entry, only this robot's fixed and moving floors, inlet keeper and front-panel contact pairs can open. The floors become solid as soon as the sphere clears them; the front gate closes after the sphere clears the inlet plane and settles vertically at the handoff. Reverse opens the front gate while keeping the floors under stored fuel solid. Pairs are also restored when fuel exits the area or the keeper is disabled. No global game-piece rules change. Fuel is never parented, frozen, repositioned, or assigned a storage velocity.
+
+Floor clearance is latched until the whole sphere exits the front or side of the hopper. A bounce or compression from the load cannot reopen the floor. Powered intake contact follows a narrow 60 mm roller/throat path, rising over the upper kicker before handing fuel into storage. A continuous backing surface supports this belt path, preventing incoming ground fuel from rolling underneath the storage floor when the hopper fills. Normal force is bounded to 80 N and the shared mechanism budget to 600 N, with a 3.6 m/s surface-speed ceiling. Retention classification does not cut power before this handoff finishes. The stock fuel mass, diameter and collision material remain unchanged.
+
+Turbo excludes fuel layers from the stock drivetrain's wheel-support queries and the rigid wheel-core contacts. The wheels continue to sample the field normally; bumpers, hopper surfaces and intake contacts still interact with fuel. This prevents separate modules from treating rolling balls as independent tread surfaces.
+
+The net has 35% geometric slack, bounded stretch/shear compliance and 320 particles representing a 240 g textile. Its collision strands have a 12 mm radius. Thin frame-edge contacts complete the fixed lacing boundaries that the native cloth solver skips when both edge nodes are pinned. Triangular wedges fill the spaces outside the lower V guides, directing corner fuel into the feed basin without covering it.
+
+Flow monitoring accumulates inward travel in 6 mm steps or upward travel in 25 mm steps. Slow but continuing tray motion counts as progress; a stationary obstruction still triggers the bounded reverse recovery. This avoids repeatedly reversing a lightly loaded hopper just because its fuel moves below the previous 4 cm/s threshold.
+
+The backing surface ends at the kicker release, leaving the storage tray clear. It engages after full initial deployment, stays available during pumping and clears before full stow. Collection uses the 600 N / 3.6 m/s pickup profile; an active shot uses a gentler 140 N / 1.2 m/s transfer profile to return stored fuel from the entry ramp to the indexer. Retained fuel resting on the floor remains eligible for feeding, rather than requiring an air gap under the sphere.
 
 This is a collision proxy for intake retention. The intake command stays latched at the team's 90 rotor RPS during collection. Disabled mode stops all rollers while retaining stored fuel through the solid contacts.
 
 Drive and shooter tables come from the team's 2026 code. Motor-to-wheel conversion, contact geometry, friction, launch channel, and mass distribution are simulation calibration. The roof uses MoSim's deforming cloth solver with fixed and sliding frame attachments, rather than mesh scaling or a hard roof. [The code mapping](RobotCodePort.md) records the pinned source, active state transitions, and hardware limitations.
 
+The hopper roof material is derived from MoSim's `Assets/Materials/Net/Net.mat` and uses its supplied `ActualTileableNet.png`. The texture already contains multiple openings, so the roof tiles it twice in each direction. The earlier 18 by 16 tiling made the holes too small to remain visible at normal camera distances. Both sides render with alpha-clipped openings, depth writes and shadows; the texture supplies the strand color without an additional dark tint.
+
 Incoming fuel receives bounded transfer traction until the whole sphere clears the storage floor and inlet. The contact follows the intake rail and applies its reaction to that moving body. Its edge falloff spans the tray width, keeping support beneath a ball against either side guide. Captured fuel is released from entry assistance; disabled and stowed states stop the contact. Fuel remains an independent rigidbody.
+
+All helper intake, floor and accelerator roller cores exclude fuel, and their native traction is disabled. Their custom contacts own fuel forces without duplicate wheel-core impulses. The indexer acts only on captured fuel and limits contact speed to 1.2 m/s before the existing shooter release contact takes over. The pickup does not brake incoming fuel that is already moving inward faster than the belt.
+
+A continuous low-friction ramp supports the inclined indexer path independently of traction commands. The indexer shares a 320 N tangential traction budget across its contacts; it does not press fuel down onto the ramp with a centering spring. Fuel remains supported while the indexer stops, reverses or recovers a jam. The sloped lower return lip lifts the front row into a second storage layer during loaded retraction, rather than wedging a single layer against a vertical wall.
+
+The approach regression offers nine ground balls at 0.5, 2 and 4 m/s. The faster cases include balls at both intake edges and multiple robot headings. It measures retained pickups, travel and chassis tilt through braking, disable and loaded stow. Use `-Task Approach -Authoring` during contact tuning or `-Task Approach` to check the built bundle; `-Baseline` writes a separate before report.
 
 ## Verification
 
