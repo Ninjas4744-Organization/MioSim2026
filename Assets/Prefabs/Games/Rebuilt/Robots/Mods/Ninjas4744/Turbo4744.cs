@@ -146,9 +146,7 @@ namespace Ninjas4744.MoSim
             _showStatus;
         private int _controlTicks;
         private float _nextStatus;
-        private float _previousAimAngle,
-            _aimRate;
-        private bool _hasAimAngle;
+        private float _aimRate;
         private InputActionMap _boundInputs;
         private InputAction _statusInput;
         private readonly System.Collections.Generic.HashSet<string> _presses =
@@ -379,7 +377,6 @@ namespace Ninjas4744.MoSim
             if (intakeContact)
                 intakeContact.Stop();
             _automaticShot = automatic;
-            _hasAimAngle = false;
             _aimRate = 0;
             _manual = manual;
             _spinning = false;
@@ -523,10 +520,10 @@ namespace Ninjas4744.MoSim
                     autoAim.SetDefaultMap(DefaultMap.Hub);
                 Vector3 target = autoAim.GetCurrentTarget(),
                     virtualTarget = target;
-                // ShootCalculator uses the swerve's field-relative chassis
-                // translation. Feeding back muzzle angular velocity here also
-                // feeds heading acceleration into the heading-rate controller.
-                Vector3 launchVelocity = _body.velocity;
+                // Fuel inherits the launch point's translation and rotation.
+                // Keep heading feedforward independent of that angular lead
+                // so the aim controller does not feed its own acceleration back.
+                Vector3 launchVelocity = _body.GetPointVelocity(muzzle.position);
                 launchVelocity.y = 0;
                 if (movingShotCompensation && !_manual)
                     for (int i = 0; i < 5; i++)
@@ -547,16 +544,17 @@ namespace Ninjas4744.MoSim
                     autoAim.SetCustomTarget(virtualTarget);
                     Vector3 direction = virtualTarget - muzzle.position;
                     float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-                    float rate = _hasAimAngle
-                        ? Mathf.DeltaAngle(_previousAimAngle, angle) / Time.fixedDeltaTime
-                        : 0;
+                    var bearing = target - _body.position;
+                    bearing.y = 0;
+                    float rate =
+                        (bearing.x * _body.velocity.z - bearing.z * _body.velocity.x)
+                        / Mathf.Max(.25f, bearing.sqrMagnitude)
+                        * Mathf.Rad2Deg;
                     _aimRate = Mathf.Lerp(
                         _aimRate,
                         Mathf.Clamp(rate, -360, 360),
                         1 - Mathf.Exp(-Time.fixedDeltaTime / .04f)
                     );
-                    _previousAimAngle = angle;
-                    _hasAimAngle = true;
                     autoAim.Aim(angle, Delivery ? 0 : _aimRate * lookHubFeedForward);
                 }
                 Vector3 hubDelta = target - _body.position;
@@ -564,7 +562,10 @@ namespace Ninjas4744.MoSim
                 float tolerance = Delivery ? 3f : Mathf.Max(.2f, 12f - 1.9f * hubDelta.magnitude);
                 bool aligned = _manual || Mathf.Abs(autoAim.GetRotationError()) < tolerance;
                 bool inRange = _manual || Delivery || ShotDistance > 2f;
-                bool settled = _manual || Delivery || acceleration.magnitude < 100;
+                bool settled =
+                    _manual
+                    || Delivery
+                    || (acceleration.magnitude < 3f && Mathf.Abs(_body.angularVelocity.y) < 1f);
                 AimReady =
                     aligned
                     && inRange
