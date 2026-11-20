@@ -20,7 +20,10 @@ destination.parent.mkdir(parents=True, exist_ok=True)
 bpy.ops.export_scene.fbx(
     filepath=str(destination), use_selection=True,
     object_types={"MESH", "EMPTY"}, use_mesh_modifiers=True,
-    apply_unit_scale=True, apply_scale_options="FBX_SCALE_UNITS",
+    # Preserve the original FBX's centimetre metadata and native coordinates.
+    # Unity prefabs already normalize its metre-long axis markers; changing
+    # this unit metadata would enlarge existing serialized meshes 100 times.
+    apply_unit_scale=True, global_scale=.01, apply_scale_options="FBX_SCALE_ALL",
     axis_forward="-Z", axis_up="Y", bake_space_transform=False,
     add_leaf_bones=False, bake_anim=False, path_mode="STRIP",
     use_custom_props=True,
