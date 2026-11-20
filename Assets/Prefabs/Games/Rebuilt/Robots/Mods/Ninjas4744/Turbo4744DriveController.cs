@@ -9,11 +9,30 @@ namespace Ninjas4744.MoSim
     /// retains motor, traction, collision, camera perspective and aim behavior.</summary>
     public sealed class Turbo4744DriveController : DriveController
     {
+        private bool _fuelContactsConfigured;
+        private int _fuelMask;
+
+        private void ConfigureFuelContacts()
+        {
+            _fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+            // Foam fuel is not a tread surface. Sampling it as carpet gives
+            // individual swerve modules grip on different moving rigidbodies.
+            // Wheel cores also must not jack the chassis up on rigid spheres.
+            foreach (var wheel in GetComponentsInChildren<WheelCollider>())
+            foreach (var collider in wheel.GetComponentsInChildren<Collider>())
+                if (!collider.isTrigger)
+                    collider.excludeLayers |= _fuelMask;
+            _fuelContactsConfigured = true;
+        }
+
         private static float Deadband(float value) =>
             Mathf.Abs(value) <= .04f ? 0 : Mathf.Sign(value) * (Mathf.Abs(value) - .04f) / .96f;
 
         protected override void FixedUpdate()
         {
+            if (!_fuelContactsConfigured)
+                ConfigureFuelContacts();
+            _fieldLayerMask |= _fuelMask;
             if (
                 _robotBase
                 && _rb

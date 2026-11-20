@@ -5,19 +5,25 @@ using UnityEngine;
 namespace Ninjas4744.MoSim
 {
     /// <summary>One-way contact approximation for the intake throat and tray.
-    /// Only this robot's two keeper colliders change collision pairs. Fuel is
+    /// Only this robot's entry colliders change collision pairs. Fuel is
     /// never parented, repositioned, frozen, or assigned a storage velocity.</summary>
     public sealed class Turbo4744FuelKeeper : MonoBehaviour
     {
         public Turbo4744 robot;
         public BoxCollider floor,
-            inlet;
+            fixedFloor,
+            inlet,
+            frontPanel;
 
         private sealed class Fuel
         {
             public Collider[] colliders;
             public bool captured,
-                ignored;
+                intaken,
+                floorCleared,
+                entering,
+                floorIgnored,
+                gatesIgnored;
         }
 
         private readonly Dictionary<Rigidbody, Fuel> tracked = new Dictionary<Rigidbody, Fuel>();
@@ -27,6 +33,9 @@ namespace Ninjas4744.MoSim
 
         public bool IsCaptured(Rigidbody body) =>
             tracked.TryGetValue(body, out var fuel) && fuel.captured;
+
+        public bool CameThroughIntake(Rigidbody body) =>
+            tracked.TryGetValue(body, out var fuel) && fuel.intaken;
 
         private void Awake() =>
             fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
@@ -40,7 +49,7 @@ namespace Ninjas4744.MoSim
                 && MoSimCore.BaseClasses.GameManagement.BaseGameManager.Instance.RobotState
                     != MoSimCore.Enums.RobotState.Disabled;
             bool reverse = enabled && robot.Reversing;
-            bool collecting = enabled && (robot.Collecting || robot.Feeding);
+            bool collecting = enabled && robot.Deployed && (robot.Collecting || robot.Feeding);
             int count = Physics.OverlapBoxNonAlloc(
                 robot.transform.TransformPoint(new Vector3(0, .28f, .34f)),
                 new Vector3(.43f, .36f, .64f),
@@ -68,11 +77,6 @@ namespace Ninjas4744.MoSim
                     .transform.InverseTransformPoint(floor.transform.TransformPoint(floor.center))
                     .y
                 + floor.size.y * .5f;
-            float front =
-                robot
-                    .transform.InverseTransformPoint(inlet.transform.TransformPoint(inlet.center))
-                    .z
-                - inlet.size.z * .5f;
             remove.Clear();
             foreach (var pair in tracked)
             {
@@ -92,7 +96,7 @@ namespace Ninjas4744.MoSim
                     || local.y > 1.1f
                 )
                 {
-                    Ignore(state, false);
+                    Ignore(state, false, false);
                     remove.Add(body);
                     continue;
                 }
@@ -106,45 +110,90 @@ namespace Ninjas4744.MoSim
                             * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
                         break;
                     }
-                // Engage only once the whole sphere clears both keeper planes.
-                // Enabling contacts here cannot push a half-entered ball upward.
+                // New entries must clear the floor; fuel already supported
+                // inside can rest on it. Latch support before retaining it.
+                if (
+                    !state.floorCleared
+                    && local.y - radius > top + (state.entering ? .002f : -.004f)
+                    && Behind(frontPanel ? frontPanel : inlet, body.position, radius)
+                )
+                    state.floorCleared = true;
                 if (
                     !reverse
                     && Mathf.Abs(local.x) < floor.size.x * .5f - .01f
-                    && local.y - radius > top + .002f
+                    && local.y - radius > top + (state.floorCleared ? -.004f : .002f)
                     && local.z > radius + .02f
-                    && local.z + radius < front - .002f
+                    && Behind(inlet, body.position, radius)
+                    && (!frontPanel || Behind(frontPanel, body.position, radius))
+                    && Mathf.Abs(
+                        Vector3.Dot(
+                            body.velocity - floor.attachedRigidbody.GetPointVelocity(body.position),
+                            robot.transform.up
+                        )
+                    ) < .6f
                 )
                     state.captured = true;
-                if (reverse)
+                var exit = frontPanel ? frontPanel : inlet;
+                if (
+                    PlaneDistance(exit, body.position) - radius > exit.size.z * .5f + .01f
+                    || Mathf.Abs(local.x) > .44f
+                )
+                {
                     state.captured = false;
-                bool pass = reverse || (!state.captured && (collecting || state.ignored));
-                Ignore(state, pass);
+                    state.floorCleared = false;
+                    state.entering = false;
+                }
+                if (!state.captured && collecting)
+                {
+                    state.entering = true;
+                    state.intaken = true;
+                }
+                if (state.captured)
+                    state.entering = false;
+                // Clearing the floor is a one-way handoff. A bounce or another
+                // ball pressing down must never reopen support underneath it.
+                // Re-arm entry only after the whole ball leaves the hopper.
+                Ignore(state, state.entering && !state.floorCleared, reverse || state.entering);
             }
             foreach (var body in remove)
                 tracked.Remove(body);
         }
 
-        private void Ignore(Fuel fuel, bool ignored)
+        private static float PlaneDistance(BoxCollider gate, Vector3 position) =>
+            Vector3.Dot(
+                position - gate.transform.TransformPoint(gate.center),
+                gate.transform.forward
+            );
+
+        private static bool Behind(BoxCollider gate, Vector3 position, float radius) =>
+            PlaneDistance(gate, position) + radius
+            < -gate.size.z * Mathf.Abs(gate.transform.lossyScale.z) * .5f - .002f;
+
+        private void Ignore(Fuel fuel, bool floorIgnored, bool gatesIgnored)
         {
-            if (fuel.ignored == ignored)
+            if (fuel.floorIgnored == floorIgnored && fuel.gatesIgnored == gatesIgnored)
                 return;
             foreach (var collider in fuel.colliders)
             {
                 if (!collider)
                     continue;
-                if (floor)
-                    Physics.IgnoreCollision(floor, collider, ignored);
-                if (inlet)
-                    Physics.IgnoreCollision(inlet, collider, ignored);
+                if (floor && fuel.floorIgnored != floorIgnored)
+                    Physics.IgnoreCollision(floor, collider, floorIgnored);
+                if (fixedFloor && fuel.floorIgnored != floorIgnored)
+                    Physics.IgnoreCollision(fixedFloor, collider, floorIgnored);
+                if (inlet && fuel.gatesIgnored != gatesIgnored)
+                    Physics.IgnoreCollision(inlet, collider, gatesIgnored);
+                if (frontPanel && fuel.gatesIgnored != gatesIgnored)
+                    Physics.IgnoreCollision(frontPanel, collider, gatesIgnored);
             }
-            fuel.ignored = ignored;
+            fuel.floorIgnored = floorIgnored;
+            fuel.gatesIgnored = gatesIgnored;
         }
 
         private void OnDisable()
         {
             foreach (var fuel in tracked.Values)
-                Ignore(fuel, false);
+                Ignore(fuel, false, false);
             tracked.Clear();
         }
     }

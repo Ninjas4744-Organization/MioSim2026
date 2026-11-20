@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Games.Rebuilt.Components;
 using Games.Rebuilt.Robots;
 using MoSimLib;
@@ -51,6 +52,7 @@ namespace Ninjas4744.MoSim
         public BoxCollider roofCollider,
             feedHold,
             intakeHold;
+        public BoxCollider[] intakeBacking = System.Array.Empty<BoxCollider>();
 
         [Header("Linear travel adapter")]
         public float intakeTravel = .24f,
@@ -61,7 +63,7 @@ namespace Ninjas4744.MoSim
             railMaxForce = 350f;
 
         [Header("Rotor-to-contact speed adapters")]
-        public float intakeRpm = 1300f,
+        public float intakeRpm = 2000f,
             floorRpm = 1600f,
             acceleratorRpm = 2200f;
         public float intakeHoldFraction = .2f;
@@ -103,6 +105,10 @@ namespace Ninjas4744.MoSim
         public float FlightTime { get; private set; }
 
         private Rigidbody _body;
+        private Turbo4744KickerRig _kickerRig;
+        private bool _backingExtended;
+        private float _intakeCollectionSpeed,
+            _intakeCollectionForce;
         private DriveController _drive;
         private Vector3 _intakeClosed,
             _hopperClosed;
@@ -129,6 +135,8 @@ namespace Ninjas4744.MoSim
             _lastStow,
             _lastManual;
         private readonly Collider[] _flowOverlaps = new Collider[128];
+        private readonly Dictionary<Rigidbody, Vector2> _flowProgress =
+            new Dictionary<Rigidbody, Vector2>();
         private float _lastFlowTime,
             _saveBegan,
             _reverseReady = -1;
@@ -240,6 +248,12 @@ namespace Ninjas4744.MoSim
         {
             base.Init();
             _body = GetComponent<Rigidbody>();
+            if (intakeContact)
+            {
+                _intakeCollectionSpeed = intakeContact.maxSurfaceSpeed;
+                _intakeCollectionForce = intakeContact.maxTotalForce;
+            }
+            _kickerRig = GetComponent<Turbo4744KickerRig>();
             _drive = GetComponent<DriveController>();
             var stabilizer = GetComponent<JointStackStabilizer>();
             if (stabilizer)
@@ -279,7 +293,7 @@ namespace Ninjas4744.MoSim
             _statusInput.performed += ToggleStatus;
             _statusInput.Enable();
             Debug.Log(
-                "[Turbo 4744 v0.5.1] Zone-selected shooting and physical rail control enabled."
+                "[Turbo 4744 v0.5.5] Staged intake, zone-selected shooting and physical rail control enabled."
             );
         }
 
@@ -291,7 +305,12 @@ namespace Ninjas4744.MoSim
             // Fuel uses the bounded transfer contact. Keep the intake cores
             // solid against field structures without double-counting their
             // contact impulses against the same incoming fuel.
-            foreach (var roller in intakeRollers)
+            foreach (
+                var roller in System.Linq.Enumerable.Concat(
+                    System.Linq.Enumerable.Concat(intakeRollers, floorRollers),
+                    acceleratorRollers
+                )
+            )
             foreach (var c in roller.GetComponentsInChildren<Collider>())
                 if (!c.isTrigger)
                     c.excludeLayers |= LayerMask.GetMask(
@@ -357,6 +376,8 @@ namespace Ninjas4744.MoSim
 
         private void PrepareShot(bool delivery, bool manual = false, bool automatic = false)
         {
+            if (intakeContact)
+                intakeContact.Stop();
             _automaticShot = automatic;
             _hasAimAngle = false;
             _aimRate = 0;
@@ -634,6 +655,16 @@ namespace Ninjas4744.MoSim
 
         private void Feed()
         {
+            if (!Deployed)
+                _backingExtended = false;
+            else if (
+                IntakeEncoderRotations >= 10.5f
+                && (!_kickerRig || _kickerRig.Deployment >= .99f)
+            )
+                _backingExtended = true;
+            foreach (var surface in intakeBacking)
+                if (surface)
+                    surface.enabled = _backingExtended;
             // A latched shoot state must not continue ejecting fuel during a
             // large re-aim or zone transition in the simulator.
             bool speedReady =
@@ -661,7 +692,11 @@ namespace Ninjas4744.MoSim
             feedHold.enabled = !Feeding && !_reverse && !backing;
             SetRollers(intakeRollers, -intakeRpm * TargetIntakeMotorRps / 90f);
             if (intakeContact)
+            {
+                intakeContact.maxSurfaceSpeed = ActiveShot ? 1.2f : _intakeCollectionSpeed;
+                intakeContact.maxTotalForce = ActiveShot ? 140f : _intakeCollectionForce;
                 intakeContact.SetRpm(Deployed ? intakeRpm * TargetIntakeMotorRps / 90f : 0);
+            }
             SetRollers(floorRollers, -floorRpm * TargetIndexerMotorRps / 78f);
             if (indexerContact)
                 indexerContact.SetRpm(floorRpm * TargetIndexerMotorRps / 78f);
@@ -701,6 +736,7 @@ namespace Ninjas4744.MoSim
                 if (Time.fixedTime - _saveBegan >= .5f)
                 {
                     ShootingState = _resumeShot;
+                    _flowProgress.Clear();
                     _feedBegan = _lastFlowTime = Time.fixedTime;
                     _autoSoftIssued = false;
                     if (Delivery)
@@ -711,6 +747,7 @@ namespace Ninjas4744.MoSim
             if (!Feeding)
             {
                 _lastFlowTime = Time.fixedTime;
+                _flowProgress.Clear();
                 return;
             }
             bool occupied = false,
@@ -729,11 +766,26 @@ namespace Ninjas4744.MoSim
                 if (!rb || rb.isKinematic)
                     continue;
                 occupied = true;
-                var velocity =
-                    Quaternion.Inverse(_body.rotation)
-                    * (rb.velocity - _body.GetPointVelocity(rb.position));
-                if (velocity.z < -.04f || velocity.y > .12f)
+                var position = transform.InverseTransformPoint(rb.position);
+                if (!_flowProgress.TryGetValue(rb, out var previous))
+                {
+                    _flowProgress.Add(rb, new Vector2(position.z, position.y));
+                    continue;
+                }
+                // Slow tray pumping is real progress even below 4 cm/s.
+                // Accumulate travel instead of treating low instantaneous
+                // speed as a jam and undoing every small forward stroke.
+                if (position.z < previous.x - .006f)
+                {
+                    previous.x = position.z;
                     progress = true;
+                }
+                if (position.y > previous.y + .025f)
+                {
+                    previous.y = position.y;
+                    progress = true;
+                }
+                _flowProgress[rb] = previous;
             }
             if (!occupied || progress)
             {
@@ -771,6 +823,9 @@ namespace Ninjas4744.MoSim
                     _pumpPhaseStart = Time.fixedTime;
                 }
                 float duty = hard ? .25f : .15f;
+                // The reference footage keeps the lower kicker deployed
+                // during the short pump stroke, outside the bumper.
+                _kickerRig?.PrepareRailMotion(false, Time.fixedDeltaTime);
                 DriveVelocity(
                     intakeRail,
                     _pumpDirection * railMaxSpeed * duty / .25f,
@@ -778,6 +833,9 @@ namespace Ninjas4744.MoSim
                 );
             }
             else
+            {
+                if (WaitForKicker(PumpMode == RailState.Closed))
+                    return;
                 DrivePosition(
                     intakeRail,
                     _intakeClosed,
@@ -785,6 +843,7 @@ namespace Ninjas4744.MoSim
                     0,
                     ref _intakeVelocity
                 );
+            }
             // The deployed intake/hopper are mechanically coupled in this CAD.
             // Box.java is not instantiated by the team's current RobotContainer.
             float extension = Mathf.Clamp(Extension(intakeRail, _intakeClosed), 0, intakeTravel);
@@ -800,6 +859,29 @@ namespace Ninjas4744.MoSim
                 velocity * hopperTravel / intakeTravel,
                 ref _hopperVelocity
             );
+        }
+
+        private bool WaitForKicker(bool retracting)
+        {
+            if (!_kickerRig || _kickerRig.PrepareRailMotion(retracting, Time.fixedDeltaTime))
+                return false;
+            // Hold both slides while the lower kicker folds up. The fixed
+            // frame stays attached to the hopper throughout the sequence.
+            DrivePosition(
+                intakeRail,
+                _intakeClosed,
+                Extension(intakeRail, _intakeClosed),
+                0,
+                ref _intakeVelocity
+            );
+            DrivePosition(
+                hopperRail,
+                _hopperClosed,
+                Extension(hopperRail, _hopperClosed),
+                0,
+                ref _hopperVelocity
+            );
+            return true;
         }
 
         private void DrivePosition(
@@ -1001,7 +1083,7 @@ namespace Ninjas4744.MoSim
             };
             GUI.Box(
                 new Rect(12, 180, 370, 132),
-                "Turbo 4744 v0.5.1  |  "
+                "Turbo 4744 v0.5.5  |  "
                     + ShootingState
                     + "\n"
                     + "Target: "

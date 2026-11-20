@@ -13,6 +13,8 @@ namespace Ninjas4744.MoSim
             frontRight;
         public Transform[] leftPins,
             rightPins;
+        public BoxCollider leftRim,
+            rightRim;
 
         private void FixedUpdate() => UpdatePins();
 
@@ -24,6 +26,20 @@ namespace Ninjas4744.MoSim
                 leftPins[i].position = Vector3.Lerp(rearLeft.position, frontLeft.position, t);
                 rightPins[i].position = Vector3.Lerp(rearRight.position, frontRight.position, t);
             }
+            UpdateRim(leftRim, rearLeft.position, frontLeft.position);
+            UpdateRim(rightRim, rearRight.position, frontRight.position);
+        }
+
+        private void UpdateRim(BoxCollider rim, Vector3 rear, Vector3 front)
+        {
+            if (!rim)
+                return;
+            var direction = front - rear;
+            rim.transform.SetPositionAndRotation(
+                (rear + front) * .5f,
+                Quaternion.LookRotation(direction, transform.up)
+            );
+            rim.size = new Vector3(.016f, .016f, direction.magnitude + .016f);
         }
     }
 }
