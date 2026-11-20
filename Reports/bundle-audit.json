@@ -15,9 +15,11 @@
         "UnityEngine.CoreModule",
         "UnityEngine.PhysicsModule",
         "RobotFramework",
+        "Unity.InputSystem",
+        "UnityEngine.IMGUIModule",
+        "MoSimCore",
         "MoSimLib",
         "UnityEngine.VehiclesModule",
-        "MoSimCore",
-        "Unity.InputSystem"
+        "UnityEngine.TextRenderingModule"
     ]
 }

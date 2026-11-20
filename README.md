@@ -2,7 +2,7 @@
 
 An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo CAD asset. This repository contains the robot assets, runtime code, authoring tools, and regression checks. Unity, the MoSim framework, and generated caches stay outside the repository.
 
-![Turbo with intake and hopper stowed](Reports/Turbo4744-v4-closed.png)
+![Turbo with intake and hopper stowed](Reports/Turbo4744-v5-closed.png)
 
 ## Install
 
@@ -12,21 +12,23 @@ Extract the Windows release ZIP into:
 %USERPROFILE%\AppData\LocalLow\CascadeStudios\MoSim\Mods\
 ```
 
-The resulting `Ninjas4744-Turbo2026/standalonewindows64` folder must contain `modpack.json`, `Ninjas4744.dll`, and the asset bundle. Restart MoSim, enable **Ninjas 4744 Turbo 2026** in Mods, select Rebuilt, and choose **4744 / Turbo**. Restart after updating: Unity cannot unload the old mod assembly during a game session.
+The resulting `Ninjas4744-Turbo2026/standalonewindows64` folder must contain `modpack.json`, `Ninjas4744.dll`, and the asset bundle. Restart MoSim, enable **Ninjas 4744 Turbo 2026** in Mods, select Rebuilt, and choose **4744 / Turbo**. Keep one Turbo version enabled. Disable older copies by renaming their modpack.json to modpack.json.disabled. Restart after updating: Unity cannot unload the old mod assembly during a game session.
 
 ## Controls
 
 | Action | Keyboard | Gamepad |
 | --- | --- | --- |
 | Cancel shooting, open intake and collect | Shift | Left trigger |
-| Start hub aiming and shooting; press again for three hard pump cycles | K | Right trigger |
+| Aim/shoot at the hub or a side delivery target by field zone; press again for three hard pump cycles | K | Right trigger |
 | Start delivery; press again for three hard pump cycles | E | Right bumper |
 | Shoot at the fixed manual setting | Q | Left bumper |
 | Stow intake and hopper | Z | D-pad down |
 | Run three hard pump cycles, then soft pumping | V | Y / Triangle |
 | Reverse the feed path | U | A / Cross |
 
-MoSim's control rebinding applies normally. The shooter faces the rear of the robot. Commands latch, matching the team's button-triggered state machine: release K/E after starting, and use Shift to cancel. Intake opens automatically after enable. Soft pumping starts 0.8 seconds after feeding begins. Hub aiming reduces translation to 30%, as in the team code; Shift restores normal driving. Q and U remain held manual overrides. These are MoSim action bindings, rather than the real driver's PS5 button layout.
+Pumping uses partial extension setpoints. Use Z / D-pad down for full stow after unloading a packed hopper.
+
+MoSim's control rebinding applies normally. The shooter faces the rear of the robot. Commands latch, matching the team's button-triggered state machine: release K/E after starting, and use Shift to cancel. Intake opens automatically after enable. Soft pumping starts 0.8 seconds after feeding begins. Hub aiming reduces translation to 30%, as in the team code; Shift restores normal driving. F8 toggles an optional local mechanism/status panel. Quick shoot, pump and stow taps are retained through Input System performed events. Q and U remain held manual overrides. These are MoSim action bindings, rather than the real driver's PS5 button layout.
 
 ## Build and test
 
@@ -42,10 +44,23 @@ $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Systems
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Jam
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Moving
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Delivery
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Matrix
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Capacity
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pulse
 .\Tools\Package.ps1 -MoSimProject $project
 ```
 
-The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
+The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab, runs a fresh-session SDK runtime synchronization, and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
+
+## What changed in 0.5.1
+
+- Standard shooting chooses HUB or DELIVERY from the team’s alliance-relative 3.6/5.6 m zone triggers.
+- Side deliveries use the team’s two side targets and 58-to-55 RPS sweep with a separate floor-trajectory calibration.
+- Moving aim uses measured MoSim flight timing and heading-rate feedforward; the indexer pauses during a large re-aim.
+- Hopper transfer follows actual tray retraction. Intake force is shared across touching balls, and the cloth represents a 160 g textile.
+- Added moving-shot, both-alliance, side-delivery, dense-pile loaded-drive and rendered-mesh pump checks.
 
 ## What changed in 0.4
 

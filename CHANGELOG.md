@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.1
+
+Addresses zone selection, moving aim, full-hopper contacts and visible pumping.
+
+- Added automatic HUB/DELIVERY zone selection and live target changes for standard shooting.
+- Added separately calibrated side passes and MoSim flight-time compensation.
+- Paused feed while re-aiming and retained short control presses through performed events.
+- Replaced the powered hopper bed with tray-speed transfer; shared intake/indexer force across all contacting fuel.
+- Raised bounded rail actuator capacity and reduced the simulated textile mass from 1.6 kg to 160 g.
+- Added rendered-mesh motion, moving-shot, both-alliance, delivery and thirty-ball collection/loaded-drive checks.
+- Added an optional F8 local state panel.
+
 ## 0.4.0
 
 Corrects net deployment, pumping, loaded motion, and shooting behavior against the team's 2026 source.

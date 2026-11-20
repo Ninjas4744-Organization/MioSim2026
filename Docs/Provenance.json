@@ -1,7 +1,7 @@
 {
   "schema": "ninjas4744.mosim-mod-provenance",
-  "version": "0.4.0",
-  "prepared_utc": "2026-11-20T02:30:11.857041+00:00",
+  "version": "0.5.1",
+  "prepared_utc": "2026-11-20T10:09:25.044933+00:00",
   "robot": {
     "team": 4744,
     "season": 2026,
@@ -37,11 +37,14 @@
     "robot_mass_kg": 62,
     "intake_stroke_m": 0.24,
     "hopper_stroke_m": 0.22946,
-    "actuator_force_limit_N": 120,
+    "actuator_force_limit_N": 350,
     "slide_speed_limit_mps": 0.16,
     "slide_acceleration_mps2": 1.8,
-    "net": "MoSim NetSolver with fixed, moving, and side lacing; no mesh scaling",
+    "net": "MoSim NetSolver with fixed, moving, and side lacing; no mesh scaling; 320 nodes at 0.0005 kg",
     "traction_force_limits_N": {
+      "intake_total": 80,
+      "indexer_total": 140,
+      "tray_total": 35,
       "intake_per_piece": 35,
       "storage_per_piece": 12,
       "indexer_per_piece": 120,
@@ -68,10 +71,16 @@
     "travel_regression": true,
     "bundle_load": true,
     "retention_regression": true,
-    "retention_bundle_sha256": "d5fdbb4c1773cfdb69cccd7ca23a4e5ddbdc91f4864b5295358b048a20d9a964",
-    "retention_runtime_dll_sha256": "facba85c3663271fca4235ba54632bdaacb51f439e36f0391f3803316645e518",
+    "retention_bundle_sha256": "740c21b798a25115fbf556a23c249f52503e896624722c0846494d5de9e0ee8c",
+    "retention_runtime_dll_sha256": "1059af067a016b052389b570db93299f22c8cabc6b456c42daad121fe4a8bfb3",
     "systems_regression": true,
     "jam_regression": true,
+    "moving_shots": true,
+    "side_delivery": true,
+    "both_alliances": true,
+    "full_hopper": true,
+    "short_control_pulses": true,
+    "native_game": "Preview loaded in installed v26.6; user stopped computer control with Escape before final native playtest",
     "shooting": [
       {
         "range": 2.25,
@@ -104,18 +113,19 @@
     "Slide strokes and contact proxies are simulation estimates",
     "Fuel storage uses per-fuel one-way contact proxies for the intake floor and inlet",
     "Shot range and throughput have not been fitted to real match data",
-    "Release measurements cover alliance-side stationary shots and the recorded loading/drive fixtures",
+    "Release measurements cover stationary and moving shots, both alliances, side deliveries, and recorded loading/drive fixtures",
+    "Final native playtest was not completed after the user stopped computer control",
     "No CAN current, vision estimation, autonomous paths, or climbing simulation; RSL remains visually static"
   ],
   "publication": "Local repository and local game installation; no push or Workshop publication performed",
   "file_hashes": {
     "Models/robot.blend": "cac941db005771933d8200ddb6559ba0a027e6a90e252dbd5d22f3724574aec1",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "248a49e06a669f053401c42f09f9e87b0834dddb694a80020e4a8e96503fe043",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "eb5e750fef424debad4b22d732b832f514ab0192ad4454c86cc8c2f7bbd1da61",
     "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs": "023084e2e478eaa8287f9b888730bf3f5b25f98cc20236aa3580a0fbf7abe83c",
     "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744DriveController.cs": "dc66e3bb2c9f2a1ec93648a6200ea005768575eca88435f1d32a0f975c81f138",
     "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetRig.cs": "86d09817c39bcbe6f94dc3627df61c21bb6cfe56b2ca4a3c26db2e22f2466ef2",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744ShooterContact.cs": "eb9ce8d74412a65d97fda39784a8f9bfb416ec3c9bfe529ed458beefa4c4b503",
-    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "6a7dc1040b239d812e6bb4a810f0285f3f514878575c477ed710b8db07bb60d1",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744ShooterContact.cs": "c7ed188ad5c0d7fae9ced6794352078514b38b97bd14c787ecb62e776148bbf9",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "cc31d0b45db06870c7af47a05387d8aacbf5bdd7f6c13b2c1d6465b0d6a8e62b",
     "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Model/Turbo4744.fbx": "094cccdb3c2d2073889044b276008ff60478e4d6d705f488572a13b274fd6a3b"
   }
 }

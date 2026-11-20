@@ -222,7 +222,7 @@ public static class Turbo4744Diagnostics
                     if(local.z<.42f && local.y>.16f && Mathf.Abs(local.x)<.35f) report.pickedUp=true;
                 }
             }
-            else if(elapsed<13f)
+            else if(elapsed<24f)
             {
                 if(phase<3 && elapsed>9.4f)
                 {
@@ -232,7 +232,9 @@ public static class Turbo4744Diagnostics
                     phase=3;
                 }
                 Drive(0,0,0,DriveController.DrivePerspective.RobotRelative);
-                Press(Key.Q);
+                // Exercise the actual hard-pump request after automatic soft
+                // pumping begins. A collected ball must travel the whole tray.
+                if(elapsed>10.2f&&elapsed<10.35f)Press(Key.Q,Key.V);else Press(Key.Q);
                 foreach(var piece in fuel.Where(f=>f))
                 {
                     report.maxFuelSpeed=Mathf.Max(report.maxFuelSpeed,piece.velocity.magnitude);
@@ -244,12 +246,12 @@ public static class Turbo4744Diagnostics
                     }
                 }
             }
-            else if(elapsed<14f)
+            else if(elapsed<25f)
             {
                 Press();
                 ForceEnabled(false);
             }
-            else if(elapsed<16.5f)
+            else if(elapsed<27.5f)
             {
                 if(phase<4)
                 {

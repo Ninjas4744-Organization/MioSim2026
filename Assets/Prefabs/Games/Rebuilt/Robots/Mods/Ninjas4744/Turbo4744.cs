@@ -4,6 +4,7 @@ using MoSimLib;
 using RobotFramework.Components;
 using RobotFramework.Controllers.Drivetrain;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Ninjas4744.MoSim
 {
@@ -24,16 +25,17 @@ namespace Ninjas4744.MoSim
         public BoxCollider roofCollider,feedHold,intakeHold;
         [Header("Linear travel adapter")]
         public float intakeTravel=.24f,hopperTravel=.22946f,netFixedZ=.0036175f;
-        public float railMaxSpeed=.16f,railAcceleration=1.8f,railMaxForce=120f;
+        public float railMaxSpeed=.16f,railAcceleration=1.8f,railMaxForce=350f;
         [Header("Rotor-to-contact speed adapters")]
         public float intakeRpm=1300f,floorRpm=1600f,acceleratorRpm=2200f;
         public float intakeHoldFraction=.2f;
         public float shooterMotorToWheelRatio=.354f;
-        public AnimationCurve shotWheelCorrection=new AnimationCurve(new Keyframe(0,1.008f),new Keyframe(2.25f,1.008f),new Keyframe(3,1),new Keyframe(4,.985f),new Keyframe(5,.935f),new Keyframe(6,.845f),new Keyframe(8,.845f));
         [Tooltip("No CAN current is simulated. Stalled fuel flow stands in for the team's 82 A accelerator jam trigger.")]
         public float jamFlowTimeout=.85f;
         public float flywheelRampRpmPerSecond=15000f,feedTolerance=.02f,headingToleranceDegrees=3f;
         public bool movingShotCompensation=true;
+        [Tooltip("MoSim tuning for the team's Look Hub heading-rate feedforward path (source tunable defaults to zero).")]
+        public float lookHubFeedForward=1f;
         public bool Deployed { get; private set; }
         public bool Feeding { get; private set; }
         public bool Collecting=>_intakeRunning&&!_reverse;
@@ -50,6 +52,10 @@ namespace Ninjas4744.MoSim
         public ShootState ShootingState { get; private set; }=ShootState.Idle;
         public int CompletedHardPumpCycles { get; private set; }
         public int JamRecoveries { get; private set; }
+        public bool AutomaticDelivery { get; private set; }
+        public bool AimReady { get; private set; }
+        public Vector3 AimTarget { get; private set; }
+        public float FlightTime { get; private set; }
 
         private Rigidbody _body;
         private DriveController _drive;
@@ -62,11 +68,22 @@ namespace Ninjas4744.MoSim
         private float _lastFlowTime,_saveBegan,_reverseReady=-1;
         private ShootState _resumeShot;
         private Vector3 _previousVelocity;
+        private bool _automaticShot,_showStatus;
+        private int _controlTicks;
+        private float _nextStatus;
+        private float _previousAimAngle,_aimRate;
+        private bool _hasAimAngle;
+        private InputActionMap _boundInputs;
+        private InputAction _statusInput;
+        private readonly System.Collections.Generic.HashSet<string> _presses=new System.Collections.Generic.HashSet<string>();
 
         private static readonly float[] Distances={0,2,2.25f,2.5f,2.75f,3,3.25f,3.5f,3.75f,4,4.25f,4.5f,4.75f,5,6};
         private static readonly float[] ShootRps={44.3f,52.8f,54.3f,55.3f,58.3f,59.8f,61.8f,63.3f,65.3f,66.3f,71.3f,72.3f,75.05f,77.8f,93.2f};
         private static readonly float[] FlightDistances={0,2,2.5f,3,3.5f,4,4.5f,5,5.5f,6};
         private static readonly float[] FlightSeconds={0,.82f,.91f,.92f,1.12f,1.29f,1.28f,1.44f,1.57f,1.7f};
+        private static readonly float[] ContactDistances={2.25f,2.5f,3f,4f,4.5f,5f};
+        private static readonly float[] ContactRpms={1162.4f,1184f,1270.2f,1387.1f,1474.2f,1545.1f};
+        private static readonly float[] ContactFlightSeconds={.658f,.72f,.847f,1.006f,1.105f,1.161f};
         public static float TeamShootRps(float distance)=>Mathf.Clamp(Interpolate(distance,Distances,ShootRps),0,95);
         public static float TeamFlightTime(float distance)=>Interpolate(distance,FlightDistances,FlightSeconds);
         public static float TeamDeliveryRps(float elapsed)=>Mathf.Clamp(58f-elapsed,55f,58f);
@@ -86,6 +103,11 @@ namespace Ninjas4744.MoSim
             Scheduler.AddSubsystems(ReadControls,AimAndSpin,Feed,MoveRails,MonitorFlow);
             Scheduler.AddProtectedSystem(Disabled);
             Scheduler.AddLateRecursive(AnimateRoller);
+            _showStatus=System.Environment.GetEnvironmentVariable("TURBO4744_STATUS")=="1";
+            BindInputs();
+            _statusInput=new InputAction("Turbo status",InputActionType.Button,"<Keyboard>/f8");
+            _statusInput.performed+=ToggleStatus;_statusInput.Enable();
+            Debug.Log("[Turbo 4744 v0.5.1] Zone-selected shooting and physical rail control enabled.");
         }
         protected override void LateInit()
         {
@@ -119,8 +141,10 @@ namespace Ninjas4744.MoSim
         private bool ActiveShot=>ShootingState!=ShootState.Idle&&ShootingState!=ShootState.ReverseBalls;
         private bool Delivery=>ShootingState==ShootState.PrepareDelivery||ShootingState==ShootState.Delivery||ShootingState==ShootState.SaveOuttakeBack&&_resumeShot==ShootState.Delivery;
         private bool Preparing=>ShootingState==ShootState.PrepareHub||ShootingState==ShootState.PrepareDelivery;
-        private void PrepareShot(bool delivery,bool manual=false)
+        private void PrepareShot(bool delivery,bool manual=false,bool automatic=false)
         {
+            _automaticShot=automatic;
+            _hasAimAngle=false;_aimRate=0;
             _manual=manual;_spinning=false;_autoSoftIssued=false;_shotBegan=Time.fixedTime;_intakeRunning=true;
             if(!Deployed)Open();
             ShootingState=delivery?ShootState.PrepareDelivery:ShootState.PrepareHub;
@@ -131,23 +155,36 @@ namespace Ninjas4744.MoSim
         }
         private void ReadControls()
         {
+            BindInputs();
+            _controlTicks++;
             if(_enableBegan<0)_enableBegan=Time.fixedTime;
             bool intake=IntakeAction.IsPressed(),shoot=OuttakeAction.IsPressed(),pass=AutoPass.IsPressed();
             bool pump=RobotSpecial.IsPressed(),stow=StowAction.IsPressed(),manual=ManualShoot.IsPressed();
+            // Preserve performed edges even if a quick keyboard/trigger press
+            // begins and ends between render/physics polls.
+            bool intakePress=_presses.Remove("Intake"),shootPress=_presses.Remove("AutoShoot"),passPress=_presses.Remove("AutoPass");
+            bool pumpPress=_presses.Remove("RobotSpecial1"),stowPress=_presses.Remove("Stow");
             _reverse=FaceDown.IsPressed();
+            // Triggers.configureTriggers uses alliance-relative X with a
+            // 3.6 / 5.6 m hysteresis band across the trench and bump.
+            float allianceX=8.27f-(Alliance==MoSimCore.Enums.Alliance.Blue?1:-1)*_body.position.x;
+            if(allianceX<3.6f)AutomaticDelivery=false;
+            else if(allianceX>5.6f)AutomaticDelivery=true;
+            if(_automaticShot&&ActiveShot&&Delivery!=AutomaticDelivery)
+                PrepareShot(AutomaticDelivery,false,true);
             if(!_stowRequested&&PumpMode==RailState.Closed&&Time.fixedTime-_enableBegan>=.5f)Open();
-            if(intake&&!_lastIntake||IntakeAction.WasTriggered())
+            if(intakePress||intake&&!_lastIntake||IntakeAction.WasTriggered())
             {
                 bool reverse=ShootingState==ShootState.Hub||ShootingState==ShootState.Delivery;
                 StopShot();if(reverse){ShootingState=ShootState.ReverseBalls;_reverseReady=-1;}
                 Open();_intakeRunning=true;
             }
-            if(shoot&&!_lastShoot||OuttakeAction.WasTriggered()){if(ActiveShot&&!Delivery&&!_manual)StartHardPumping();else PrepareShot(false);}
-            if(pass&&!_lastPass||AutoPass.WasTriggered()){if(ActiveShot&&Delivery)StartHardPumping();else PrepareShot(true);}
+            if(shootPress||shoot&&!_lastShoot||OuttakeAction.WasTriggered()){if(ActiveShot&&!_manual)StartHardPumping();else PrepareShot(AutomaticDelivery,false,true);}
+            if(passPress||pass&&!_lastPass||AutoPass.WasTriggered()){if(ActiveShot&&Delivery)StartHardPumping();else PrepareShot(true);}
             if(manual&&!_lastManual)PrepareShot(false,true);
             if(!manual&&_lastManual&&_manual)StopShot();
-            if(pump&&!_lastPump||RobotSpecial.WasTriggered())StartHardPumping();
-            if(stow&&!_lastStow||StowAction.WasTriggered()){StopShot();PumpMode=RailState.Closed;Deployed=false;_stowRequested=true;_pendingHard=_pendingSoft=false;}
+            if(pumpPress||pump&&!_lastPump||RobotSpecial.WasTriggered())StartHardPumping();
+            if(stowPress||stow&&!_lastStow||StowAction.WasTriggered()){StopShot();PumpMode=RailState.Closed;Deployed=false;_stowRequested=true;_pendingHard=_pendingSoft=false;}
             _lastIntake=intake;_lastShoot=shoot;_lastPass=pass;_lastPump=pump;_lastStow=stow;_lastManual=manual;
             if(_pendingHard&&IntakeEncoderRotations>=10.5f){_pendingHard=false;StartHardPumping();}
             if(_pendingSoft&&IntakeEncoderRotations>=10.5f){_pendingSoft=false;Soft();}
@@ -158,9 +195,11 @@ namespace Ninjas4744.MoSim
             acceleration.y=0;_previousVelocity=_body.velocity;
             TargetShooterMotorRps=TargetShooterRpm=0;
             TargetAcceleratorMotorRps=0;
+            AimReady=false;
             if(ActiveShot&&!_reverse)
             {
-                // MoSim's hub/pass actions select the team's HUB/DELIVERY mode.
+                // Standard shoot selects the team's zone-dependent mode;
+                // AutoPass remains an explicit delivery override.
                 if(Delivery)
                 {
                     float ownSign=Alliance==MoSimCore.Enums.Alliance.Blue?1:-1;
@@ -169,25 +208,41 @@ namespace Ninjas4744.MoSim
                 }
                 else autoAim.SetDefaultMap(DefaultMap.Hub);
                 Vector3 target=autoAim.GetCurrentTarget(),virtualTarget=target;
+                // ShootCalculator uses the swerve's field-relative chassis
+                // translation. Feeding back muzzle angular velocity here also
+                // feeds heading acceleration into the heading-rate controller.
+                Vector3 launchVelocity=_body.velocity;launchVelocity.y=0;
                 if(movingShotCompensation&&!_manual)
                     for(int i=0;i<5;i++)
                     {
                         Vector3 delta=virtualTarget-_body.position;delta.y=0;
-                        virtualTarget=target-_body.velocity*TeamFlightTime(delta.magnitude);
+                        FlightTime=Delivery?DeliveryFlightTime(delta.magnitude):MoSimHubFlightTime(delta.magnitude);
+                        virtualTarget=target-launchVelocity*FlightTime;
                     }
+                AimTarget=target;
                 Vector3 offset=virtualTarget-_body.position;offset.y=0;
                 ShotDistance=_manual?3:offset.magnitude;
-                if(!_manual){autoAim.SetCustomTarget(virtualTarget);autoAim.Aim();}
+                if(!_manual)
+                {
+                    autoAim.SetCustomTarget(virtualTarget);
+                    Vector3 direction=virtualTarget-muzzle.position;
+                    float angle=Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg;
+                    float rate=_hasAimAngle?Mathf.DeltaAngle(_previousAimAngle,angle)/Time.fixedDeltaTime:0;
+                    _aimRate=Mathf.Lerp(_aimRate,Mathf.Clamp(rate,-360,360),1-Mathf.Exp(-Time.fixedDeltaTime/.04f));
+                    _previousAimAngle=angle;_hasAimAngle=true;
+                    autoAim.Aim(angle,Delivery?0:_aimRate*lookHubFeedForward);
+                }
                 Vector3 hubDelta=target-_body.position;hubDelta.y=0;
                 float tolerance=Delivery?3f:Mathf.Max(.2f,12f-1.9f*hubDelta.magnitude);
                 bool aligned=_manual||Mathf.Abs(autoAim.GetRotationError())<tolerance;
                 bool inRange=_manual||Delivery||ShotDistance>2f;
                 bool settled=_manual||Delivery||acceleration.magnitude<100;
+                AimReady=aligned&&inRange&&settled&&(_manual||Mathf.Abs(autoAim.GetRotationError())<Mathf.Min(tolerance,1.5f));
                 if(aligned&&inRange&&settled&&!_spinning){_spinning=true;_shotBegan=Time.fixedTime;}
                 if(_spinning)
                 {
                     TargetShooterMotorRps=Delivery?TeamDeliveryRps(Time.fixedTime-_shotBegan):TeamShootRps(ShotDistance);
-                    TargetShooterRpm=TargetShooterMotorRps*60*shooterMotorToWheelRatio*shotWheelCorrection.Evaluate(ShotDistance);
+                    TargetShooterRpm=Delivery?DeliveryWheelRpm(ShotDistance,TargetShooterMotorRps):MoSimHubWheelRpm(ShotDistance)*(TargetShooterMotorRps/TeamShootRps(ShotDistance))*(shooterMotorToWheelRatio/.354f);
                     TargetAcceleratorMotorRps=ShootingState==ShootState.SaveOuttakeBack?0:80;
                 }
                 MoveSpeedMultiplier=!Delivery&&!_manual?.3f:1;
@@ -217,7 +272,10 @@ namespace Ninjas4744.MoSim
         }
         private void Feed()
         {
-            Feeding=(ShootingState==ShootState.Hub||ShootingState==ShootState.Delivery)&&!_reverse;
+            // A latched shoot state must not continue ejecting fuel during a
+            // large re-aim or zone transition in the simulator.
+            bool speedReady=Mathf.Abs(CurrentShooterRpm-TargetShooterRpm)<=Mathf.Max(10,TargetShooterRpm*feedTolerance);
+            Feeding=(ShootingState==ShootState.Hub||ShootingState==ShootState.Delivery)&&AimReady&&speedReady&&!_reverse;
             TargetIntakeMotorRps=_intakeRunning?90:0;
             bool backing=ShootingState==ShootState.SaveOuttakeBack||ShootingState==ShootState.ReverseBalls;
             TargetIndexerMotorRps=backing?-20:Feeding?78:0;
@@ -227,7 +285,17 @@ namespace Ninjas4744.MoSim
             if(intakeContact)intakeContact.SetRpm(Deployed?intakeRpm*TargetIntakeMotorRps/90f:0);
             SetRollers(floorRollers,-floorRpm*TargetIndexerMotorRps/78f);
             if(indexerContact)indexerContact.SetRpm(floorRpm*TargetIndexerMotorRps/78f);
-            if(storageContact)storageContact.SetRpm(floorRpm*TargetIndexerMotorRps/78f);
+            if(storageContact)
+            {
+                // The hopper is not a powered conveyor on the real robot.
+                // Transfer here represents contact with the retracting tray:
+                // its speed follows the measured rail, rather than an invisible
+                // high-speed belt carrying every stored ball to the shooter.
+                var hb=hopperRail.GetComponent<Rigidbody>();
+                float railSpeed=(Quaternion.Inverse(_body.rotation)*(hb.velocity-_body.GetPointVelocity(hb.position))).z;
+                float transferSpeed=Feeding?Mathf.Max(0,-railSpeed):backing||_reverse?-.18f:0;
+                storageContact.SetRpm(transferSpeed*60/(2*Mathf.PI*storageContact.wheelRadius));
+            }
         }
         private void MonitorFlow()
         {
@@ -297,7 +365,7 @@ namespace Ninjas4744.MoSim
         {
             velocity=Mathf.MoveTowards(velocity,desired,railAcceleration*Time.fixedDeltaTime);
             joint.targetVelocity=new Vector3(0,0,-velocity);
-            joint.zDrive=new JointDrive{positionSpring=0,positionDamper=600,maximumForce=railMaxForce};
+            joint.zDrive=new JointDrive{positionSpring=0,positionDamper=1800,maximumForce=railMaxForce};
         }
         private float Extension(ConfigurableJoint joint,Vector3 closed)=>
             (Quaternion.Inverse(_body.rotation)*(joint.GetComponent<Rigidbody>().position-_body.position)).z-closed.z;
@@ -313,11 +381,12 @@ namespace Ninjas4744.MoSim
             joint.linearLimit=new SoftJointLimit{limit=travel*.5f,contactDistance=.005f,bounciness=0};
             joint.linearLimitSpring=new SoftJointLimitSpring();joint.projectionMode=JointProjectionMode.PositionAndRotation;
             joint.projectionDistance=.002f;joint.projectionAngle=.5f;joint.enableCollision=false;
-            joint.zDrive=new JointDrive{positionSpring=0,positionDamper=600,maximumForce=railMaxForce};
+            joint.zDrive=new JointDrive{positionSpring=0,positionDamper=1800,maximumForce=railMaxForce};
         }
         private void Disabled()
         {
             if(MoSimCore.BaseClasses.GameManagement.BaseGameManager.Instance.RobotState!=MoSimCore.Enums.RobotState.Disabled)return;
+            _presses.Clear();
             SetRollers(intakeRollers,0);SetRollers(floorRollers,0);SetRollers(shooterRollers,0);SetRollers(acceleratorRollers,0);
             if(flywheels!=null)foreach(var flywheel in flywheels)flywheel.SetRpm(0);
             if(shooterContact)shooterContact.Stop();
@@ -333,6 +402,78 @@ namespace Ninjas4744.MoSim
         {
             if(intakeRollerVisual&&intakeRollers.Length>0)
                 intakeRollerVisual.Rotate(transform.right,intakeRollers[0].realRpm*6*Time.deltaTime,UnityEngine.Space.World);
+        }
+        // Delivery is calibrated independently from the elevated hub. Applying
+        // the hub's wheel correction to a floor pass severely shortens it.
+        // Keep the team's 58 -> 55 motor-RPS sweep at the command boundary.
+        private static float DeliverySpeed(float distance)
+        {
+            const float angle=58f*Mathf.Deg2Rad;
+            float d=Mathf.Max(.5f,distance-.20f),height=.66f;
+            return Mathf.Sqrt(9.81f*d*d/(2*Mathf.Cos(angle)*Mathf.Cos(angle)*(height+d*Mathf.Tan(angle))));
+        }
+        public static float DeliveryWheelRpm(float distance,float motorRps)=>DeliverySpeed(distance)*60f/(2*Mathf.PI*.05f)*(motorRps/58f)*1.02f;
+        public static float DeliveryFlightTime(float distance)=>Mathf.Max(.1f,distance)/(DeliverySpeed(distance)*Mathf.Cos(58f*Mathf.Deg2Rad));
+        public static float MoSimHubWheelRpm(float distance)
+        {
+            if(distance<2.25f)return TeamShootRps(distance)*60*.354f*1.008f;
+            if(distance<=5)return Interpolate(distance,ContactDistances,ContactRpms);
+            // Preserve the measured five-metre calibration, then extend its
+            // range using the physical release angle instead of a flat rotor
+            // correction that saturates on long moving virtual targets.
+            return ContactRpms[5]+HubBallisticRpm(distance)-HubBallisticRpm(5);
+        }
+        private static float HubBallisticRpm(float distance)
+        {
+            float d=Mathf.Max(.5f,distance-.20f),a=58f*Mathf.Deg2Rad;
+            return Mathf.Sqrt(9.81f*d*d/(2*Mathf.Cos(a)*Mathf.Cos(a)*Mathf.Max(.1f,d*Mathf.Tan(a)-1.278f)))*60/(2*Mathf.PI*.05f);
+        }
+        private static float HubBallisticTime(float rpm)
+        {
+            float vy=rpm*(2*Mathf.PI*.05f/60)*Mathf.Sin(58f*Mathf.Deg2Rad);
+            return (vy+Mathf.Sqrt(Mathf.Max(0,vy*vy-2*9.81f*1.278f)))/9.81f;
+        }
+        public static float MoSimHubFlightTime(float distance)=>distance<=5?Interpolate(distance,ContactDistances,ContactFlightSeconds):ContactFlightSeconds[5]+HubBallisticTime(MoSimHubWheelRpm(distance))-HubBallisticTime(ContactRpms[5]);
+        private void OnGUI()
+        {
+            if(!_showStatus)return;
+            var style=new GUIStyle(GUI.skin.box){alignment=TextAnchor.UpperLeft,fontSize=16};
+            GUI.Box(new Rect(12,180,370,132),"Turbo 4744 v0.5.1  |  "+ShootingState+"\n"+
+                "Target: "+(Delivery?"side delivery":"hub")+"  "+ShotDistance.ToString("F1")+" m  |  "+(AimReady?"aligned":"aligning")+"\n"+
+                "Rail: "+PumpMode+"  "+IntakeEncoderRotations.ToString("F1")+" / 11  |  cycles "+CompletedHardPumpCycles+"\n"+
+                "Speed: "+(_body?_body.velocity.magnitude:0).ToString("F1")+" m/s  |  feed "+Feeding+"\n"+
+                "State: "+MoSimCore.BaseClasses.GameManagement.BaseGameManager.Instance.RobotState+"  |  controls "+_controlTicks,style);
+        }
+        protected override void Update()
+        {
+            base.Update();
+            if(_showStatus&&_body&&Time.unscaledTime>=_nextStatus)
+            {
+                _nextStatus=Time.unscaledTime+1;
+                Debug.Log("[Turbo status] state="+ShootingState+" pump="+PumpMode+" ticks="+_controlTicks+
+                    " position="+_body.position.ToString("F3")+" velocity="+_body.velocity.ToString("F3")+
+                    " rail="+IntakeEncoderRotations.ToString("F2")+" target="+AimTarget.ToString("F3")+
+                    " error="+autoAim.GetRotationError().ToString("F2")+" feed="+Feeding+
+                    " rpm="+CurrentShooterRpm.ToString("F0")+" step="+Time.fixedDeltaTime.ToString("F5"));
+            }
+        }
+        private void BindInputs()
+        {
+            if(_boundInputs==InputActionMap)return;
+            if(_boundInputs!=null)_boundInputs.actionTriggered-=InputPerformed;
+            _boundInputs=InputActionMap;
+            if(_boundInputs!=null)_boundInputs.actionTriggered+=InputPerformed;
+        }
+        private void InputPerformed(InputAction.CallbackContext context)
+        {
+            if(context.performed)_presses.Add(context.action.name);
+        }
+        private void ToggleStatus(InputAction.CallbackContext context)=>_showStatus=!_showStatus;
+        private void OnDisable()
+        {
+            if(_boundInputs!=null)_boundInputs.actionTriggered-=InputPerformed;
+            _boundInputs=null;_presses.Clear();
+            if(_statusInput!=null){_statusInput.performed-=ToggleStatus;_statusInput.Dispose();_statusInput=null;}
         }
         private static void SetRollers(InteractionRoller[] rollers,float rpm){foreach(var roller in rollers)roller.SetRpm(rpm);}
         public static float Interpolate(float x,float[] xs,float[] ys)

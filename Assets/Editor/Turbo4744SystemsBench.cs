@@ -30,6 +30,10 @@ public static class Turbo4744SystemsBench
     [Serializable] private sealed class Result
     {
         public string kind;
+        public string alliance;
+        public int delivered;
+        public float closedVisual,openedVisual,stowedVisual;
+        public float visualMin=100,visualMax=-100;
         public float range,wheelRatio,peakSpeed,forwardSpeed,reverseSpeed,strafeSpeed,maxTilt,minPump=1,maxPump;
         public int payload,payloadAtStart,payloadAfterDrive,launched,scored,netSolvers,hardPumpCycles,jamRecoveries;
         public float minNetY,maxNetY,netSpan,closedNetSpan,openedNetSpan,backoffSeconds;
@@ -54,7 +58,7 @@ public static class Turbo4744SystemsBench
     {
         public Rigidbody body;
         public Vector3 previous;
-        public bool launched,crossed,scored;
+        public bool launched,crossed,scored,landed;
         public float began;
     }
     private static readonly string Out=Path.GetFullPath(Application.dataPath+"/../BuildArtifacts");
@@ -73,12 +77,14 @@ public static class Turbo4744SystemsBench
     private static int index,sample;
     private static float began;
     private static double wall;
-    private static bool loaded,capturedClosed,capturedOpen,capturedLoaded;
+    private static bool loaded,capturedClosed,capturedOpen,capturedLoaded,capturedPumpOut,capturedPumpIn,pulseShoot,pulsePump;
     private static float intakeClosed,hopperClosed;
     private static Vector3 hub;
     private static readonly float[] Ranges={2.25f,3f,4f,4.5f,5f};
     private static string[] Args=>Environment.GetCommandLineArgs();
     private static bool Flag(string name)=>Args.Contains(name);
+    private static bool Matrix=>Flag("-turboMatrix");
+    private static bool RedCase=>Flag("-turboDelivery")?index>=4:Matrix&&index>=6;
     private static float Arg(string name,float fallback){int i=Array.IndexOf(Args,name);return i>=0?float.Parse(Args[i+1],CultureInfo.InvariantCulture):fallback;}
     private static float[] Ratios=>Flag("-turboRatios")?Args[Array.IndexOf(Args,"-turboRatios")+1].Split(',').Select(v=>float.Parse(v,CultureInfo.InvariantCulture)).ToArray():null;
     static Turbo4744SystemsBench(){EditorApplication.playModeStateChanged+=Mode;}
@@ -107,11 +113,11 @@ public static class Turbo4744SystemsBench
         if(!SessionState.GetBool("Turbo.SystemsPending",false))return;
         if(state==PlayModeStateChange.EnteredPlayMode)
         {
-            report=new Report{label=Flag("-turboJam")?"jam":Flag("-turboBefore")?"before":Ratios!=null?"calibration":"after"};
+            report=new Report{label=Flag("-turboPulse")?"pulse-after":Flag("-turboDelivery")?"delivery-after":Flag("-turboMoving")?"moving-after":Flag("-turboCrowded")?(Flag("-turboBefore")?"crowded-before":"crowded-after"):Matrix?(Flag("-turboBefore")?"matrix-before":"matrix-after"):Flag("-turboJam")?"jam":Flag("-turboBefore")?"before":Ratios!=null?"calibration":"after"};
             Time.timeScale=Flag("-turboFast")?3f:1f;
             report.physicsStep=Time.fixedDeltaTime;report.simulationSpeed=Time.timeScale;
             prefab=null;bundle=null;
-            index=Flag("-turboShotsOnly")||Flag("-turboJam")?2:0;robot=null;wall=EditorApplication.timeSinceStartup;
+            index=Flag("-turboCrowded")?1:Flag("-turboPulse")||Matrix||Flag("-turboMoving")||Flag("-turboDelivery")||Flag("-turboShotsOnly")||Flag("-turboJam")?2:0;robot=null;wall=EditorApplication.timeSinceStartup;
             EditorApplication.update+=Tick;Application.logMessageReceived+=Log;
         }
         if(state==PlayModeStateChange.EnteredEditMode)
@@ -126,6 +132,7 @@ public static class Turbo4744SystemsBench
     {
         if(robot&&(type==LogType.Error||type==LogType.Exception)&&report.errors.Count<20)report.errors.Add(text+"\n"+stack);
     }
+    private static void Enabled(bool enabled)=>typeof(BaseTimerManager).GetProperty("CurrentRobotState").SetValue(timer,enabled?RobotState.Enabled:RobotState.Disabled);
     private static void Press(params Key[] keys){InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));InputSystem.Update();}
     private static void AddBall(GameObject go)
     {
@@ -134,21 +141,23 @@ public static class Turbo4744SystemsBench
     }
     private static void Spawn()
     {
+        hub=Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).First(t=>t.gameObject.layer==LayerMask.NameToLayer("AutoAngleNodes")&&t.name.ToLower().Contains(RedCase?"red":"blue")&&t.name.ToLower().Contains("hub")).position;
         var position=new Vector3(0,.04f,-2.7f);var rotation=Quaternion.identity;
-        result=new Result{kind=Flag("-turboJam")?"jam":index<2?"drive":"shoot",payload=index==1?20:0};
+        result=new Result{kind=Flag("-turboJam")?"jam":index<2?"drive":"shoot",payload=index==1?(Flag("-turboCrowded")?30:20):0};
         if(index>=2)
         {
-            result.range=Arg("-turboRange",Flag("-turboBefore")?3f:Ranges[index-2]);
+            result.range=Arg("-turboRange",Flag("-turboBefore")?3f:Matrix?((index-2)%4<2?2.5f:4f):Flag("-turboPulse")||Flag("-turboMoving")?3f:Flag("-turboDelivery")?7f:Ranges[index-2]);
             // All firing positions use the clear alliance side of the hub.
             // Neutral-side fixtures hit the physical back panel before the
             // scoring opening and do not measure release calibration.
-            Vector3 away=new Vector3(.8f,0,.6f);
+            Vector3 away=new Vector3(RedCase?-.8f:.8f,0,(Matrix||Flag("-turboMoving"))&&index%2==1?-.6f:.6f);
             position=hub+away*result.range;position.y=.04f;
+            if(Flag("-turboDelivery"))position=new Vector3(RedCase?(index==4?2:0):(index==2?-2:0),.04f,index%2==0?2.5f:-2.5f);
             Vector3 towards=hub-position;towards.y=0;
             rotation=Quaternion.Euler(0,Mathf.Atan2(towards.x,towards.z)*Mathf.Rad2Deg+210,0);
         }
         robot=Object.Instantiate(prefab,position,rotation,Object.FindFirstObjectByType<RobotSpawnController>().transform).GetComponent<Turbo4744>();
-        robot.SetAlliance(Alliance.Blue);body=robot.GetComponent<Rigidbody>();
+        robot.SetAlliance(RedCase?Alliance.Red:Alliance.Blue);result.alliance=robot.Alliance.ToString();body=robot.GetComponent<Rigidbody>();
         input=robot.gameObject.AddComponent<Turbo4744BenchDriver>();input.drive=robot.GetComponent<DriveController>();
         intakeClosed=robot.intakeRail.transform.localPosition.z;hopperClosed=robot.hopperRail.transform.localPosition.z;
         robot.shooterMotorToWheelRatio=Arg("-turboWheelRatio",robot.shooterMotorToWheelRatio);
@@ -177,9 +186,12 @@ public static class Turbo4744SystemsBench
                 box.excludeLayers=~LayerMask.GetMask("GamePiece1","GamePiece2","GamePieceAlt");jamFixture.Add(wall);
             }
         }
-        began=Time.time;loaded=capturedClosed=capturedOpen=capturedLoaded=false;sample=-1;report.cases.Add(result);
+        began=Time.time;loaded=capturedClosed=capturedOpen=capturedLoaded=capturedPumpOut=capturedPumpIn=pulseShoot=pulsePump=false;sample=-1;report.cases.Add(result);
         result.netSolvers=robot.GetComponentsInChildren<NetSolver>().Length;
         result.netScaleOne=robot.roofNet.localScale==Vector3.one;
+        // Hold the initial cloth measurement disabled. A slow first editor
+        // frame can otherwise arrive after the real 0.5 s auto-open command.
+        if(index==0)Enabled(false);
     }
     private static void Measure(float t)
     {
@@ -208,6 +220,12 @@ public static class Turbo4744SystemsBench
         if(backing&&backoffBegan<0)backoffBegan=t;
         if(backing&&robot.TargetIndexerMotorRps==-20&&robot.TargetAcceleratorMotorRps==0)result.backoffSamples++;
         if(!backing&&backoffBegan>=0){result.backoffSeconds=t-backoffBegan;backoffBegan=-1;}
+        var visual=robot.intakeRail.GetComponentsInChildren<MeshFilter>().First(m=>m.name=="Intake_Geometry");
+        float visualZ=robot.transform.InverseTransformPoint(visual.transform.TransformPoint(visual.sharedMesh.bounds.center)).z;
+        if(t>6.1f&&t<11.5f){result.visualMin=Mathf.Min(result.visualMin,visualZ);result.visualMax=Mathf.Max(result.visualMax,visualZ);}
+        if(t<.4f)result.closedVisual=visualZ;
+        if(t>2.4f&&t<2.6f)result.openedVisual=visualZ;
+        if(t>12f)result.stowedVisual=visualZ;
         result.peakSpeed=Mathf.Max(result.peakSpeed,new Vector2(body.velocity.x,body.velocity.z).magnitude);
         float tilt=Quaternion.Angle(body.rotation,Quaternion.Euler(0,body.rotation.eulerAngles.y,0));
         result.maxTilt=Mathf.Max(result.maxTilt,tilt);
@@ -220,7 +238,10 @@ public static class Turbo4744SystemsBench
         }
         if(t>6.1f&&t<11.5f)
         {
-            float extension=robot.transform.InverseTransformPoint(robot.intakeRail.GetComponent<Rigidbody>().position).z-intakeClosed;
+            // EditorApplication.update can observe a rendered chassis transform
+            // one physics step behind its Rigidbody. Compare both bodies in the
+            // same physics frame, as the actual rail controller does.
+            float extension=(Quaternion.Inverse(body.rotation)*(robot.intakeRail.GetComponent<Rigidbody>().position-body.position)).z-intakeClosed;
             result.minPump=Mathf.Min(result.minPump,extension);result.maxPump=Mathf.Max(result.maxPump,extension);
         }
         foreach(var ball in balls.Where(b=>b.body))
@@ -242,6 +263,12 @@ public static class Turbo4744SystemsBench
                 Vector3 hit=Vector3.Lerp(ball.previous,p,f);Vector3 miss=hit-hub;miss.y=0;
                 result.shots.Add("Landing "+balls.IndexOf(ball)+" error "+miss.magnitude.ToString("F3")+" point "+hit.ToString("F3")+" flight "+(t-ball.began).ToString("F3"));
                 ball.crossed=true;
+            }
+            if(Flag("-turboDelivery")&&ball.launched&&!ball.landed&&ball.previous.y>.10f&&p.y<=.10f&&ball.body.velocity.y<0)
+            {
+                ball.landed=true;Vector3 delta=p-robot.AimTarget;delta.y=0;
+                if(delta.magnitude<1.25f&&Mathf.Abs(p.x)<8.15f&&Mathf.Abs(p.z)<3.95f)result.delivered++;
+                result.shots.Add("Pass landing "+balls.IndexOf(ball)+" error "+delta.magnitude.ToString("F3")+" point "+p.ToString("F3"));
             }
             ball.previous=p;
         }
@@ -273,7 +300,7 @@ public static class Turbo4744SystemsBench
         var rt=new RenderTexture(960,720,24,RenderTextureFormat.ARGB32);camera.targetTexture=rt;camera.Render();
         RenderTexture.active=rt;var tex=new Texture2D(960,720,TextureFormat.RGBA32,false);
         tex.ReadPixels(new Rect(0,0,960,720),0,0);tex.Apply();Directory.CreateDirectory(Out);
-        File.WriteAllBytes(Out+"/Turbo4744-v4-"+name+".png",tex.EncodeToPNG());
+        File.WriteAllBytes(Out+"/Turbo4744-v5-"+name+".png",tex.EncodeToPNG());
         camera.targetTexture=null;RenderTexture.active=null;Object.Destroy(rt);Object.Destroy(tex);Object.Destroy(camera.gameObject);
     }
     private static void Tick()
@@ -284,7 +311,7 @@ public static class Turbo4744SystemsBench
             if(!robot)
             {
                 if(EditorApplication.timeSinceStartup-wall<5||!BaseGameManager.Instance)return;
-                timer=BaseGameManager.Instance.GetComponent<BaseTimerManager>();timer.PauseTimer();
+                timer=BaseGameManager.Instance.GetComponent<BaseTimerManager>();timer.PauseTimer();Object.FindFirstObjectByType<RobotSpawnController>().StopAllCoroutines();
                 typeof(BaseTimerManager).GetProperty("CurrentRobotState").SetValue(timer,RobotState.Enabled);
                 foreach(var camera in Camera.allCameras)camera.enabled=false;
                 foreach(var old in Object.FindObjectsByType<RobotBase>(FindObjectsSortMode.None))old.gameObject.SetActive(false);
@@ -305,7 +332,20 @@ public static class Turbo4744SystemsBench
                 Debug.Log("TURBO_HUB_TARGET "+hub.ToString("F4"));
                 Spawn();return;
             }
-            float t=Time.time-began;Measure(t);input.vx=input.vy=input.omega=0;
+            float t=Time.time-began;Measure(t);
+            if(index==0&&!capturedClosed)
+            {
+                if(t<.3f)return;
+                result.closedNetSpan=result.netSpan;
+                var mesh=robot.intakeRail.GetComponentsInChildren<MeshFilter>().First(m=>m.name=="Intake_Geometry");
+                result.closedVisual=robot.transform.InverseTransformPoint(mesh.transform.TransformPoint(mesh.sharedMesh.bounds.center)).z;
+                Capture("closed");Capture("closed-top");capturedClosed=true;
+                began=Time.time;Enabled(true);return;
+            }
+            if(robot.PumpMode==Turbo4744.RailState.HardPumping){
+                if(!capturedPumpOut&&robot.IntakeEncoderRotations>10.9f){Capture("pump-extended");capturedPumpOut=true;}
+                if(!capturedPumpIn&&robot.IntakeEncoderRotations<8.2f){Capture("pump-retracted");capturedPumpIn=true;}
+            }input.vx=input.vy=input.omega=0;
             if(index<2)
             {
                 if(index==0&&t<.35f)Press();else if(t<1.8f)Press(Key.LeftShift);
@@ -315,34 +355,46 @@ public static class Turbo4744SystemsBench
                     if(index==1)
                     {
                         var fuel=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Games/Rebuilt/Fuel.prefab");
-                        foreach(float y in new[]{.27f,.425f})foreach(float z in new[]{.225f,.375f,.525f})
+                        foreach(float y in Flag("-turboCrowded")?new[]{.27f,.425f,.58f}:new[]{.27f,.425f})foreach(float z in new[]{.225f,.375f,.525f})
                             foreach(float x in z<.3f?new[]{-.075f,.075f}:new[]{-.225f,-.075f,.075f,.225f})
                                 AddBall(Object.Instantiate(fuel,robot.transform.TransformPoint(new Vector3(x,y,z)),Quaternion.identity));
                     }
                 }
-                if(index==0&&t>.3f&&!capturedClosed){result.closedNetSpan=result.netSpan;Capture("closed");Capture("closed-top");capturedClosed=true;}
                 if(index==0&&t>2.4f&&!capturedOpen){result.openedNetSpan=result.netSpan;Capture("opened");Capture("opened-top");capturedOpen=true;}
                 if(index==1&&t>3.2f&&!capturedLoaded){result.payloadAtStart=Retained();Capture("loaded");Capture("loaded-top");capturedLoaded=true;}
                 if(index==1&&t>9.2f&&t<10.2f)result.payloadAfterDrive=Retained();
-                if(t>=3.3f&&t<4.4f)input.vx=4.5f;
-                else if(t>=5.1f&&t<6.2f)input.vx=-4.5f;
-                else if(t>=6.8f&&t<7.8f)input.vy=3f;
-                else if(t>=8.2f&&t<9.2f)input.omega=120;
-                else if(t>=10.2f)Press(Key.Z);
+                if(t>=3.3f&&t<4.4f){if(Flag("-turboNativeDrive"))Press(Key.W);else input.vx=4.5f;}
+                else if(t>=5.1f&&t<6.2f){if(Flag("-turboNativeDrive"))Press(Key.S);else input.vx=-4.5f;}
+                else if(t>=6.8f&&t<7.8f){if(Flag("-turboNativeDrive"))Press(Key.D);else input.vy=3f;}
+                else if(t>=8.2f&&t<9.2f){if(Flag("-turboNativeDrive"))Press(Key.A);else input.omega=120;}
+                else if(t>=10.2f)Press(Key.Z);else if(t>=3.3f)Press();
             }
             else
             {
                 if(Flag("-turboJam")&&t>7)foreach(var obstacle in jamFixture)if(obstacle)Object.Destroy(obstacle);
-                if(t<1)Press();else if(t<2.2f)Press(Key.LeftShift);else if(t<3)Press();
-                else if(t>=6&&t<6.08f)Press(Key.K,Key.V);else Press(Key.K);
+                if(Flag("-turboPulse"))
+                {
+                    Press();
+                    if(t>=3&&!pulseShoot){Press(Key.K);Press();pulseShoot=true;}
+                    if(t>=6&&!pulsePump){Press(Key.K);Press();pulsePump=true;}
+                }
+                else if(t<1)Press();else if(t<2.2f)Press(Key.LeftShift);else if(t<3)Press();
+                else if(t>=6&&t<6.08f)Press(Key.K,Key.V);else if(Flag("-turboMoving")&&t>3.2f&&t<10)
+                {
+                    // Begin toward field centre. Starting toward the side wall
+                    // made the extended intake hit it during an accuracy test.
+                    bool inward=((int)((t-3.2f)/1.2f))%2==0;
+                    Press(Key.K,(index%2==0?inward:!inward)?Key.S:Key.W);
+                }
+                else Press(Key.K);
                 result.target=robot.autoAim.GetCurrentTarget();
             }
-            if(t<(index<2?12.5f:16f))return;
+            if(t<(index<2?12.5f:Flag("-turboMoving")?24f:16f))return;
             if(index>=2)foreach(var ball in balls.Where(b=>b.body&&!b.launched))
                 result.shots.Add("Remaining "+balls.IndexOf(ball)+" local "+robot.transform.InverseTransformPoint(ball.body.position).ToString("F3"));
             result.stowed=Mathf.Abs(robot.intakeRail.transform.localPosition.z-intakeClosed)<.035f&&Mathf.Abs(robot.hopperRail.transform.localPosition.z-hopperClosed)<.035f;
             Debug.Log("TURBO_SYSTEMS_CASE "+JsonUtility.ToJson(result));Press();Cleanup();index++;
-            if(Flag("-turboJam")?true:Ratios!=null?index>=2+Ratios.Length:Flag("-turboDriveOnly")?index>=2:Flag("-turboBefore")||Flag("-turboRange")?index>=3:index>=7)Finish();else Spawn();
+            if(Flag("-turboJam")?true:Flag("-turboPulse")?index>=3:Flag("-turboDelivery")?index>=6:Flag("-turboMoving")?index>=4:Flag("-turboCrowded")?index>=2:Matrix?index>=10:Ratios!=null?index>=2+Ratios.Length:Flag("-turboDriveOnly")?index>=2:Flag("-turboBefore")||Flag("-turboRange")?index>=3:index>=7)Finish();else Spawn();
         }
         catch(Exception error){report.errors.Add(error.ToString());Finish();}
     }
@@ -353,7 +405,7 @@ public static class Turbo4744SystemsBench
             (c.kind=="drive"?c.forwardSpeed>3.3f&&c.reverseSpeed>3.3f&&c.strafeSpeed>2.3f&&
                 (c.payload==0?c.closedNetSpan>.36f&&c.closedNetSpan<.41f&&c.openedNetSpan>.59f:c.payloadAtStart==c.payload&&c.payloadAfterDrive==c.payload)
                 :c.kind=="jam"?c.jamRecoveries>0&&c.backoffSamples>0&&c.backoffSeconds>.45f&&c.backoffSeconds<.6f&&c.scored==1
-                :c.scored>=7&&c.hardPumpCycles==3&&c.maxPump-c.minPump>.045f&&c.minPump>.145f&&c.maxPump<.245f));
+                :Flag("-turboDelivery")?c.delivered>=6:c.scored>=7&&c.hardPumpCycles==3&&c.maxPump-c.minPump>.045f&&c.minPump>.145f&&c.maxPump<.245f));
         Directory.CreateDirectory(Out);File.WriteAllText(Out+"/systems-"+report.label+".json",JsonUtility.ToJson(report,true));
         SessionState.SetInt("Turbo.SystemsExit",Flag("-turboStrict")&&!report.passed?1:0);EditorApplication.ExitPlaymode();
     }

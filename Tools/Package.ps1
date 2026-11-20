@@ -9,6 +9,8 @@ $bundle=Get-Content -LiteralPath (Join-Path $artifacts 'bundle-audit.json') -Raw
 $retention=Get-Content -LiteralPath (Join-Path $artifacts 'retention-after.json') -Raw|ConvertFrom-Json
 $systems=Get-Content -LiteralPath (Join-Path $artifacts 'systems-after.json') -Raw|ConvertFrom-Json
 $jam=Get-Content -LiteralPath (Join-Path $artifacts 'systems-jam.json') -Raw|ConvertFrom-Json
+$extra=@('systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json')|ForEach-Object {Get-Content -LiteralPath (Join-Path $artifacts $_) -Raw|ConvertFrom-Json}
+foreach($report in $extra){if(-not $report.passed){throw 'A moving, delivery, alliance or capacity check failed'}}
 $checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained')
 foreach($check in $checks){if(-not $physics.$check){throw ('Integration check failed: '+$check)}}
 if($physics.errors.Count -gt 0 -or -not $travel.passed -or -not $bundle.passed -or -not $retention.passed -or -not $systems.passed -or -not $jam.passed){throw 'Verification reports are not passing. Run Build, Test, Travel, Retention, Systems, and Jam before packaging.'}
@@ -17,7 +19,7 @@ $platform=Join-Path $projectRoot 'BuiltMods\rebuilt_ninjas_4744_turbo_2026\stand
 $manifest=Get-Content -LiteralPath (Join-Path $platform 'modpack.json') -Raw|ConvertFrom-Json
 if($retention.bundleSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower()){throw 'The retention report does not match this asset bundle. Run Retention again.'}
 if($retention.runtimeDllSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()){throw 'The retention report does not match this mod DLL. Run Retention again.'}
-foreach($report in @($systems,$jam)){
+foreach($report in @($systems,$jam)+$extra){
     if($report.bundleSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower() -or $report.runtimeDllSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()){throw 'A systems report does not match this bundle and DLL. Run Systems and Jam again.'}
 }
 $version=$manifest.version

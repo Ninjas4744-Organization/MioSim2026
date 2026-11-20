@@ -128,8 +128,11 @@ public static class Ninjas4744Builder
         transfer.transform.localRotation=Quaternion.Euler(29f,0,0);
         robot.intakeContact=transfer.AddComponent<Turbo4744ShooterContact>();
         robot.intakeContact.robotBody=robot.intakeRail.GetComponent<Rigidbody>();robot.intakeContact.wheelRadius=.025f;
-        robot.intakeContact.contactNear=-.26f;robot.intakeContact.contactFar=.16f;robot.intakeContact.halfWidth=.27f;robot.intakeContact.normalClearance=.11f;
+        // The contact fades over one fuel radius at its edge. Cover the full
+        // tray width so a sphere against the side guide still gets support.
+        robot.intakeContact.contactNear=-.26f;robot.intakeContact.contactFar=.16f;robot.intakeContact.halfWidth=.34f;robot.intakeContact.normalClearance=.11f;
         robot.intakeContact.maxTractionForce=35;robot.intakeContact.tractionResponse=40;
+        robot.intakeContact.maxTotalForce=80;
         robot.intakeContact.normalStiffness=450;robot.intakeContact.normalDamping=28;robot.intakeContact.maxNormalForce=35;robot.intakeContact.compensateNormalGravity=true;
         robot.intakeContact.allowReverse=true;robot.intakeContact.requiresCommand=true;robot.intakeContact.entryKeeper=keeper;
         var transport=new List<InteractionRoller>();
@@ -141,6 +144,7 @@ public static class Ninjas4744Builder
         robot.storageContact.contactNear=-.28f;robot.storageContact.contactFar=.26f;
         robot.storageContact.halfWidth=.33f;robot.storageContact.normalClearance=.09f;
         robot.storageContact.maxTractionForce=12;robot.storageContact.tractionResponse=40;
+        robot.storageContact.maxTotalForce=35;
         robot.storageContact.maxNormalForce=0;robot.storageContact.lateralResponse=5;robot.storageContact.maxLateralForce=4;
         robot.storageContact.allowReverse=true;robot.storageContact.requiresCommand=true;
         robot.storageContact.entryKeeper=keeper;robot.storageContact.capturedOnly=true;
@@ -159,12 +163,15 @@ public static class Ninjas4744Builder
         robot.indexerContact.robotBody=body;robot.indexerContact.wheelRadius=.035f;
         robot.indexerContact.contactNear=-.20f;robot.indexerContact.contactFar=.17f;robot.indexerContact.halfWidth=.22f;robot.indexerContact.normalClearance=.065f;
         robot.indexerContact.maxTractionForce=120;robot.indexerContact.tractionResponse=60;
+        robot.indexerContact.maxTotalForce=140;
         robot.indexerContact.normalStiffness=800;robot.indexerContact.normalDamping=30;robot.indexerContact.maxNormalForce=80;
         robot.indexerContact.allowReverse=true;robot.indexerContact.requiresCommand=true;
         robot.floorRollers=transport.ToArray();
         foreach(int side in new[]{-1,1})
         {
-            var funnel=Box(root.transform,"Indexer funnel "+side,new Vector3(side*.215f,.31f,.165f),new Vector3(.008f,.28f,.368f));
+            // Reach the hopper rim so the upper layer cannot roll over the
+            // guide into the open rear corners beside the narrow shooter.
+            var funnel=Box(root.transform,"Indexer funnel "+side,new Vector3(side*.215f,.35f,.165f),new Vector3(.008f,.40f,.368f));
             funnel.transform.localRotation=Quaternion.Euler(0,side*42.8f,0);
             funnel.excludeLayers=~LayerMask.GetMask("GamePiece1","GamePiece2","GamePieceAlt");
             // Join the funnel at z=.03. A forward-projecting sloped guide
@@ -243,7 +250,7 @@ public static class Ninjas4744Builder
         var pack=AssetDatabase.LoadAssetAtPath<RebuiltModpackSO>(PackPath)
             ?? ScriptableObject.CreateInstance<RebuiltModpackSO>();
         Set(pack,"modpackName","Ninjas 4744 Turbo 2026");
-        Set(pack,"modpackVersion","0.4.0");
+        Set(pack,"modpackVersion","0.5.1");
         Set(pack,"authorName","Ninjas 4744");
         Set(pack,"description","Turbo for Rebuilt: original team CAD with physics-driven intake, hopper, shooter and passing. Initial simulation calibration.");
         Set(pack,"thumbnail",ImportPreview());
@@ -461,7 +468,9 @@ public static class Ninjas4744Builder
         solver.resolutionX=nx;solver.resolutionY=ny;solver.netWidth=.71f;solver.netHeight=.612f;
         solver.useAuthoredRestShape=false;solver.restLengthScale=1;
         solver.subSteps=3;solver.stretchCompliance=.0005f;solver.shearCompliance=.0002f;solver.bendCompliance=.0035f;
-        solver.damping=.025f;solver.particleMass=.005f;solver.visualSmoothingIntensity=.7f;
+        // 320 nodes represent a roughly 160 g textile, not a 1.6 kg roof.
+        // Heavy nodes generate excessive collision reactions under a full load.
+        solver.damping=.025f;solver.particleMass=.0005f;solver.visualSmoothingIntensity=.7f;
         solver.collisionRadius=.012f;solver.collisionLayers=LayerMask.GetMask("GamePiece1","GamePiece2","GamePieceAlt");
         solver.anchorBorderFraction=0;
         var rig=root.AddComponent<Turbo4744NetRig>();rig.leftPins=new Transform[ny];rig.rightPins=new Transform[ny];
@@ -554,7 +563,7 @@ public static class Ninjas4744Builder
     {
         var titles=new[]{"Deploy and collect","Shoot or pass","Clear a jam"};
         var descriptions=new[]{"Intake opens Turbo's pickup and hopper and cancels shooting. Stow retracts both. The net folds with the frame.",
-            "Press Auto Shoot to latch hub aiming and shooting; press again for three hard pump cycles. Auto Pass selects delivery. Intake restores normal driving after hub aiming.",
+            "Auto Shoot selects the hub in your alliance zone and a side delivery target in neutral. Press again for three hard pump cycles. Auto Pass forces delivery. Intake cancels aiming and restores normal driving.",
             "Soft pumping starts automatically while firing. Robot Special requests three hard cycles. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber."};
         var cards=new List<GameObject>();
         var template=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/UI/Components/TutorialCardTemplate.prefab");
@@ -615,6 +624,21 @@ public static class Ninjas4744Builder
         CheckBundle(path);
         AssetDatabase.ExportPackage(Root,Artifacts+"/Ninjas4744-Turbo2026.unitypackage",ExportPackageOptions.Recurse);
         Debug.Log("TURBO_BUILT "+path);
+    }
+
+    // Run in a fresh editor after the full bundle build. BuildAssetBundles can
+    // restore an earlier ScriptAssemblies snapshot before the SDK copies the
+    // mod DLL; a code-only SDK build copies the final compiled runtime instead.
+    public static void SyncRuntime()
+    {
+        var pack=AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
+        if(!ModBuildUtility.TryBuildModpack(pack,false,out var path))throw new InvalidOperationException("Runtime synchronization failed");
+        string dll=Path.Combine(path,EditorUserBuildSettings.activeBuildTarget.ToString().ToLowerInvariant(),"Ninjas4744.dll");
+        if(!File.ReadAllBytes(dll).SequenceEqual(File.ReadAllBytes(typeof(Turbo4744).Assembly.Location)))
+            throw new InvalidOperationException("The packaged runtime differs from the compiled assembly");
+        CheckBundle(path);
+        AssetDatabase.ExportPackage(Root,Artifacts+"/Ninjas4744-Turbo2026.unitypackage",ExportPackageOptions.Recurse);
+        Debug.Log("TURBO_RUNTIME_SYNCHRONIZED "+dll);
     }
 
     private static void CheckBundle(string path)
