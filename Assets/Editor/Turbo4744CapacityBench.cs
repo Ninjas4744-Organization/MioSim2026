@@ -37,11 +37,15 @@ public static class Turbo4744CapacityBench
         public int retainedAfterDrive,
             released;
         public bool stowed,
-            stable;
+            stable,
+            wheelSweepReached;
         public float maxRobotSpeed,
             maxLoadedNativeSpeed,
             maxTilt,
             maxCollectionYaw,
+            collectionYawPeakAt,
+            collectionSpeedAtYawPeak,
+            maxSettlingYaw,
             maxCrossTrack,
             collectionDistance,
             netPeakHeight;
@@ -50,6 +54,7 @@ public static class Turbo4744CapacityBench
         public List<string> escapes = new List<string>();
         public List<string> samples = new List<string>();
         public List<string> contacts = new List<string>();
+        public List<string> obstacleContacts = new List<string>();
     }
 
     [Serializable]
@@ -63,6 +68,7 @@ public static class Turbo4744CapacityBench
             "Thirty ground balls; collection, native keyboard loaded drive, turning, disable, up to 25 seconds delivery through pumping, then empty stow";
         public List<Case> cases = new List<Case>();
         public List<string> errors = new List<string>();
+        public List<string> editorServiceErrors = new List<string>();
     }
 
     private sealed class Piece
@@ -104,10 +110,14 @@ public static class Turbo4744CapacityBench
     private static bool Authoring => Environment.GetCommandLineArgs().Contains("-turboAuthoring");
     private static bool LoadOnly => Environment.GetCommandLineArgs().Contains("-turboLoadOnly");
     private static bool WheelPile => Environment.GetCommandLineArgs().Contains("-turboWheelPile");
+    private static bool LoadedAim => Environment.GetCommandLineArgs().Contains("-turboLoadedAim");
     private static float CycleOffset => Pile && !WheelPile ? 6 : 0;
     private static float CollectionEnd =>
         Pile && !WheelPile ? 14
-        : Pile ? 8
+        // Finish the existing 3.4 m wheel-path target before loaded driving.
+        // Dense fuel can slow the native drivetrain; the old eight-second
+        // cutoff could end the commanded sweep before its distance target.
+        : WheelPile ? 10
         : 7;
     private static Vector3 collectionStart;
     private static Quaternion collectionHeading;
@@ -164,6 +174,9 @@ public static class Turbo4744CapacityBench
             if (WheelPile)
                 report.fixture =
                     "Ninety ground balls across six lanes including wheel paths; 3 m/s approach, under 3 degrees of heading drift and 0.20 m cross-track error, retain captured fuel through native loaded driving and turns, complete shooter release and empty stow; capacity is verified separately";
+            if (LoadedAim)
+                report.fixture =
+                    "Collect over 50 official fuel bodies, native loaded driving and turning, then the normal AutoShoot input with automatic aiming, feed and pumping. No manual-shoot override. Record fixed-step pitch/roll throughout and require full release without overturning.";
             if (LoadOnly)
                 report.fixture =
                     "Static capacity stage: up to 64 official ground balls introduced individually at the pickup, stopping after 51 captured; settle and retain at least 52 in one hopper; no driving or shooter assertions in this tuning stage";
@@ -192,6 +205,15 @@ public static class Turbo4744CapacityBench
     private static void Log(string message, string stack, LogType type)
     {
         if (
+            report != null
+            && Turbo4744BenchLog.RecordEditorServiceError(
+                message,
+                stack,
+                report.editorServiceErrors
+            )
+        )
+            return;
+        if (
             robot
             && (type == LogType.Exception || type == LogType.Error)
             && report.errors.Count < 15
@@ -213,28 +235,47 @@ public static class Turbo4744CapacityBench
     private static void Spawn()
     {
         var parent = Object.FindFirstObjectByType<RobotSpawnController>().transform;
+        var loadedAimPosition = Vector3.zero;
+        if (LoadedAim)
+        {
+            var hub = Object
+                .FindObjectsByType<Transform>(FindObjectsSortMode.None)
+                .First(t =>
+                    t.gameObject.layer == LayerMask.NameToLayer("AutoAngleNodes")
+                    && t.name.ToLower().Contains("blue")
+                    && t.name.ToLower().Contains("hub")
+                );
+            loadedAimPosition = hub.position + new Vector3(2.2f, 0, 2.4f);
+            loadedAimPosition.y = .04f;
+        }
         robot = Object
             .Instantiate(
                 prefab,
-                Pile
-                    ? WheelPile
-                        ? Headings[caseIndex] == 0
-                            ? new Vector3(-1.2f, .04f, -3f)
-                            : new Vector3(-2.5f, .04f, 0)
-                        : Headings[caseIndex] == 0
-                            ? new Vector3(-1.2f, .04f, .5f)
+                LoadedAim ? loadedAimPosition
+                    : Pile
+                        ? WheelPile
+                                ? Headings[caseIndex] == 0 ? new Vector3(-1.2f, .04f, -3f)
+                                    : new Vector3(-2.5f, .04f, 0)
+                            : Headings[caseIndex] == 0 ? new Vector3(-1.2f, .04f, .5f)
                             : new Vector3(1f, .04f, 0)
+                    // Leave room for collection travel and the subsequent full-speed
+                    // braking sequence. The former 0-degree origin hit Side2 with
+                    // over 220 N.s, turning this capacity check into a wall impact.
+                    : Headings[caseIndex] == 0 ? new Vector3(-1.2f, .04f, -3f)
                     : new Vector3(-1.2f, .04f, -1.5f),
-                Quaternion.Euler(0, Headings[caseIndex], 0),
+                Quaternion.Euler(0, Headings[caseIndex] + (LoadedAim ? 135 : 0), 0),
                 parent
             )
             .GetComponent<Turbo4744>();
         robot.SetAlliance(Alliance.Blue);
+        var benchPlayer = robot.GetComponent<PlayerInput>();
+        benchPlayer.neverAutoSwitchControlSchemes = true;
+        benchPlayer.actions.devices = new InputDevice[] { keyboard };
         input = robot.gameObject.AddComponent<Turbo4744BenchDriver>();
         input.drive = robot.GetComponent<DriveController>();
         hopperClosed = robot.hopperRail.transform.localPosition.z;
         intakeClosed = robot.intakeRail.transform.localPosition.z;
-        current = new Case { heading = Headings[caseIndex], stable = true };
+        current = new Case { heading = Headings[caseIndex] + (LoadedAim ? 135 : 0), stable = true };
         collectionStart = robot.transform.position;
         collectionHeading = robot.transform.rotation;
         robot.gameObject.AddComponent<Turbo4744PileMotionProbe>().sample = () =>
@@ -249,7 +290,7 @@ public static class Turbo4744CapacityBench
             liveView.target = robot.transform;
             liveView.GetComponent<Camera>().enabled = true;
             liveView.caption = () =>
-                "Turbo v0.5.1 — LIVE AUTOMATED TEST\n"
+                "Turbo — LIVE COLLECTION REGRESSION\n"
                 + Phase(Time.time - began)
                 + " | "
                 + (Time.time - began).ToString("F1")
@@ -289,6 +330,26 @@ public static class Turbo4744CapacityBench
         )
             other.gameObject.SetActive(false);
         fuel.Clear();
+        foreach (var moving in robot.GetComponentsInChildren<Rigidbody>())
+        {
+            var observedBody = moving;
+            moving.gameObject.AddComponent<Turbo4744GuideProbe>().collided = contact =>
+            {
+                float t = Time.time - began - CycleOffset;
+                if (
+                    t < 9.8f
+                    || t > 12
+                    || contact.collider.name == "Carpet"
+                    || contact.collider.GetComponentInParent<RebuiltGamePieceController>()
+                    || current.obstacleContacts.Count >= 500
+                    || contact.impulse.sqrMagnitude < .0025f
+                )
+                    return;
+                current.obstacleContacts.Add(
+                    $"{t:F4} body={observedBody.name} hit={contact.collider.name} p={observedBody.position:F3} impulse={contact.impulse:F3}"
+                );
+            };
+        }
         lastCapacityOffer = -1;
         for (
             int row = 0;
@@ -323,6 +384,8 @@ public static class Turbo4744CapacityBench
         }
         current.offered = fuel.Count;
         began = Time.time;
+        robot.gameObject.AddComponent<Turbo4744CapacityPhysicsProbe>().sample = () =>
+            MeasureFuel(CaseTime);
         deploymentDelay = 0;
         collectionStarted = false;
         lastSample = -1;
@@ -365,30 +428,21 @@ public static class Turbo4744CapacityBench
         lastCapacityOffer = t;
     }
 
-    private static void Measure(float t)
+    private static void MeasureFuel(float t)
     {
         var rb = robot.GetComponent<Rigidbody>();
-        MeasureMotion(t);
-        if (t > 10 + CycleOffset && t < 11.5f + CycleOffset)
-            current.maxLoadedNativeSpeed = Mathf.Max(
-                current.maxLoadedNativeSpeed,
-                new Vector2(rb.velocity.x, rb.velocity.z).magnitude
-            );
-        current.maxRobotSpeed = Mathf.Max(current.maxRobotSpeed, rb.velocity.magnitude);
-        current.stable &=
-            float.IsFinite(rb.position.y)
-            && Mathf.Abs(rb.position.y) < .2f
-            && rb.velocity.magnitude < 12;
         foreach (var piece in fuel)
         {
-            var p = robot.transform.InverseTransformPoint(piece.body.position);
+            var p = Quaternion.Inverse(rb.rotation) * (piece.body.position - rb.position);
             bool inside =
-                Mathf.Abs(p.x) < .31f
-                && p.y > .22f
-                && p.y < (Pile ? .95f : .52f)
-                && p.z > .08f
-                && p.z < (Pile ? .60f : .56f)
-                && (!Pile || robot.GetComponent<Turbo4744FuelKeeper>().IsCaptured(piece.body));
+                (
+                    Mathf.Abs(p.x) < .31f
+                    && p.y > .22f
+                    && p.y < (Pile ? .95f : .52f)
+                    && p.z > .08f
+                    && p.z < (Pile ? .60f : .56f)
+                    && (!Pile || robot.GetComponent<Turbo4744FuelKeeper>().IsCaptured(piece.body))
+                ) || Turbo4744FeedBounds.Contains(p);
             if (inside)
             {
                 if (piece.insideSince < 0)
@@ -444,6 +498,22 @@ public static class Turbo4744CapacityBench
                 );
             }
         }
+    }
+
+    private static void Measure(float t)
+    {
+        var rb = robot.GetComponent<Rigidbody>();
+        MeasureMotion(t);
+        if (t > 10 + CycleOffset && t < 11.5f + CycleOffset)
+            current.maxLoadedNativeSpeed = Mathf.Max(
+                current.maxLoadedNativeSpeed,
+                new Vector2(rb.velocity.x, rb.velocity.z).magnitude
+            );
+        current.maxRobotSpeed = Mathf.Max(current.maxRobotSpeed, rb.velocity.magnitude);
+        current.stable &=
+            float.IsFinite(rb.position.y)
+            && Mathf.Abs(rb.position.y) < .2f
+            && rb.velocity.magnitude < 12;
         if (Pile && t >= 9.8f + CycleOffset && !current.measuredBeforeDrive)
         {
             current.measuredBeforeDrive = true;
@@ -465,7 +535,7 @@ public static class Turbo4744CapacityBench
             lastSample = sample;
             if (Pile && t > 21 + CycleOffset && t < 30 + CycleOffset)
                 Debug.Log(
-                    $"TURBO_PILE_FLOW {t:F2}: {robot.ShootingState} feeding {robot.Feeding} rpm {robot.CurrentShooterRpm:F0}/{robot.TargetShooterRpm:F0} encoder {robot.IntakeEncoderRotations:F2} contacts {robot.indexerContact.Contacts}/{robot.shooterContact.Contacts}"
+                    $"TURBO_PILE_FLOW {t:F2}: {robot.ShootingState} feeding {robot.Feeding} rpm {robot.CurrentShooterRpm:F0}/{robot.TargetShooterRpm:F0} encoder {robot.IntakeEncoderRotations:F2} contacts {robot.indexer.Contacts}/{robot.shooterContact.Contacts}"
                 );
             if (Pile)
                 foreach (var vertex in robot.roofNet.GetComponent<MeshFilter>().sharedMesh.vertices)
@@ -483,6 +553,12 @@ public static class Turbo4744CapacityBench
                     + robot.IntakeAction.IsPressed()
                     + " collected "
                     + current.collected
+                    + " tilt "
+                    + Vector3.Angle(robot.transform.up, Vector3.up).ToString("F2")
+                    + " state "
+                    + robot.ShootingState
+                    + " omega "
+                    + robot.GetComponent<Rigidbody>().angularVelocity.ToString("F2")
             );
             if (
                 robot.intakeContact
@@ -539,11 +615,24 @@ public static class Turbo4744CapacityBench
             return;
         var offset = Quaternion.Inverse(collectionHeading) * (rb.position - collectionStart);
         current.collectionDistance = offset.z;
+        current.wheelSweepReached |= offset.z >= 3.4f;
+        float yaw = Mathf.Abs(Mathf.DeltaAngle(Headings[caseIndex], rb.rotation.eulerAngles.y));
+        float speed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude;
+        // Preserve every sample in the original eight-second observation,
+        // and add any remaining sweep and braking. Extra stationary settling
+        // after the completed sweep is reported separately, not as approach.
+        if (WheelPile && t >= 8 && current.wheelSweepReached && input.vx == 0 && speed < .15f)
+        {
+            current.maxSettlingYaw = Mathf.Max(current.maxSettlingYaw, yaw);
+            return;
+        }
         current.maxCrossTrack = Mathf.Max(current.maxCrossTrack, Mathf.Abs(offset.x));
-        current.maxCollectionYaw = Mathf.Max(
-            current.maxCollectionYaw,
-            Mathf.Abs(Mathf.DeltaAngle(Headings[caseIndex], rb.rotation.eulerAngles.y))
-        );
+        if (yaw > current.maxCollectionYaw)
+        {
+            current.maxCollectionYaw = yaw;
+            current.collectionYawPeakAt = t;
+            current.collectionSpeedAtYawPeak = speed;
+        }
     }
 
     private static void CaptureLoadedHopper()
@@ -601,15 +690,23 @@ public static class Turbo4744CapacityBench
         input.omega = omega;
     }
 
-    private static string Phase(float t) =>
-        t < 2.5f ? "Deploying"
-        : t < 7 ? "Collecting fuel"
-        : t < 10 ? "Holding fuel"
-        : t < 19 ? "Driving and turning"
-        : t < 21 ? "Disabled retention"
-        : t < 46 ? "Feeding and pumping"
-        : t < 49 ? "Stowing"
-        : "Final retention";
+    private static string Phase(float rawTime)
+    {
+        if (rawTime < 2.5f)
+            return "Deploying";
+        if (rawTime < CollectionEnd)
+            return WheelPile && current != null && current.wheelSweepReached
+                ? "Finishing pickup and settling"
+                : "Collecting fuel";
+        float t = rawTime - CycleOffset;
+        float feedEnd = Pile ? 66 : 46;
+        return t < 10 ? "Holding fuel"
+            : t < 19 ? "Driving and turning"
+            : t < 21 ? "Disabled retention"
+            : t < feedEnd ? "Feeding and pumping"
+            : t < feedEnd + 3 ? "Stowing"
+            : "Final retention";
+    }
 
     private static string Digest(string file)
     {
@@ -721,7 +818,7 @@ public static class Turbo4744CapacityBench
                 Press(Key.LeftShift);
                 Drive(
                     Pile
-                        ? WheelPile && current.collectionDistance < 3.4f
+                        ? WheelPile && !current.wheelSweepReached
                             ? 3f
                             : 0
                         : .5f,
@@ -733,6 +830,13 @@ public static class Turbo4744CapacityBench
             else if (t < 10)
             {
                 Press(Key.LeftShift);
+                Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
+            }
+            else if (LoadedAim && t < 21)
+            {
+                // Isolate the full-hopper turn requested by the normal shoot
+                // button; existing capacity fixtures cover loaded translation.
+                Press();
                 Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
             }
             else if (t < 10.5f)
@@ -776,9 +880,18 @@ public static class Turbo4744CapacityBench
                 Enabled(true);
                 Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
                 if (t > 24 && t < 24.1f)
-                    Press(Pile ? Key.Q : Key.K, Key.V);
+                    Press(
+                        LoadedAim ? Key.K
+                            : Pile ? Key.Q
+                            : Key.K,
+                        Key.V
+                    );
                 else
-                    Press(Pile ? Key.Q : Key.K);
+                    Press(
+                        LoadedAim ? Key.K
+                        : Pile ? Key.Q
+                        : Key.K
+                    );
             }
             else if (t < (Pile ? 69 : 49))
             {
@@ -826,18 +939,22 @@ public static class Turbo4744CapacityBench
     // A full hopper can bulge the textile above the fixed rim. Keep the
     // original nine-ball regression's tighter height criterion unchanged.
     private static bool InsideClosed(Vector3 p) =>
-        Mathf.Abs(p.x) < .36f
-        && p.y > .17f
-        && p.y < (Pile ? 1.0f : .80f)
-        && p.z > .03f
-        && p.z < .45f;
+        (
+            Mathf.Abs(p.x) < .36f
+            && p.y > .17f
+            && p.y < (Pile ? 1.0f : .80f)
+            && p.z > .03f
+            && p.z < .45f
+        ) || Turbo4744FeedBounds.Contains(p);
 
     private static bool InsideExpanded(Vector3 p) =>
-        Mathf.Abs(p.x) < .36f
-        && p.y > .17f
-        && p.y < (Pile ? 1.0f : .80f)
-        && p.z > .03f
-        && p.z < .65f;
+        (
+            Mathf.Abs(p.x) < .36f
+            && p.y > .17f
+            && p.y < (Pile ? 1.0f : .80f)
+            && p.z > .03f
+            && p.z < .65f
+        ) || Turbo4744FeedBounds.Contains(p);
 
     private static void Finish()
     {
@@ -874,6 +991,7 @@ public static class Turbo4744CapacityBench
                                 && c.netPeakHeight < 1.15f
                         )
                         && c.maxLoadedNativeSpeed > 3.5f
+                        && (Pile || c.obstacleContacts.Count == 0)
                         && c.retainedAfterDrive == c.collected
                         && c.released == c.collected
                         && c.retained == 0
@@ -887,7 +1005,8 @@ public static class Turbo4744CapacityBench
         File.WriteAllText(
             Out
                 + (
-                    LoadOnly ? "/load-"
+                    LoadedAim ? "/loaded-aim-"
+                    : LoadOnly ? "/load-"
                     : WheelPile ? "/wheel-pile-"
                     : Pile ? "/pile-"
                     : "/capacity-"
@@ -909,6 +1028,14 @@ public sealed class Turbo4744PileMotionProbe : MonoBehaviour
     private void FixedUpdate() => sample?.Invoke();
 }
 
+[DefaultExecutionOrder(1200)]
+public sealed class Turbo4744CapacityPhysicsProbe : MonoBehaviour
+{
+    public Action sample;
+
+    private void FixedUpdate() => sample?.Invoke();
+}
+
 public sealed class Turbo4744CapacityView : MonoBehaviour
 {
     public Transform target;
@@ -918,6 +1045,7 @@ public sealed class Turbo4744CapacityView : MonoBehaviour
     private void Awake()
     {
         view = gameObject.AddComponent<Camera>();
+        view.depth = 1000;
         view.fieldOfView = 45;
         view.nearClipPlane = .03f;
     }

@@ -1,0 +1,133 @@
+{
+  "source": "Original CAD; existing game roller faces preserved",
+  "rollers": [
+    {
+      "name": "IndexerLower01",
+      "center_native_m": [
+        0.3368,
+        -0.00825,
+        0.19344
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.34279
+    },
+    {
+      "name": "IndexerLower02",
+      "center_native_m": [
+        0.28802,
+        -0.00825,
+        0.18884
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.34279
+    },
+    {
+      "name": "IndexerLower03",
+      "center_native_m": [
+        0.24077,
+        -0.00825,
+        0.17584
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.34279
+    },
+    {
+      "name": "IndexerLower04",
+      "center_native_m": [
+        0.1956,
+        0,
+        0.15685
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.29155
+    },
+    {
+      "name": "IndexerLower05",
+      "center_native_m": [
+        0.15029,
+        0.00375,
+        0.13745
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.2878
+    },
+    {
+      "name": "IndexerUpper01",
+      "center_native_m": [
+        0.15291,
+        -0.00375,
+        0.32162
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.2878
+    },
+    {
+      "name": "IndexerUpper02",
+      "center_native_m": [
+        0.10796,
+        -0.00375,
+        0.3021
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.2878
+    },
+    {
+      "name": "IndexerUpper03",
+      "center_native_m": [
+        0.06302,
+        0,
+        0.28257
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.29155
+    },
+    {
+      "name": "IndexerUpper04",
+      "center_native_m": [
+        0.07542,
+        -0.00825,
+        0.33873
+      ],
+      "radius_m": 0.0125,
+      "half_width_m": 0.2923
+    }
+  ],
+  "side_supports": "Convex envelopes of original 26-413-001 triangular faces; passive, no motor",
+  "side_support_bounds": [
+    {
+      "name": "SideIndexerLeft_Support",
+      "source_parts": [
+        "Part0837_",
+        "Part0840_"
+      ],
+      "minimum_native_m": [
+        0.003355763852596283,
+        0.1629049926996231,
+        0.13735610246658325
+      ],
+      "maximum_native_m": [
+        0.2113930583000183,
+        0.3205550014972687,
+        0.2657710015773773
+      ]
+    },
+    {
+      "name": "SideIndexerRight_Support",
+      "source_parts": [
+        "Part1069_",
+        "Part1078_"
+      ],
+      "minimum_native_m": [
+        0.003355669789016247,
+        -0.3205450177192688,
+        0.13735610246658325
+      ],
+      "maximum_native_m": [
+        0.21139293909072876,
+        -0.16289499402046204,
+        0.2657710015773773
+      ]
+    }
+  ],
+  "shooter_clear_width_m": 0.313
+}

@@ -1,0 +1,48 @@
+{
+  "version": "0.6.1",
+  "team_source_commit": "2bd34881f2c39f86a74cc7d3ea18ba6e00678493",
+  "hardware_commands": {
+    "indexer_forward_motor_rps": 78,
+    "indexer_reverse_motor_rps": -20,
+    "accelerator_motor_rps": 80,
+    "recovery_reverse_seconds": 0.5
+  },
+  "simulator_adapters": {
+    "indexer_surface_speed_at_78_motor_rps_mps": 1.2,
+    "indexer_surface_acceleration_mps2": 8,
+    "indexer_shared_force_budget_n": 320,
+    "indexer_per_ball_traction_limit_n": 180,
+    "indexer_traction_response_per_second": 45,
+    "roller_visual_radius_m": 0.0125,
+    "roller_rigid_core_radius_m": 0.0065,
+    "roller_core_reason": "Approximate foam compression in the CAD's roughly 145 mm inter-deck gap; official 150 mm fuel remains unchanged.",
+    "accelerator_surface_speed_limit_mps": 2.5,
+    "accelerator_shared_force_budget_n": 320,
+    "accelerator_lateral_response_per_second": 40,
+    "shooter_shared_force_budget_n": 480,
+    "shooter_lateral_response_per_second": 60,
+    "clear_shooter_width_m": 0.313,
+    "side_guides": "Passive convex envelopes of original CAD faces, plus continuous passive mouth guides; no powered traction or animation.",
+    "retention": "Lower-entry and pre-flywheel gates open for feed/reverse and close only after their volume clears.",
+    "intake_handoff": "Existing pickup rises over the kicker, then hands down to the lower roller bed. Four original backing segments stop before the downward handoff.",
+    "accelerator_interlock": "Additional simulator interlock: during a firing-state re-aim, command a zero-speed contact target directly, without waiting for the motor reference to ramp down. The 60000 RPM/s contact ramp and bounded forces still apply; resume feed after accelerator readiness. No braking during reverse recovery or disabled mode.",
+    "pump_braking": "Finite velocity braking toward the nominal source windows; 0.15-rotation upper reversal tolerance (source controller position-goal tolerance) and 2 mm upper approach margin are simulator adapters.",
+    "pump_priority": "An explicit pending or active hard-pump request takes priority over the delayed automatic soft-pump default after recovery.",
+    "chassis_collision_mode": "Discrete at the native 4.5 ms physics step, following the installed-player dense-fuel collision-mode comparison.",
+    "accelerator_reference_ramp_rpm_per_second": 60000,
+    "accelerator_contact_ramp_rpm_per_second": 60000,
+    "accelerator_speed_mapping": "The 2200 RPM simulator reference maps proportionally to 2.5 m/s, including acceleration and braking; source motor commands remain separate.",
+    "intake_side_guide_native_x_extent_m": [
+      0.33,
+      0.6
+    ],
+    "hopper_kinematics": "Main hopper walls, storage floor and net frame fixed to chassis. Only intake/kicker retracts. Legacy hopperRail names the front carrier; no stored-fuel floor traction contact.",
+    "net_rest_length_scale": 1.35,
+    "rejected_net_comparison": "1.05 rest-length scale reduced recorded trench escapes from ten to three, but failed the unchanged 50-ball capacity minimum with 48 collected in the first larger-fill heading. Keep 1.35.",
+    "lower_mouth_detection": "The configured mouth top remains local Y 0.275 m. Admission checks the physical sphere lower surface (centre minus radius) crossing that top, with centre Y at least 0.13 m, centre Z between -0.14 and 0.105 m, and centre X within 0.10 m of the lane centre. Upper-floor fuel must descend before contact; no fuel geometry is changed."
+  },
+  "limits": "Contact speeds, force budgets, hard-core compliance and lateral damping are simulator calibration, not measured hardware transmission or motor torque. Forces act only inside the mechanism with equal chassis reaction. No in-flight corrections, fuel resizing, parenting or velocity assignments.",
+  "geometry_record": "indexer-model.json",
+  "validation_record": "systems-indexer-after.json",
+  "native_roller_storage": "Nine definitions reconstructed from Transform[] visual references and Vector3[] center/geometry arrays; nested managed Roller[] loaded empty in the native player."
+}

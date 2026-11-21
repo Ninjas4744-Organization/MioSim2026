@@ -9,8 +9,11 @@ $bundle=Get-Content -LiteralPath (Join-Path $artifacts 'bundle-audit.json') -Raw
 $retention=Get-Content -LiteralPath (Join-Path $artifacts 'retention-after.json') -Raw|ConvertFrom-Json
 $systems=Get-Content -LiteralPath (Join-Path $artifacts 'systems-after.json') -Raw|ConvertFrom-Json
 $jam=Get-Content -LiteralPath (Join-Path $artifacts 'systems-jam.json') -Raw|ConvertFrom-Json
-$extra=@('approach-after.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','pile-after.json','wheel-pile-after.json','systems-pulse-after.json')|ForEach-Object {Get-Content -LiteralPath (Join-Path $artifacts $_) -Raw|ConvertFrom-Json}
+$extra=@('approach-after.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','pile-after.json','wheel-pile-after.json','systems-pulse-after.json','systems-indexer-after.json')|ForEach-Object {Get-Content -LiteralPath (Join-Path $artifacts $_) -Raw|ConvertFrom-Json}
 foreach($report in $extra){if(-not $report.passed){throw 'A moving, delivery, alliance or capacity check failed'}}
+$indexer=$extra|Where-Object label -eq 'indexer-after'
+$indexerCases=@('lower-pair','upper-pair','left-single','right-single','center-single','side-guides','outer-corners','asymmetric-guides','mixed-floors','blocked-drop','blocked-shooter')
+if($indexer.cases.Count -ne $indexerCases.Count -or $indexer.simulationSpeed -ne 1 -or (Compare-Object ($indexerCases|Sort-Object) ($indexer.cases.indexerCase|Sort-Object))){throw 'Indexer must complete all eleven fixtures at normal simulation speed. Omit -IndexerCase for release verification.'}
 $checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained','reverseSupportsLoad')
 foreach($check in $checks){if(-not $physics.$check){throw ('Integration check failed: '+$check)}}
 if($physics.errors.Count -gt 0 -or -not $travel.passed -or -not $bundle.passed -or -not $retention.passed -or -not $systems.passed -or -not $jam.passed){throw 'Verification reports are not passing. Run Build, Test, Travel, Retention, Systems, and Jam before packaging.'}

@@ -58,6 +58,7 @@ public static class Turbo4744RetentionRegression
             "Nine field balls; held intake, release, forward/reverse, 90 deg/s turn, 60 deg/s arcs, disable, stow";
         public List<Case> cases = new List<Case>();
         public List<string> errors = new List<string>();
+        public List<string> editorServiceErrors = new List<string>();
     }
 
     private sealed class Piece
@@ -168,6 +169,15 @@ public static class Turbo4744RetentionRegression
     private static void Log(string message, string stack, LogType type)
     {
         if (
+            report != null
+            && Turbo4744BenchLog.RecordEditorServiceError(
+                message,
+                stack,
+                report.editorServiceErrors
+            )
+        )
+            return;
+        if (
             robot
             && (type == LogType.Exception || type == LogType.Error)
             && report.errors.Count < 15
@@ -198,6 +208,9 @@ public static class Turbo4744RetentionRegression
             )
             .GetComponent<Turbo4744>();
         robot.SetAlliance(Alliance.Blue);
+        var benchPlayer = robot.GetComponent<PlayerInput>();
+        benchPlayer.neverAutoSwitchControlSchemes = true;
+        benchPlayer.actions.devices = new InputDevice[] { keyboard };
         input = robot.gameObject.AddComponent<Turbo4744BenchDriver>();
         input.drive = robot.GetComponent<DriveController>();
         hopperClosed = robot.hopperRail.transform.localPosition.z;
@@ -219,7 +232,7 @@ public static class Turbo4744RetentionRegression
             liveView.target = robot.transform;
             liveView.GetComponent<Camera>().enabled = true;
             liveView.caption = () =>
-                "Turbo v0.4 — LIVE AUTOMATED TEST\n"
+                "Turbo — LIVE COLLECTION REGRESSION\n"
                 + Phase(Time.time - began)
                 + " | "
                 + (Time.time - began).ToString("F1")
@@ -311,7 +324,8 @@ public static class Turbo4744RetentionRegression
         {
             var p = robot.transform.InverseTransformPoint(piece.body.position);
             bool inside =
-                Mathf.Abs(p.x) < .31f && p.y > .22f && p.y < .52f && p.z > .08f && p.z < .56f;
+                (Mathf.Abs(p.x) < .31f && p.y > .22f && p.y < .52f && p.z > .08f && p.z < .56f)
+                || Turbo4744FeedBounds.Contains(p);
             if (inside)
             {
                 if (piece.insideSince < 0)
@@ -608,8 +622,12 @@ public static class Turbo4744RetentionRegression
         }
     }
 
+    // The main bin stays fixed during stow. Its front panel is at local Z
+    // 0.626 m, leaving a 150 mm ball's centre at about 0.552 m inside it.
+    // The former 0.42 m cutoff measured the incorrectly retracted whole bin.
     private static bool InsideClosed(Vector3 p) =>
-        Mathf.Abs(p.x) < .36f && p.y > .17f && p.y < .55f && p.z > .03f && p.z < .42f;
+        (Mathf.Abs(p.x) < .36f && p.y > .17f && p.y < .55f && p.z > .03f && p.z < .56f)
+        || Turbo4744FeedBounds.Contains(p);
 
     private static void TickApproach(float t)
     {
@@ -686,6 +704,7 @@ public sealed class Turbo4744RetentionView : MonoBehaviour
     private void Awake()
     {
         view = gameObject.AddComponent<Camera>();
+        view.depth = 1000;
         view.fieldOfView = 45;
         view.nearClipPlane = .03f;
     }

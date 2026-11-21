@@ -1,0 +1,278 @@
+{
+  "version": "0.6.1",
+  "bundle_sha256": "525f113be5c3fd0ba069b5db2914a7c2431789eae67b5c4ea9abd94b32697968",
+  "runtime_dll_sha256": "f23e0b5e971a78f52771e9afa1877b6be287b7d0fcac7d68e05c4a23ded2d1de",
+  "fixtures": [
+    {
+      "name": "Integration",
+      "report": "physics-diagnostics.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": false,
+      "cases": 0,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Travel",
+      "report": "travel-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": false,
+      "cases": 4,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Retention",
+      "report": "retention-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 18,
+        "retained": 18,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Approach",
+      "report": "approach-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 6,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 54,
+        "retained": 54,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Systems",
+      "report": "systems-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 7,
+      "measured_totals": {
+        "scored": 40,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 15
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Jam",
+      "report": "systems-jam.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 1,
+      "measured_totals": {
+        "scored": 1,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 3
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Indexer",
+      "report": "systems-indexer-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 11,
+      "measured_totals": {
+        "scored": 20,
+        "delivered": 0,
+        "seeded": 20,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 33
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Moving",
+      "report": "systems-moving-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 15,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 6
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Delivery",
+      "report": "systems-delivery-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 4,
+      "measured_totals": {
+        "scored": 2,
+        "delivered": 31,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 12
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Matrix",
+      "report": "systems-matrix-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 8,
+      "measured_totals": {
+        "scored": 64,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 24
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Capacity",
+      "report": "capacity-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 60,
+        "retained": 0,
+        "retainedAfterDrive": 60,
+        "released": 60,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Pile",
+      "report": "pile-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 106,
+        "retained": 0,
+        "retainedAfterDrive": 106,
+        "released": 106,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "WheelPile",
+      "report": "wheel-pile-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 119,
+        "retained": 0,
+        "retainedAfterDrive": 119,
+        "released": 119,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Pulse",
+      "report": "systems-pulse-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 1,
+      "measured_totals": {
+        "scored": 8,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 3
+      },
+      "editor_service_errors": []
+    }
+  ],
+  "native_evidence": "native-dense-contact-audit.json",
+  "known_native_failures": [
+    "Full-load stow completes after fixing the main hopper. The current slow-return 60-ball-peak trench cycle catches the crossbar before reaching the own zone. A normal-gear 50-target retry peaks at 54, crosses, and records nine transit escapes.",
+    "A smaller-slack comparison reduced trench spill but failed the 50-ball fill minimum and was rejected. Its additional moving-shot and deployed-bump outcomes remain diagnostic comparisons."
+  ]
+}

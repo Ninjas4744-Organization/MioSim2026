@@ -2,7 +2,7 @@
 
 An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo CAD asset. This repository contains the robot assets, runtime code, authoring tools, and regression checks. Unity, the MoSim framework, and generated caches stay outside the repository.
 
-![Turbo with hopper and kicker stowed and visible MoSim net roof](Reports/Turbo4744-kicker-closed.png)
+![Turbo carrying a full load in installed MoSim](Reports/native/061-final-stowed-full-bump-hub-loaded.png)
 
 ## Install
 
@@ -22,11 +22,11 @@ The resulting `Ninjas4744-Turbo2026/standalonewindows64` folder must contain `mo
 | Aim/shoot at the hub or a side delivery target by field zone; press again for three hard pump cycles | K | Right trigger |
 | Start delivery; press again for three hard pump cycles | E | Right bumper |
 | Shoot at the fixed manual setting | Q | Left bumper |
-| Stow intake and hopper | Z | D-pad down |
+| Stow intake/kicker | Z | D-pad down |
 | Run three hard pump cycles, then soft pumping | V | Y / Triangle |
 | Reverse the feed path | U | A / Cross |
 
-Pumping uses partial extension setpoints. Use Z / D-pad down for full stow after unloading a packed hopper.
+Pumping uses partial intake/kicker extension setpoints. Z / D-pad down stows that assembly while the hopper walls, floor and net frame remain fixed.
 
 MoSim's control rebinding applies normally. The shooter faces the rear of the robot. Commands latch, matching the team's button-triggered state machine: release K/E after starting, and use Shift to cancel. Intake opens automatically after enable. Soft pumping starts 0.8 seconds after feeding begins. Hub aiming reduces translation to 30%, as in the team code; Shift restores normal driving. F8 toggles an optional local mechanism/status panel. Quick shoot, pump and stow taps are retained through Input System performed events. Q and U remain held manual overrides. These are MoSim action bindings, rather than the real driver's PS5 button layout.
 
@@ -59,23 +59,45 @@ $project = 'C:\path\to\MoSimulator-Public'
 $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Assemble
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Build
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Approach
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Systems
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Jam
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Moving
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Delivery
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Matrix
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Capacity
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pile
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task WheelPile
-.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pulse
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Approach -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Indexer -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Systems -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Jam -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Moving -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Delivery -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Matrix -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Capacity -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pile -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task WheelPile -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Pulse -Visible
 .\Tools\Package.ps1 -MoSimProject $project
 ```
 
+The test examples use `-Visible` to show Unity's Game view. Indexer tests show a live cutaway with the fixture name and contact counts; other checks follow the robot and shooting target.
+
 The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab, runs a fresh-session SDK runtime synchronization, and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
+
+## What changed in 0.6.1
+
+- Added the missing solid bumper perimeter while keeping the framework's bounds trigger hollow.
+- Corrected the reproduced stop-and-jump chassis motion in dense fuel with discrete contacts at the native 4.5 ms physics step.
+- Replaced the indexer's nested serialized roller array after native loading left it empty; both floors now apply traction in the installed player.
+- Kept explicit hard-pump requests active through jam recovery instead of allowing the delayed soft-pump default to interrupt them.
+- Applied the finite accelerator brake directly during re-aiming, without waiting for the motor reference to slow down.
+- Fixed the main hopper to the chassis; only the intake/kicker retracts.
+- Added opt-in visible native input replays, live hitbox outlines and saved cycle evidence. [Native testing and current limitations](Docs/NativeTesting.md).
+
+Native full-load stow now completes after correcting the assembly: the main hopper stays fixed. The current build's stowed bump cycle peaked at 59 balls and scored all 57 present before shooting, with no transit escapes. A separate moving-shot-input cycle scored 53 total, with four measured moving muzzle crossings. Full-load trench traversal remains unresolved. Full-hopper native outcomes are recorded separately from the Unity fixture suite.
+
+## What changed in 0.6.0
+
+- Two powered CAD roller floors feed the lower shooter entrance; the upper floor drops fuel down before shooting.
+- Original triangular side supports passively guide shoulder fuel toward the lower mouth.
+- The wide shooter accepts singles and two balls side by side, with shared force budgets and no pairing delay.
+- `Indexer` checks each floor, side supports, asymmetric loads and physics-step pair release timing. [Calibration record](Reports/indexer-calibration.json) · [Pair top view](Reports/Turbo4744-v6-indexer-pair-top.png) · [Side cutaway](Reports/Turbo4744-v6-indexer-cutaway-side.png).
 
 ## What changed in 0.5.6
 
@@ -86,7 +108,7 @@ The commands copy only this mod's assets and editor tools into the selected proj
 - Jam detection measures ball travel so slow pumping does not repeatedly reverse progress.
 - `Pile` verifies at least 50 stored balls at each heading and a load above 50 before loaded driving and complete unloading; `WheelPile` checks a faster approach across ball-filled wheel paths. [Verification](Docs/Verification.md).
 
-Dense piles can still cause a small heading change: the largest observed was 2.46 degrees, with 12 mm of sideways drift. The drivetrain commands turn rate rather than holding an absolute heading. The verification report preserves the initial stricter heading check as well as the final measurements.
+The 0.5.6 dense-pile runs reached 2.46 degrees of heading drift, with 12 mm of sideways drift. The drivetrain commands turn rate rather than holding an absolute heading. Current approach and settling measurements, along with preserved initial failures, are in [Verification](Docs/Verification.md).
 
 ## What changed in 0.5.5
 

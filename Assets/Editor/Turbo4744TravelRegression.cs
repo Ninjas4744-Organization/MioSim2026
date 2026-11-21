@@ -54,6 +54,7 @@ public static class Turbo4744TravelRegression
         public string prefabSource;
         public List<Case> cases = new List<Case>();
         public List<string> errors = new List<string>();
+        public List<string> editorServiceErrors = new List<string>();
     }
 
     private static readonly int[] Headings = { 0, 90, 180, -90 };
@@ -140,6 +141,15 @@ public static class Turbo4744TravelRegression
     private static void Log(string message, string stack, LogType type)
     {
         if (
+            report != null
+            && Turbo4744BenchLog.RecordEditorServiceError(
+                message,
+                stack,
+                report.editorServiceErrors
+            )
+        )
+            return;
+        if (
             (type == LogType.Exception || type == LogType.Error)
             && phase >= 0
             && report.errors.Count < 15
@@ -171,6 +181,9 @@ public static class Turbo4744TravelRegression
         );
         robot = instance.GetComponent<Turbo4744>();
         robot.SetAlliance(Alliance.Blue);
+        var benchPlayer = robot.GetComponent<PlayerInput>();
+        benchPlayer.neverAutoSwitchControlSchemes = true;
+        benchPlayer.actions.devices = new InputDevice[] { keyboard };
         input = robot.gameObject.AddComponent<Turbo4744BenchDriver>();
         input.drive = robot.GetComponent<DriveController>();
         intakeClosed = robot.intakeRail.transform.localPosition;

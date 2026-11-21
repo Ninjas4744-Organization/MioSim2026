@@ -41,6 +41,7 @@ public static class Turbo4744SystemsBench
         public float visualMin = 100,
             visualMax = -100;
         public float range,
+            spawnRange,
             wheelRatio,
             peakSpeed,
             forwardSpeed,
@@ -64,13 +65,41 @@ public static class Turbo4744SystemsBench
             openedNetSpan,
             backoffSeconds;
         public int backoffSamples;
+        public int obstructionContacts;
+        public float firstLaunchTime = -1;
+        public float pumpRequestRecoveryAge,
+            pumpRequestEncoder;
         public bool stable = true,
             stowed,
             netScaleOne;
         public Vector3 target;
         public List<string> samples = new List<string>();
         public List<string> shots = new List<string>();
+        public List<string> shotContacts = new List<string>();
+        public List<string> shotTrace = new List<string>();
+        public List<string> fieldContacts = new List<string>();
         public List<string> wheelContacts = new List<string>();
+        public string indexerCase;
+        public int seeded,
+            lowerEntrances,
+            peakLowerContacts,
+            peakUpperContacts,
+            peakShooterContacts,
+            expectedIdleSideSupports,
+            idleSideSupports,
+            idleSupportSamples;
+        public float peakIndexerForce,
+            minIdleFuelY = 99,
+            pairExitDelta = -1;
+        public List<float> muzzleCrossings = new List<float>();
+        public List<string> mixedTrace = new List<string>();
+        public List<string> loadedPositions = new List<string>();
+        public List<string> idleGuideTrace = new List<string>();
+        public List<string> idleGuideContacts = new List<string>();
+        public List<string> obstructionTrace = new List<string>();
+        public List<string> pairTrace = new List<string>();
+        public List<string> pairContacts = new List<string>();
+        public List<string> pairForces = new List<string>();
     }
 
     [Serializable]
@@ -86,6 +115,7 @@ public static class Turbo4744SystemsBench
         public string teamSourceCommit = "2bd34881f2c39f86a74cc7d3ea18ba6e00678493";
         public List<Result> cases = new List<Result>();
         public List<string> errors = new List<string>();
+        public List<string> editorServiceErrors = new List<string>();
     }
 
     private sealed class Ball
@@ -97,6 +127,12 @@ public static class Turbo4744SystemsBench
             scored,
             landed;
         public float began;
+        public bool lowerEntry,
+            muzzleCrossed,
+            sideSupported;
+        public int sideSupportSteps;
+        public float previousMuzzleAlong,
+            previousFixedTime;
     }
 
     private static readonly string Out = Path.GetFullPath(
@@ -105,6 +141,9 @@ public static class Turbo4744SystemsBench
     private static readonly List<Ball> balls = new List<Ball>();
     private static readonly List<GameObject> jamFixture = new List<GameObject>();
     private static float backoffBegan = -1;
+    private static float firstRecoveryEndedAt = -1;
+    private static float nextObstructionSample;
+    private static float nextShotSample;
     private static Report report;
     private static Result result;
     private static Turbo4744 robot;
@@ -135,6 +174,23 @@ public static class Turbo4744SystemsBench
     private static bool Flag(string name) => Args.Contains(name);
 
     private static bool Matrix => Flag("-turboMatrix");
+    internal static string LiveCase => result?.indexerCase ?? result?.kind ?? "starting";
+    private static bool Indexer => Flag("-turboIndexer");
+    private static readonly string[] IndexerCases =
+    {
+        "lower-pair",
+        "upper-pair",
+        "left-single",
+        "right-single",
+        "center-single",
+        "side-guides",
+        "outer-corners",
+        "asymmetric-guides",
+        "mixed-floors",
+        "blocked-drop",
+        "blocked-shooter",
+    };
+    private static bool indexerSeeded;
     private static bool RedCase => Flag("-turboDelivery") ? index >= 4 : Matrix && index >= 6;
 
     private static float Arg(string name, float fallback)
@@ -197,7 +253,8 @@ public static class Turbo4744SystemsBench
             report = new Report
             {
                 label =
-                    Flag("-turboPulse") ? "pulse-after"
+                    Indexer ? "indexer-after"
+                    : Flag("-turboPulse") ? "pulse-after"
                     : Flag("-turboDelivery") ? "delivery-after"
                     : Flag("-turboMoving") ? "moving-after"
                     : Flag("-turboCrowded")
@@ -221,9 +278,17 @@ public static class Turbo4744SystemsBench
                 || Flag("-turboDelivery")
                 || Flag("-turboShotsOnly")
                 || Flag("-turboJam")
+                || Indexer
                     ? 2
                 : 0;
             robot = null;
+            if (Indexer && Flag("-turboIndexerCase"))
+                index =
+                    2
+                    + Array.IndexOf(
+                        IndexerCases,
+                        Args[Array.IndexOf(Args, "-turboIndexerCase") + 1]
+                    );
             wall = EditorApplication.timeSinceStartup;
             EditorApplication.update += Tick;
             Application.logMessageReceived += Log;
@@ -242,6 +307,11 @@ public static class Turbo4744SystemsBench
 
     private static void Log(string text, string stack, LogType type)
     {
+        if (
+            report != null
+            && Turbo4744BenchLog.RecordEditorServiceError(text, stack, report.editorServiceErrors)
+        )
+            return;
         if (
             robot
             && (type == LogType.Error || type == LogType.Exception)
@@ -265,7 +335,53 @@ public static class Turbo4744SystemsBench
     {
         go.transform.SetParent(GameObject.FindWithTag("GamePieceWorld").transform, true);
         var rb = go.GetComponent<Rigidbody>();
-        balls.Add(new Ball { body = rb, previous = rb.position });
+        var ball = new Ball { body = rb, previous = rb.position };
+        balls.Add(ball);
+        if (Flag("-turboMoving") || Flag("-turboAlignHoods"))
+            go.AddComponent<Turbo4744GuideProbe>().collided = contact =>
+            {
+                float t = Time.fixedTime - began;
+                var local = robot.transform.InverseTransformPoint(rb.position);
+                if (
+                    t < 3
+                    || t > 9
+                    || local.y < .4f
+                    || local.z > .15f
+                    || local.z < -.7f
+                    || result.shotContacts.Count >= 2500
+                )
+                    return;
+                result.shotContacts.Add(
+                    FormattableString.Invariant(
+                        $"{t:F4} ball={balls.IndexOf(ball)} {contact.collider.name} impulse={contact.impulse:F4} local={local:F4} v={rb.velocity:F4} relative={contact.relativeVelocity:F4}"
+                    )
+                );
+            };
+        if (Flag("-turboDelivery"))
+            go.AddComponent<Turbo4744DeliveryProbe>().landing = p => RecordDeliveryLanding(ball, p);
+    }
+
+    private static void RecordDeliveryLanding(Ball ball, Vector3 position)
+    {
+        if (!ball.launched || ball.landed)
+            return;
+        ball.landed = true;
+        Vector3 delta = position - robot.AimTarget;
+        delta.y = 0;
+        if (
+            delta.magnitude < 1.25f
+            && Mathf.Abs(position.x) < 8.15f
+            && Mathf.Abs(position.z) < 3.95f
+        )
+            result.delivered++;
+        result.shots.Add(
+            "Pass landing "
+                + balls.IndexOf(ball)
+                + " error "
+                + delta.magnitude.ToString("F3")
+                + " point "
+                + position.ToString("F3")
+        );
     }
 
     private static void Spawn()
@@ -283,16 +399,20 @@ public static class Turbo4744SystemsBench
         result = new Result
         {
             kind =
-                Flag("-turboJam") ? "jam"
+                Indexer ? "indexer"
+                : Flag("-turboJam") ? "jam"
                 : index < 2 ? "drive"
                 : "shoot",
             payload = index == 1 ? (Flag("-turboCrowded") ? 30 : 20) : 0,
         };
+        if (Indexer)
+            result.indexerCase = IndexerCases[index - 2];
         if (index >= 2)
         {
             result.range = Arg(
                 "-turboRange",
-                Flag("-turboBefore") ? 3f
+                Indexer ? 3f
+                    : Flag("-turboBefore") ? 3f
                     : Matrix ? ((index - 2) % 4 < 2 ? 2.5f : 4f)
                     : Flag("-turboPulse") || Flag("-turboMoving") ? 3f
                     : Flag("-turboDelivery") ? 7f
@@ -306,6 +426,20 @@ public static class Turbo4744SystemsBench
                 0,
                 (Matrix || Flag("-turboMoving")) && index % 2 == 1 ? -.6f : .6f
             );
+            // The former 5 m corner spawned into the alliance boundary and
+            // could rotate/stall before aiming. Keep the same radius on a
+            // measured clear bearing; the field and robot stay intact.
+            if (Mathf.Abs(result.range - 5) < .001f && !Flag("-turboDelivery"))
+            {
+                away.x = Mathf.Sign(away.x) * .77f;
+                away.z = Mathf.Sign(away.z) * Mathf.Sqrt(1 - .77f * .77f);
+            }
+            if (Flag("-turboBearingX"))
+            {
+                float bearingX = Arg("-turboBearingX", Mathf.Abs(away.x));
+                away.x = Mathf.Sign(away.x) * bearingX;
+                away.z = Mathf.Sign(away.z) * Mathf.Sqrt(1 - bearingX * bearingX);
+            }
             position = hub + away * result.range;
             position.y = .04f;
             if (Flag("-turboDelivery"))
@@ -316,9 +450,10 @@ public static class Turbo4744SystemsBench
                 );
             Vector3 towards = hub - position;
             towards.y = 0;
+            result.spawnRange = towards.magnitude;
             rotation = Quaternion.Euler(
                 0,
-                Mathf.Atan2(towards.x, towards.z) * Mathf.Rad2Deg + 210,
+                Mathf.Atan2(towards.x, towards.z) * Mathf.Rad2Deg + (Indexer ? 180 : 210),
                 0
             );
         }
@@ -331,8 +466,94 @@ public static class Turbo4744SystemsBench
             )
             .GetComponent<Turbo4744>();
         robot.SetAlliance(RedCase ? Alliance.Red : Alliance.Blue);
+        var player = robot.GetComponent<PlayerInput>();
+        player.neverAutoSwitchControlSchemes = true;
+        player.actions.devices = new InputDevice[] { keyboard };
         result.alliance = robot.Alliance.ToString();
         body = robot.GetComponent<Rigidbody>();
+        if (Flag("-turboDiagnostic"))
+        {
+            int labelIndex = Array.IndexOf(Args, "-turboDiagnosticLabel");
+            report.label = "diagnostic-" + (labelIndex >= 0 ? Args[labelIndex + 1] : "after");
+        }
+        if (index >= 2)
+            foreach (var observedBody in robot.GetComponentsInChildren<Rigidbody>())
+                observedBody.gameObject.AddComponent<Turbo4744GuideProbe>().collided = contact =>
+                {
+                    float t = Time.fixedTime - began;
+                    if (
+                        t > 3.2f
+                        || contact.collider.name == "Carpet"
+                        || contact.collider.transform.IsChildOf(robot.transform)
+                        || contact.collider.GetComponentInParent<RebuiltGamePieceController>()
+                        || contact.impulse.sqrMagnitude < .0025f
+                        || result.fieldContacts.Count >= 1000
+                    )
+                        return;
+                    result.fieldContacts.Add(
+                        FormattableString.Invariant(
+                            $"{t:F4} body={observedBody.name} hit={contact.collider.name} bounds={contact.collider.bounds} impulse={contact.impulse:F3}"
+                        )
+                    );
+                };
+        if (Flag("-turboSkipRearRim"))
+        {
+            report.label = "moving-no-rear-rim-comparison";
+            var rearRim = robot
+                .GetComponentsInChildren<BoxCollider>()
+                .Single(c => c.name == "Rear net rim");
+            rearRim.enabled = false;
+        }
+        if (Flag("-turboDirectBrake"))
+        {
+            report.label = "moving-direct-brake-comparison";
+            robot.gameObject.AddComponent<Turbo4744AcceleratorBrakeProbe>().contact =
+                robot.acceleratorContact;
+        }
+        if (Flag("-turboAlignHoods"))
+        {
+            if (!report.label.Contains("aligned-hoods-comparison"))
+                report.label += "-aligned-hoods-comparison";
+            var correction =
+                robot.shooterContact.transform.localPosition - new Vector3(.0131f, .461f, -.055f);
+            foreach (
+                var hood in robot
+                    .GetComponentsInChildren<BoxCollider>()
+                    .Where(c => c.name.StartsWith("Shooter hood "))
+            )
+                hood.transform.localPosition += correction;
+        }
+        if (Flag("-turboClearRearMouth"))
+        {
+            if (!report.label.Contains("clear-mouth-comparison"))
+                report.label += "-clear-mouth-comparison";
+            var rim = robot
+                .GetComponentsInChildren<BoxCollider>()
+                .Single(c => c.name == "Rear net rim");
+            var right = Object
+                .Instantiate(rim.gameObject, rim.transform.parent)
+                .GetComponent<BoxCollider>();
+            float leftEnd = rim.transform.localPosition.x - rim.size.x * .5f;
+            float rightEnd = rim.transform.localPosition.x + rim.size.x * .5f;
+            float mouthLeft =
+                robot.shooterContact.transform.localPosition.x - robot.shooterContact.halfWidth;
+            float mouthRight =
+                robot.shooterContact.transform.localPosition.x + robot.shooterContact.halfWidth;
+            rim.name = "Rear net rim left";
+            right.name = "Rear net rim right";
+            rim.transform.localPosition = new Vector3(
+                (leftEnd + mouthLeft) * .5f,
+                .533f,
+                .0036175f
+            );
+            right.transform.localPosition = new Vector3(
+                (mouthRight + rightEnd) * .5f,
+                .533f,
+                .0036175f
+            );
+            rim.size = new Vector3(mouthLeft - leftEnd, .016f, .016f);
+            right.size = new Vector3(rightEnd - mouthRight, .016f, .016f);
+        }
         input = robot.gameObject.AddComponent<Turbo4744BenchDriver>();
         input.drive = robot.GetComponent<DriveController>();
         intakeClosed = robot.intakeRail.transform.localPosition.z;
@@ -365,45 +586,34 @@ public static class Turbo4744SystemsBench
         balls.Clear();
         foreach (var preload in robot.preloads)
         {
-            if (index < 2)
+            if (index < 2 || Indexer)
+            {
+                preload.SetActive(false);
                 Object.Destroy(preload);
+            }
             else
                 AddBall(preload);
         }
         jamFixture.Clear();
         backoffBegan = -1;
+        firstRecoveryEndedAt = -1;
+        nextObstructionSample = 0;
+        nextShotSample = 0;
+        indexerSeeded = false;
+        if (Indexer)
+            robot.gameObject.AddComponent<Turbo4744IndexerProbe>().sample = MeasureIndexerPhysics;
+        if (Flag("-turboJam"))
+            robot.gameObject.AddComponent<Turbo4744IndexerProbe>().sample = MeasureObstruction;
+        if (Flag("-turboMoving") || Flag("-turboAlignHoods"))
+            robot.gameObject.AddComponent<Turbo4744IndexerProbe>().sample = MeasureMovingPhysics;
         if (Flag("-turboJam"))
         {
             foreach (var ball in balls)
+            {
+                ball.body.gameObject.SetActive(false);
                 Object.Destroy(ball.body.gameObject);
+            }
             balls.Clear();
-            var center = new Vector3(0, .28f, .22f);
-            AddBall(
-                Object.Instantiate(
-                    fuel,
-                    robot.transform.TransformPoint(center),
-                    Quaternion.identity
-                )
-            );
-            for (int axis = 0; axis < 3; axis++)
-                foreach (int side in new[] { -1, 1 })
-                {
-                    var wall = new GameObject("Benchmark jam obstruction");
-                    wall.transform.SetParent(robot.transform, false);
-                    var offset = Vector3.zero;
-                    offset[axis] = side * .08f;
-                    wall.transform.localPosition = center + offset;
-                    var box = wall.AddComponent<BoxCollider>();
-                    var size = Vector3.one * .165f;
-                    size[axis] = .005f;
-                    box.size = size;
-                    box.excludeLayers = ~LayerMask.GetMask(
-                        "GamePiece1",
-                        "GamePiece2",
-                        "GamePieceAlt"
-                    );
-                    jamFixture.Add(wall);
-                }
         }
         began = Time.time;
         loaded =
@@ -473,6 +683,8 @@ public static class Turbo4744SystemsBench
             result.backoffSamples++;
         if (!backing && backoffBegan >= 0)
         {
+            if (firstRecoveryEndedAt < 0)
+                firstRecoveryEndedAt = t;
             result.backoffSeconds = t - backoffBegan;
             backoffBegan = -1;
         }
@@ -534,6 +746,8 @@ public static class Turbo4744SystemsBench
             var local = robot.transform.InverseTransformPoint(p);
             if (!ball.launched && local.y > .65f && local.z < -.2f)
             {
+                if (result.firstLaunchTime < 0)
+                    result.firstLaunchTime = t;
                 ball.launched = true;
                 ball.began = t;
                 result.launched++;
@@ -595,19 +809,7 @@ public static class Turbo4744SystemsBench
                 && ball.body.velocity.y < 0
             )
             {
-                ball.landed = true;
-                Vector3 delta = p - robot.AimTarget;
-                delta.y = 0;
-                if (delta.magnitude < 1.25f && Mathf.Abs(p.x) < 8.15f && Mathf.Abs(p.z) < 3.95f)
-                    result.delivered++;
-                result.shots.Add(
-                    "Pass landing "
-                        + balls.IndexOf(ball)
-                        + " error "
-                        + delta.magnitude.ToString("F3")
-                        + " point "
-                        + p.ToString("F3")
-                );
+                RecordDeliveryLanding(ball, p);
             }
             ball.previous = p;
         }
@@ -633,6 +835,12 @@ public static class Turbo4744SystemsBench
                 + robot.intakeRail.transform.localPosition.z.ToString("F4")
                 + ","
                 + robot.hopperRail.transform.localPosition.z.ToString("F4")
+                + " pump "
+                + robot.PumpMode
+                + " encoder "
+                + (t > .1f ? robot.IntakeEncoderRotations : 0).ToString("F3")
+                + " command "
+                + robot.intakeRail.targetVelocity.z.ToString("F3")
         );
         if (s % 4 == 0)
             foreach (var wheel in robot.GetComponentsInChildren<WheelCollider>())
@@ -647,6 +855,412 @@ public static class Turbo4744SystemsBench
                                 : "none"
                         )
                 );
+    }
+
+    private static void SeedIndexer()
+    {
+        // A seeded fixture needs a collision-free initial cloth pose, as normal
+        // preloads have at robot spawn. Do not insert bodies through an already
+        // sagged empty net and measure its depenetration as roller behavior.
+        robot.GetComponent<Turbo4744NetRig>().UpdatePins();
+        robot.roofNet.GetComponent<NetSolver>().Rebuild();
+        var fuel = AssetDatabase.LoadAssetAtPath<GameObject>(
+            "Assets/Prefabs/Games/Rebuilt/Fuel.prefab"
+        );
+        var positions = new List<Vector3>();
+        switch (result.indexerCase)
+        {
+            case "lower-pair":
+                positions.Add(new Vector3(.0131f - .0765f, .29f, .27f));
+                positions.Add(new Vector3(.0131f + .0765f, .29f, .27f));
+                break;
+            case "upper-pair":
+                positions.Add(new Vector3(.0131f - .0765f, .413f, .13f));
+                positions.Add(new Vector3(.0131f + .0765f, .413f, .13f));
+                break;
+            case "left-single":
+                positions.Add(new Vector3(-.0634f, .29f, .27f));
+                break;
+            case "right-single":
+                positions.Add(new Vector3(.0896f, .29f, .27f));
+                break;
+            case "center-single":
+                positions.Add(new Vector3(.0131f, .29f, .27f));
+                break;
+            case "side-guides":
+                positions.Add(new Vector3(-.22f, .32f, .23f));
+                positions.Add(new Vector3(.22f, .32f, .23f));
+                break;
+            case "outer-corners":
+                positions.Add(new Vector3(-.275f, .32f, .23f));
+                positions.Add(new Vector3(.275f, .32f, .23f));
+                break;
+            case "asymmetric-guides":
+                positions.Add(new Vector3(-.275f, .32f, .23f));
+                positions.Add(new Vector3(-.0634f, .29f, .27f));
+                positions.Add(new Vector3(.0896f, .29f, .27f));
+                break;
+            case "mixed-floors":
+                foreach (float x in new[] { -.0634f, .0896f })
+                {
+                    positions.Add(new Vector3(x, .29f, .27f));
+                    // Place the upper row on its CAD rollers, below the settled cloth.
+                    positions.Add(new Vector3(x, .405f, .13f));
+                }
+                break;
+            case "blocked-drop":
+                positions.Add(new Vector3(.0131f, .405f, .107f));
+                break;
+            case "blocked-shooter":
+                positions.Add(new Vector3(.0131f, .19f, .02f));
+                break;
+        }
+        foreach (var position in positions)
+        {
+            AddBall(
+                Object.Instantiate(
+                    fuel,
+                    robot.transform.TransformPoint(position),
+                    Quaternion.identity
+                )
+            );
+            if (result.indexerCase.EndsWith("-pair"))
+            {
+                var ball = balls.Last();
+                var witness = ball.body.gameObject.AddComponent<Turbo4744GuideProbe>();
+                witness.collided = contact =>
+                {
+                    if (Time.fixedTime - began > 3.25f || result.pairContacts.Count >= 120)
+                        return;
+                    var other = contact.collider;
+                    result.pairContacts.Add(
+                        (Time.fixedTime - began).ToString("F4")
+                            + " fuel "
+                            + balls.IndexOf(ball)
+                            + " collider "
+                            + other.name
+                            + " id "
+                            + other.GetInstanceID()
+                            + " parent "
+                            + other.transform.parent?.name
+                            + " body "
+                            + (other.attachedRigidbody ? other.attachedRigidbody.name : "static")
+                            + " local "
+                            + robot
+                                .transform.InverseTransformPoint(other.bounds.center)
+                                .ToString("F4")
+                            + " impulse "
+                            + contact.impulse.ToString("F4")
+                    );
+                };
+            }
+            if (Mathf.Abs(position.x) > .17f)
+            {
+                var ball = balls.Last();
+                result.expectedIdleSideSupports++;
+                var probe = ball.body.gameObject.AddComponent<Turbo4744GuideProbe>();
+                probe.observed = detail =>
+                {
+                    if (Time.fixedTime - began < 3 && result.idleGuideContacts.Count < 40)
+                        result.idleGuideContacts.Add("fuel " + balls.IndexOf(ball) + " " + detail);
+                };
+                probe.supported = () =>
+                {
+                    if (Time.fixedTime - began < 3)
+                    {
+                        ball.sideSupportSteps++;
+                        ball.sideSupported = true;
+                    }
+                };
+            }
+        }
+        result.seeded = positions.Count;
+        if (result.indexerCase.StartsWith("blocked-"))
+        {
+            for (int axis = 0; axis < 3; axis++)
+                foreach (int side in new[] { -1, 1 })
+                {
+                    var wall = new GameObject("Indexer obstruction fixture");
+                    wall.transform.SetParent(robot.transform, false);
+                    wall.layer = LayerMask.NameToLayer("Robot");
+                    var offset = Vector3.zero;
+                    offset[axis] = side * .08f;
+                    wall.transform.localPosition = positions[0] + offset;
+                    var box = wall.AddComponent<BoxCollider>();
+                    var size = Vector3.one * .165f;
+                    size[axis] = .005f;
+                    box.size = size;
+                    box.excludeLayers = ~LayerMask.GetMask(
+                        "GamePiece1",
+                        "GamePiece2",
+                        "GamePieceAlt"
+                    );
+                    jamFixture.Add(wall);
+                }
+            WatchObstruction(balls[0]);
+        }
+        indexerSeeded = true;
+    }
+
+    private static void MeasureIndexerPhysics()
+    {
+        if (!robot || !indexerSeeded)
+            return;
+        if (Time.fixedTime - began < 3)
+        {
+            result.idleSupportSamples++;
+            foreach (var ball in balls)
+                result.minIdleFuelY = Mathf.Min(
+                    result.minIdleFuelY,
+                    robot.transform.InverseTransformPoint(ball.body.position).y
+                );
+            result.idleSideSupports = balls.Count(b => b.sideSupported);
+            if (result.expectedIdleSideSupports > 0 && Time.fixedTime - began > 2.9f)
+                result.idleGuideTrace = balls
+                    .Select(b =>
+                        robot.transform.InverseTransformPoint(b.body.position).ToString("F4")
+                        + " guide contact steps "
+                        + b.sideSupportSteps
+                    )
+                    .ToList();
+        }
+        result.peakLowerContacts = Mathf.Max(result.peakLowerContacts, robot.indexer.LowerContacts);
+        result.peakUpperContacts = Mathf.Max(result.peakUpperContacts, robot.indexer.UpperContacts);
+        result.peakShooterContacts = Mathf.Max(
+            result.peakShooterContacts,
+            robot.shooterContact.Contacts
+        );
+        result.peakIndexerForce = Mathf.Max(result.peakIndexerForce, robot.indexer.AppliedForce);
+        if (result.indexerCase.EndsWith("-pair") && Time.fixedTime - began < 2.35f)
+        {
+            var contactBodies =
+                (HashSet<Rigidbody>)
+                    typeof(Turbo4744ShooterContact)
+                        .GetField("current", BindingFlags.NonPublic | BindingFlags.Instance)
+                        .GetValue(robot.intakeContact);
+            result.pairForces.Add(
+                (Time.fixedTime - began).ToString("F4")
+                    + " "
+                    + string.Join(
+                        " | ",
+                        balls.Select(b =>
+                            "force "
+                            + b.body.GetAccumulatedForce().ToString("F3")
+                            + " pickup "
+                            + contactBodies.Contains(b.body)
+                            + " captured "
+                            + robot.indexer.keeper.IsCaptured(b.body)
+                            + " com "
+                            + robot
+                                .transform.InverseTransformPoint(b.body.worldCenterOfMass)
+                                .ToString("F4")
+                        )
+                    )
+            );
+        }
+        if (
+            result.indexerCase.EndsWith("-pair")
+            && result.pairTrace.Count < 180
+            && Time.fixedTime - began >= 2.25f + result.pairTrace.Count * .025f
+        )
+            result.pairTrace.Add(
+                (Time.fixedTime - began).ToString("F4")
+                    + " "
+                    + robot.ShootingState
+                    + " feeding "
+                    + robot.Feeding
+                    + " "
+                    + string.Join(
+                        " | ",
+                        balls.Select(b =>
+                            "p "
+                            + robot.transform.InverseTransformPoint(b.body.position).ToString("F4")
+                            + " v "
+                            + (
+                                Quaternion.Inverse(robot.transform.rotation) * b.body.velocity
+                            ).ToString("F3")
+                            + " touching "
+                            + string.Join(
+                                ",",
+                                Physics
+                                    .OverlapSphere(b.body.position, .077f)
+                                    .Where(c => c.attachedRigidbody != b.body && !c.isTrigger)
+                                    .Select(c => c.name)
+                            )
+                        )
+                    )
+            );
+        if (
+            result.indexerCase == "mixed-floors"
+            && result.mixedTrace.Count < 18
+            && Time.fixedTime - began > 2.3f + result.mixedTrace.Count * .1f
+        )
+        {
+            var last = balls.Last().body;
+            result.mixedTrace.Add(
+                (Time.fixedTime - began).ToString("F3")
+                    + " "
+                    + robot.transform.InverseTransformPoint(last.position).ToString("F4")
+                    + " v "
+                    + (Quaternion.Inverse(robot.transform.rotation) * last.velocity).ToString("F3")
+                    + " contacts "
+                    + string.Join(
+                        ",",
+                        Physics
+                            .OverlapSphere(last.position, .08f)
+                            .Where(c => c.attachedRigidbody != last && !c.isTrigger)
+                            .Select(c => c.name)
+                    )
+            );
+        }
+        if (result.shots.Count < 6 && Time.fixedTime - began > 3.9f + result.shots.Count * .4f)
+        {
+            foreach (var b in balls.Where(b => b.body).Take(1))
+                result.shots.Add(
+                    "Contact probe "
+                        + robot.transform.InverseTransformPoint(b.body.position).ToString("F4")
+                        + " velocity "
+                        + (Quaternion.Inverse(robot.transform.rotation) * b.body.velocity).ToString(
+                            "F3"
+                        )
+                        + " indexer "
+                        + robot.indexer.TargetMotorRps
+                        + "/"
+                        + robot.indexer.CurrentSurfaceSpeed
+                        + " contacts "
+                        + robot.indexer.Contacts
+                        + " force "
+                        + robot.indexer.AppliedForce
+                        + " captured "
+                        + robot.indexer.keeper.IsCaptured(b.body)
+                        + " touching "
+                        + string.Join(
+                            ",",
+                            Physics
+                                .OverlapSphere(b.body.position, .08f)
+                                .Where(c => c.attachedRigidbody != b.body && !c.isTrigger)
+                                .Select(c => c.name)
+                        )
+                );
+        }
+        foreach (var ball in balls.Where(b => b.body))
+        {
+            if (!ball.lowerEntry && robot.indexer.HasEnteredShooter(ball.body))
+            {
+                ball.lowerEntry = true;
+                result.lowerEntrances++;
+            }
+            var muzzleLocal = robot.shooterContact.transform.InverseTransformPoint(
+                ball.body.worldCenterOfMass
+            );
+            float along = -muzzleLocal.z;
+            if (
+                !ball.muzzleCrossed
+                && ball.lowerEntry
+                && ball.previousFixedTime > 0
+                && ball.previousMuzzleAlong <= robot.shooterContact.contactFar
+                && along > robot.shooterContact.contactFar
+                && Mathf.Abs(muzzleLocal.y) < robot.shooterContact.normalClearance * 2
+                && Mathf.Abs(muzzleLocal.x) < robot.shooterContact.halfWidth
+            )
+            {
+                float fraction =
+                    (robot.shooterContact.contactFar - ball.previousMuzzleAlong)
+                    / (along - ball.previousMuzzleAlong);
+                float time = Mathf.Lerp(ball.previousFixedTime, Time.fixedTime, fraction) - began;
+                result.muzzleCrossings.Add(time);
+                ball.muzzleCrossed = true;
+            }
+            ball.previousMuzzleAlong = along;
+            ball.previousFixedTime = Time.fixedTime;
+        }
+        if (result.muzzleCrossings.Count >= 2)
+            result.pairExitDelta = Mathf.Abs(result.muzzleCrossings[1] - result.muzzleCrossings[0]);
+    }
+
+    private static void SeedJam()
+    {
+        indexerSeeded = true;
+        var fuel = AssetDatabase.LoadAssetAtPath<GameObject>(
+            "Assets/Prefabs/Games/Rebuilt/Fuel.prefab"
+        );
+        var center = new Vector3(0, .28f, .22f);
+        AddBall(
+            Object.Instantiate(fuel, robot.transform.TransformPoint(center), Quaternion.identity)
+        );
+        for (int axis = 0; axis < 3; axis++)
+            foreach (int side in new[] { -1, 1 })
+            {
+                var wall = new GameObject("Benchmark jam obstruction " + axis + "/" + side);
+                wall.transform.SetParent(robot.transform, false);
+                wall.layer = LayerMask.NameToLayer("Robot");
+                var offset = Vector3.zero;
+                offset[axis] = side * .08f;
+                wall.transform.localPosition = center + offset;
+                var box = wall.AddComponent<BoxCollider>();
+                var size = Vector3.one * .165f;
+                size[axis] = .005f;
+                box.size = size;
+                box.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+                jamFixture.Add(wall);
+            }
+        WatchObstruction(balls[0]);
+    }
+
+    private static void WatchObstruction(Ball ball)
+    {
+        var probe = ball.body.gameObject.AddComponent<Turbo4744GuideProbe>();
+        probe.observed = detail =>
+        {
+            if (Time.time - began < 7)
+                result.obstructionTrace.Add(
+                    (Time.time - began).ToString("F4") + " contact " + detail
+                );
+            if (
+                Time.time - began < 7
+                && (
+                    detail.StartsWith("Benchmark jam obstruction")
+                    || detail.StartsWith("Indexer obstruction fixture")
+                )
+            )
+                result.obstructionContacts++;
+        };
+    }
+
+    private static void MeasureObstruction()
+    {
+        float t = Time.fixedTime - began;
+        if (t > 7.1f || t < nextObstructionSample || balls.Count == 0 || !balls[0].body)
+            return;
+        nextObstructionSample = t + .1f;
+        var moving = balls[0].body;
+        var wall = jamFixture.FirstOrDefault(o => o);
+        if (!wall)
+            return;
+        var blocker = wall.GetComponent<Collider>();
+        string shapes = string.Join(
+            ";",
+            moving
+                .GetComponentsInChildren<Collider>()
+                .Select(c =>
+                    c.name
+                    + " layer="
+                    + LayerMask.LayerToName(c.gameObject.layer)
+                    + " enabled="
+                    + c.enabled
+                    + " trigger="
+                    + c.isTrigger
+                    + " ignoreLayer="
+                    + Physics.GetIgnoreLayerCollision(c.gameObject.layer, blocker.gameObject.layer)
+                    + " ignorePair="
+                    + Physics.GetIgnoreCollision(c, blocker)
+                )
+        );
+        result.obstructionTrace.Add(
+            FormattableString.Invariant(
+                $"{t:F4} p={robot.transform.InverseTransformPoint(moving.position):F4} v={moving.velocity:F3} parent={(moving.transform.parent ? moving.transform.parent.name : "none")} body={moving.collisionDetectionMode} feed={robot.Feeding} rps={robot.TargetIndexerMotorRps} walls={jamFixture.Count(o => o && o.activeInHierarchy)} shapes={shapes}"
+            )
+        );
     }
 
     private static void Cleanup()
@@ -668,21 +1282,103 @@ public static class Turbo4744SystemsBench
 
     private static int Retained() =>
         balls.Count(b =>
-            b.body
-            && Mathf.Abs(robot.transform.InverseTransformPoint(b.body.position).x) < .36f
-            && robot.transform.InverseTransformPoint(b.body.position).y > .17f
-            && robot.transform.InverseTransformPoint(b.body.position).y < .7f
-            && robot.transform.InverseTransformPoint(b.body.position).z > 0
-            && robot.transform.InverseTransformPoint(b.body.position).z < .65f
+        {
+            if (!b.body)
+                return false;
+            var p = robot.transform.InverseTransformPoint(b.body.position);
+            return (Mathf.Abs(p.x) < .36f && p.y > .17f && p.y < .7f && p.z > 0 && p.z < .65f)
+                || Turbo4744FeedBounds.Contains(p);
+        });
+
+    internal static GameObject CreateShooterCutaway(Turbo4744 robot)
+    {
+        // Retain the original shooter internals in the cutaway, removing
+        // the merged chassis panels that would obscure the lower entrance.
+        var chassis = robot
+            .GetComponentsInChildren<MeshFilter>()
+            .First(m => m.name == "Chassis_Geometry");
+        // The bundle discards CPU mesh buffers. Read the matching imported
+        // editor asset for this visualization, leaving the tested bundle intact.
+        var source = AssetDatabase.LoadAssetAtPath<GameObject>(
+            "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Model/Turbo4744.fbx"
         );
+        var original = source
+            .GetComponentsInChildren<MeshFilter>()
+            .First(m => m.name == "Chassis_Geometry")
+            .sharedMesh;
+        if (
+            original.vertexCount != chassis.sharedMesh.vertexCount
+            || original.subMeshCount != chassis.sharedMesh.subMeshCount
+        )
+            throw new InvalidOperationException("Cutaway source does not match the tested model");
+        var vertices = original.vertices;
+        var shooterMesh = new Mesh { indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 };
+        shooterMesh.vertices = vertices;
+        shooterMesh.normals = original.normals;
+        shooterMesh.uv = original.uv;
+        shooterMesh.subMeshCount = original.subMeshCount;
+        for (int sub = 0; sub < original.subMeshCount; sub++)
+        {
+            var triangles = original.GetTriangles(sub);
+            var selected = new List<int>();
+            for (int i = 0; i < triangles.Length; i += 3)
+            {
+                var center =
+                    (
+                        vertices[triangles[i]]
+                        + vertices[triangles[i + 1]]
+                        + vertices[triangles[i + 2]]
+                    ) / 3;
+                var p = robot.transform.InverseTransformPoint(
+                    chassis.transform.TransformPoint(center)
+                );
+                if (Mathf.Abs(p.x - .0131f) < .14f && p.y > .24f && p.z < .025f)
+                    selected.AddRange(new[] { triangles[i], triangles[i + 1], triangles[i + 2] });
+            }
+            shooterMesh.SetTriangles(selected, sub);
+        }
+        shooterMesh.RecalculateBounds();
+        var shooterPreview = new GameObject("Cutaway original shooter internals");
+        shooterPreview.layer = LayerMask.NameToLayer("Robot");
+        shooterPreview.transform.SetParent(chassis.transform, false);
+        shooterPreview.AddComponent<MeshFilter>().sharedMesh = shooterMesh;
+        shooterPreview.AddComponent<MeshRenderer>().sharedMaterials = chassis
+            .GetComponent<Renderer>()
+            .sharedMaterials;
+        return shooterPreview;
+    }
 
     private static void Capture(string name)
     {
+        bool cutaway = name.Contains("indexer");
+        var renderers = robot.GetComponentsInChildren<Renderer>(true);
+        var visibility = renderers.Select(r => r.enabled).ToArray();
+        var supportMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        supportMaterial.color = new Color(.15f, .65f, .8f);
+        var supports = renderers.Where(r => r.name.StartsWith("SideIndexer")).ToArray();
+        var supportMaterials = supports.Select(r => r.sharedMaterials).ToArray();
+        GameObject shooterPreview = null;
+        Mesh shooterMesh = null;
+        if (cutaway)
+        {
+            foreach (var renderer in renderers)
+                renderer.enabled =
+                    renderer.name.StartsWith("Indexer") || renderer.name.StartsWith("SideIndexer");
+            foreach (var support in supports)
+                support.sharedMaterial = supportMaterial;
+            shooterPreview = CreateShooterCutaway(robot);
+            shooterMesh = shooterPreview.GetComponent<MeshFilter>().sharedMesh;
+        }
         var camera = new GameObject("Bench preview").AddComponent<Camera>();
         camera.transform.position = robot.transform.TransformPoint(
-            name.Contains("top") ? new Vector3(.05f, 1.6f, .35f) : new Vector3(1.3f, .8f, 1.25f)
+            name.Contains("top") ? new Vector3(.05f, 1.6f, .15f)
+            : name.Contains("cutaway-side") ? new Vector3(1.4f, .35f, .05f)
+            : new Vector3(1.3f, .8f, 1.25f)
         );
-        camera.transform.LookAt(robot.transform.TransformPoint(new Vector3(0, .26f, .1f)));
+        camera.transform.LookAt(
+            robot.transform.TransformPoint(new Vector3(0, .26f, .1f)),
+            cutaway && name.Contains("top") ? robot.transform.forward : robot.transform.up
+        );
         camera.orthographic = true;
         camera.orthographicSize = .6f;
         camera.nearClipPlane = .01f;
@@ -697,12 +1393,27 @@ public static class Turbo4744SystemsBench
         tex.ReadPixels(new Rect(0, 0, 960, 720), 0, 0);
         tex.Apply();
         Directory.CreateDirectory(Out);
-        File.WriteAllBytes(Out + "/Turbo4744-v5-" + name + ".png", tex.EncodeToPNG());
+        File.WriteAllBytes(
+            Out + (cutaway ? "/Turbo4744-v6-" : "/Turbo4744-v5-") + name + ".png",
+            tex.EncodeToPNG()
+        );
         camera.targetTexture = null;
         RenderTexture.active = null;
         Object.Destroy(rt);
         Object.Destroy(tex);
         Object.Destroy(camera.gameObject);
+        if (cutaway)
+        {
+            for (int i = 0; i < renderers.Length; i++)
+                renderers[i].enabled = visibility[i];
+            for (int i = 0; i < supports.Length; i++)
+                supports[i].sharedMaterials = supportMaterials[i];
+        }
+        Object.Destroy(supportMaterial);
+        if (shooterPreview)
+            Object.Destroy(shooterPreview);
+        if (shooterMesh)
+            Object.Destroy(shooterMesh);
     }
 
     private static void Tick()
@@ -770,7 +1481,32 @@ public static class Turbo4744SystemsBench
                 return;
             }
             float t = Time.time - began;
+            if (
+                Indexer
+                && !indexerSeeded
+                && t >= 2.25f
+                && (
+                    !result.indexerCase.EndsWith("-pair") && result.indexerCase != "mixed-floors"
+                    || robot.Feeding
+                )
+            )
+                SeedIndexer();
+            if (Flag("-turboJam") && !indexerSeeded && t >= 2.25f)
+                SeedJam();
             Measure(t);
+            // Mesh inspection for the cutaway must run in the editor callback,
+            // outside the physics/player loop where imported meshes are unreadable.
+            if (
+                Indexer
+                && result.indexerCase == "lower-pair"
+                && result.peakShooterContacts >= 2
+                && !capturedOpen
+            )
+            {
+                Capture("indexer-pair-top");
+                Capture("indexer-cutaway-side");
+                capturedOpen = true;
+            }
             if (index == 0 && !capturedClosed)
             {
                 if (t < .3f)
@@ -855,7 +1591,16 @@ public static class Turbo4744SystemsBench
                     capturedLoaded = true;
                 }
                 if (index == 1 && t > 9.2f && t < 10.2f)
+                {
                     result.payloadAfterDrive = Retained();
+                    if (t > 9.9f && result.loadedPositions.Count == 0)
+                        foreach (var ball in balls.Where(b => b.body))
+                            result.loadedPositions.Add(
+                                robot
+                                    .transform.InverseTransformPoint(ball.body.position)
+                                    .ToString("F4")
+                            );
+                }
                 if (t >= 3.3f && t < 4.4f)
                 {
                     if (Flag("-turboNativeDrive"))
@@ -891,7 +1636,10 @@ public static class Turbo4744SystemsBench
             }
             else
             {
-                if (Flag("-turboJam") && t > 7)
+                if (
+                    (Flag("-turboJam") || Indexer && result.indexerCase.StartsWith("blocked-"))
+                    && t > 7
+                )
                     foreach (var obstacle in jamFixture)
                         if (obstacle)
                             Object.Destroy(obstacle);
@@ -917,8 +1665,23 @@ public static class Turbo4744SystemsBench
                     Press(Key.LeftShift);
                 else if (t < 3)
                     Press();
-                else if (t >= 6 && t < 6.08f)
+                else if (
+                    Flag("-turboJam")
+                    && !pulsePump
+                    && firstRecoveryEndedAt >= 0
+                    && t - firstRecoveryEndedAt >= .72f
+                )
+                {
+                    result.pumpRequestRecoveryAge = t - firstRecoveryEndedAt;
+                    result.pumpRequestEncoder = robot.IntakeEncoderRotations;
                     Press(Key.K, Key.V);
+                    pulsePump = true;
+                }
+                else if (t >= 6 && !pulsePump && !Flag("-turboJam"))
+                {
+                    Press(Key.K, Key.V);
+                    pulsePump = true;
+                }
                 else if (Flag("-turboMoving") && t > 3.2f && t < 10)
                 {
                     // Begin toward field centre. Starting toward the side wall
@@ -940,6 +1703,17 @@ public static class Turbo4744SystemsBench
             )
                 return;
             if (index >= 2)
+            {
+                if (Flag("-turboDelivery"))
+                    foreach (var ball in balls.Where(b => b.body))
+                        result.shots.Add(
+                            "Final "
+                                + balls.IndexOf(ball)
+                                + " position "
+                                + ball.body.position.ToString("F3")
+                                + " landed "
+                                + ball.landed
+                        );
                 foreach (var ball in balls.Where(b => b.body && !b.launched))
                     result.shots.Add(
                         "Remaining "
@@ -949,6 +1723,7 @@ public static class Turbo4744SystemsBench
                                 .transform.InverseTransformPoint(ball.body.position)
                                 .ToString("F3")
                     );
+            }
             result.stowed =
                 Mathf.Abs(robot.intakeRail.transform.localPosition.z - intakeClosed) < .035f
                 && Mathf.Abs(robot.hopperRail.transform.localPosition.z - hopperClosed) < .035f;
@@ -957,7 +1732,8 @@ public static class Turbo4744SystemsBench
             Cleanup();
             index++;
             if (
-                Flag("-turboJam") ? true
+                Indexer ? Flag("-turboIndexerCase") || index >= 2 + IndexerCases.Length
+                : Flag("-turboJam") ? true
                 : Flag("-turboPulse") ? index >= 3
                 : Flag("-turboDelivery") ? index >= 6
                 : Flag("-turboMoving") ? index >= 4
@@ -979,6 +1755,27 @@ public static class Turbo4744SystemsBench
         }
     }
 
+    private static void MeasureMovingPhysics()
+    {
+        float t = Time.fixedTime - began;
+        if (t < 3.5f || t > 8.5f || t < nextShotSample)
+            return;
+        nextShotSample = t + .013f;
+        foreach (var ball in balls)
+        {
+            if (!ball.body)
+                continue;
+            var local = Quaternion.Inverse(body.rotation) * (ball.body.position - body.position);
+            if (local.y < .4f || local.z > .15f || local.z < -.7f)
+                continue;
+            result.shotTrace.Add(
+                FormattableString.Invariant(
+                    $"{t:F4} ball={balls.IndexOf(ball)} local={local:F4} v={ball.body.velocity:F4} chassis={body.GetPointVelocity(ball.body.position):F4} aim={robot.autoAim.GetRotationError():F3} rpm={robot.CurrentShooterRpm:F1}/{robot.TargetShooterRpm:F1} contacts={robot.shooterContact.Contacts}"
+                )
+            );
+        }
+    }
+
     private static void Finish()
     {
         EditorApplication.update -= Tick;
@@ -991,14 +1788,18 @@ public static class Turbo4744SystemsBench
                 && c.netSolvers == 1
                 && c.netScaleOne
                 && (
+                    Mathf.Abs(c.range - 5) > .001f
+                    || c.fieldContacts.Count == 0 && Mathf.Abs(c.spawnRange - 5) < .001f
+                )
+                && (
                     c.kind == "drive"
                         ? c.forwardSpeed > 3.3f
                             && c.reverseSpeed > 3.3f
                             && c.strafeSpeed > 2.3f
                             && (
                                 c.payload == 0
-                                    ? c.closedFrameSpan > .36f
-                                        && c.closedFrameSpan < .41f
+                                    ? c.closedFrameSpan > .59f
+                                        && c.closedFrameSpan < .64f
                                         && c.openedFrameSpan > .59f
                                         && c.closedNetSpan >= c.closedFrameSpan - .02f
                                         && c.closedNetSpan < .8f
@@ -1006,12 +1807,45 @@ public static class Turbo4744SystemsBench
                                     : c.payloadAtStart == c.payload
                                         && c.payloadAfterDrive == c.payload
                             )
+                    : c.kind == "indexer"
+                        ? c.scored == c.seeded
+                            && c.seeded > 0
+                            && c.lowerEntrances == c.seeded
+                            && c.peakIndexerForce <= 320.01f
+                            && (
+                                c.expectedIdleSideSupports == 0
+                                || c.idleSupportSamples > 20
+                                    && c.minIdleFuelY > .17f
+                                    && c.idleSideSupports == c.expectedIdleSideSupports
+                            )
+                            && (
+                                !c.indexerCase.StartsWith("blocked-")
+                                || c.jamRecoveries > 0
+                                    && c.obstructionContacts > 0
+                                    && c.firstLaunchTime >= 7
+                                    && c.backoffSamples > 0
+                                    && c.backoffSeconds > .45f
+                                    && c.backoffSeconds < .6f
+                            )
+                            && (c.indexerCase != "upper-pair" || c.peakUpperContacts >= 2)
+                            && (
+                                !c.indexerCase.EndsWith("pair")
+                                || c.peakShooterContacts >= 2
+                                    && c.pairExitDelta >= 0
+                                    && c.pairExitDelta <= .05f
+                            )
                     : c.kind == "jam"
                         ? c.jamRecoveries > 0
+                            && c.obstructionContacts > 0
+                            && c.firstLaunchTime >= 7
                             && c.backoffSamples > 0
                             && c.backoffSeconds > .45f
                             && c.backoffSeconds < .6f
                             && c.scored == 1
+                            && c.pumpRequestRecoveryAge >= .72f
+                            && c.pumpRequestRecoveryAge < .8f
+                            && c.pumpRequestEncoder < 10.5f
+                            && c.hardPumpCycles == 3
                     : Flag("-turboDelivery") ? c.delivered >= 6
                     : c.scored >= 7
                         && c.hardPumpCycles == 3
@@ -1037,6 +1871,71 @@ public static class Turbo4744SystemsBench
                 .ToString(hash.ComputeHash(stream))
                 .Replace("-", "")
                 .ToLowerInvariant();
+    }
+}
+
+/// <summary>Observe real passive support before powered feeding begins.</summary>
+public sealed class Turbo4744GuideProbe : MonoBehaviour
+{
+    public Action supported;
+    public Action<string> observed;
+    public Action<Collision> collided;
+    private readonly HashSet<string> seen = new HashSet<string>();
+
+    private void OnCollisionEnter(Collision contact) => OnCollisionStay(contact);
+
+    private void OnCollisionStay(Collision contact)
+    {
+        collided?.Invoke(contact);
+        if (seen.Add(contact.collider.name))
+            observed?.Invoke(
+                contact.collider.name
+                    + " normal "
+                    + (
+                        contact.contactCount > 0
+                            ? contact.GetContact(0).normal.ToString("F3")
+                            : "none"
+                    )
+            );
+        if (contact.collider.name.StartsWith("SideIndexer"))
+            for (int i = 0; i < contact.contactCount; i++)
+                if (contact.GetContact(i).normal.y > .1f)
+                {
+                    supported?.Invoke();
+                    break;
+                }
+    }
+}
+
+/// <summary>Observe the first carpet impact even when an editor frame spans an entire bounce.</summary>
+public sealed class Turbo4744DeliveryProbe : MonoBehaviour
+{
+    public Action<Vector3> landing;
+
+    private void OnCollisionEnter(Collision contact)
+    {
+        if (contact.collider.name == "Carpet")
+            landing?.Invoke(GetComponent<Rigidbody>().position);
+    }
+}
+
+[DefaultExecutionOrder(1200)]
+public sealed class Turbo4744IndexerProbe : MonoBehaviour
+{
+    public Action sample;
+
+    private void FixedUpdate() => sample?.Invoke();
+}
+
+[DefaultExecutionOrder(1075)]
+public sealed class Turbo4744AcceleratorBrakeProbe : MonoBehaviour
+{
+    public Turbo4744ShooterContact contact;
+
+    private void FixedUpdate()
+    {
+        if (contact.brakeWhenStopped)
+            contact.SetRpm(0);
     }
 }
 

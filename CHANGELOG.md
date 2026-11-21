@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.6.1 (2026-11-21)
+
+- Added four solid bumper contacts at the measured CAD perimeter. The root bounds trigger remains hollow metadata.
+- Replaced swept chassis CCD with discrete contacts at the native 4.5 ms step, removing the reproduced dense-fuel stop-and-jump motion.
+- Stored roller definitions in player-safe Unity arrays after native inspection found the nested managed array loaded empty, leaving indexer traction inactive.
+- Prevented the delayed soft-pump default after jam recovery from interrupting a pending or active hard-pump request.
+- Corrected the assembly after the team confirmed only the intake/kicker retracts: the main hopper walls, floor and net frame now stay fixed. Removed the former moving-bin floor traction approximation.
+- Detect lower-mouth entry when the ball surface reaches the existing mouth plane, so partially entering fuel receives the intended accelerator contact.
+- Command the finite accelerator brake directly during re-aiming instead of waiting for the motor reference to slow down. Preserve the failed moving-shot report and isolated contact/brake comparisons.
+- Preserved the original net slack after a tighter-net comparison failed the existing 50-ball fill minimum. Native trench retention failures remain recorded explicitly.
+- Added an opt-in native MoSim input replay with visible status and actual box-collider outlines, collision-pair audit, muzzle crossings and delivery measurements.
+- Require solid bumper surfaces in assembly and bundle checks; detect Unity execute-method failures even when the editor exits with code zero.
+- Retain failed deployed trench retention and packed-hopper stow results in native evidence. A stronger finite slide-drive comparison also failed; the original drive calibration is preserved.
+- Record actual powered bump scoring and delivery cycles separately from editor fixture acceptance.
+- Preserve failed fixture reports and document the corrected preload, cloth-seeding and fixed-bin observation setups. Pair timing, collection, capacity and scoring thresholds remain unchanged.
+- Moved the capacity fixture's zero-degree start inward after measuring an unintended 220 N·s field-boundary impact; preserve its driving sequence and require zero obstacle contacts during the loaded-drive segment.
+- Kept the 5 m firing distance on a clear bearing after recording severe initial wall penetration at the old corner. Require zero setup contacts; five stock-geometry repeats scored 40/40.
+
+## 0.6.0
+
+- Replaced the rising indexer ramp with two functional roller floors at the CAD axes, including animated original roller meshes.
+- Added passive support from the original triangular side-indexer envelopes and a lower shooter entrance.
+- Widened the shooter to 0.313 m and made simultaneous contact independent of ball query order.
+- Added a lower-entry accelerator path, safe gate closure and downward-transfer flow monitoring.
+- Added dedicated floor, side-guide, single-ball and simultaneous-pair fixtures, with visible Unity views.
+- Extended the simulator re-aim interlock to stop and brake staged accelerator fuel, with proportional speed calibration and separate accelerator ramp timing.
+- Added bounded pump braking near the existing source encoder windows.
+- Kept regenerated prefab assets synchronized with the authoring repository between assemble and test.
+
 ## 0.5.6
 
 - Excluded fuel from Turbo's wheel support queries and rigid wheel cores, preventing moving balls from steering or lifting individual swerve modules.

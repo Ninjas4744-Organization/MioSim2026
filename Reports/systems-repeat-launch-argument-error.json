@@ -1,0 +1,15 @@
+{
+    "passed": false,
+    "label": "diagnostic-five-meter-bearing077-repeat",
+    "prefabSource": "Q:\\BuiltMods\\rebuilt_ninjas_4744_turbo_2026\\standalonewindows64\\rebuilt_ninjas_4744_turbo_2026_assets",
+    "bundleSha256": "525f113be5c3fd0ba069b5db2914a7c2431789eae67b5c4ea9abd94b32697968",
+    "runtimeDllSha256": "f23e0b5e971a78f52771e9afa1877b6be287b7d0fcac7d68e05c4a23ded2d1de",
+    "physicsStep": 0.004499992821365595,
+    "simulationSpeed": 1.0,
+    "teamSourceCommit": "2bd34881f2c39f86a74cc7d3ea18ba6e00678493",
+    "cases": [],
+    "errors": [
+        "System.IndexOutOfRangeException: Index was outside the bounds of the array.\r\n  at Turbo4744SystemsBench.Spawn () [0x00852] in Q:\\Assets\\Editor\\Turbo4744SystemsBench.cs:553 \r\n  at Turbo4744SystemsBench.Tick () [0x0029f] in Q:\\Assets\\Editor\\Turbo4744SystemsBench.cs:1470 "
+    ],
+    "editorServiceErrors": []
+}

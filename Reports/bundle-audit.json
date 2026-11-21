@@ -5,8 +5,8 @@
     "team": 4744,
     "robots": 1,
     "missingScripts": 0,
-    "renderers": 18,
-    "materials": 47,
+    "renderers": 29,
+    "materials": 48,
     "preloads": 8,
     "tutorialCards": 3,
     "assemblyReferences": [
@@ -20,6 +20,8 @@
         "MoSimCore",
         "UnityEngine.VehiclesModule",
         "MoSimLib",
-        "UnityEngine.TextRenderingModule"
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.JSONSerializeModule",
+        "UnityEngine.ScreenCaptureModule"
     ]
 }

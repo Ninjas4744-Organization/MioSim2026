@@ -51,6 +51,7 @@ public static class Turbo4744Diagnostics
         public bool kickerStayedDeployedDuringPumping = true;
         public int pumpKickerSamples;
         public List<string> errors = new List<string>();
+        public List<string> editorServiceErrors = new List<string>();
         public List<string> samples = new List<string>();
         public List<string> contacts = new List<string>();
     }
@@ -161,6 +162,15 @@ public static class Turbo4744Diagnostics
     private static void OnLog(string message, string stack, LogType type)
     {
         if (
+            report != null
+            && Turbo4744BenchLog.RecordEditorServiceError(
+                message,
+                stack,
+                report.editorServiceErrors
+            )
+        )
+            return;
+        if (
             (type == LogType.Exception || type == LogType.Error)
             && report != null
             && report.errors.Count < 30
@@ -198,6 +208,9 @@ public static class Turbo4744Diagnostics
                 );
                 robot = instance.GetComponent<Turbo4744>();
                 robot.SetAlliance(Alliance.Blue);
+                var benchPlayer = robot.GetComponent<PlayerInput>();
+                benchPlayer.neverAutoSwitchControlSchemes = true;
+                benchPlayer.actions.devices = new InputDevice[] { testKeyboard };
                 report.inputsBound = robot.TranslateAction != null && robot.RestartAction != null;
                 body = instance.GetComponent<Rigidbody>();
                 drive = instance.GetComponent<DriveController>();
@@ -442,6 +455,9 @@ public static class Turbo4744Diagnostics
                     report.disabledStopped =
                         robot.CurrentShooterRpm == 0f
                         && !robot.Feeding
+                        && robot.indexer.TargetMotorRps == 0
+                        && robot.indexer.CurrentSurfaceSpeed == 0
+                        && robot.acceleratorContact.CurrentRpm == 0
                         && robot
                             .intakeRollers.Concat(robot.floorRollers)
                             .Concat(robot.shooterRollers)
