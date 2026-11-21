@@ -41,6 +41,9 @@ public static class Turbo4744CapacityBench
             wheelSweepReached;
         public float maxRobotSpeed,
             maxLoadedNativeSpeed,
+            loadedSpeedPeakAt,
+            loadedForwardKeySeconds,
+            loadedReverseKeySeconds,
             maxTilt,
             maxCollectionYaw,
             collectionYawPeakAt,
@@ -440,8 +443,36 @@ public static class Turbo4744CapacityBench
         }
         current.offered = fuel.Count;
         began = Time.time;
+        robot.gameObject.AddComponent<Turbo4744CapacityInputProbe>().sample = () =>
+        {
+            // Keep the short native-keyboard acceleration/reversal pulses on
+            // physics time. Editor frames can otherwise shorten either pulse
+            // while the speed acceptance window still advances normally.
+            float rawTime = CaseTime;
+            float t = rawTime - CycleOffset;
+            if (LoadedAim || rawTime < CollectionEnd || t < 9.5f || t >= 12)
+                return;
+            if (t < 10)
+            {
+                Press(Key.LeftShift);
+                Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
+            }
+            else if (t < 11.5f)
+            {
+                Press(t < 10.5f ? Key.W : Key.S);
+                Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
+            }
+            else
+            {
+                Press();
+                Drive(0, 0, 90f, DriveController.DrivePerspective.RobotRelative);
+            }
+        };
         robot.gameObject.AddComponent<Turbo4744CapacityPhysicsProbe>().sample = () =>
+        {
             MeasureFuel(CaseTime);
+            MeasureLoadedSpeed(CaseTime);
+        };
         deploymentDelay = 0;
         collectionStarted = false;
         lastSample = -1;
@@ -556,16 +587,36 @@ public static class Turbo4744CapacityBench
         }
     }
 
+    private static void MeasureLoadedSpeed(float t)
+    {
+        var rb = robot.GetComponent<Rigidbody>();
+        // FixedUpdate reads the result of the preceding physics step. Attribute
+        // that result to its command interval, including the final driven step.
+        // The keyboard pulse bounds themselves remain 10..10.5 and 10.5..11.5.
+        float completedStepStart = t - Time.fixedDeltaTime;
+        if (completedStepStart > 10 + CycleOffset && completedStepStart < 11.5f + CycleOffset)
+        {
+            float speed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude;
+            if (speed > current.maxLoadedNativeSpeed)
+            {
+                current.maxLoadedNativeSpeed = speed;
+                current.loadedSpeedPeakAt = t;
+            }
+        }
+        if (t > 10 + CycleOffset && t < 11.5f + CycleOffset)
+        {
+            if (keyboard.wKey.isPressed)
+                current.loadedForwardKeySeconds += Time.fixedDeltaTime;
+            if (keyboard.sKey.isPressed)
+                current.loadedReverseKeySeconds += Time.fixedDeltaTime;
+        }
+        current.maxRobotSpeed = Mathf.Max(current.maxRobotSpeed, rb.velocity.magnitude);
+    }
+
     private static void Measure(float t)
     {
         var rb = robot.GetComponent<Rigidbody>();
         MeasureMotion(t);
-        if (t > 10 + CycleOffset && t < 11.5f + CycleOffset)
-            current.maxLoadedNativeSpeed = Mathf.Max(
-                current.maxLoadedNativeSpeed,
-                new Vector2(rb.velocity.x, rb.velocity.z).magnitude
-            );
-        current.maxRobotSpeed = Mathf.Max(current.maxRobotSpeed, rb.velocity.magnitude);
         current.stable &=
             float.IsFinite(rb.position.y)
             && Mathf.Abs(rb.position.y) < .2f
@@ -1086,6 +1137,14 @@ public sealed class Turbo4744PileMotionProbe : MonoBehaviour
 
 [DefaultExecutionOrder(1200)]
 public sealed class Turbo4744CapacityPhysicsProbe : MonoBehaviour
+{
+    public Action sample;
+
+    private void FixedUpdate() => sample?.Invoke();
+}
+
+[DefaultExecutionOrder(-2000)]
+public sealed class Turbo4744CapacityInputProbe : MonoBehaviour
 {
     public Action sample;
 
