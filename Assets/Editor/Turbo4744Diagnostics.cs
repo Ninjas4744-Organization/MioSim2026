@@ -39,6 +39,10 @@ public static class Turbo4744Diagnostics
             stowed,
             preloadsRetained,
             reverseSupportsLoad;
+        public bool bellypanBlocksFuel,
+            bellypanSupportsChassis,
+            bellypanFieldContact;
+        public List<string> bellypanSamples = new List<string>();
         public float driveDistance,
             intakeExtension,
             hopperExtension,
@@ -61,6 +65,7 @@ public static class Turbo4744Diagnostics
     private static Rigidbody body;
     private static Rigidbody collectedFuel;
     private static Rigidbody reverseProbe;
+    private static Turbo4744BellypanFixture bellypan;
     private static DriveController drive;
     private static Turbo4744BenchDriver input;
     private static BaseTimerManager timer;
@@ -129,6 +134,7 @@ public static class Turbo4744Diagnostics
             report = new Report();
             startTime = EditorApplication.timeSinceStartup;
             phase = -1;
+            bellypan = null;
             Application.logMessageReceived += OnLog;
             EditorApplication.update += Tick;
         }
@@ -252,6 +258,19 @@ public static class Turbo4744Diagnostics
                 throw new InvalidOperationException(
                     "Turbo was destroyed during the diagnostic run"
                 );
+            if (bellypan)
+            {
+                if (bellypan.Completed)
+                {
+                    report.bellypanBlocksFuel = bellypan.BlocksFuel;
+                    report.bellypanSupportsChassis = bellypan.SupportsChassis;
+                    report.bellypanFieldContact = bellypan.FieldContact;
+                    report.bellypanSamples = bellypan.samples;
+                    report.completed = true;
+                    Finish();
+                }
+                return;
+            }
             float elapsed = Time.time - simulationStart;
             var kicker = robot.GetComponent<Turbo4744KickerRig>();
             if (kicker)
@@ -476,8 +495,11 @@ public static class Turbo4744Diagnostics
                     && Mathf.Abs(robot.hopperRail.transform.localPosition.z - hopperStart) < .035f;
                 report.finiteAndStable = Finite(body.position) && Mathf.Abs(body.position.y) < .2f;
                 report.finalPosition = body.position;
-                report.completed = true;
-                Finish();
+                Drive(0, 0, 0, DriveController.DrivePerspective.RobotRelative);
+                foreach (var piece in fuel.Where(f => f))
+                    Object.Destroy(piece.gameObject);
+                fuel.Clear();
+                bellypan = Turbo4744BellypanRegression.Begin(robot, Press, ForceEnabled);
             }
         }
         catch (Exception error)
@@ -574,6 +596,9 @@ public static class Turbo4744Diagnostics
             && report.stowed
             && report.preloadsRetained
             && report.reverseSupportsLoad
+            && report.bellypanBlocksFuel
+            && report.bellypanSupportsChassis
+            && report.bellypanFieldContact
             && report.stagedKickerValid
             && report.kickerDeployed
             && report.kickerRetracted

@@ -12,6 +12,15 @@ namespace Ninjas4744.MoSim
         private bool _fuelContactsConfigured;
         private int _fuelMask;
 
+        protected override void Start()
+        {
+            base.Start();
+            var contacts = GetComponent<Turbo4744BumperContacts>();
+            if (!contacts)
+                contacts = gameObject.AddComponent<Turbo4744BumperContacts>();
+            contacts.RefreshContacts();
+        }
+
         private void ConfigureFuelContacts()
         {
             _fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");

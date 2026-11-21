@@ -28,6 +28,18 @@ public static class Ninjas4744Builder
     public const string PackPath = Root + "/Ninjas4744.asset";
     public const string RobotPath = Root + "/Turbo4744.prefab";
     private const float CadCenterX = .0223825f;
+
+    // Native CAD bounds: keep the wheel cutouts instead of filling the bumper envelope.
+    private static readonly (string name, Vector3 min, Vector3 max)[] BellypanSections =
+    {
+        ("rear", new Vector3(-.30114f, -.22840f, .04680f), new Vector3(-.06460f, .22843f, .05080f)),
+        (
+            "middle",
+            new Vector3(-.06460f, -.36404f, .04680f),
+            new Vector3(.21580f, .36375f, .05080f)
+        ),
+        ("front", new Vector3(.21580f, -.12745f, .04680f), new Vector3(.27886f, .12762f, .05080f)),
+    };
     private static readonly string Artifacts = Path.GetFullPath(
         Application.dataPath + "/../BuildArtifacts"
     );
@@ -114,6 +126,7 @@ public static class Ninjas4744Builder
         bumper.isTrigger = true;
         bumper.gameObject.tag = "BlueRobot";
         ConfigureBumperContacts(root.transform, bumper);
+        ConfigureBellypanContacts(root.transform);
 
         var model = LoadModel(root.transform, mats);
         var intakeVisual = Find(model.transform, "Intake");
@@ -473,6 +486,9 @@ public static class Ninjas4744Builder
         shotTrigger.size = new Vector3(.33f, .31f, .31f);
         shotTrigger.isTrigger = true;
         SetLayer(root, LayerMask.NameToLayer("Robot"));
+        // Keep a serialized reference so the SDK includes the contact handler
+        // in its runtime dependency set as well as the asset bundle.
+        root.AddComponent<Turbo4744BumperContacts>();
         root.SetActive(true);
         var gamePrefab = PrefabUtility.SaveAsPrefabAsset(root, RobotPath);
         Object.DestroyImmediate(root);
@@ -1058,6 +1074,63 @@ public static class Ninjas4744Builder
             );
     }
 
+    private static void ConfigureBellypanContacts(Transform root)
+    {
+        foreach (var section in BellypanSections)
+        {
+            var center = (section.min + section.max) * .5f;
+            var size = section.max - section.min;
+            Box(
+                root,
+                "Bellypan " + section.name + " contact",
+                S(center.x, center.y, center.z),
+                new Vector3(size.y, size.z, size.x)
+            );
+        }
+    }
+
+    private static void ValidateBellypanContacts(GameObject root)
+    {
+        var contacts = root.GetComponentsInChildren<BoxCollider>(true)
+            .Where(c => c.name.StartsWith("Bellypan "))
+            .ToArray();
+        if (contacts.Length != BellypanSections.Length)
+            throw new InvalidOperationException(
+                "Three solid chassis bellypan contacts are required"
+            );
+        var body = root.GetComponent<Rigidbody>();
+        var bumper = root.GetComponentsInChildren<BoxCollider>(true)
+            .First(c => c.name == "Bumper rear contact");
+        foreach (var section in BellypanSections)
+        {
+            var contact = contacts.Single(c => c.name == "Bellypan " + section.name + " contact");
+            var center = (section.min + section.max) * .5f;
+            var size = section.max - section.min;
+            if (
+                !contact.enabled
+                || !contact.gameObject.activeSelf
+                || contact.isTrigger
+                || contact.transform.parent != root.transform
+                || contact.GetComponentInParent<Rigidbody>(true) != body
+                || contact.gameObject.layer != LayerMask.NameToLayer("Robot")
+                || contact.includeLayers.value != 0
+                || contact.excludeLayers.value != 0
+                || contact.sharedMaterial != bumper.sharedMaterial
+                || contact.center.sqrMagnitude > .000000000001f
+                || Vector3.Distance(
+                    contact.transform.localPosition,
+                    S(center.x, center.y, center.z)
+                ) > .000001f
+                || Vector3.Distance(contact.size, new Vector3(size.y, size.z, size.x)) > .000001f
+                || Quaternion.Angle(contact.transform.localRotation, Quaternion.identity) > .001f
+                || Vector3.Distance(contact.transform.localScale, Vector3.one) > .000001f
+            )
+                throw new InvalidOperationException(
+                    "Invalid CAD bellypan contact: " + contact.name
+                );
+        }
+    }
+
     private static void ConfigureBumperContacts(Transform root, BoxCollider bounds)
     {
         // CAD outer edges +/- .4442 m across and +/- .39772 m fore/aft;
@@ -1272,6 +1345,7 @@ public static class Ninjas4744Builder
         if (missing != 0)
             throw new InvalidOperationException("Missing scripts: " + missing);
         ValidateBumperContacts(prefab);
+        ValidateBellypanContacts(prefab);
         ValidateFixedHopper(prefab);
         if (
             robot.indexer.rollers.Any(r =>
@@ -1416,6 +1490,7 @@ public static class Ninjas4744Builder
             var metadata = loaded.Robots.Single();
             var prefab = metadata.RobotPrefab;
             ValidateBumperContacts(prefab);
+            ValidateBellypanContacts(prefab);
             ValidateFixedHopper(prefab);
             var robot = prefab.GetComponent<Turbo4744>();
             var renderers = prefab.GetComponentsInChildren<Renderer>(true);

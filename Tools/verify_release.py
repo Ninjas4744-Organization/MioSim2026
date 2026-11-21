@@ -23,7 +23,8 @@ checks = {
 }
 integration = ['completed', 'finiteAndStable', 'driveMoved', 'railsDeployed', 'pickedUp',
                'shotReleased', 'disabledStopped', 'inputsBound', 'endToEndCycle',
-               'stowed', 'preloadsRetained', 'reverseSupportsLoad']
+               'stowed', 'preloadsRetained', 'reverseSupportsLoad',
+               'bellypanBlocksFuel', 'bellypanSupportsChassis', 'bellypanFieldContact']
 summary = {'version': manifest['version'], 'bundle_sha256': bundle_hash,
            'runtime_dll_sha256': dll_hash, 'fixtures': []}
 expected_cases = {'Integration': 0, 'Travel': 4, 'Retention': 2, 'Approach': 6,

@@ -14,7 +14,7 @@ foreach($report in $extra){if(-not $report.passed){throw 'A moving, delivery, al
 $indexer=$extra|Where-Object label -eq 'indexer-after'
 $indexerCases=@('lower-pair','upper-pair','left-single','right-single','center-single','side-guides','outer-corners','asymmetric-guides','mixed-floors','blocked-drop','blocked-shooter')
 if($indexer.cases.Count -ne $indexerCases.Count -or $indexer.simulationSpeed -ne 1 -or (Compare-Object ($indexerCases|Sort-Object) ($indexer.cases.indexerCase|Sort-Object))){throw 'Indexer must complete all eleven fixtures at normal simulation speed. Omit -IndexerCase for release verification.'}
-$checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained','reverseSupportsLoad')
+$checks=@('completed','finiteAndStable','driveMoved','railsDeployed','pickedUp','shotReleased','disabledStopped','inputsBound','endToEndCycle','stowed','preloadsRetained','reverseSupportsLoad','bellypanBlocksFuel','bellypanSupportsChassis','bellypanFieldContact')
 foreach($check in $checks){if(-not $physics.$check){throw ('Integration check failed: '+$check)}}
 if($physics.errors.Count -gt 0 -or -not $travel.passed -or -not $bundle.passed -or -not $retention.passed -or -not $systems.passed -or -not $jam.passed){throw 'Verification reports are not passing. Run Build, Test, Travel, Retention, Systems, and Jam before packaging.'}
 if($systems.cases.Count -ne 7 -or $systems.simulationSpeed -ne 1){throw 'Systems must complete the seven release cases at normal simulation speed.'}
