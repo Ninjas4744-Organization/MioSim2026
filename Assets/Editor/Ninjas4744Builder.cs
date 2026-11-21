@@ -103,11 +103,17 @@ public static class Ninjas4744Builder
         body.inertiaTensor = new Vector3(4.3f, 7.411f, 4.7f);
         body.solverIterations = 24;
         body.solverVelocityIterations = 12;
-        body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        // Nominal travel is 21.2 mm per native 4.5 ms step. Swept CCD held
+        // the pose despite nonzero velocity in dense-fuel native tests;
+        // discrete compound contacts resolved the same load continuously.
+        body.collisionDetectionMode = CollisionDetectionMode.Discrete;
         var bumper = root.GetComponent<BoxCollider>() ?? root.AddComponent<BoxCollider>();
         bumper.center = new Vector3(0, .09578f, 0);
         bumper.size = new Vector3(.8884f, .127f, .79548f);
+        // The framework's filled box is a bounds sensor, not the bumper shell.
+        bumper.isTrigger = true;
         bumper.gameObject.tag = "BlueRobot";
+        ConfigureBumperContacts(root.transform, bumper);
 
         var model = LoadModel(root.transform, mats);
         var intakeVisual = Find(model.transform, "Intake");
@@ -116,6 +122,8 @@ public static class Ninjas4744Builder
         var hopperVisual = Find(model.transform, "Hopper");
         var kickerVisual = Find(model.transform, "Kicker");
         var netVisual = Find(model.transform, "RoofNet");
+        if (!intakeVisual.IsChildOf(hopperVisual) || !kickerVisual.IsChildOf(hopperVisual))
+            throw new InvalidOperationException("The source intake/kicker assembly is incomplete");
         robot.intakeRail = Rail(
             root.transform,
             body,
@@ -128,16 +136,12 @@ public static class Ninjas4744Builder
         robot.hopperRail = Rail(
             root.transform,
             body,
-            "Sliding hopper",
+            "Intake kicker carrier",
             S(0, 0, 0),
             2.5f,
-            new[] { hopperVisual },
+            new[] { intakeVisual, kickerVisual },
             .22946f
         );
-        if (!intakeVisual.IsChildOf(hopperVisual) || !kickerVisual.IsChildOf(hopperVisual))
-            throw new InvalidOperationException(
-                "The transfer frame and kicker must mount to the hopper"
-            );
         var kickerHinge = New(
             "Retractable hopper kicker",
             robot.hopperRail.transform,
@@ -192,51 +196,46 @@ public static class Ninjas4744Builder
         var fixedFloor = Box(
             root.transform,
             "Hopper floor",
-            S(.23f, 0, .175f),
-            new Vector3(.68f, .012f, .38f)
+            S(.43f, 0, .175f),
+            new Vector3(.68f, .012f, .18f)
         );
         fixedFloor.sharedMaterial = trayPlastic;
         // One-way intake contacts allow inbound fuel to rise through the entry,
         // then provide a complete, continuous floor beneath stored fuel.
-        var storageFloor = AddRailBox(
-            robot.hopperRail.transform,
-            "Hopper moving storage floor",
-            S(.34f, 0, .175f),
-            new Vector3(.68f, .012f, .62f),
-            .22946f
+        var storageFloor = Box(
+            root.transform,
+            "Fixed hopper storage floor",
+            S(.495f, 0, .175f),
+            new Vector3(.68f, .012f, .31f)
         );
+        storageFloor.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
         storageFloor.sharedMaterial = trayPlastic;
-        AddRailBox(
-            robot.hopperRail.transform,
+        Box(
+            root.transform,
             "Hopper left wall",
             S(.40f, .359f, .37f),
-            new Vector3(.006f, .32f, .5f),
-            .22946f
+            new Vector3(.006f, .32f, .5f)
         );
-        AddRailBox(
-            robot.hopperRail.transform,
+        Box(
+            root.transform,
             "Hopper right wall",
             S(.40f, -.359f, .37f),
-            new Vector3(.006f, .32f, .5f),
-            .22946f
+            new Vector3(.006f, .32f, .5f)
         );
-        var frontPanel = AddRailBox(
-            robot.hopperRail.transform,
+        var frontPanel = Box(
+            root.transform,
             "Hopper end wall",
             S(.648f, 0, .37f),
-            new Vector3(.714f, .32f, .006f),
-            .22946f
+            new Vector3(.714f, .32f, .006f)
         );
         frontPanel.sharedMaterial = trayPlastic;
-        robot.intakeHold = AddRailBox(
-            robot.hopperRail.transform,
+        robot.intakeHold = Box(
+            root.transform,
             "Intake inlet retention contact",
             S(.61f, 0, .22f),
-            new Vector3(.714f, .26f, .02f),
-            .22946f
+            new Vector3(.714f, .26f, .02f)
         );
-        // The lower return lip is a ramp, rather than a vertical ram. During
-        // retraction it lets the front row climb into a second storage layer.
+        // This passive lip belongs to the fixed hopper, independently of the intake slide.
         robot.intakeHold.transform.localRotation = Quaternion.Euler(25f, 0, 0);
         robot.intakeHold.excludeLayers = ~LayerMask.GetMask(
             "GamePiece1",
@@ -252,15 +251,15 @@ public static class Ninjas4744Builder
         AddRailBox(
             robot.intakeRail.transform,
             "Intake left guide",
-            S(.40f, .342f, .16f),
-            new Vector3(.008f, .18f, .4f),
+            S(.465f, .342f, .16f),
+            new Vector3(.008f, .18f, .27f),
             .24f
         );
         AddRailBox(
             robot.intakeRail.transform,
             "Intake right guide",
-            S(.40f, -.342f, .16f),
-            new Vector3(.008f, .18f, .4f),
+            S(.465f, -.342f, .16f),
+            new Vector3(.008f, .18f, .27f),
             .24f
         );
 
@@ -318,6 +317,7 @@ public static class Ninjas4744Builder
             new Vector3(0, .28f, .55f),
             new Vector3(0, .35f, .49f),
             new Vector3(0, .34f, .42f),
+            new Vector3(0, .28f, .34f),
         };
         robot.intakeContact.halfWidth = .34f;
         robot.intakeContact.normalClearance = .06f;
@@ -338,7 +338,9 @@ public static class Ninjas4744Builder
         // physically so fuel that meets a packed hopper cannot roll underneath
         // the one-way storage floor instead of climbing into it.
         var intakeBacking = new List<BoxCollider>();
-        for (int i = 1; i < robot.intakeContact.centerline.Length - 1; i++)
+        // The final two sections hand down onto the tray/roller bed; a high
+        // backing plate there would close the storage space beneath the intake.
+        for (int i = 1; i < robot.intakeContact.centerline.Length - 2; i++)
         {
             var start = robot.intakeContact.centerline[i - 1];
             var end = robot.intakeContact.centerline[i];
@@ -357,187 +359,95 @@ public static class Ninjas4744Builder
             intakeBacking.Add(backing);
         }
         robot.intakeBacking = intakeBacking.ToArray();
-        var transport = new List<InteractionRoller>();
-        // The transport acts on captured fuel above the tray. Cylindrical
-        // cores along the entry would pin incoming ground fuel underneath.
-        var bed = New("Stored fuel conveyor contact", root.transform, new Vector3(0, .26f, .34f));
-        robot.storageContact = bed.AddComponent<Turbo4744ShooterContact>();
-        robot.storageContact.robotBody = body;
-        robot.storageContact.wheelRadius = .035f;
-        robot.storageContact.contactNear = -.28f;
-        robot.storageContact.contactFar = .26f;
-        robot.storageContact.halfWidth = .33f;
-        robot.storageContact.normalClearance = .09f;
-        robot.storageContact.maxTractionForce = 12;
-        robot.storageContact.tractionResponse = 40;
-        robot.storageContact.maxTotalForce = 35;
-        robot.storageContact.maxNormalForce = 0;
-        robot.storageContact.lateralResponse = 5;
-        robot.storageContact.maxLateralForce = 4;
-        robot.storageContact.allowReverse = true;
-        robot.storageContact.requiresCommand = true;
-        robot.storageContact.entryKeeper = keeper;
-        robot.storageContact.capturedOnly = true;
-        // A continuous rising surface avoids balls bouncing between isolated
-        // stair-step contacts on their way from storage to the accelerator.
-        foreach (float offset in new[] { -.10f, 0f, .10f })
-        {
-            var angle = Quaternion.Euler(32.2f, 0, 0);
-            var position = new Vector3(0, .255f, .035f) + angle * Vector3.forward * offset;
-            var lower = Roller(
-                root.transform,
-                "Indexer belt " + offset,
-                position,
-                .035f,
-                .30f,
-                32.2f,
-                true,
-                .16f
-            );
-            Set(lower, "ignoreLayers", (LayerMask)~0);
-            transport.Add(lower);
-        }
-        var indexer = New(
-            "Indexer traction contact",
+        // The main hopper is passive and fixed to the chassis.
+        robot.storageContact = null;
+        ConfigureIndexer(root, model, robot, body, keeper, trayPlastic);
+        robot.floorRollers = Array.Empty<InteractionRoller>();
+        robot.acceleratorRollers = Array.Empty<InteractionRoller>();
+        var accelerator = New(
+            "Lower entrance accelerator",
             root.transform,
-            new Vector3(0, .255f, .035f) + Quaternion.Euler(32.2f, 0, 0) * Vector3.up * .09f
+            new Vector3(.0131f, 0, 0)
         );
-        indexer.transform.localRotation = Quaternion.Euler(32.2f, 0, 0);
-        robot.indexerContact = indexer.AddComponent<Turbo4744ShooterContact>();
-        robot.indexerContact.robotBody = body;
-        robot.indexerContact.wheelRadius = .035f;
-        robot.indexerContact.contactNear = -.20f;
-        robot.indexerContact.contactFar = .17f;
-        robot.indexerContact.halfWidth = .22f;
-        robot.indexerContact.normalClearance = .065f;
-        robot.indexerContact.maxTractionForce = 180;
-        robot.indexerContact.tractionResponse = 120;
-        robot.indexerContact.maxTotalForce = 320;
-        robot.indexerContact.normalStiffness = 800;
-        robot.indexerContact.normalDamping = 30;
-        robot.indexerContact.maxNormalForce = 0;
-        robot.indexerContact.allowReverse = true;
-        robot.indexerContact.requiresCommand = true;
-        robot.indexerContact.maxSurfaceSpeed = 1.2f;
-        robot.indexerContact.entryKeeper = keeper;
-        robot.indexerContact.capturedOnly = true;
-        // Traction is not a floor. Keep a continuous passive support beneath
-        // the rising feed path, including while stopped or backing out a jam.
-        var rampAngle = Quaternion.Euler(32.2f, 0, 0);
-        var feedRamp = Box(
-            root.transform,
-            "Indexer support ramp",
-            new Vector3(0, .255f, .035f) + rampAngle * Vector3.up * .008f,
-            new Vector3(.44f, .012f, .48f)
-        );
-        feedRamp.transform.localRotation = rampAngle;
-        feedRamp.sharedMaterial = trayPlastic;
-        feedRamp.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
-        robot.floorRollers = transport.ToArray();
-        foreach (int side in new[] { -1, 1 })
+        robot.acceleratorContact = accelerator.AddComponent<Turbo4744ShooterContact>();
+        var ac = robot.acceleratorContact;
+        ac.robotBody = body;
+        ac.lowerEntry = robot.indexer;
+        ac.wheelRadius = .0254f;
+        ac.normalClearance = .065f;
+        ac.halfWidth = .1565f;
+        ac.maxTotalForce = 320;
+        ac.rampRpmPerSecond = 60000;
+        ac.maxSurfaceSpeed = 2.5f;
+        ac.requiresCommand = true;
+        ac.lateralResponse = 40;
+        ac.maxNormalForce = 120;
+        ac.centerline = new[]
         {
-            // Funnel only the lower layer. Tall funnel plates excluded the
-            // rear shoulders from the hopper's usable upper storage volume.
-            var funnel = Box(
-                root.transform,
-                "Indexer funnel " + side,
-                new Vector3(side * .215f, .25f, .165f),
-                new Vector3(.008f, .20f, .368f)
-            );
-            funnel.transform.localRotation = Quaternion.Euler(0, side * 42.8f, 0);
-            funnel.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
-            var rearWall = Box(
-                root.transform,
-                "Hopper rear shoulder " + side,
-                new Vector3(side * .215f, .35f, .015f),
-                new Vector3(.25f, .40f, .016f)
-            );
-            var shoulderFloor = ShoulderFloor(root.transform, side);
-            foreach (var surface in new Collider[] { rearWall, shoulderFloor })
-            {
-                surface.excludeLayers = ~LayerMask.GetMask(
-                    "GamePiece1",
-                    "GamePiece2",
-                    "GamePieceAlt"
-                );
-                surface.sharedMaterial = trayPlastic;
-            }
-            // Join the funnel at z=.03. A forward-projecting sloped guide
-            // otherwise presents a blunt end before fuel has been centered.
-            var guide = Box(
-                root.transform,
-                "Shooter alignment guide " + side,
-                new Vector3(side * .09f, .45f, -.17f),
-                new Vector3(.008f, .50f, .40f)
-            );
-            guide.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
-            var plastic = AssetDatabase.LoadAssetAtPath<PhysicMaterial>(
-                Root + "/Materials/FeedPlastic.physicMaterial"
-            );
-            if (!plastic)
-            {
-                plastic = new PhysicMaterial("Feed plastic")
-                {
-                    staticFriction = .03f,
-                    dynamicFriction = .03f,
-                    bounciness = 0,
-                };
-                AssetDatabase.CreateAsset(plastic, Root + "/Materials/FeedPlastic.physicMaterial");
-            }
-            plastic.frictionCombine = PhysicMaterialCombine.Minimum;
-            plastic.bounceCombine = PhysicMaterialCombine.Minimum;
-            funnel.sharedMaterial = guide.sharedMaterial = plastic;
-            // A short hood constrains the release plane. It starts above the
-            // indexer approach, so it cannot pinch fuel before the flywheels.
-            var axis = Quaternion.Euler(58f, 0, 0);
-            var hood = Box(
-                root.transform,
-                "Shooter hood " + side,
-                new Vector3(0, .461f, -.055f) + axis * (new Vector3(0, side * .081f, -.10f)),
-                new Vector3(.172f, .005f, .30f)
-            );
-            hood.transform.localRotation = axis;
-            hood.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
-            hood.sharedMaterial = plastic;
-        }
-        robot.acceleratorRollers = new[]
-        {
-            Roller(
-                root.transform,
-                "Accelerator",
-                new Vector3(0, .36f, -.10f),
-                .04f,
-                .30f,
-                0f,
-                false,
-                0f
-            ),
+            new Vector3(0, .200f, .12f),
+            new Vector3(0, .185f, -.08f),
+            new Vector3(0, .245f, -.11f),
+            new Vector3(0, .335f, -.11f),
+            new Vector3(0, .395f, -.075f),
+            new Vector3(0, .435f, -.038f),
         };
-        foreach (var roller in robot.acceleratorRollers)
-            Set(roller, "ignoreLayers", (LayerMask)~0);
-        // The symmetric tire adapter applies finite traction forces within
-        // the release channel and the opposite reaction to the chassis.
         var contact = New(
-            "Symmetric shooter tire contact",
+            "Wide shooter tire contact",
             root.transform,
-            S(-.13f, 0, .40f) + Quaternion.Euler(58f, 0, 0) * Vector3.up * .115f
+            S(-.13f, -.0131f, .40f) + Quaternion.Euler(58f, 0, 0) * Vector3.up * .115f
         );
         contact.transform.localRotation = Quaternion.Euler(58f, 0, 0);
         robot.shooterContact = contact.AddComponent<Turbo4744ShooterContact>();
         robot.shooterContact.robotBody = body;
+        robot.shooterContact.lowerEntry = robot.indexer;
+        robot.shooterContact.halfWidth = .1565f;
+        robot.shooterContact.maxTotalForce = 480;
+        robot.shooterContact.lateralResponse = 60;
+        foreach (int side in new[] { -1, 1 })
+        {
+            var guide = Box(
+                root.transform,
+                "Wide shooter side " + side,
+                new Vector3(.0131f + side * .1605f, .37f, -.1625f),
+                new Vector3(.008f, .52f, .225f)
+            );
+            guide.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+            guide.sharedMaterial = trayPlastic;
+            var axis = Quaternion.Euler(58f, 0, 0);
+            var hood = Box(
+                root.transform,
+                "Shooter hood " + side,
+                new Vector3(.0131f, .461f, -.055f) + axis * new Vector3(0, side * .081f, -.16f),
+                new Vector3(.313f, .005f, .16f)
+            );
+            hood.transform.localRotation = axis;
+            hood.excludeLayers = guide.excludeLayers;
+            hood.sharedMaterial = trayPlastic;
+        }
         robot.shooterRollers = Array.Empty<InteractionRoller>();
         robot.flywheels = Array.Empty<PvffController>();
         robot.feedHold = Box(
             root.transform,
             "Stopped indexer retention contact",
-            new Vector3(0, .35f, .015f),
-            new Vector3(.70f, .40f, .008f)
+            new Vector3(0, .205f, .095f),
+            new Vector3(.68f, .23f, .008f)
         );
         robot.feedHold.excludeLayers = ~LayerMask.GetMask(
             "GamePiece1",
             "GamePiece2",
             "GamePieceAlt"
         );
+
+        robot.indexer.retention = robot.feedHold;
+        robot.indexer.releaseRetention = Box(
+            root.transform,
+            "Flywheel readiness retention gate",
+            new Vector3(.0131f, .43f, -.036f),
+            new Vector3(.313f, .18f, .008f)
+        );
+        robot.indexer.releaseRetention.transform.localRotation = Quaternion.Euler(58f, 0, 0);
+        robot.indexer.releaseRetention.excludeLayers = robot.feedHold.excludeLayers;
+        robot.indexer.releaseRetention.sharedMaterial = trayPlastic;
 
         var muzzle = New("Shooter reference", root.transform, S(-.215f, 0, .43f)).transform;
         muzzle.localRotation = Quaternion.Euler(0, 180, 0);
@@ -591,7 +501,7 @@ public static class Ninjas4744Builder
         var pack = AssetDatabase.LoadAssetAtPath<RebuiltModpackSO>(PackPath)
             ?? ScriptableObject.CreateInstance<RebuiltModpackSO>();
         Set(pack, "modpackName", "Ninjas 4744 Turbo 2026");
-        Set(pack, "modpackVersion", "0.5.6");
+        Set(pack, "modpackVersion", "0.6.1");
         Set(pack, "authorName", "Ninjas 4744");
         Set(
             pack,
@@ -945,6 +855,8 @@ public static class Ninjas4744Builder
         solver.netWidth = .71f;
         solver.netHeight = .612f;
         solver.useAuthoredRestShape = false;
+        // Preserve the existing textile capacity calibration. The tighter-net
+        // comparison reduced trench spill but failed the 50-ball fill minimum.
         solver.restLengthScale = 1.35f;
         solver.subSteps = 4;
         solver.stretchCompliance = .0003f;
@@ -971,12 +883,9 @@ public static class Ninjas4744Builder
             ).transform;
             var front = New(
                 "Front net pin " + x,
-                robot.hopperRail.transform,
-                Vector3.zero
+                pins,
+                new Vector3(side, .533f, .6156175f)
             ).transform;
-            front.position = root.transform.TransformPoint(
-                new Vector3(side, .533f, .6156175f - .22946f)
-            );
             solver.customAnchors.Add(
                 new NetSolver.NodeAnchor
                 {
@@ -1035,12 +944,11 @@ public static class Ninjas4744Builder
             new Vector3(0, .533f, .0036175f),
             new Vector3(.73f, .016f, .016f)
         );
-        var frontRim = AddRailBox(
-            robot.hopperRail.transform,
+        var frontRim = Box(
+            root.transform,
             "Front net rim",
             new Vector3(0, .533f, .6156175f),
-            new Vector3(.73f, .016f, .016f),
-            robot.hopperTravel
+            new Vector3(.73f, .016f, .016f)
         );
         foreach (var rim in new[] { rig.leftRim, rig.rightRim, rearRim, frontRim })
         {
@@ -1070,6 +978,81 @@ public static class Ninjas4744Builder
         }
         filter.sharedMesh = saved;
         robot.roofNet = go.transform;
+    }
+
+    private static void ValidateBumperContacts(GameObject root)
+    {
+        var contacts = root.GetComponentsInChildren<BoxCollider>(true)
+            .Where(c => c.name.StartsWith("Bumper ") && c.name.EndsWith(" contact"))
+            .ToArray();
+        int fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+        if (
+            contacts.Length != 4
+            || contacts.Any(c =>
+                !c.enabled
+                || c.isTrigger
+                || (c.excludeLayers.value & fuelMask) != 0
+                || c.GetComponentInParent<Rigidbody>(true) != root.GetComponent<Rigidbody>()
+            )
+        )
+            throw new InvalidOperationException("Four solid chassis bumper contacts are required");
+        if (!root.GetComponent<BoxCollider>().isTrigger)
+            throw new InvalidOperationException(
+                "The filled bumper bounds sensor must stay a trigger"
+            );
+        if (
+            root.GetComponent<Rigidbody>().collisionDetectionMode != CollisionDetectionMode.Discrete
+        )
+            throw new InvalidOperationException(
+                "The validated dense-fuel chassis collision mode is required"
+            );
+    }
+
+    private static void ValidateFixedHopper(GameObject root)
+    {
+        var body = root.GetComponent<Rigidbody>();
+        var robot = root.GetComponent<Turbo4744>();
+        var keeper = root.GetComponent<Turbo4744FuelKeeper>();
+        var net = root.GetComponent<Turbo4744NetRig>();
+        if (
+            Find(root.transform, "Hopper_Geometry").GetComponentInParent<Rigidbody>(true) != body
+            || keeper.floor.GetComponentInParent<Rigidbody>(true) != body
+            || keeper.frontPanel.GetComponentInParent<Rigidbody>(true) != body
+            || keeper.inlet.GetComponentInParent<Rigidbody>(true) != body
+            || net.frontLeft.GetComponentInParent<Rigidbody>(true) != body
+            || net.frontRight.GetComponentInParent<Rigidbody>(true) != body
+            || robot.storageContact
+        )
+            throw new InvalidOperationException(
+                "The hopper bin and net anchors must remain fixed to the chassis"
+            );
+    }
+
+    private static void ConfigureBumperContacts(Transform root, BoxCollider bounds)
+    {
+        // CAD outer edges +/- .4442 m across and +/- .39772 m fore/aft;
+        // the inner edges are 57.2 mm inward. Keep the feed channel hollow.
+        const float thickness = .0572f;
+        foreach (int side in new[] { -1, 1 })
+        foreach (bool end in new[] { false, true })
+        {
+            var contact = Box(
+                root,
+                "Bumper "
+                    + (end ? (side > 0 ? "front" : "rear") : (side > 0 ? "right" : "left"))
+                    + " contact",
+                bounds.center
+                    + (
+                        end
+                            ? Vector3.forward * (bounds.size.z - thickness)
+                            : Vector3.right * (bounds.size.x - thickness)
+                    ) * (.5f * side),
+                end
+                    ? new Vector3(bounds.size.x - 2 * thickness, bounds.size.y, thickness)
+                    : new Vector3(thickness, bounds.size.y, bounds.size.z)
+            );
+            contact.gameObject.tag = "Bumpers";
+        }
     }
 
     private static void ConfigureBumpers(
@@ -1177,7 +1160,7 @@ public static class Ninjas4744Builder
         var titles = new[] { "Deploy and collect", "Shoot or pass", "Clear a jam" };
         var descriptions = new[]
         {
-            "Intake opens Turbo's pickup and hopper and cancels shooting. Stow retracts both. The net folds with the frame.",
+            "Intake opens Turbo's pickup and cancels shooting. Stow retracts the intake/kicker; the hopper walls, floor and net frame stay fixed.",
             "Auto Shoot selects the hub in your alliance zone and a side delivery target in neutral. Press again for three hard pump cycles. Auto Pass forces delivery. Intake cancels aiming and restores normal driving.",
             "Soft pumping starts automatically while firing. Robot Special requests three hard cycles. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber.",
         };
@@ -1237,9 +1220,15 @@ public static class Ninjas4744Builder
             || !robot.feedHold
             || !robot.intakeHold
             || !robot.shooterContact
-            || !robot.indexerContact
+            || !robot.indexer
+            || !robot.indexer.releaseRetention
+            || !robot.acceleratorContact
+            || robot.indexer.rollers.Length != 9
+            || robot.indexer.rollers.Any(r => !r.visual)
+            || robot.shooterContact.halfWidth < .156f
+            || robot.shooterContact.lowerEntry != robot.indexer
             || !robot.intakeContact
-            || !robot.storageContact
+            || robot.storageContact
             || !robot.intakeContact.entryKeeper
             || !robot.intakeContact.entryKeeper.fixedFloor
             || !robot.intakeContact.entryKeeper.frontPanel
@@ -1252,6 +1241,47 @@ public static class Ninjas4744Builder
             .Sum(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject));
         if (missing != 0)
             throw new InvalidOperationException("Missing scripts: " + missing);
+        ValidateBumperContacts(prefab);
+        ValidateFixedHopper(prefab);
+        if (
+            robot.indexer.rollers.Any(r =>
+                Vector3.Distance(
+                    prefab.transform.InverseTransformPoint(r.visual.position),
+                    r.center
+                ) > .001f
+            )
+        )
+            throw new InvalidOperationException("Indexer visual and contact axes disagree");
+        var sideSupports = prefab
+            .GetComponentsInChildren<MeshCollider>(true)
+            .Where(c => c.name.StartsWith("SideIndexer"))
+            .ToArray();
+        if (
+            sideSupports.Length != 2
+            || sideSupports.Any(c =>
+                !c.convex
+                || c.GetComponentInParent<Rigidbody>(true) != prefab.GetComponent<Rigidbody>()
+            )
+        )
+            throw new InvalidOperationException("Two passive CAD side supports are required");
+        foreach (var support in sideSupports)
+        {
+            var center = prefab.transform.InverseTransformPoint(
+                support.transform.TransformPoint(support.sharedMesh.bounds.center)
+            );
+            float expectedSide = support.name.Contains("Left") ? -1 : 1;
+            if (
+                center.x * expectedSide < .20f
+                || center.x * expectedSide > .28f
+                || center.y < .18f
+                || center.y > .23f
+                || center.z < .06f
+                || center.z > .11f
+            )
+                throw new InvalidOperationException(
+                    "Passive side support does not match evaluated CAD position: " + support.name
+                );
+        }
         var kickerRig = prefab.GetComponent<Turbo4744KickerRig>();
         if (
             !kickerRig
@@ -1355,6 +1385,8 @@ public static class Ninjas4744Builder
                 .Single(p => p.ModpackName == pack.ModpackName);
             var metadata = loaded.Robots.Single();
             var prefab = metadata.RobotPrefab;
+            ValidateBumperContacts(prefab);
+            ValidateFixedHopper(prefab);
             var robot = prefab.GetComponent<Turbo4744>();
             var renderers = prefab.GetComponentsInChildren<Renderer>(true);
             var materials = renderers.SelectMany(r => r.sharedMaterials).Distinct().ToArray();
@@ -1371,20 +1403,24 @@ public static class Ninjas4744Builder
                 && robot.intakeRail
                 && robot.hopperRail
                 && robot.shooterContact
-                && robot.indexerContact
-                && prefab.GetComponentsInChildren<Turbo4744ShooterContact>().Length == 4
+                && robot.indexer
+                && robot.indexer.releaseRetention
+                && robot.indexer.rollers.Length == 9
+                && robot.indexer.rollers.All(r => r.visual)
+                && robot.acceleratorContact
+                && robot.shooterContact.lowerEntry == robot.indexer
+                && prefab.GetComponentsInChildren<Turbo4744ShooterContact>().Length == 3
                 && robot.intakeContact
                 && robot.intakeContact.entryKeeper
                 && robot.intakeContact.entryKeeper.fixedFloor
                 && robot.intakeContact.entryKeeper.frontPanel
                 && robot.intakeContact.centerline.Length >= 2
-                && robot.storageContact
-                && robot.storageContact.capturedOnly
+                && !robot.storageContact
                 && robot.intakeContact.robotBody == robot.intakeRail.GetComponent<Rigidbody>()
                 && prefab.GetComponentsInChildren<NetSolver>().Length == 1
                 && prefab.GetComponent<Turbo4744KickerRig>()
                 && robot.shooterContact.robotBody == prefab.GetComponent<Rigidbody>()
-                && robot.indexerContact.robotBody == prefab.GetComponent<Rigidbody>()
+                && robot.indexer.robotBody == prefab.GetComponent<Rigidbody>()
                 && metadata.TeamNumber == 4744
                 && metadata.GameYear == 2026
                 && metadata.MainMenuPrefab
@@ -1582,61 +1618,112 @@ public static class Ninjas4744Builder
                 child.gameObject.layer = layer;
     }
 
-    private static MeshCollider ShoulderFloor(Transform parent, int side)
+    private static void ConfigureIndexer(
+        GameObject root,
+        GameObject model,
+        Turbo4744 robot,
+        Rigidbody body,
+        Turbo4744FuelKeeper keeper,
+        PhysicMaterial plastic
+    )
     {
-        // Fill only the triangular space outside the V guide. A rectangular
-        // ramp would also cover the feed basin and trap low fuel underneath.
-        var top = new[]
+        robot.indexer = root.AddComponent<Turbo4744Indexer>();
+        robot.indexer.robotBody = body;
+        robot.indexer.keeper = keeper;
+        var definitions = new[]
         {
-            new Vector3(side * .09f, .35f, .025f),
-            new Vector3(side * .35f, .48f, .025f),
-            new Vector3(side * .35f, .35f, .30f),
+            new Vector4(.33680f, -.00825f, .19344f, .34279f),
+            new Vector4(.28802f, -.00825f, .18884f, .34279f),
+            new Vector4(.24077f, -.00825f, .17584f, .34279f),
+            new Vector4(.19560f, 0, .15685f, .29155f),
+            new Vector4(.15029f, .00375f, .13745f, .28780f),
+            new Vector4(.15291f, -.00375f, .32162f, .28780f),
+            new Vector4(.10796f, -.00375f, .30210f, .28780f),
+            new Vector4(.06302f, 0, .28257f, .29155f),
+            new Vector4(.07542f, -.00825f, .33873f, .29230f),
         };
-        var vertices = top.Concat(top.Select(p => new Vector3(p.x, .175f, p.z))).ToArray();
-        var triangles = new[]
+        var rollers = new List<Turbo4744Indexer.Roller>();
+        for (int i = 0; i < definitions.Length; i++)
         {
-            0,
-            2,
-            1,
-            3,
-            4,
-            5,
-            0,
-            1,
-            4,
-            0,
-            4,
-            3,
-            1,
-            2,
-            5,
-            1,
-            5,
-            4,
-            2,
-            0,
-            3,
-            2,
-            3,
-            5,
-        };
-        if (side < 0)
-            for (int i = 0; i < triangles.Length; i += 3)
-                (triangles[i + 1], triangles[i + 2]) = (triangles[i + 2], triangles[i + 1]);
-        string path = Root + "/Model/HopperShoulderFloor" + side + ".asset";
-        var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(path) ?? new Mesh();
-        mesh.Clear();
-        mesh.name = "Hopper shoulder slope " + side;
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-        SaveAsset(mesh, path);
-        var surface = New("Hopper shoulder slope " + side, parent, Vector3.zero)
-            .AddComponent<MeshCollider>();
-        surface.sharedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
-        surface.convex = true;
-        return surface;
+            var d = definitions[i];
+            bool upper = i >= 5;
+            string name =
+                (upper ? "IndexerUpper" : "IndexerLower") + (upper ? i - 4 : i + 1).ToString("00");
+            var center = S(d.x, d.y, d.z);
+            var go = New(name + " fuel support", root.transform, center);
+            var cylinder = go.AddComponent<CapsuleCollider>();
+            cylinder.direction = 0;
+            // Real fuel compresses at the 145 mm CAD inter-deck gap. Keep the
+            // official rigid 150 mm fuel unchanged and represent that compliance
+            // with a recessed hard core beneath the full-size traction surface.
+            cylinder.radius = .0065f;
+            cylinder.contactOffset = .001f;
+            cylinder.height = d.w * 2;
+            cylinder.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+            cylinder.sharedMaterial = plastic;
+            rollers.Add(
+                new Turbo4744Indexer.Roller
+                {
+                    visual = Find(model.transform, name),
+                    center = center,
+                    radius = .0125f,
+                    halfWidth = d.w,
+                    upper = upper,
+                }
+            );
+        }
+        robot.indexer.rollers = rollers.ToArray();
+        foreach (var side in new[] { "Left", "Right" })
+        {
+            var support = Find(model.transform, "SideIndexer" + side + "_Support");
+            support.GetComponent<Renderer>().enabled = false;
+            var surface = support.gameObject.AddComponent<MeshCollider>();
+            surface.sharedMesh = support.GetComponent<MeshFilter>().sharedMesh;
+            surface.convex = true;
+            surface.sharedMaterial = plastic;
+            surface.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+        }
+        // A shallow passive landing supports the lower mouth beneath the accelerator.
+        var landing = Box(
+            root.transform,
+            "Lower shooter entrance floor",
+            S(-.005f, -.0131f, .105f),
+            new Vector3(.313f, .012f, .31f)
+        );
+        landing.sharedMaterial = plastic;
+        landing.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+        // Back the bottom turn physically; traction alone cannot turn a rigid
+        // ball through the accelerator bend before it escapes behind the robot.
+        var back = Box(
+            root.transform,
+            "Lower accelerator backing",
+            new Vector3(.0131f, .255f, -.193f),
+            new Vector3(.313f, .27f, .006f)
+        );
+        back.sharedMaterial = plastic;
+        back.excludeLayers = landing.excludeLayers;
+        foreach (int side in new[] { -1, 1 })
+        {
+            var outer = new Vector3(side * .35f, .32f, .19f);
+            var inner = new Vector3(.0131f + side * .1605f, .32f, -.05f);
+            var funnel = Box(
+                root.transform,
+                "Passive side-to-mouth guide " + side,
+                (outer + inner) * .5f,
+                new Vector3(.008f, .48f, Vector3.Distance(outer, inner) + .012f)
+            );
+            funnel.transform.localRotation = Quaternion.LookRotation(inner - outer, Vector3.up);
+            funnel.sharedMaterial = plastic;
+            funnel.excludeLayers = landing.excludeLayers;
+            var rear = Box(
+                root.transform,
+                "Side shoulder rear keeper " + side,
+                new Vector3(side * .258f, .35f, -.055f),
+                new Vector3(.185f, .4f, .012f)
+            );
+            rear.sharedMaterial = plastic;
+            rear.excludeLayers = landing.excludeLayers;
+        }
     }
 
     private static void SaveAsset(Object obj, string path)

@@ -1,14 +1,25 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Build','Test','Travel','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','Pulse','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Build','Runtime','Test','Travel','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
     [switch]$SyncOnly,
     [switch]$Authoring,
     [switch]$Baseline,
     [switch]$Heading90,
+    [switch]$Visible,
+    [switch]$MovingWithoutRearRim,
+    [switch]$MovingDirectBrake,
+    [switch]$AlignShooterHoods,
+    [switch]$ClearRearShooterMouth,
+    [string[]]$DiagnosticArguments,
+    [string]$IndexerCase,
     [switch]$UseProjectSnapshot
 )
 $ErrorActionPreference='Stop'
+if($MovingWithoutRearRim -and $Task -ne 'Moving'){throw '-MovingWithoutRearRim is an isolated Moving comparison.'}
+if($MovingDirectBrake -and ($Task -ne 'Moving' -or $MovingWithoutRearRim)){throw '-MovingDirectBrake is an isolated Moving comparison.'}
+if($AlignShooterHoods -and ($Task -notin @('Systems','Moving') -or $MovingWithoutRearRim -or $MovingDirectBrake)){throw '-AlignShooterHoods is an isolated Systems/Moving comparison.'}
+if($ClearRearShooterMouth -and ($Task -notin @('Systems','Moving') -or $MovingWithoutRearRim -or $MovingDirectBrake)){throw '-ClearRearShooterMouth is an isolated Systems/Moving comparison.'}
 $repoRoot=Split-Path -Parent $PSScriptRoot
 $projectRoot=(Resolve-Path -LiteralPath $MoSimProject).Path
 $editorPath=(Resolve-Path -LiteralPath $UnityEditor).Path
@@ -16,7 +27,7 @@ $versionFile=Join-Path $projectRoot 'ProjectSettings\ProjectVersion.txt'
 if(-not(Test-Path -LiteralPath $versionFile)){throw 'MoSimProject must be the root of the official Unity project.'}
 if((Get-Content -LiteralPath $versionFile -Raw)-notmatch '2023\.2\.22f1'){throw 'This mod targets Unity 2023.2.22f1. Use the pinned MoSim project.'}
 $UseProjectSnapshot = $UseProjectSnapshot -or (Test-Path -LiteralPath (Join-Path $projectRoot '.turbo-source-snapshot'))
-if($UseProjectSnapshot -and ($Task -in @('Assemble','Build') -or $SyncOnly)){throw 'Snapshot mode is for validating an existing build. Remove .turbo-source-snapshot or omit -UseProjectSnapshot before authoring/building.'}
+if($UseProjectSnapshot -and ($Task -in @('Assemble','Build','Runtime') -or $SyncOnly)){throw 'Snapshot mode is for validating an existing build. Remove .turbo-source-snapshot or omit -UseProjectSnapshot before authoring/building.'}
 if(-not $UseProjectSnapshot){
 $modRelative='Assets\Prefabs\Games\Rebuilt\Robots\Mods\Ninjas4744'
 $modTarget=Join-Path $projectRoot $modRelative
@@ -31,7 +42,7 @@ Get-ChildItem -LiteralPath (Join-Path $repoRoot 'Assets\Editor') -File|Copy-Item
 else {Write-Output 'Using the frozen project source snapshot.'}
 if($SyncOnly){Write-Output 'Turbo assets and editor tools synchronized.';return}
 
-$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
+$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Runtime='Ninjas4744Builder.SyncRuntime';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';LoadedAim='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Indexer='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
 $artifactRoot=Join-Path $repoRoot 'Artifacts'
 New-Item -ItemType Directory -Path $artifactRoot -Force|Out-Null
 $logPath=Join-Path $artifactRoot ($Task+'-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'.log')
@@ -68,10 +79,12 @@ try {
         $driveLock.Dispose()
     }
     $arguments=@('-batchmode','-projectPath',('"'+$runProject+'"'),'-logFile',('"'+$logPath+'"'),'-executeMethod',$methods[$Task])
+    if($Visible){$arguments=$arguments|Where-Object {$_ -ne '-batchmode'};$arguments+=@('-turboVisible','-turboTask',$Task)}
     if($Task -in @('Travel','Retention','Capacity')){$arguments+='-turboFixed'}
     if($Task -eq 'Approach'){$arguments+='-turboApproach'}
     if($Task -eq 'Approach' -and -not $Baseline){$arguments+='-turboFixed'}
-    if($Task -in @('Pile','WheelPile','Load')){$arguments+='-turboPile';if(-not $Baseline){$arguments+='-turboFixed'}}
+    if($Task -in @('Pile','WheelPile','Load','LoadedAim')){$arguments+='-turboPile';if(-not $Baseline){$arguments+='-turboFixed'}}
+    if($Task -eq 'LoadedAim'){$arguments+='-turboLoadedAim'}
     if($Task -eq 'WheelPile'){$arguments+='-turboWheelPile'}
     if($Task -eq 'Load'){$arguments+='-turboLoadOnly'}
     if($Authoring){$arguments+='-turboAuthoring'}
@@ -79,14 +92,35 @@ try {
     if($Task -in @('Systems','Jam','Moving','Delivery','Matrix','Pulse')){$arguments+=@('-turboBundle','-turboStrict')}
     if($Task -eq 'Jam'){$arguments+='-turboJam'}
     if($Task -eq 'Moving'){$arguments+='-turboMoving'}
+    if($MovingWithoutRearRim){$arguments+='-turboSkipRearRim'}
+    if($MovingDirectBrake){$arguments+='-turboDirectBrake'}
+    if($AlignShooterHoods){$arguments+='-turboAlignHoods'}
+    if($ClearRearShooterMouth){$arguments+='-turboClearRearMouth'}
+    if($DiagnosticArguments){$arguments+=@('-turboDiagnostic')+$DiagnosticArguments}
     if($Task -eq 'Delivery'){$arguments+='-turboDelivery'}
     if($Task -eq 'Matrix'){$arguments+='-turboMatrix'}
     if($Task -eq 'Pulse'){$arguments+='-turboPulse'}
-    if($Task -in @('Assemble','Build','Preview')){$arguments+='-quit'}
+    if($Task -eq 'Indexer'){$arguments+=@('-turboIndexer','-turboStrict');if(-not $Authoring){$arguments+='-turboBundle'}}
+    if($Task -eq 'Indexer' -and $IndexerCase){$arguments+=@('-turboIndexerCase',$IndexerCase)}
+    if($Task -in @('Assemble','Build','Runtime','Preview')){$arguments+='-quit'}
     Write-Output ('Running '+$Task+'. Log: '+$logPath)
-    $process=Start-Process -FilePath $editorPath -ArgumentList $arguments -WindowStyle Hidden -PassThru
+    $windowStyle=if($Visible){'Normal'}else{'Hidden'}
+    $process=Start-Process -FilePath $editorPath -ArgumentList $arguments -WindowStyle $windowStyle -PassThru
     $process.WaitForExit()
     if($process.ExitCode -ne 0){throw ('Unity exited with code '+$process.ExitCode+'. See '+$logPath)}
+    if(Select-String -LiteralPath $logPath -Pattern 'executeMethod method .* threw exception\.|error CS\d+:' -Quiet){throw ('Unity task failed; see '+$logPath)}
+    if($Task -eq 'Assemble'){
+        # Keep generated prefab references with their source. Otherwise the next
+        # test synchronization overwrites the assembled robot with the old prefab.
+        foreach($file in Get-ChildItem -LiteralPath $modTarget -Recurse -File){
+            if($file.Extension -notin @('.prefab','.asset','.mat','.meta')){continue}
+            $relative=$file.FullName.Substring($modTarget.Length).TrimStart('\')
+            $destination=Join-Path (Join-Path $repoRoot $modRelative) $relative
+            if((Test-Path -LiteralPath $destination) -and (Get-FileHash -LiteralPath $file.FullName).Hash -eq (Get-FileHash -LiteralPath $destination).Hash){continue}
+            New-Item -ItemType Directory -Path (Split-Path -Parent $destination) -Force|Out-Null
+            Copy-Item -LiteralPath $file.FullName -Destination $destination -Force
+        }
+    }
     if($Task -eq 'Build'){
         $syncArgs=@('-batchmode','-quit','-projectPath',('"'+$runProject+'"'),'-logFile',('"'+$logPath+'.runtime.log"'),'-executeMethod','Ninjas4744Builder.SyncRuntime')
         $sync=Start-Process -FilePath $editorPath -ArgumentList $syncArgs -WindowStyle Hidden -PassThru
@@ -94,11 +128,12 @@ try {
         if($sync.ExitCode -ne 0){throw 'Runtime synchronization failed; inspect the runtime log.'}
     }
     $buildArtifacts=Join-Path $projectRoot 'BuildArtifacts'
-    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
+    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','systems-indexer-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
         $file=Join-Path $buildArtifacts $name
         if(Test-Path -LiteralPath $file){Copy-Item -LiteralPath $file -Destination $artifactRoot -Force}
     }
     Get-ChildItem -LiteralPath $buildArtifacts -Filter 'Turbo4744-v5-*.png' -File|Copy-Item -Destination $artifactRoot -Force
+    Get-ChildItem -LiteralPath $buildArtifacts -Filter 'Turbo4744-v6-*.png' -File|Copy-Item -Destination $artifactRoot -Force
     Write-Output ($Task+' passed.')
 }
 finally {

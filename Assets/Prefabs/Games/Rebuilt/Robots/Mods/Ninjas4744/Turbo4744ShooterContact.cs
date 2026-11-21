@@ -24,7 +24,8 @@ namespace Ninjas4744.MoSim
             normalDamping = 45f,
             maxNormalForce = 120f;
         public bool allowReverse,
-            requiresCommand;
+            requiresCommand,
+            brakeWhenStopped;
         public bool compensateNormalGravity;
         public bool capturedOnly;
         public float lateralResponse = 40f,
@@ -44,6 +45,7 @@ namespace Ninjas4744.MoSim
         )]
         public float maxTotalForce;
         public Turbo4744FuelKeeper entryKeeper;
+        public Turbo4744Indexer lowerEntry;
         public float CurrentRpm { get; private set; }
         public float TargetRpm { get; private set; }
         public int Contacts { get; private set; }
@@ -78,7 +80,7 @@ namespace Ninjas4744.MoSim
                 Stop();
                 return;
             }
-            if (requiresCommand && Mathf.Approximately(TargetRpm, 0))
+            if (requiresCommand && Mathf.Approximately(TargetRpm, 0) && !brakeWhenStopped)
             {
                 Stop();
                 return;
@@ -117,6 +119,8 @@ namespace Ninjas4744.MoSim
             {
                 var rb = overlaps[i].attachedRigidbody;
                 if (!rb || rb.isKinematic || !rb.detectCollisions || current.Contains(rb))
+                    continue;
+                if (lowerEntry && !lowerEntry.HasEnteredShooter(rb))
                     continue;
                 // Floor/gate retention can engage before the curved pickup
                 // finishes its upper handoff. Keep that narrow physical
@@ -199,8 +203,6 @@ namespace Ninjas4744.MoSim
                     continue;
                 current.Add(rb);
                 Contacts++;
-                if (!previous.Contains(rb))
-                    CurrentRpm *= .98f;
                 Vector3 relative = rb.velocity - robotBody.GetPointVelocity(rb.worldCenterOfMass);
                 float surfaceSpeed = CurrentRpm * (2 * Mathf.PI / 60) * wheelRadius;
                 if (maxSurfaceSpeed > 0)
@@ -257,6 +259,13 @@ namespace Ninjas4744.MoSim
                 rb.AddForceAtPosition(force, rb.worldCenterOfMass, ForceMode.Force);
                 robotBody.AddForceAtPosition(-force, rb.worldCenterOfMass, ForceMode.Force);
             }
+            // All balls in this physics step see the same wheel speed. Apply the
+            // combined load after calculating forces so query order cannot favor one lane.
+            int arrivals = 0;
+            foreach (var rb in current)
+                if (!previous.Contains(rb))
+                    arrivals++;
+            CurrentRpm *= Mathf.Pow(.98f, arrivals);
             previous.Clear();
             foreach (var rb in current)
                 previous.Add(rb);
