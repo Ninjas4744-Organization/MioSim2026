@@ -1,0 +1,83 @@
+"""Verify preserved installed-player trench cycles against the current release."""
+import argparse
+import csv
+import hashlib
+import json
+from pathlib import Path
+
+parser = argparse.ArgumentParser()
+parser.add_argument('labels', nargs='+')
+args = parser.parse_args()
+root = Path(__file__).resolve().parents[1]
+reports = root / 'Reports/native'
+platform = root / 'Artifacts/PhysicsProject/BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
+load = lambda path: json.loads(path.read_text(encoding='utf-8-sig'))
+manifest = load(platform / 'modpack.json')
+hashes = {name: hashlib.sha256((platform / name).read_bytes()).hexdigest()
+          for name in [manifest['modDll'], manifest['id']]}
+summary = {'version': manifest['version'], 'artifacts': hashes, 'cases': []}
+boolean_overrides = ['disableJointProjection', 'solidBumper', 'discreteChassis',
+                     'stopInterpolation', 'compliantFuel', 'netEnvironmentContacts']
+numeric_overrides = ['railForceOverride', 'railDampingOverride', 'netRestScaleOverride',
+                     'netStretchOverride', 'netShearOverride', 'netStrandRadiusOverride']
+for label in args.labels:
+    report = load(reports / (label + '.json'))
+    request = load(reports / (label + '-request.json'))
+    assert load(reports / (label + '-artifacts.json')) == hashes, f'{label}: stale artifacts'
+    assert not any(request.get(k) for k in boolean_overrides + numeric_overrides), f'{label}: diagnostic override'
+    assert request['requireTrenchSuccess'] and request['stowForReturn'] and request['returnLane'] != 0
+    assert report['completed'] and report['trenchPassed'] and report['transitCompleted'], label
+    assert report['stowedBeforeReturn'] and not report['stowTimedOut'] and not report['overturned'], label
+    assert report['fieldFuel'] == 504 and abs(report['physicsStep'] - .0045) < .000001, label
+    start = report['transitStartCount']
+    assert 50 <= start <= 60 and start == report['transitEndCount'], label
+    assert not report['transitEscapes'] and not report['failureReason'], label
+    assert report['storedRetainedAfterStow'] == report['fullyStoredBeforeStow'], f'{label}: stored fuel lost during stow'
+    assert report['maximumTrenchHoldSeconds'] < .25, label
+    assert report['maxReturnFrameMs'] < 250, f'{label}: loaded-return frame stall'
+    assert report['compliantContacts'] > 0 and report['netContactSteps'] > 0, label
+    assert report['railForce'] == 350 and report['railDamping'] == 4200, label
+    assert report['intakeForceBudget'] == 600 and report['intakeTractionBudget'] == 100, label
+    assert abs(report['netStrandRadius'] - .00115) < .000001 and report['netRestScale'] == 1, label
+    frames = list(csv.DictReader([report['frameColumns'], *report['frames']]))
+    own_sign = 1 if report['alliance'] == 'Blue' else -1
+    crossing = [r for r in frames if int(r['transitRetained']) > 0
+                and abs(own_sign * float(r['x']) - 3.65) < .95]
+    assert len(crossing) >= 10, f'{label}: no crossing trace'
+    assert min(own_sign * float(r['x']) for r in crossing) < 2.9 \
+        and max(own_sign * float(r['x']) for r in crossing) > 4.4, f'{label}: incomplete crossing trace'
+    assert all(abs(float(r['z']) - request['returnLane']) < .15 for r in crossing), f'{label}: outside trench lane'
+    assert min(int(r['transitRetained']) for r in crossing) == start, f'{label}: temporary loss at trench'
+    hold = maximum_pose_hold = 0
+    for previous, current in zip(crossing, crossing[1:]):
+        dt = float(current['seconds']) - float(previous['seconds'])
+        moved = abs(float(current['x']) - float(previous['x']))
+        speed = abs(float(previous['vx']) + float(current['vx'])) * .5
+        hold = hold + dt if speed > 1 and moved < .35 * speed * dt else 0
+        maximum_pose_hold = max(maximum_pose_hold, hold)
+    assert maximum_pose_hold < .25, f'{label}: chassis pose stopped despite drive velocity'
+    rail_max = max(abs(float(r[k])) for r in crossing
+                   for k in ['intakeExtension', 'hopperExtension'])
+    assert rail_max < .015, f'{label}: mechanism extended under crossbar'
+    summary['cases'].append({
+        'label': label, 'alliance': report['alliance'], 'return_gear': request['returnGear'],
+        'start': start, 'retained': report['transitEndCount'], 'spills': 0,
+        'fully_stored_before_stow': report['fullyStoredBeforeStow'],
+        'stored_retained_after_stow': report['storedRetainedAfterStow'],
+        'inlet_departures': len(report['inletDepartures']),
+        'maximum_hold_seconds': report['maximumTrenchHoldSeconds'],
+        'maximum_pose_hold_seconds': maximum_pose_hold,
+        'minimum_trench_speed_mps': min(abs(float(r['vx'])) for r in crossing),
+        'maximum_rail_extension_m': rail_max, 'maximum_tilt_degrees': report['maxTilt'],
+        'maximum_fuel_compression_m': report['maximumFuelCompression'],
+        'scored': report['scoredCaptured'], 'remaining': report['remainingCaptured'],
+        'maximum_return_frame_ms': report['maxReturnFrameMs'],
+    })
+assert len(summary['cases']) >= 3, 'Need repeat crossings, including slow and normal speeds'
+assert any(c['start'] == 60 for c in summary['cases']), 'Need an actual 60-ball crossing'
+assert {c['return_gear'] for c in summary['cases']} >= {1, 2}, 'Need slow and normal gears'
+assert {c['alliance'] for c in summary['cases']} >= {'Red', 'Blue'}, 'Need both alliances'
+summary['passed'] = True
+output = root / 'Reports' / f"native-trench-{manifest['version']}.json"
+output.write_text(json.dumps(summary, indent=2) + '\n')
+print(json.dumps(summary, indent=2))

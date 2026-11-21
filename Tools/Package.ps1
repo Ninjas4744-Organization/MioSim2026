@@ -26,6 +26,14 @@ foreach($report in @($systems,$jam)+$extra){
     if($report.bundleSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower() -or $report.runtimeDllSha256 -ne (Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()){throw 'A systems report does not match this bundle and DLL. Run Systems and Jam again.'}
 }
 $version=$manifest.version
+if([version]$version -ge [version]'0.6.2'){
+    $certificate=Get-Content -LiteralPath (Join-Path $repoRoot ('Reports/verification-'+$version+'.json')) -Raw|ConvertFrom-Json
+    $native=Get-Content -LiteralPath (Join-Path $repoRoot ('Reports/native-trench-'+$version+'.json')) -Raw|ConvertFrom-Json
+    $dllHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()
+    $bundleHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower()
+    if($certificate.fixtures.Count -ne 14 -or @($certificate.fixtures|Where-Object {-not $_.passed -or -not $_.embedded_hashes_match}).Count -or $certificate.runtime_dll_sha256 -ne $dllHash -or $certificate.bundle_sha256 -ne $bundleHash){throw 'The complete release certificate must match this build. Run Tools/verify_release.py.'}
+    if(-not $native.passed -or $native.cases.Count -lt 3 -or $native.artifacts.PSObject.Properties[$manifest.modDll].Value -ne $dllHash -or $native.artifacts.PSObject.Properties[$manifest.id].Value -ne $bundleHash -or -not @($native.cases|Where-Object {$_.start -eq 60}).Count){throw 'Native trench verification must include an actual 60-ball crossing for this build. Run Tools/verify_native_trench.py.'}
+}
 $dist=Join-Path $repoRoot 'dist'
 $staging=Join-Path $dist ('staging-'+$version)
 $mod=Join-Path $staging 'Ninjas4744-Turbo2026'
@@ -33,12 +41,16 @@ $destination=Join-Path $mod 'standalonewindows64'
 New-Item -ItemType Directory -Path $destination -Force|Out-Null
 Get-ChildItem -LiteralPath $platform -File|Copy-Item -Destination $destination -Force
 Copy-Item -LiteralPath (Join-Path $repoRoot 'README.md'),(Join-Path $repoRoot 'CHANGELOG.md') -Destination $mod -Force
+$hebrew=Join-Path $repoRoot 'Docs/Installation-Discord-he.md'
+if(Test-Path -LiteralPath $hebrew){Copy-Item -LiteralPath $hebrew -Destination (Join-Path $mod 'INSTALL-he.md') -Force}
 $windowsZip=Join-Path $dist ('Ninjas4744-Turbo2026-'+$version+'-Windows.zip')
 Compress-Archive -LiteralPath $mod -DestinationPath $windowsZip -Force
-Copy-Item -LiteralPath (Join-Path $artifacts 'Ninjas4744-Turbo2026.unitypackage') -Destination $dist -Force
+$unityPackage=Join-Path $dist ('Ninjas4744-Turbo2026-'+$version+'.unitypackage')
+Copy-Item -LiteralPath (Join-Path $artifacts 'Ninjas4744-Turbo2026.unitypackage') -Destination $unityPackage -Force
 $sourceZip=Join-Path $dist ('Ninjas4744-Turbo2026-'+$version+'-Editable.zip')
 $sourcePaths=@('Assets','Models','Tools','Docs','Reports','Licenses','README.md','CHANGELOG.md','.gitignore','.gitattributes','.config','.editorconfig','.csharpierignore')|ForEach-Object{Join-Path $repoRoot $_}
 Compress-Archive -LiteralPath $sourcePaths -DestinationPath $sourceZip -Force
-Get-FileHash -LiteralPath $windowsZip,$sourceZip,(Join-Path $dist 'Ninjas4744-Turbo2026.unitypackage')|ForEach-Object{[PSCustomObject]@{file=Split-Path -Leaf $_.Path;sha256=$_.Hash.ToLower()}}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $dist 'checksums.json') -Encoding utf8
+Get-FileHash -LiteralPath $windowsZip,$sourceZip,$unityPackage|ForEach-Object{[PSCustomObject]@{file=Split-Path -Leaf $_.Path;sha256=$_.Hash.ToLower()}}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $dist ('checksums-'+$version+'.json')) -Encoding utf8
+Copy-Item -LiteralPath (Join-Path $dist ('checksums-'+$version+'.json')) -Destination (Join-Path $dist 'checksums.json') -Force
 Write-Output $windowsZip
 Write-Output $sourceZip

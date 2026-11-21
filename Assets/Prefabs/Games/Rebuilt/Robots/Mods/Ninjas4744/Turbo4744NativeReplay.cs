@@ -7,6 +7,7 @@ using Games.Rebuilt.FieldScripts;
 using Games.Rebuilt.GamePieceSystem;
 using MoSimCore.BaseClasses.GameManagement;
 using MoSimCore.Enums;
+using MoSimLib;
 using RobotFramework.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,6 +31,8 @@ namespace Ninjas4744.MoSim
             public float observeSeconds = 15;
             public float strafeInSeconds,
                 strafeOutSeconds;
+            public float collectionBackoffAfterSeconds,
+                collectionBackoffSeconds;
             public bool returnToOwnZone;
             public float hardPumpAfterSeconds = 5;
             public bool waitForTeleop;
@@ -49,6 +52,16 @@ namespace Ninjas4744.MoSim
             public bool stowForReturn;
             public float railForceOverride;
             public float railDampingOverride;
+            public float netRestScaleOverride,
+                netStretchOverride,
+                netShearOverride;
+            public bool compliantFuel;
+            public float netStrandRadiusOverride;
+            public bool netEnvironmentContacts;
+            public bool requireTrenchSuccess;
+            public float stowTolerance = .015f;
+            public int minimumTransitLoad = 50,
+                maximumTransitLoad = 60;
         }
 
         [Serializable]
@@ -77,6 +90,7 @@ namespace Ninjas4744.MoSim
         {
             public Request request;
             public string label;
+            public string alliance;
             public string activeHubAtShot;
             public bool jointProjectionDisabled;
             public bool stowRequested,
@@ -93,6 +107,29 @@ namespace Ninjas4744.MoSim
             public List<string> remainingFuel = new List<string>();
             public List<string> deliveryLandings = new List<string>();
             public List<string> transitEscapes = new List<string>();
+            public List<string> inletDepartures = new List<string>();
+            public List<string> stowFuel = new List<string>();
+            public int fullyStoredBeforeStow,
+                enteringBeforeStow,
+                storedRetainedAfterStow;
+            public List<string> fieldGeometry = new List<string>();
+            public List<string> netContactTrace = new List<string>();
+            public int transitStartCount,
+                transitEndCount;
+            public bool transitCompleted,
+                trenchPassed,
+                netEnvironmentContacts;
+            public string failureReason;
+            public int netFieldContacts,
+                netContactSteps,
+                netMaximumOverlaps;
+            public int compliantContacts;
+            public float maximumFuelCompression,
+                maximumTrenchHoldSeconds;
+            public float intakeForceBudget,
+                intakeTractionBudget,
+                netStrandRadius,
+                netRestScale;
             public int delivered;
             public int peakLowerContacts,
                 peakUpperContacts,
@@ -101,11 +138,11 @@ namespace Ninjas4744.MoSim
             public float maxBumperPenetration,
                 maxPoseResidual;
             public string frameColumns =
-                "seconds,tilt,captured,x,y,z,vx,vy,vz,wx,wy,wz,state,pump,feeding,rpm,targetRpm,indexerContacts,acceleratorContacts,shooterContacts,indexerForce,intakeExtension,hopperExtension,hopperVelocity,hopperTargetVelocity";
+                "seconds,tilt,captured,x,y,z,vx,vy,vz,wx,wy,wz,state,pump,feeding,rpm,targetRpm,indexerContacts,acceleratorContacts,shooterContacts,indexerForce,intakeExtension,hopperExtension,hopperVelocity,hopperTargetVelocity,transitRetained,netMaxLocalY,fuelMaxLocalY,netFieldContacts";
             public List<string> frames = new List<string>();
             public string environment =
                 "Installed MoSim player; complete original field; keyboard replay only";
-            public string runtimeVersion = "0.6.1 diagnostic";
+            public string runtimeVersion = "0.6.2";
             public float physicsStep,
                 maxTilt;
             public bool completed,
@@ -162,8 +199,21 @@ namespace Ninjas4744.MoSim
             new HashSet<RebuiltGamePieceController>();
         private readonly HashSet<RebuiltGamePieceController> returnFuel =
             new HashSet<RebuiltGamePieceController>();
+        private readonly HashSet<RebuiltGamePieceController> storedBeforeStow =
+            new HashSet<RebuiltGamePieceController>();
+        private readonly HashSet<RebuiltGamePieceController> departedInlet =
+            new HashSet<RebuiltGamePieceController>();
         private readonly HashSet<RebuiltGamePieceController> escapedFuel =
             new HashSet<RebuiltGamePieceController>();
+        private readonly HashSet<RebuiltGamePieceController> transitFuel =
+            new HashSet<RebuiltGamePieceController>();
+        private Turbo4744NetEnvironment netEnvironment;
+        private NetSolver net;
+        private Turbo4744FuelCompliance compliance;
+        private float nextNetTrace;
+        private float trenchHoldSeconds;
+        private bool capturedTrenchEntry,
+            capturedTrenchClear;
         private static readonly FieldInfo LastScored = typeof(RebuiltGamePieceController).GetField(
             "_lastScoredTime",
             BindingFlags.NonPublic | BindingFlags.Instance
@@ -194,6 +244,12 @@ namespace Ninjas4744.MoSim
 
         private void Begin()
         {
+            if (request.stowTolerance <= 0)
+                request.stowTolerance = .015f;
+            if (request.minimumTransitLoad <= 0)
+                request.minimumTransitLoad = 50;
+            if (request.maximumTransitLoad <= 0)
+                request.maximumTransitLoad = 60;
             body = robot.GetComponent<Rigidbody>();
             keeper = robot.GetComponent<Turbo4744FuelKeeper>();
             player = robot.GetComponent<PlayerInput>();
@@ -207,11 +263,53 @@ namespace Ninjas4744.MoSim
             {
                 request = request,
                 label = request.label,
+                alliance = robot.Alliance.ToString(),
                 physicsStep = Time.fixedDeltaTime,
                 fieldFuel = fuel.Length,
             };
             report.jointProjectionDisabled = request.disableJointProjection;
             report.stowRequested = request.stowForReturn;
+            net = robot.roofNet.GetComponent<NetSolver>();
+            report.intakeForceBudget = robot.intakeContact.maxTotalForce;
+            report.intakeTractionBudget = robot.intakeContact.maxTotalTractionForce;
+            report.netStrandRadius = net.collisionRadius;
+            report.netRestScale = net.restLengthScale;
+            netEnvironment = net.GetComponent<Turbo4744NetEnvironment>();
+            compliance = robot.GetComponent<Turbo4744FuelCompliance>();
+            if (request.compliantFuel)
+                compliance = compliance
+                    ? compliance
+                    : robot.gameObject.AddComponent<Turbo4744FuelCompliance>();
+            if (request.netRestScaleOverride > 0)
+            {
+                net.restLengthScale = request.netRestScaleOverride;
+                net.stretchCompliance = request.netStretchOverride;
+                net.shearCompliance = request.netShearOverride;
+                if (request.netStrandRadiusOverride > 0)
+                    net.collisionRadius = request.netStrandRadiusOverride;
+                net.Rebuild();
+            }
+            if (request.netEnvironmentContacts && !netEnvironment)
+                netEnvironment = net.gameObject.AddComponent<Turbo4744NetEnvironment>();
+            report.netEnvironmentContacts = netEnvironment;
+            foreach (int side in new[] { -1, 1 })
+            foreach (int lane in new[] { -1, 1 })
+            {
+                var origin = new Vector3(side * 3.65f, .30f, lane * 3.3758f);
+                foreach (
+                    var hit in Physics.RaycastAll(
+                        origin,
+                        Vector3.up,
+                        1.2f,
+                        LayerMask.GetMask("Default", "Field"),
+                        QueryTriggerInteraction.Ignore
+                    )
+                )
+                    if (!hit.collider.attachedRigidbody)
+                        report.fieldGeometry.Add(
+                            $"ray={origin:F4} hitY={hit.point.y:F4} collider={hit.collider.name} type={hit.collider.GetType().Name} bounds={hit.collider.bounds}"
+                        );
+            }
             originalRailForce = robot.railMaxForce;
             originalRailDamping = robot.railVelocityDamping;
             if (request.railForceOverride > 0)
@@ -306,6 +404,17 @@ namespace Ninjas4744.MoSim
             if (request.returnToOwnZone)
             {
                 arrivedHome |= ownSign * body.position.x >= 5.8f;
+                if (
+                    request.requireTrenchSuccess
+                    && report.stowedBeforeReturn
+                    && !arrivedHome
+                    && t >= collectEnd + request.retreatSeconds
+                )
+                {
+                    report.failureReason = "Transit timed out before reaching the alliance zone";
+                    Finish(false);
+                    return;
+                }
                 bool active =
                     (
                         RebuiltShifts.ActiveHub == ActiveHub.Both
@@ -350,6 +459,15 @@ namespace Ninjas4744.MoSim
                 && t - shootEnd < request.hardPumpAfterSeconds + .2f
                     ? new[] { Key.V }
                 : Array.Empty<Key>();
+            if (
+                phase == 1
+                && collectionStopped < 0
+                && request.collectionBackoffAfterSeconds > 0
+                && t - 2.5f >= request.collectionBackoffAfterSeconds
+                && t - 2.5f
+                    < request.collectionBackoffAfterSeconds + request.collectionBackoffSeconds
+            )
+                keys = new[] { Key.S };
             if (phase == 1 && collectionStopped >= 0 && t >= collectionStopped)
                 keys = Array.Empty<Key>();
             if (
@@ -369,7 +487,7 @@ namespace Ninjas4744.MoSim
                 if (laneReady)
                     routeKeys.Add(Key.S);
                 if (Mathf.Abs(dz) > (laneReady ? .08f : .10f))
-                    routeKeys.Add(dz > 0 ? Key.A : Key.D);
+                    routeKeys.Add((dz > 0) == (ownSign < 0) ? Key.A : Key.D);
                 int gear = !laneReady && Mathf.Abs(dz) < .5f ? 1 : request.returnGear;
                 if (gear > 0)
                     routeKeys.Add(
@@ -405,13 +523,34 @@ namespace Ninjas4744.MoSim
                 report.stowSeconds = t - collectEnd;
                 if (
                     report.stowSeconds >= .25f
-                    && Mathf.Abs(intakeExtension) < .015f
-                    && Mathf.Abs(hopperExtension) < .015f
+                    && Mathf.Abs(intakeExtension) < request.stowTolerance
+                    && Mathf.Abs(hopperExtension) < request.stowTolerance
                 )
                 {
                     report.stowedBeforeReturn = true;
                     report.intakeExtensionAtReturn = intakeExtension;
                     report.hopperExtensionAtReturn = hopperExtension;
+                    foreach (var piece in fuel)
+                        if (piece && InsideTransit(piece.GetComponent<Rigidbody>().position))
+                            transitFuel.Add(piece);
+                    report.transitStartCount = transitFuel.Count;
+                    returnFuel.UnionWith(transitFuel);
+                    report.storedRetainedAfterStow = storedBeforeStow.Count(piece =>
+                        piece && InsideTransit(piece.GetComponent<Rigidbody>().position)
+                    );
+                    if (
+                        request.requireTrenchSuccess
+                        && (
+                            transitFuel.Count < request.minimumTransitLoad
+                            || transitFuel.Count > request.maximumTransitLoad
+                        )
+                    )
+                    {
+                        report.failureReason =
+                            "Actual stowed load is outside the requested transit range";
+                        Finish(false);
+                        return;
+                    }
                 }
                 else
                 {
@@ -419,11 +558,52 @@ namespace Ninjas4744.MoSim
                     if (report.stowSeconds > 8)
                     {
                         report.stowTimedOut = true;
+                        report.failureReason = "Stow timed out before full retraction";
                         report.intakeExtensionAtReturn = intakeExtension;
                         report.hopperExtensionAtReturn = hopperExtension;
                         Finish(false);
                         return;
                     }
+                }
+            }
+            if (report.stowedBeforeReturn && arrivedHome && !report.transitCompleted)
+            {
+                report.transitCompleted = true;
+                report.transitEndCount = TransitRetained();
+                report.trenchPassed =
+                    report.transitStartCount >= request.minimumTransitLoad
+                    && report.transitStartCount <= request.maximumTransitLoad
+                    && report.transitEndCount == report.transitStartCount
+                    && report.storedRetainedAfterStow == report.fullyStoredBeforeStow
+                    && report.transitEscapes.Count == 0
+                    && report.maximumTrenchHoldSeconds < .25f;
+                if (!report.trenchPassed && request.requireTrenchSuccess)
+                    report.failureReason = "Transit lost stored fuel";
+            }
+            if (report.stowedBeforeReturn && !arrivedHome && laneReady && request.returnLane != 0)
+            {
+                bool underBar = Mathf.Abs(ownSign * body.position.x - 3.65f) < .95f;
+                trenchHoldSeconds =
+                    underBar && Mathf.Abs(body.velocity.x) < .1f
+                        ? trenchHoldSeconds + Time.fixedDeltaTime
+                        : 0;
+                report.maximumTrenchHoldSeconds = Mathf.Max(
+                    report.maximumTrenchHoldSeconds,
+                    trenchHoldSeconds
+                );
+                if (!capturedTrenchEntry && ownSign * body.position.x > 2.9f)
+                {
+                    capturedTrenchEntry = true;
+                    ScreenCapture.CaptureScreenshot(
+                        Path.ChangeExtension(output, null) + "-trench-entry.png"
+                    );
+                }
+                if (!capturedTrenchClear && ownSign * body.position.x > 4.7f)
+                {
+                    capturedTrenchClear = true;
+                    ScreenCapture.CaptureScreenshot(
+                        Path.ChangeExtension(output, null) + "-trench-clear.png"
+                    );
                 }
             }
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys));
@@ -447,7 +627,24 @@ namespace Ninjas4744.MoSim
                             && p.z > -.10f
                             && p.z < .64f
                         )
+                        {
                             returnFuel.Add(piece);
+                            var rb = piece.GetComponent<Rigidbody>();
+                            bool captured =
+                                keeper.IsCaptured(rb) || robot.indexer.HasEnteredShooter(rb);
+                            if (captured)
+                            {
+                                report.fullyStoredBeforeStow++;
+                                storedBeforeStow.Add(piece);
+                            }
+                            else
+                                report.enteringBeforeStow++;
+                            report.stowFuel.Add(
+                                FormattableString.Invariant(
+                                    $"id={piece.GetInstanceID()} local={p:F3} captured={captured}"
+                                )
+                            );
+                        }
                     }
                     AuditColliders("after collection");
                     ScreenCapture.CaptureScreenshot(
@@ -493,7 +690,10 @@ namespace Ninjas4744.MoSim
             if (phase == 2)
                 foreach (var piece in returnFuel)
                 {
-                    if (!piece || escapedFuel.Contains(piece))
+                    if (!piece)
+                        continue;
+                    bool stored = storedBeforeStow.Contains(piece) || transitFuel.Contains(piece);
+                    if (stored ? escapedFuel.Contains(piece) : departedInlet.Contains(piece))
                         continue;
                     var rb = piece.GetComponent<Rigidbody>();
                     var p = robot.transform.InverseTransformPoint(rb.position);
@@ -505,12 +705,19 @@ namespace Ninjas4744.MoSim
                         || p.y < .05f
                     )
                     {
-                        escapedFuel.Add(piece);
-                        report.transitEscapes.Add(
-                            FormattableString.Invariant(
-                                $"{t:F3} id={piece.GetInstanceID()} local={p:F3} world={rb.position:F3} v={rb.velocity:F3} chassis={body.position:F3}"
-                            )
+                        string departure = FormattableString.Invariant(
+                            $"{t:F3} id={piece.GetInstanceID()} local={p:F3} world={rb.position:F3} v={rb.velocity:F3} chassis={body.position:F3}"
                         );
+                        if (stored)
+                        {
+                            escapedFuel.Add(piece);
+                            report.transitEscapes.Add(departure);
+                        }
+                        else
+                        {
+                            departedInlet.Add(piece);
+                            report.inletDepartures.Add(departure);
+                        }
                     }
                 }
             report.maxTilt = Mathf.Max(report.maxTilt, tilt);
@@ -633,7 +840,7 @@ namespace Ninjas4744.MoSim
                 previousSampleVelocity = v0;
                 report.frames.Add(
                     FormattableString.Invariant(
-                        $"{t:F4},{tilt:F3},{captured},{p0.x:F4},{p0.y:F4},{p0.z:F4},{v0.x:F3},{v0.y:F3},{v0.z:F3},{w0.x:F3},{w0.y:F3},{w0.z:F3},{robot.ShootingState},{robot.PumpMode},{robot.Feeding},{robot.CurrentShooterRpm:F1},{robot.TargetShooterRpm:F1},{robot.indexer.Contacts},{robot.acceleratorContact.Contacts},{robot.shooterContact.Contacts},{robot.indexer.AppliedForce:F1},{RailExtension(robot.intakeRail, robot.intakeTravel):F4},{RailExtension(robot.hopperRail, robot.hopperTravel):F4},{RailVelocity(robot.hopperRail):F4},{-robot.hopperRail.targetVelocity.z:F4}"
+                        $"{t:F4},{tilt:F3},{captured},{p0.x:F4},{p0.y:F4},{p0.z:F4},{v0.x:F3},{v0.y:F3},{v0.z:F3},{w0.x:F3},{w0.y:F3},{w0.z:F3},{robot.ShootingState},{robot.PumpMode},{robot.Feeding},{robot.CurrentShooterRpm:F1},{robot.TargetShooterRpm:F1},{robot.indexer.Contacts},{robot.acceleratorContact.Contacts},{robot.shooterContact.Contacts},{robot.indexer.AppliedForce:F1},{RailExtension(robot.intakeRail, robot.intakeTravel):F4},{RailExtension(robot.hopperRail, robot.hopperTravel):F4},{RailVelocity(robot.hopperRail):F4},{-robot.hopperRail.targetVelocity.z:F4},{TransitRetained()},{NetMaximumHeight():F4},{FuelMaximumHeight():F4},{(netEnvironment ? netEnvironment.ContactNodes : 0)}"
                     )
                 );
                 report.peakCaptured = Mathf.Max(report.peakCaptured, captured);
@@ -658,6 +865,24 @@ namespace Ninjas4744.MoSim
                         shooterContacts = robot.shooterContact.Contacts,
                     }
                 );
+            }
+            if (netEnvironment)
+            {
+                report.netFieldContacts = netEnvironment.TotalContacts;
+                report.netContactSteps = netEnvironment.Steps;
+                report.netMaximumOverlaps = netEnvironment.MaximumOverlaps;
+                if (netEnvironment.ContactNodes > 0 && t >= nextNetTrace)
+                {
+                    nextNetTrace = t + .1f;
+                    report.netContactTrace.Add(
+                        $"{t:F4} nodes={netEnvironment.ContactNodes} total={netEnvironment.TotalContacts} depth={netEnvironment.MaximumPenetration:F4} p={body.position:F3}"
+                    );
+                }
+            }
+            if (compliance)
+            {
+                report.compliantContacts = compliance.ModifiedContacts;
+                report.maximumFuelCompression = compliance.MaximumObservedCompression;
             }
             if (t >= nextBumperAudit)
             {
@@ -706,6 +931,41 @@ namespace Ninjas4744.MoSim
             robot.transform.InverseTransformPoint(joint.GetComponent<Rigidbody>().position).z
             - joint.connectedAnchor.z
             + travel * .5f;
+
+        private bool InsideTransit(Vector3 world)
+        {
+            var p = robot.transform.InverseTransformPoint(world);
+            return Mathf.Abs(p.x) < .36f && p.y > .15f && p.y < 1f && p.z > -.17f && p.z < .64f;
+        }
+
+        private int TransitRetained() =>
+            transitFuel.Count(p => p && InsideTransit(p.GetComponent<Rigidbody>().position));
+
+        private float NetMaximumHeight()
+        {
+            float maximum = 0;
+            var vertices = net.GetMeshVertices();
+            if (vertices != null)
+                foreach (var vertex in vertices)
+                    maximum = Mathf.Max(maximum, robot.transform.InverseTransformPoint(vertex).y);
+            return maximum;
+        }
+
+        private float FuelMaximumHeight()
+        {
+            float maximum = 0;
+            foreach (var piece in returnFuel)
+                if (piece && InsideTransit(piece.GetComponent<Rigidbody>().position))
+                    maximum = Mathf.Max(
+                        maximum,
+                        robot
+                            .transform.InverseTransformPoint(
+                                piece.GetComponent<Rigidbody>().position
+                            )
+                            .y + .075f
+                    );
+            return maximum;
+        }
 
         private float RailVelocity(ConfigurableJoint joint)
         {
@@ -927,7 +1187,7 @@ namespace Ninjas4744.MoSim
             if (report == null)
                 return;
             GUI.Box(
-                new Rect(12, 12, 650, 115),
+                new Rect(12, 12, 650, 155),
                 "NATIVE MoSim input replay — "
                     + (finished ? "finished" : "phase " + previousPhase)
                     + "\nCaptured "
@@ -946,15 +1206,24 @@ namespace Ninjas4744.MoSim
                     + robot.indexer.UpperContacts
                     + " | indexer "
                     + robot.indexer.AppliedForce.ToString("F1")
-                    + " N",
+                    + " N\nStowed transit load "
+                    + report.transitStartCount
+                    + " | retained "
+                    + (report.transitCompleted ? report.transitEndCount : TransitRetained())
+                    + " | spills "
+                    + report.transitEscapes.Count
+                    + " | inlet departures "
+                    + report.inletDepartures.Count
+                    + "\nTransit "
+                    + (report.trenchPassed ? "PASS" : report.failureReason ?? "in progress"),
                 new GUIStyle(GUI.skin.box) { fontSize = 19, alignment = TextAnchor.UpperLeft }
             );
             if (
                 finished
-                && GUI.Button(new Rect(12, 132, 280, 40), "Run next requested native cycle")
+                && GUI.Button(new Rect(12, 172, 280, 40), "Run next requested native cycle")
             )
                 BaseGameManager.Instance.StartCoroutine(BaseGameManager.Instance.ResetMatch());
-            showBoxes = GUI.Toggle(new Rect(312, 132, 220, 40), showBoxes, "Show box hitboxes");
+            showBoxes = GUI.Toggle(new Rect(312, 172, 220, 40), showBoxes, "Show box hitboxes");
             var view = Camera.main
                 ? Camera.main
                 : Camera.allCameras.FirstOrDefault(c =>

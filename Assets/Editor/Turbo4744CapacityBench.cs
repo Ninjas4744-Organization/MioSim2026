@@ -67,6 +67,10 @@ public static class Turbo4744CapacityBench
         public string fixture =
             "Thirty ground balls; collection, native keyboard loaded drive, turning, disable, up to 25 seconds delivery through pumping, then empty stow";
         public List<Case> cases = new List<Case>();
+        public float intakeForceOverride,
+            intakeLateralOverride = -1;
+        public float intakeTractionOverride;
+        public int capacityCaptureTarget;
         public List<string> errors = new List<string>();
         public List<string> editorServiceErrors = new List<string>();
     }
@@ -111,6 +115,48 @@ public static class Turbo4744CapacityBench
     private static bool LoadOnly => Environment.GetCommandLineArgs().Contains("-turboLoadOnly");
     private static bool WheelPile => Environment.GetCommandLineArgs().Contains("-turboWheelPile");
     private static bool LoadedAim => Environment.GetCommandLineArgs().Contains("-turboLoadedAim");
+    private static float IntakeForceOverride
+    {
+        get
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "-turboIntakeForce");
+            return at >= 0 && at + 1 < args.Length
+                ? float.Parse(args[at + 1], System.Globalization.CultureInfo.InvariantCulture)
+                : 0;
+        }
+    }
+    private static float IntakeLateralOverride
+    {
+        get
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "-turboIntakeLateral");
+            return at >= 0 && at + 1 < args.Length
+                ? float.Parse(args[at + 1], System.Globalization.CultureInfo.InvariantCulture)
+                : -1;
+        }
+    }
+    private static float IntakeTractionOverride
+    {
+        get
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "-turboIntakeTraction");
+            return at >= 0 && at + 1 < args.Length
+                ? float.Parse(args[at + 1], System.Globalization.CultureInfo.InvariantCulture)
+                : 0;
+        }
+    }
+    private static int CapacityCaptureTarget
+    {
+        get
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "-turboCapacityTarget");
+            return at >= 0 && at + 1 < args.Length ? int.Parse(args[at + 1]) : 51;
+        }
+    }
     private static float CycleOffset => Pile && !WheelPile ? 6 : 0;
     private static float CollectionEnd =>
         Pile && !WheelPile ? 14
@@ -168,9 +214,13 @@ public static class Turbo4744CapacityBench
         if (state == PlayModeStateChange.EnteredPlayMode)
         {
             report = new Report();
+            report.intakeForceOverride = IntakeForceOverride;
+            report.intakeLateralOverride = IntakeLateralOverride;
+            report.intakeTractionOverride = IntakeTractionOverride;
+            report.capacityCaptureTarget = CapacityCaptureTarget;
             if (Pile)
                 report.fixture =
-                    "Capacity fill: up to 64 official ground balls introduced individually at the pickup, with clearance between offers; stop offering after 51 captured, allowing the remaining incoming fuel to settle. At least 50 stored at each heading and at least one load above 50, then full-speed native loaded driving, turns, disable, complete shooter release and empty stow. Dense-pile acquisition is verified separately.";
+                    $"Capacity fill: up to 64 official ground balls introduced individually at the pickup, with clearance between offers; stop offering after {CapacityCaptureTarget} captured, allowing the remaining incoming fuel to settle. At least 50 stored at each heading and at least one load above 50, then full-speed native loaded driving, turns, disable, complete shooter release and empty stow. Dense-pile acquisition is verified separately.";
             if (WheelPile)
                 report.fixture =
                     "Ninety ground balls across six lanes including wheel paths; 3 m/s approach, under 3 degrees of heading drift and 0.20 m cross-track error, retain captured fuel through native loaded driving and turns, complete shooter release and empty stow; capacity is verified separately";
@@ -268,6 +318,12 @@ public static class Turbo4744CapacityBench
             )
             .GetComponent<Turbo4744>();
         robot.SetAlliance(Alliance.Blue);
+        if (IntakeForceOverride > 0)
+            robot.intakeContact.maxTotalForce = IntakeForceOverride;
+        if (IntakeLateralOverride >= 0)
+            robot.intakeContact.lateralResponse = IntakeLateralOverride;
+        if (IntakeTractionOverride > 0)
+            robot.intakeContact.maxTotalTractionForce = IntakeTractionOverride;
         var benchPlayer = robot.GetComponent<PlayerInput>();
         benchPlayer.neverAutoSwitchControlSchemes = true;
         benchPlayer.actions.devices = new InputDevice[] { keyboard };
@@ -400,7 +456,7 @@ public static class Turbo4744CapacityBench
             || t < 2.5f
             || t >= CollectionEnd
             || fuel.Count >= 64
-            || current.collected >= 51
+            || current.collected >= CapacityCaptureTarget
             || t - lastCapacityOffer < .16f
         )
             return;
