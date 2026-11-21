@@ -25,6 +25,9 @@ namespace Ninjas4744.MoSim
         {
             public string label = "native-cycle";
             public string shootKey = "K";
+
+            // Optional ordinary-key sequence: "2.5:LeftShift;0.12:K;5:;2:S".
+            public string inputTimeline;
             public float collectSeconds = 1.8f;
             public float retreatSeconds = 1.8f;
             public float shootWhileRetreatingSeconds = .2f;
@@ -178,6 +181,9 @@ namespace Ninjas4744.MoSim
             shotAt = -1,
             collectionStopped = -1;
         private bool laneReady;
+        private readonly List<(float end, Key[] keys)> timeline =
+            new List<(float end, Key[] keys)>();
+        private float timelineEnd;
         private bool arrivedHome;
         private float previousSampleTime = -1,
             nextBumperAudit;
@@ -244,6 +250,29 @@ namespace Ninjas4744.MoSim
 
         private void Begin()
         {
+            if (!string.IsNullOrWhiteSpace(request.inputTimeline))
+                foreach (string segment in request.inputTimeline.Split(';'))
+                {
+                    var parts = segment.Split(':');
+                    float duration = float.Parse(
+                        parts[0],
+                        System.Globalization.CultureInfo.InvariantCulture
+                    );
+                    if (parts.Length != 2 || !float.IsFinite(duration) || duration <= 0)
+                        throw new InvalidDataException(
+                            "Invalid native replay input segment: " + segment
+                        );
+                    timelineEnd += duration;
+                    timeline.Add(
+                        (
+                            timelineEnd,
+                            parts[1]
+                                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(key => (Key)Enum.Parse(typeof(Key), key.Trim()))
+                                .ToArray()
+                        )
+                    );
+                }
             if (request.stowTolerance <= 0)
                 request.stowTolerance = .015f;
             if (request.minimumTransitLoad <= 0)
@@ -606,6 +635,9 @@ namespace Ninjas4744.MoSim
                     );
                 }
             }
+            if (timeline.Count > 0)
+                keys = timeline.FirstOrDefault(segment => t < segment.end).keys
+                    ?? Array.Empty<Key>();
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys));
             InputSystem.Update();
             if (phase != previousPhase)
@@ -923,7 +955,7 @@ namespace Ninjas4744.MoSim
                         }
                 }
             }
-            if (t >= shootEnd + request.observeSeconds)
+            if (t >= (timeline.Count > 0 ? timelineEnd : shootEnd + request.observeSeconds))
                 Finish(true);
         }
 

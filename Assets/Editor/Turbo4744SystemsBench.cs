@@ -58,6 +58,15 @@ public static class Turbo4744SystemsBench
             netSolvers,
             hardPumpCycles,
             jamRecoveries;
+        public int automaticPumpSamples,
+            automaticPreparePumpSamples;
+        public float automaticPumpMin = 1,
+            automaticPumpMax;
+        public float automaticBinMin = 1,
+            automaticBinMax;
+        public bool hopperFloorContained = true;
+        public bool pumpedWhileCollecting,
+            pumpedAfterEmpty;
         public float minNetY,
             maxNetY,
             netSpan,
@@ -253,7 +262,8 @@ public static class Turbo4744SystemsBench
             report = new Report
             {
                 label =
-                    Indexer ? "indexer-after"
+                    Flag("-turboAutomaticPump") ? "automatic-pump"
+                    : Indexer ? "indexer-after"
                     : Flag("-turboPulse") ? "pulse-after"
                     : Flag("-turboDelivery") ? "delivery-after"
                     : Flag("-turboMoving") ? "moving-after"
@@ -276,6 +286,7 @@ public static class Turbo4744SystemsBench
                 || Matrix
                 || Flag("-turboMoving")
                 || Flag("-turboDelivery")
+                || Flag("-turboAutomaticPump")
                 || Flag("-turboShotsOnly")
                 || Flag("-turboJam")
                 || Indexer
@@ -586,13 +597,30 @@ public static class Turbo4744SystemsBench
         balls.Clear();
         foreach (var preload in robot.preloads)
         {
-            if (index < 2 || Indexer)
+            if (index < 2 || Indexer || Flag("-turboAutomaticPump"))
             {
                 preload.SetActive(false);
                 Object.Destroy(preload);
             }
             else
                 AddBall(preload);
+        }
+        if (Flag("-turboAutomaticPump"))
+        {
+            int count = (int)Arg("-turboPumpFuelCount", 3);
+            if (count < 0 || count > 3)
+                throw new ArgumentOutOfRangeException("-turboPumpFuelCount", "Use 0 to 3 balls.");
+            for (int i = 0; i < count; i++)
+                AddBall(
+                    Object.Instantiate(
+                        fuel,
+                        robot.transform.TransformPoint(
+                            new Vector3((i - (count - 1) * .5f) * .16f, .28f, .49f)
+                        ),
+                        Quaternion.identity
+                    )
+                );
+            result.seeded = count;
         }
         jamFixture.Clear();
         backoffBegan = -1;
@@ -739,6 +767,43 @@ public static class Turbo4744SystemsBench
                 ).z - intakeClosed;
             result.minPump = Mathf.Min(result.minPump, extension);
             result.maxPump = Mathf.Max(result.maxPump, extension);
+        }
+        if (Flag("-turboAutomaticPump"))
+        {
+            var keeper = robot.GetComponent<Turbo4744FuelKeeper>();
+            float binFront = robot
+                .transform.InverseTransformPoint(
+                    keeper.frontPanel.transform.TransformPoint(keeper.frontPanel.center)
+                )
+                .z;
+            float floorRear =
+                keeper.floor.transform.localPosition.z
+                + keeper.floor.center.z
+                - keeper.floor.size.z * .5f;
+            float floorFront = floorRear + keeper.floor.size.z;
+            result.hopperFloorContained &= floorRear >= .31f && floorFront <= binFront + .006f;
+            bool pumping = robot.PumpMode == Turbo4744.RailState.SoftPumping;
+            result.pumpedWhileCollecting |= t > 2.2f && t < 3 && pumping;
+            bool remaining = balls.Any(b =>
+                b.body
+                && !b.launched
+                && robot.transform.InverseTransformPoint(b.body.position).z > .03f
+            );
+            result.pumpedAfterEmpty |= t > 5 && !remaining && pumping;
+            if (pumping && remaining)
+            {
+                if (
+                    robot.ShootingState == Turbo4744.ShootState.PrepareHub
+                    || robot.ShootingState == Turbo4744.ShootState.PrepareDelivery
+                )
+                    result.automaticPreparePumpSamples++;
+                float extension = robot.IntakeEncoderRotations * robot.intakeTravel / 11f;
+                result.automaticPumpSamples++;
+                result.automaticBinMin = Mathf.Min(result.automaticBinMin, binFront);
+                result.automaticBinMax = Mathf.Max(result.automaticBinMax, binFront);
+                result.automaticPumpMin = Mathf.Min(result.automaticPumpMin, extension);
+                result.automaticPumpMax = Mathf.Max(result.automaticPumpMax, extension);
+            }
         }
         foreach (var ball in balls.Where(b => b.body))
         {
@@ -1677,7 +1742,7 @@ public static class Turbo4744SystemsBench
                     Press(Key.K, Key.V);
                     pulsePump = true;
                 }
-                else if (t >= 6 && !pulsePump && !Flag("-turboJam"))
+                else if (t >= 6 && !pulsePump && !Flag("-turboJam") && !Flag("-turboAutomaticPump"))
                 {
                     Press(Key.K, Key.V);
                     pulsePump = true;
@@ -1690,7 +1755,7 @@ public static class Turbo4744SystemsBench
                     Press(Key.K, (index % 2 == 0 ? inward : !inward) ? Key.S : Key.W);
                 }
                 else
-                    Press(Key.K);
+                    Press(Flag("-turboAutomaticPump") && Flag("-turboDelivery") ? Key.E : Key.K);
                 result.target = robot.autoAim.GetCurrentTarget();
             }
             if (
@@ -1736,6 +1801,7 @@ public static class Turbo4744SystemsBench
                 : Flag("-turboJam") ? true
                 : Flag("-turboPulse") ? index >= 3
                 : Flag("-turboDelivery") ? index >= 6
+                : Flag("-turboAutomaticPump") ? index >= 3
                 : Flag("-turboMoving") ? index >= 4
                 : Flag("-turboCrowded") ? index >= 2
                 : Matrix ? index >= 10
@@ -1798,9 +1864,10 @@ public static class Turbo4744SystemsBench
                             && c.strafeSpeed > 2.3f
                             && (
                                 c.payload == 0
-                                    ? c.closedFrameSpan > .59f
-                                        && c.closedFrameSpan < .64f
+                                    ? c.closedFrameSpan > .36f
+                                        && c.closedFrameSpan < .41f
                                         && c.openedFrameSpan > .59f
+                                        && c.openedFrameSpan - c.closedFrameSpan > .20f
                                         && c.closedNetSpan >= c.closedFrameSpan - .02f
                                         && c.closedNetSpan < .8f
                                         && c.openedNetSpan > .59f
@@ -1846,6 +1913,22 @@ public static class Turbo4744SystemsBench
                             && c.pumpRequestRecoveryAge < .8f
                             && c.pumpRequestEncoder < 10.5f
                             && c.hardPumpCycles == 3
+                    : Flag("-turboAutomaticPump")
+                        ? (Flag("-turboDelivery") ? c.delivered == c.seeded : c.scored == c.seeded)
+                            && c.hardPumpCycles == 0
+                            && !c.pumpedWhileCollecting
+                            && !c.pumpedAfterEmpty
+                            && c.hopperFloorContained
+                            && (
+                                c.seeded == 0
+                                || c.automaticPumpSamples > 10
+                                    && c.automaticPreparePumpSamples > 0
+                                    // Sparse loads can empty before the opening-to-low
+                                    // travel finishes. Require real motion of both
+                                    // slides while loaded, without requiring a full cycle.
+                                    && c.automaticPumpMax - c.automaticPumpMin > .020f
+                                    && c.automaticBinMax - c.automaticBinMin > .018f
+                            )
                     : Flag("-turboDelivery") ? c.delivered >= 6
                     : c.scored >= 7
                         && c.hardPumpCycles == 3

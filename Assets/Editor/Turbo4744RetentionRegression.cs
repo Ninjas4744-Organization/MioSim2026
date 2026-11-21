@@ -622,12 +622,20 @@ public static class Turbo4744RetentionRegression
         }
     }
 
-    // The main bin stays fixed during stow. Its front panel is at local Z
-    // 0.626 m, leaving a 150 mm ball's centre at about 0.552 m inside it.
-    // The former 0.42 m cutoff measured the incorrectly retracted whole bin.
-    private static bool InsideClosed(Vector3 p) =>
-        (Mathf.Abs(p.x) < .36f && p.y > .17f && p.y < .55f && p.z > .03f && p.z < .56f)
-        || Turbo4744FeedBounds.Contains(p);
+    private static bool InsideClosed(Vector3 p)
+    {
+        var panel = robot.GetComponent<Turbo4744FuelKeeper>().frontPanel;
+        float front = robot
+            .transform.InverseTransformPoint(panel.transform.TransformPoint(panel.center))
+            .z;
+        return (
+                Mathf.Abs(p.x) < .36f
+                && p.y > .17f
+                && p.y < .55f
+                && p.z > .03f
+                && p.z < front - .065f
+            ) || Turbo4744FeedBounds.Contains(p);
+    }
 
     private static void TickApproach(float t)
     {

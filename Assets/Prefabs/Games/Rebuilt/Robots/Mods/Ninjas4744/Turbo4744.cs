@@ -89,6 +89,7 @@ namespace Ninjas4744.MoSim
         public bool Feeding { get; private set; }
         public bool Collecting => _intakeRunning && !_reverse;
         public bool Reversing => _reverse;
+        public bool DiagnosticsEnabled => _showStatus;
         public float CurrentShooterRpm { get; private set; }
         public float TargetShooterRpm { get; private set; }
         public float TargetShooterMotorRps { get; private set; }
@@ -128,7 +129,7 @@ namespace Ninjas4744.MoSim
             _manual,
             _intakeRunning = true,
             _spinning,
-            _autoSoftIssued,
+            _automaticSoft,
             _pendingHard,
             _pendingSoft,
             _stowRequested;
@@ -287,7 +288,14 @@ namespace Ninjas4744.MoSim
             MoveSpeedExponent = 1;
             RotationSpeedMultiplier = 1;
             IsFieldCentric = true;
-            Scheduler.AddSubsystems(ReadControls, AimAndSpin, Feed, MoveRails, MonitorFlow);
+            Scheduler.AddSubsystems(
+                ReadControls,
+                AimAndSpin,
+                Feed,
+                UpdateAutomaticPumping,
+                MoveRails,
+                MonitorFlow
+            );
             Scheduler.AddProtectedSystem(Disabled);
             Scheduler.AddLateRecursive(AnimateRoller);
             _showStatus = System.Environment.GetEnvironmentVariable("TURBO4744_STATUS") == "1";
@@ -296,8 +304,15 @@ namespace Ninjas4744.MoSim
             _statusInput.performed += ToggleStatus;
             _statusInput.Enable();
             Turbo4744NativeReplay.AttachIfRequested(this);
+            _showStatus |= GetComponent<Turbo4744NativeReplay>();
             Debug.Log(
                 "[Turbo 4744 v0.6.2] Staged intake, compliant hopper, zone-selected shooting and physical rail control enabled."
+            );
+            Debug.Log(
+                "[Turbo runtime] build=sliding-hopper-r3 module="
+                    + typeof(Turbo4744).Assembly.ManifestModule.ModuleVersionId
+                    + " drive="
+                    + _drive.GetType().FullName
             );
         }
 
@@ -329,8 +344,9 @@ namespace Ninjas4744.MoSim
             );
             for (int i = 0; i < colliders.Length; i++)
             for (int j = i + 1; j < colliders.Length; j++)
-                if (!(colliders[i] is WheelCollider) && !(colliders[j] is WheelCollider))
-                    Physics.IgnoreCollision(colliders[i], colliders[j]);
+                // A sliding bin is a separate body. WheelCollider suspension
+                // must not treat its panels as ground and lift the chassis.
+                Physics.IgnoreCollision(colliders[i], colliders[j]);
             _drive.RefreshRobotRigidbodies();
         }
 
@@ -340,10 +356,12 @@ namespace Ninjas4744.MoSim
             _stowRequested = false;
             PumpMode = RailState.Opened;
             _pendingHard = _pendingSoft = false;
+            _automaticSoft = false;
         }
 
         public void StartHardPumping()
         {
+            _automaticSoft = false;
             if (!Deployed || IntakeEncoderRotations < 10.5f)
             {
                 Open();
@@ -386,7 +404,6 @@ namespace Ninjas4744.MoSim
             _aimRate = 0;
             _manual = manual;
             _spinning = false;
-            _autoSoftIssued = false;
             _shotBegan = Time.fixedTime;
             _intakeRunning = true;
             if (!Deployed)
@@ -407,6 +424,8 @@ namespace Ninjas4744.MoSim
         {
             BindInputs();
             _controlTicks++;
+            if (_controlTicks == 1)
+                Debug.Log("[Turbo runtime] mechanism controls started");
             if (_enableBegan < 0)
                 _enableBegan = Time.fixedTime;
             bool intake = IntakeAction.IsPressed(),
@@ -617,18 +636,8 @@ namespace Ninjas4744.MoSim
                 {
                     ShootingState = Delivery ? ShootState.Delivery : ShootState.Hub;
                     _feedBegan = _lastFlowTime = Time.fixedTime;
-                    _autoSoftIssued = false;
                     if (Delivery)
                         _shotBegan = Time.fixedTime;
-                }
-                if (!Preparing && !_autoSoftIssued && Time.fixedTime - _feedBegan >= .8f)
-                {
-                    _autoSoftIssued = true;
-                    // A recovery can make this delayed default due while an
-                    // explicit hard request is still opening the rail. Soft
-                    // pumping must not trap that request below its 10.5-rotation start.
-                    if (!_pendingHard && PumpMode != RailState.HardPumping)
-                        Soft();
                 }
             }
             else
@@ -777,7 +786,6 @@ namespace Ninjas4744.MoSim
                     ShootingState = _resumeShot;
                     _flowProgress.Clear();
                     _feedBegan = _lastFlowTime = Time.fixedTime;
-                    _autoSoftIssued = false;
                     if (Delivery)
                         _shotBegan = Time.fixedTime;
                 }
@@ -845,6 +853,59 @@ namespace Ninjas4744.MoSim
             JamRecoveries++;
         }
 
+        private void UpdateAutomaticPumping()
+        {
+            // Preserve an explicit three-cycle request, including its opening travel.
+            if (_pendingHard || PumpMode == RailState.HardPumping)
+                return;
+            // A shot request includes aiming and spin-up. Fuel must continue to
+            // move toward the indexer even when a field contact delays aiming.
+            bool requested = ActiveShot && !_reverse && HasHopperFuel();
+            if (!requested)
+            {
+                if (_automaticSoft)
+                {
+                    _pendingSoft = false;
+                    PumpMode = Deployed ? RailState.Opened : RailState.Closed;
+                    _automaticSoft = false;
+                }
+                return;
+            }
+            if (PumpMode != RailState.SoftPumping && !_pendingSoft)
+                Soft();
+            _automaticSoft = true;
+        }
+
+        private bool HasHopperFuel()
+        {
+            int count = Physics.OverlapBoxNonAlloc(
+                transform.TransformPoint(new Vector3(0, .36f, .34f)),
+                new Vector3(.36f, .24f, .34f),
+                _flowOverlaps,
+                transform.rotation,
+                LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt"),
+                QueryTriggerInteraction.Ignore
+            );
+            for (int i = 0; i < count; i++)
+            {
+                var rb = _flowOverlaps[i].attachedRigidbody;
+                if (!rb || rb.isKinematic || indexer.HasEnteredShooter(rb))
+                    continue;
+                var local = transform.InverseTransformPoint(rb.position);
+                // Count ball centres inside storage, excluding field fuel under
+                // the chassis and fuel already travelling through the shooter.
+                if (
+                    Mathf.Abs(local.x) < .36f
+                    && local.y > .16f
+                    && local.y < .65f
+                    && local.z > .03f
+                    && local.z < .68f
+                )
+                    return true;
+            }
+            return false;
+        }
+
         private void MoveRails()
         {
             if (PumpMode == RailState.HardPumping || PumpMode == RailState.SoftPumping)
@@ -903,9 +964,8 @@ namespace Ninjas4744.MoSim
                     ref _intakeVelocity
                 );
             }
-            // Only the intake and its front kicker carrier retract. The main
-            // hopper walls, floor and net anchors stay attached to the chassis.
-            // hopperRail is the legacy field name for that kicker carrier.
+            // The hopper walls, front net frame and kicker share the physical
+            // carrier, so the pump stroke pushes fuel toward the fixed indexer.
             float extension = Mathf.Clamp(Extension(intakeRail, _intakeClosed), 0, intakeTravel);
             var irb = intakeRail.GetComponent<Rigidbody>();
             float velocity = (
@@ -1054,6 +1114,12 @@ namespace Ninjas4744.MoSim
             _intakeVelocity = _hopperVelocity = 0;
             intakeRail.targetVelocity = hopperRail.targetVelocity = Vector3.zero;
             _enableBegan = -1;
+            if (_automaticSoft)
+            {
+                PumpMode = Deployed ? RailState.Opened : RailState.Closed;
+                _pendingSoft = false;
+            }
+            _automaticSoft = false;
             _spinning = false;
             ShootingState = ShootState.Idle;
         }
@@ -1145,7 +1211,7 @@ namespace Ninjas4744.MoSim
             };
             GUI.Box(
                 new Rect(12, 180, 370, 132),
-                "Turbo 4744 v0.6.2  |  "
+                "Turbo 4744 r3  |  "
                     + ShootingState
                     + "\n"
                     + "Target: "
@@ -1204,6 +1270,16 @@ namespace Ninjas4744.MoSim
                         + CurrentShooterRpm.ToString("F0")
                         + " step="
                         + Time.fixedDeltaTime.ToString("F5")
+                        + " storedFuel="
+                        + HasHopperFuel()
+                        + " grounded="
+                        + _drive.IsTouchingGround
+                        + " bumper="
+                        + (
+                            GetComponent<Turbo4744BumperContacts>()
+                                ? GetComponent<Turbo4744BumperContacts>().DiagnosticState
+                                : "MISSING"
+                        )
                 );
             }
         }

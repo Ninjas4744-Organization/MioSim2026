@@ -149,10 +149,10 @@ public static class Ninjas4744Builder
         robot.hopperRail = Rail(
             root.transform,
             body,
-            "Intake kicker carrier",
+            "Sliding hopper and kicker carrier",
             S(0, 0, 0),
             2.5f,
-            new[] { intakeVisual, kickerVisual },
+            new[] { hopperVisual },
             .22946f
         );
         var kickerHinge = New(
@@ -208,47 +208,51 @@ public static class Ninjas4744Builder
         );
         var fixedFloor = Box(
             root.transform,
-            "Hopper floor",
-            S(.43f, 0, .175f),
-            new Vector3(.68f, .012f, .18f)
+            "Fixed indexer inlet floor",
+            S(.34f, 0, .175f),
+            new Vector3(.68f, .012f, .04f)
         );
         fixedFloor.sharedMaterial = trayPlastic;
         // One-way intake contacts allow inbound fuel to rise through the entry,
         // then provide a complete, continuous floor beneath stored fuel.
         var storageFloor = Box(
             root.transform,
-            "Fixed hopper storage floor",
+            "Telescoping hopper storage floor",
             S(.495f, 0, .175f),
             new Vector3(.68f, .012f, .31f)
         );
         storageFloor.excludeLayers = ~LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
         storageFloor.sharedMaterial = trayPlastic;
-        Box(
-            root.transform,
+        AddRailBox(
+            robot.hopperRail.transform,
             "Hopper left wall",
             S(.40f, .359f, .37f),
-            new Vector3(.006f, .32f, .5f)
+            new Vector3(.006f, .32f, .5f),
+            robot.hopperTravel
         );
-        Box(
-            root.transform,
+        AddRailBox(
+            robot.hopperRail.transform,
             "Hopper right wall",
             S(.40f, -.359f, .37f),
-            new Vector3(.006f, .32f, .5f)
+            new Vector3(.006f, .32f, .5f),
+            robot.hopperTravel
         );
-        var frontPanel = Box(
-            root.transform,
+        var frontPanel = AddRailBox(
+            robot.hopperRail.transform,
             "Hopper end wall",
             S(.648f, 0, .37f),
-            new Vector3(.714f, .32f, .006f)
+            new Vector3(.714f, .32f, .006f),
+            robot.hopperTravel
         );
         frontPanel.sharedMaterial = trayPlastic;
-        robot.intakeHold = Box(
-            root.transform,
+        robot.intakeHold = AddRailBox(
+            robot.hopperRail.transform,
             "Intake inlet retention contact",
             S(.61f, 0, .22f),
-            new Vector3(.714f, .26f, .02f)
+            new Vector3(.714f, .26f, .02f),
+            robot.hopperTravel
         );
-        // This passive lip belongs to the fixed hopper, independently of the intake slide.
+        // The inlet lip travels with the hopper front panel.
         robot.intakeHold.transform.localRotation = Quaternion.Euler(25f, 0, 0);
         robot.intakeHold.excludeLayers = ~LayerMask.GetMask(
             "GamePiece1",
@@ -261,6 +265,10 @@ public static class Ninjas4744Builder
         keeper.fixedFloor = fixedFloor;
         keeper.inlet = robot.intakeHold;
         keeper.frontPanel = frontPanel;
+        var hopperRig = root.AddComponent<Turbo4744HopperRig>();
+        hopperRig.floor = storageFloor;
+        hopperRig.frontPanel = frontPanel;
+        hopperRig.UpdateFloor();
         AddRailBox(
             robot.intakeRail.transform,
             "Intake left guide",
@@ -876,7 +884,7 @@ public static class Ninjas4744Builder
         solver.netWidth = .71f;
         solver.netHeight = .612f;
         solver.useAuthoredRestShape = false;
-        // Keep the roof tensioned to its fixed frame, with the estimated 2.3 mm
+        // Keep the roof tensioned to its telescoping frame, with the estimated 2.3 mm
         // cord diameter and finite foam contacts. Extra textile ease allowed
         // stored fuel to bulge over the native trench crossbar.
         solver.restLengthScale = 1f;
@@ -909,6 +917,8 @@ public static class Ninjas4744Builder
                 pins,
                 new Vector3(side, .533f, .6156175f)
             ).transform;
+            front.SetParent(robot.hopperRail.transform, true);
+            front.position -= root.transform.forward * robot.hopperTravel;
             solver.customAnchors.Add(
                 new NetSolver.NodeAnchor
                 {
@@ -967,11 +977,12 @@ public static class Ninjas4744Builder
             new Vector3(0, .533f, .0036175f),
             new Vector3(.73f, .016f, .016f)
         );
-        var frontRim = Box(
-            root.transform,
+        var frontRim = AddRailBox(
+            robot.hopperRail.transform,
             "Front net rim",
             new Vector3(0, .533f, .6156175f),
-            new Vector3(.73f, .016f, .016f)
+            new Vector3(.73f, .016f, .016f),
+            robot.hopperTravel
         );
         foreach (var rim in new[] { rig.leftRim, rig.rightRim, rearRim, frontRim })
         {
@@ -1031,23 +1042,33 @@ public static class Ninjas4744Builder
             );
     }
 
-    private static void ValidateFixedHopper(GameObject root)
+    private static void ValidateMovingHopper(GameObject root)
     {
         var body = root.GetComponent<Rigidbody>();
         var robot = root.GetComponent<Turbo4744>();
         var keeper = root.GetComponent<Turbo4744FuelKeeper>();
         var net = root.GetComponent<Turbo4744NetRig>();
+        var hopper = robot.hopperRail.GetComponent<Rigidbody>();
+        var rig = root.GetComponent<Turbo4744HopperRig>();
         if (
-            Find(root.transform, "Hopper_Geometry").GetComponentInParent<Rigidbody>(true) != body
+            Find(root.transform, "Hopper_Geometry").GetComponentInParent<Rigidbody>(true) != hopper
             || keeper.floor.GetComponentInParent<Rigidbody>(true) != body
-            || keeper.frontPanel.GetComponentInParent<Rigidbody>(true) != body
-            || keeper.inlet.GetComponentInParent<Rigidbody>(true) != body
-            || net.frontLeft.GetComponentInParent<Rigidbody>(true) != body
-            || net.frontRight.GetComponentInParent<Rigidbody>(true) != body
+            || keeper.frontPanel.GetComponentInParent<Rigidbody>(true) != hopper
+            || keeper.inlet.GetComponentInParent<Rigidbody>(true) != hopper
+            || net.frontLeft.GetComponentInParent<Rigidbody>(true) != hopper
+            || net.frontRight.GetComponentInParent<Rigidbody>(true) != hopper
+            || net.rearLeft.GetComponentInParent<Rigidbody>(true) != body
+            || net.rearRight.GetComponentInParent<Rigidbody>(true) != body
+            || robot.indexer.rollers.Any(r =>
+                r.visual.GetComponentInParent<Rigidbody>(true) != body
+            )
+            || !rig
+            || rig.floor != keeper.floor
+            || rig.frontPanel != keeper.frontPanel
             || robot.storageContact
         )
             throw new InvalidOperationException(
-                "The hopper bin and net anchors must remain fixed to the chassis"
+                "The hopper walls, model and front net anchors must follow the physical hopper rail; the indexer entrance stays fixed"
             );
         var solver = robot.roofNet.GetComponent<NetSolver>();
         var foam = root.GetComponent<Turbo4744FuelCompliance>();
@@ -1263,7 +1284,7 @@ public static class Ninjas4744Builder
         var titles = new[] { "Deploy and collect", "Shoot or pass", "Clear a jam" };
         var descriptions = new[]
         {
-            "Intake opens Turbo's pickup and cancels shooting. Stow retracts the intake/kicker; the hopper walls, floor and net frame stay fixed.",
+            "Intake opens Turbo's pickup and cancels shooting. Stow retracts the intake and hopper. Shooting pumps the sliding bin toward the stationary indexer.",
             "Auto Shoot selects the hub in your alliance zone and a side delivery target in neutral. Press again for three hard pump cycles. Auto Pass forces delivery. Intake cancels aiming and restores normal driving.",
             "Soft pumping starts automatically while firing. Robot Special requests three hard cycles. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber.",
         };
@@ -1310,6 +1331,12 @@ public static class Ninjas4744Builder
     [MenuItem("Tools/Modding/Ninjas 4744/Validate Turbo")]
     public static void Validate()
     {
+        // Build snapshots can restore an older file timestamp. Force the
+        // prefab import so validation never reads a stale SDK import artifact.
+        AssetDatabase.ImportAsset(
+            RobotPath,
+            ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport
+        );
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(RobotPath);
         if (!prefab)
             throw new InvalidOperationException("Turbo prefab missing");
@@ -1338,15 +1365,26 @@ public static class Ninjas4744Builder
             || robot.intakeContact.centerline == null
             || robot.intakeContact.centerline.Length < 2
         )
-            throw new InvalidOperationException("Required Turbo mechanism references missing");
+            throw new InvalidOperationException(
+                "Required Turbo mechanism references missing: "
+                    + (
+                        !robot
+                            ? "main robot script"
+                            : $"intake={robot.intakeRail}, hopper={robot.hopperRail}, aim={robot.autoAim}, muzzle={robot.muzzle}, feedHold={robot.feedHold}, intakeHold={robot.intakeHold}, shooter={robot.shooterContact}, indexer={robot.indexer}, release={(robot.indexer ? robot.indexer.releaseRetention : null)}, accelerator={robot.acceleratorContact}, intakeContact={robot.intakeContact}, storageContact={robot.storageContact}, keeper={(robot.intakeContact ? robot.intakeContact.entryKeeper : null)}, rollers={(robot.indexer ? robot.indexer.rollers.Length : -1)}, missingRollerVisuals={(robot.indexer ? robot.indexer.rollers.Count(r => !r.visual) : -1)}, width={(robot.shooterContact ? robot.shooterContact.halfWidth : -1)}, lowerEntry={(robot.shooterContact ? robot.shooterContact.lowerEntry : null)}, centerline={(robot.intakeContact ? robot.intakeContact.centerline?.Length : -1)}"
+                    )
+            );
         var missing = prefab
             .GetComponentsInChildren<Transform>(true)
             .Sum(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject));
         if (missing != 0)
             throw new InvalidOperationException("Missing scripts: " + missing);
         ValidateBumperContacts(prefab);
+        if (!prefab.GetComponent<Turbo4744BumperContacts>())
+            throw new InvalidOperationException(
+                "The trench contact handler must be included in the prefab"
+            );
         ValidateBellypanContacts(prefab);
-        ValidateFixedHopper(prefab);
+        ValidateMovingHopper(prefab);
         if (
             robot.indexer.rollers.Any(r =>
                 Vector3.Distance(
@@ -1491,7 +1529,7 @@ public static class Ninjas4744Builder
             var prefab = metadata.RobotPrefab;
             ValidateBumperContacts(prefab);
             ValidateBellypanContacts(prefab);
-            ValidateFixedHopper(prefab);
+            ValidateMovingHopper(prefab);
             var robot = prefab.GetComponent<Turbo4744>();
             var renderers = prefab.GetComponentsInChildren<Renderer>(true);
             var materials = renderers.SelectMany(r => r.sharedMaterials).Distinct().ToArray();
