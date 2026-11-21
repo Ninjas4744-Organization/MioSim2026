@@ -2,7 +2,7 @@
 
 An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo CAD asset. This repository contains the robot assets, runtime code, authoring tools, and regression checks. Unity, the MoSim framework, and generated caches stay outside the repository.
 
-![Turbo carrying a full load in installed MoSim](Reports/native/061-final-stowed-full-bump-hub-loaded.png)
+![Turbo carrying a full load in installed MoSim](Reports/native/062-grip140-blue-target62-trench-clear.png)
 
 ## Install
 
@@ -59,6 +59,7 @@ $project = 'C:\path\to\MoSimulator-Public'
 $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Assemble
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Build
+.\Tools\Test-Visible.ps1 -MoSimProject $project -UnityEditor $unity # all 14 required groups
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention -Visible
@@ -80,6 +81,17 @@ The test examples use `-Visible` to show Unity's Game view. Indexer tests show a
 
 The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab, runs a fresh-session SDK runtime synchronization, and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
 
+## What changed in 0.6.2
+
+- Added field-box contacts for the roof net and calibrated its cord size and tension.
+- Added bounded fuel-to-fuel compliance inside the fixed hopper, preserving stock fuel geometry and mass.
+- Separated powered intake traction from passive support and completed the moving inlet handoff during stow.
+- Increased slide velocity damping while preserving the 350 N force limit.
+- Calibrated full-load tread grip to 1.4 while preserving the team drive constants.
+- Verified native stowed trench crossings with actual loads of 57, 58, 60, 56 balls, retaining every member through the crossing. Both alliances, slow and normal returns, and an actual 60-ball load are covered.
+
+All fourteen required fixture groups pass against this release's bundle and DLL. [Measured results](Docs/Verification.md) · [Native requests, traces and screenshots](Docs/NativeTesting.md). Incomplete arrivals at the inlet are reported separately; pre-stow stored fuel must survive retraction as well as transit. Earlier failed runs remain preserved.
+
 ## What changed in 0.6.1
 
 - Added the missing solid bumper perimeter while keeping the framework's bounds trigger hollow.
@@ -90,7 +102,7 @@ The commands copy only this mod's assets and editor tools into the selected proj
 - Fixed the main hopper to the chassis; only the intake/kicker retracts.
 - Added opt-in visible native input replays, live hitbox outlines and saved cycle evidence. [Native testing and current limitations](Docs/NativeTesting.md).
 
-Native full-load stow now completes after correcting the assembly: the main hopper stays fixed. The current build's stowed bump cycle peaked at 59 balls and scored all 57 present before shooting, with no transit escapes. A separate moving-shot-input cycle scored 53 total, with four measured moving muzzle crossings. Full-load trench traversal remains unresolved. Full-hopper native outcomes are recorded separately from the Unity fixture suite.
+Native full-load stow now completes after correcting the assembly: the main hopper stays fixed. The 0.6.1 stowed bump cycle peaked at 59 balls and scored all 57 present before shooting, with no transit escapes. A separate moving-shot-input cycle scored 53 total, with four measured moving muzzle crossings. Full-load trench traversal remained unresolved in 0.6.1. Full-hopper native outcomes are recorded separately from the Unity fixture suite.
 
 ## What changed in 0.6.0
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.2 (2026-11-21)
+
+- Corrected the roof contact strand diameter from 24 mm to the model's estimated 2.3 mm cord, and tensioned the textile to rest scale 1.0. Rejected 5% ease and swept-node contact experiments after native crossbar failures.
+- Calibrated tread friction to 1.4 after full-load speed and wheel-path drift comparisons, preserving hardware drive constants and the 100 N collection traction cap.
+- Resolve fuel contacts on every cloth substep to reduce tunneling during crossbar compression.
+- Added static field-box contact resolution for free net nodes, including the trench crossbar, with chassis reaction to the contact impulse.
+- Added spring-limited fuel-to-fuel contact inside the hopper: 750 N/m stiffness, 8 N·s/m closing damping and a 20 mm hardening threshold. Original fuel mass, sphere geometry, field contacts and released flight are preserved.
+- Separated the collection motor's 100 N tangential traction budget from passive intake support, retaining the 600 N overall contact cap and the existing 140 N feeding profile. The moving intake contact follows its motor command during retraction; floor support latches independently of front-wall clearance.
+- Increased slide velocity damping from 1800 to 4200 N s/m after loaded native stow stalled about 15 mm short, retaining the 350 N force limit.
+- Added strict native trench acceptance using the actual stowed cohort: 50–60 before transit, every ball retained afterward, zero spills and no sustained stop under the bar. Timeouts fail without a wrong-zone fallback shot.
+- Display stowed load, retained count, stored spills and incomplete inlet departures during native replays; preserve entry/clear screenshots and matching installed artifact hashes. Correct mirrored lane steering for Blue tests.
+- Verified all fourteen visible fixture groups against the installed release. Native stowed trench cycles retained 57, 58, 60 and 56 balls without stored spills; the bump/delivery cycle retained and delivered all 56.
+- Schedule the capacity fixtures' existing 0.5 s forward / 1 s reverse keyboard pulses on physics steps and measure their completed-step velocities. Preserve the 3.5 m/s loaded-speed threshold and the short-pulse/frame-sampling failures.
+
 ## 0.6.1 (2026-11-21)
 
 - Added four solid bumper contacts at the measured CAD perimeter. The root bounds trigger remains hollow metadata.

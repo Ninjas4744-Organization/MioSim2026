@@ -1,95 +1,51 @@
-# Turbo 0.6.1 verification
+# Turbo 0.6.2 verification
 
-The corrected assembly keeps the main hopper walls, floor and net frame fixed;
-only the intake/kicker retracts. Solid CAD bumper contacts, discrete chassis
-collision detection, native-safe roller definitions and hard-pump priority are
-included in this build. The original net slack and finite drive calibration are
-preserved. A tighter-net comparison failed capacity and was rejected.
-
-The package-required fixture suite passes against the fingerprints below. Tests
-use the normal action bindings, stock independent MoSim fuel, and visible Game
-views. Shooting and indexer fixtures run at simulation speed 1 with the native
-4.5 ms physics step. Collection, retention, scoring, pair timing, drift and
-capacity acceptance thresholds remain unchanged. The fixed net's closed frame
-span expectation now follows the team's confirmed stationary hopper geometry.
-Loaded-stow observation now includes the fixed bin's front section: the measured
-front panel permits a ball centre near local Z 0.552 m. The old contracted-bin
-cutoff excluded supported fuel at Z 0.427–0.442 m; that failed report is preserved.
+All fourteen complete fixture groups pass against the fingerprints below. Tests run in visible Game views using the built Windows bundle and normal action bindings. Shooting and indexer fixtures run at simulation speed 1 and the native 4.5 ms physics step. Existing pickup, capacity, retention, drift, scoring and pair-timing thresholds remain unchanged.
 
 | Check | Measured result |
 | --- | --- |
-| [Pickup integration](../Reports/physics-diagnostics.json) | Same-ball pickup, feed and release; preload retention, reverse support, disable, staged kicker and stow pass. |
-| [Rail limits](../Reports/travel-after.json) | Four headings pass the existing actuator-impulse, disable and stow checks; maximum intake extension 0.242274 m. |
-| [Retention](../Reports/retention-after.json) | 2 cases; 18/18 collected, 18 retained; zero escapes; loaded stow passes. |
-| [Approach](../Reports/approach-after.json) | 6 cases; 54/54 collected, 54 retained; zero escapes; loaded stow passes. |
-| [Two-floor indexer](../Reports/systems-indexer-after.json) | Eleven fixtures; 20/20 scores. Lower/upper pair muzzle separation 4.80/11.12 ms; both remain below 50 ms. Passive shoulders, corners, asymmetric loads, singles, mixed floors and blocked paths pass. |
-| [Systems](../Reports/systems-after.json) | 7 cases; 40/40 scores; required hard-pump cycles and motion checks pass. |
-| [Moving shots](../Reports/systems-moving-after.json) | 2 cases; 15/16 scores; required hard-pump cycles and motion checks pass. |
-| [Alliance matrix](../Reports/systems-matrix-after.json) | 8 cases; 64/64 scores; required hard-pump cycles and motion checks pass. |
-| [Input pulses](../Reports/systems-pulse-after.json) | 1 case; 8/8 scores; required hard-pump cycles and motion checks pass. |
-| [Jam recovery](../Reports/systems-jam.json) | 3 recoveries; 0.508 s measured reverse command; 5 obstruction contacts; no early release; 3 hard cycles after recovery; 1 score. |
-| [Delivery](../Reports/systems-delivery-after.json) | 31/32 first landings within the existing 1.25 m tolerance. |
-| [Capacity](../Reports/capacity-after.json) | 0°: 30/30/30; 90°: 30/30/30 collected/retained/released; zero escapes; empty stow passes. |
-| [Larger fill](../Reports/pile-after.json) | 0°: 53/53/53; 90°: 53/53/53 collected/retained/released; zero escapes; empty stow passes. |
-| [Wheel-path pile](../Reports/wheel-pile-after.json) | 0°: 59/59/59; 90°: 60/60/60 collected/retained/released; zero escapes; empty stow passes. |
+| [Integration](../Reports/physics-diagnostics.json) | Pickup, same-ball feed/release, preloads, reverse support, disable and staged stow pass. |
+| [Travel](../Reports/travel-after.json) | Four headings; actuator impulse, disable and end stops pass. |
+| [Retention](../Reports/retention-after.json) | 18 collected and 18 retained; zero escapes; loaded stow passes. |
+| [Approach](../Reports/approach-after.json) | 54 collected and 54 retained; zero escapes; loaded stow passes. |
+| [Systems](../Reports/systems-after.json) | 7 cases; 40/40 scores; required pumping and movement checks pass. |
+| [Jam](../Reports/systems-jam.json) | 3 recoveries; 0.492 s reverse; obstruction contact and resumed release pass. |
+| [Indexer](../Reports/systems-indexer-after.json) | Eleven cases; 20/20 scores; pair exits 0.00 ms/0.00 ms, interpolated from 4.5 ms steps and both below 50 ms; passive guides, corners, singles and blocked paths pass. |
+| [Moving](../Reports/systems-moving-after.json) | 2 cases; 16/16 scores; required pumping and movement checks pass. |
+| [Delivery](../Reports/systems-delivery-after.json) | 32/32 first landings within the unchanged 1.25 m tolerance. |
+| [Matrix](../Reports/systems-matrix-after.json) | 8 cases; 64/64 scores; required pumping and movement checks pass. |
+| [Capacity](../Reports/capacity-after.json) | 0°: 30/30/30; 90°: 30/30/30 collected/retained/released; zero escapes. |
+| [Pile](../Reports/pile-after.json) | 0°: 53/53/53; 90°: 52/52/52 collected/retained/released; zero escapes. |
+| [WheelPile](../Reports/wheel-pile-after.json) | 0°: 46/46/46; 90°: 44/44/44 collected/retained/released; zero escapes. Drift 0.71°/0.66°. |
+| [Pulse](../Reports/systems-pulse-after.json) | 1 case; 8/8 scores; required pumping and movement checks pass. |
 
-The dedicated indexer and shooter share finite force budgets with equal chassis
-reaction. The triangular guides have no powered traction or driven animation.
-Lower-mouth contact uses the ball's lower surface crossing the configured mouth
-top; an upper-floor ball must descend before the contact can engage.
-Fuel remains independent throughout, with no runtime parenting, repositioning,
-freezing, direct velocity assignments or corrections after release.
+Capacity, Pile and WheelPile schedule their existing 0.5 s forward / 1 s reverse keyboard pulses on physics steps. Velocity samples include the result of the final commanded step: Unity advances physics after `FixedUpdate` ([execution order](https://docs.unity3d.com/2023.2/Documentation/Manual/ExecutionOrder.html)). The 3.5 m/s loaded-speed minimum is unchanged. The [frame-driven failure](../Reports/pile-062-loaded-speed-failure.json), [short-pulse physics measurement](../Reports/pile-062-physics-sampled-short-input.json), [pre-step endpoint comparison](../Reports/pile-062-physics-pulses-prestep.json) and [isolated corrected-clock check](../Reports/pile-062-physics-pulses-endpoint.json) remain preserved separately from the complete release groups above.
 
-Installed-player full-hopper cycles are separate from these fixtures. The native
-dense-fuel stop-and-jump failure was reproduced and corrected; the bin-motion
-correction allows full-load stow. Trench retention remains a recorded limitation,
-and no blanket native-cycle pass is claimed. See [installed MoSim testing](NativeTesting.md)
-and the [native traces](../Reports/native-dense-contact-audit.json) for actual
-counts, speeds, failures, requests and artifact fingerprints.
+The installed-player trench cycles use the original 504 field fuel bodies. Actual stowed loads are counted before driving, and every member must remain through the crossing. Acceptance requires zero spills, full retraction, no sustained stop, matched installed artifact hashes and no diagnostic overrides. At least one cycle carries exactly 60 balls; both alliances and slow/normal gears are covered.
 
-The jam fixture now introduces its ball after removed preloads are inactive and
-the robot has settled. It requires real obstruction contact and no launch before
-removal. Seeded indexer fixtures start with a clear initial cloth pose, avoiding
-the former insertion into a sagged net. Pair and mixed-floor arrivals are seeded
-with feeding ready; passive guides retain their idle support check. The capacity
-observer runs on physics steps. The exact Unity Package
-Manager authentication failure is recorded separately in `editorServiceErrors`;
-all other runtime error handling and acceptance remain active. Failed reports
-are preserved alongside the final reports.
+| Installed-player cycle | Alliance | Stowed / retained | Minimum trench speed (m/s) | Stored spills / inlet departures | Scored / remaining |
+| --- | --- | --- | --- | --- | --- |
+| [062-grip140-blue-full](../Reports/native/062-grip140-blue-full.json) | Blue | 57 → 57 | 1.50 | 0 / 0 | 57 / 0 |
+| [062-grip140-blue-repeat](../Reports/native/062-grip140-blue-repeat.json) | Blue | 58 → 58 | 1.53 | 0 / 0 | 55 / 0 |
+| [062-grip140-blue-target62](../Reports/native/062-grip140-blue-target62.json) | Blue | 60 → 60 | 1.52 | 0 / 5 | 58 / 0 |
+| [062-grip140-red-normal](../Reports/native/062-grip140-red-normal.json) | Red | 56 → 56 | 3.15 | 0 / 0 | 54 / 0 |
 
-The preserved capacity failure exposed a field-boundary impact during loaded
-braking: Side2 produced a 220.323 N·s impulse at 10.648 s. The zero-degree start
-now leaves more room for the same collection, drive and braking sequence;
-the other heading and all existing thresholds remain unchanged. This fixture
-additionally requires zero obstacle contacts during the measured drive segment.
-The initial failure and collision trace are preserved.
+The additional [native bump/delivery cycle](../Reports/native/062-grip140-blue-bump-delivery.json) carried 56 balls over the bump beside the hub and retained all 56, with zero stored spills. It released 56, delivered 56 within 1.25 m of the target, and ended empty. Peak tilt was 15.04°. The front carrier briefly deflected 31.9 mm during the impact, within the existing Travel fixture's 35 mm impact/stow envelope. Trench acceptance retains its stricter 15 mm rail-clearance limit. The [bump certificate](../Reports/native-bump-0.6.2.json) checks the raised route, retained bodies, normal input commands and matching artifacts.
 
-The former 5 m firing corner also spawned into the alliance boundary. Its
-original-position control recorded 288 field contacts, including initial
-penetration impulses above 7000 N·s. The firing bearing now provides clearance
-at the same 5 m radius, with every field collider retained. Five stock-geometry
-repeats scored 40/40 with zero setup contacts; the release fixture additionally
-requires that clearance and the actual spawn radius. Hood/rim geometry
-comparisons remain preserved diagnostics; the packaged geometry is retained.
+Across these 4 trench cycles, recorded collection, return and shooting frames peaked at 16.64 ms. The checker rejects recorded phase frames at or above 250 ms and sustained pose/velocity holds under the trench.
 
-Moving-shot diagnostics preserve the initial 8/8 and 6/8 scoring result,
-the traced 16/16 repeat, and the isolated rear-rim and direct-brake comparisons.
-Removing the rim still missed two shots. Directly targeting the existing
-accelerator brake during re-aiming removed the motor-reference delay; its
-comparison scored 16/16. The table above records the final runtime's required
-checks separately from those diagnostic runs.
+Inlet departures count arrivals that never completed storage; they are recorded separately from losses of stored fuel. Pre-stow stored fuel must also survive retraction. Scoring counts are actual game events; remaining means fuel still in the robot at the end. The native traces record the full collection, stow, transit and shooting cycle separately from the fixture suite. [Native procedures and evidence](NativeTesting.md) explain the measurements.
+
+The powered floors and wide shooter retain shared force budgets and chassis reaction. Side triangles remain passive. The main hopper and roof frame stay fixed; only the intake/kicker retracts. Fuel stays independent, with original geometry and mass, no parenting, repositioning, freezing or assigned velocity. Contact compliance and textile/traction parameters are explicit simulator calibration; see [mechanisms](Mechanisms.md) and [calibration](../Reports/indexer-calibration.json).
 
 ![Side cutaway](../Reports/Turbo4744-v6-indexer-cutaway-side.png)
 
-The cutaway hides the outer panels and cloth rendering for inspection; their
-physics remain active during the fixtures.
+The cutaway hides panels and cloth rendering for inspection; their physics remain active.
 
-![Side-by-side pair](../Reports/Turbo4744-v6-indexer-pair-top.png)
+![Two-ball shooter](../Reports/Turbo4744-v6-indexer-pair-top.png)
 
-![Physical larger load](../Reports/Turbo4744-pile-loaded-0.png)
+Bundle SHA-256: `816835e241cc5d7b28f6cdbc3ef9881d1014da0f07e3374e46e7ff50f0ac4476`
 
-Bundle SHA-256: `525f113be5c3fd0ba069b5db2914a7c2431789eae67b5c4ea9abd94b32697968`
+DLL SHA-256: `ebe4ba9ad58e9c680cb49387efecbf7cbc5d304a14089deb6eba6d406b231140`
 
-DLL SHA-256: `f23e0b5e971a78f52771e9afa1877b6be287b7d0fcac7d68e05c4a23ded2d1de`
-
-Earlier fixture results remain in [Verification 0.6.0](Verification-0.6.0.md). Contact geometry, speeds, compliance and force budgets are simulator calibration; see [Mechanisms](Mechanisms.md) and the [calibration record](../Reports/indexer-calibration.json).
+The [certificate](../Reports/verification-0.6.2.json) records every group and matching hash. Earlier results and fixture corrections remain in [0.6.1 verification](Verification-0.6.1.md).
