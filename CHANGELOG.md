@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add four solid swerve module housings and restore passive tire-to-fuel collisions, preventing balls from passing through the modules into the bellypan cutouts. Keep fuel excluded from suspension and powered tread queries. Add packaged collision and clear-floor drive regressions.
+
 - Correct hopper pumping to move the bin model, rigid walls and front roof frame with the physical slide. Keep the indexer fixed and telescope the tray overlap. The supplied footage supersedes the earlier fixed-bin interpretation.
 
 - Prevent trench pinches with bounded lateral bumper compression and low-friction sliding against static field sides, including rigid hopper/frame panels. Added loaded/empty rigid-panel pinches, stowed/deployed bumper pinches, reverse-escape and solid-wall regressions.

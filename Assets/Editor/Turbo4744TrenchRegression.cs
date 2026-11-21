@@ -95,7 +95,11 @@ public static class Turbo4744TrenchRegression
             camera.enabled = false;
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 120;
-        new GameObject("Trench contact regression").AddComponent<Turbo4744TrenchFixture>();
+        var fixture = new GameObject("Robot contact regression");
+        if (Environment.GetCommandLineArgs().Contains("-turboSwerve"))
+            fixture.AddComponent<Turbo4744SwerveFixture>();
+        else
+            fixture.AddComponent<Turbo4744TrenchFixture>();
     }
 }
 
@@ -127,6 +131,7 @@ public sealed class Turbo4744TrenchFixture : MonoBehaviour
         public bool controlledPinch,
             rigidPinch,
             baseline;
+        public bool isolatedFieldFuel;
         public float physicsStep;
         public List<string> geometry = new List<string>();
         public List<Case> cases = new List<Case>();
@@ -170,6 +175,7 @@ public sealed class Turbo4744TrenchFixture : MonoBehaviour
         report.controlledPinch = pinch;
         report.rigidPinch = rigidPinch;
         report.baseline = Environment.GetCommandLineArgs().Contains("-turboBaseline");
+        report.isolatedFieldFuel = !Environment.GetCommandLineArgs().Contains("-turboFieldFuel");
         wallBegan = Time.realtimeSinceStartup;
         Application.logMessageReceived += Log;
         var fixtures = new List<GameObject>();
@@ -192,15 +198,24 @@ public sealed class Turbo4744TrenchFixture : MonoBehaviour
         GameObject prefab;
         if (Environment.GetCommandLineArgs().Contains("-turboBundle"))
         {
-            sourceBundle = AssetBundle.LoadFromFile(Path.GetFullPath(Application.dataPath
-                + "/../BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets"));
-            if (!sourceBundle) throw new InvalidOperationException("Built Turbo bundle missing");
-            prefab = sourceBundle.LoadAsset<GameObject>(sourceBundle.GetAllAssetNames()
-                .First(n => n.EndsWith("/turbo4744.prefab", StringComparison.OrdinalIgnoreCase)));
+            sourceBundle = AssetBundle.LoadFromFile(
+                Path.GetFullPath(
+                    Application.dataPath
+                        + "/../BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets"
+                )
+            );
+            if (!sourceBundle)
+                throw new InvalidOperationException("Built Turbo bundle missing");
+            prefab = sourceBundle.LoadAsset<GameObject>(
+                sourceBundle
+                    .GetAllAssetNames()
+                    .First(n => n.EndsWith("/turbo4744.prefab", StringComparison.OrdinalIgnoreCase))
+            );
         }
         else
             prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-                "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab");
+                "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab"
+            );
         foreach (int xSide in new[] { -1, 1 })
         foreach (int zSide in new[] { -1, 1 })
         foreach (int angle in pinch ? new[] { 45 } : new[] { 30, -30 })
@@ -285,7 +300,10 @@ public sealed class Turbo4744TrenchFixture : MonoBehaviour
             }
             var manager = Object.FindFirstObjectByType<RebuiltFuelPreloadManager>();
             var removable = Object
-                .FindObjectsByType<RebuiltGamePieceController>(FindObjectsSortMode.None)
+                .FindObjectsByType<RebuiltGamePieceController>(
+                    FindObjectsInactive.Include,
+                    FindObjectsSortMode.None
+                )
                 .Where(f => !f.transform.IsChildOf(robot.transform))
                 .Take(8)
                 .Select(f => f.gameObject)
@@ -298,7 +316,24 @@ public sealed class Turbo4744TrenchFixture : MonoBehaviour
                 .HandleSpawnedRobots(new[] { robot });
             foreach (var piece in robot.preloads)
                 if (piece && !current.loaded)
+                {
+                    piece.SetActive(false);
                     Object.Destroy(piece);
+                }
+            // Test trench geometry independently of loose floor balls. A solid
+            // tire can legitimately beach on fuel beneath the overhead bar.
+            // Keep loaded cases' own cohort and an inactive removal pool.
+            if (report.isolatedFieldFuel)
+            {
+                var cohort = new HashSet<GameObject>(robot.preloads.Where(p => p));
+                foreach (
+                    var piece in Object.FindObjectsByType<RebuiltGamePieceController>(
+                        FindObjectsSortMode.None
+                    )
+                )
+                    if (!cohort.Contains(piece.gameObject))
+                        piece.gameObject.SetActive(false);
+            }
             command = Vector3.zero;
             driveReady = false;
             yield return Wait(.5f);

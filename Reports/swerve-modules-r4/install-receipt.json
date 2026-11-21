@@ -1,0 +1,41 @@
+{
+  "destination": "C:/Users/kfiros/AppData/LocalLow/CascadeStudios/MoSim/Mods/Ninjas4744-Turbo2026/standalonewindows64",
+  "fieldTrenchCases": 8,
+  "installedAt": "2026-11-21T17:57:04.2392421+02:00",
+  "normalRuntime": true,
+  "threeBallsScored": 3,
+  "collisionChecks": 40,
+  "files": [
+    {
+      "bytes": 592,
+      "file": "modpack.json",
+      "sha256": "2f416edb238c2a240e351bb80700fd5177e8f826fd27de74d016b3f6892797ba"
+    },
+    {
+      "bytes": 95232,
+      "file": "Ninjas4744.dll",
+      "sha256": "1a22bca3450abc829574d2609462c1fa035d5089fd7096768ede6ccd79a60827"
+    },
+    {
+      "bytes": 8744669,
+      "file": "rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "2e47f24c7e8472a1f2461be67483f6906f849697e34cb267371b6e0a0db3498f"
+    },
+    {
+      "bytes": 12217,
+      "file": "rebuilt_ninjas_4744_turbo_2026_assets.manifest",
+      "sha256": "b4bf08682873e3066725067acf1320cd9c9792bd5851382b0786b41fe7355738"
+    },
+    {
+      "bytes": 1053,
+      "file": "standalonewindows64",
+      "sha256": "1f31560d3ae01f3a7f8479e04928f1f9a407bfca2e88741b46a8148715ca736c"
+    },
+    {
+      "bytes": 191,
+      "file": "standalonewindows64.manifest",
+      "sha256": "0fb0cef797809dec9953a36c7129e502f2d1de388e3449caec0fc804e1c2afb7"
+    }
+  ],
+  "moduleHousings": 4
+}

@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Build','Runtime','Test','Travel','Trench','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Build','Runtime','Test','Travel','Trench','Swerve','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
     [switch]$SyncOnly,
     [switch]$Authoring,
     [switch]$Baseline,
@@ -42,7 +42,7 @@ Get-ChildItem -LiteralPath (Join-Path $repoRoot 'Assets\Editor') -File|Copy-Item
 else {Write-Output 'Using the frozen project source snapshot.'}
 if($SyncOnly){Write-Output 'Turbo assets and editor tools synchronized.';return}
 
-$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Runtime='Ninjas4744Builder.SyncRuntime';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Trench='Turbo4744TrenchRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';LoadedAim='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Indexer='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
+$methods=@{Assemble='Ninjas4744Builder.Assemble';Build='Ninjas4744Builder.Build';Runtime='Ninjas4744Builder.SyncRuntime';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Trench='Turbo4744TrenchRegression.Run';Swerve='Turbo4744TrenchRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';LoadedAim='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Indexer='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
 $artifactRoot=Join-Path $repoRoot 'Artifacts'
 New-Item -ItemType Directory -Path $artifactRoot -Force|Out-Null
 $logPath=Join-Path $artifactRoot ($Task+'-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'.log')
@@ -84,6 +84,7 @@ try {
     if($Task -eq 'Approach'){$arguments+='-turboApproach'}
     if($Task -eq 'Approach' -and -not $Baseline){$arguments+='-turboFixed'}
     if($Task -eq 'Trench' -and $Baseline){$arguments+='-turboBaseline'}
+    if($Task -eq 'Swerve'){$arguments+='-turboSwerve'}
     if($Task -in @('Pile','WheelPile','Load','LoadedAim')){$arguments+='-turboPile';if(-not $Baseline){$arguments+='-turboFixed'}}
     if($Task -eq 'LoadedAim'){$arguments+='-turboLoadedAim'}
     if($Task -eq 'WheelPile'){$arguments+='-turboWheelPile'}
@@ -129,7 +130,7 @@ try {
         if($sync.ExitCode -ne 0){throw 'Runtime synchronization failed; inspect the runtime log.'}
     }
     $buildArtifacts=Join-Path $projectRoot 'BuildArtifacts'
-    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','trench-before.json','trench-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','systems-indexer-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
+    foreach($name in @('assembly-audit.json','bundle-audit.json','physics-diagnostics.json','travel-after.json','swerve-modules.json','trench-before.json','trench-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','systems-indexer-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
         $file=Join-Path $buildArtifacts $name
         if(Test-Path -LiteralPath $file){Copy-Item -LiteralPath $file -Destination $artifactRoot -Force}
     }

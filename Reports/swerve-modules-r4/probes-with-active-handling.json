@@ -1,0 +1,423 @@
+{
+    "passed": false,
+    "fuelExcludedFromTraction": true,
+    "clearFloorStable": true,
+    "clearFloorDistance": 1.7242636680603028,
+    "physicsStep": 0.004499992821365595,
+    "bundleSha256": "2e47f24c7e8472a1f2461be67483f6906f849697e34cb267371b6e0a0db3498f",
+    "runtimeDllSha256": "7bce81117355ac5cb4e459622c79262ba4ff094de7746871ee34745c9289b26d",
+    "cases": [
+        {
+            "module": "FL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "FL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": false,
+            "minimumSideDistance": -0.9253885746002197
+        },
+        {
+            "module": "FR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "FR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": false,
+            "minimumSideDistance": -0.4397284984588623
+        },
+        {
+            "module": "BL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "BL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "BR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "BR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "FL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "FL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": false,
+            "minimumSideDistance": -0.8399572968482971
+        },
+        {
+            "module": "FR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "FR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": false,
+            "minimumSideDistance": -0.38056236505508425
+        },
+        {
+            "module": "BL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "BL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "BR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "BR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "FL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "FL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": false,
+            "pairSolid": true,
+            "blocked": false,
+            "minimumSideDistance": 0.17890021204948426
+        },
+        {
+            "module": "FR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "FR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": false,
+            "pairSolid": true,
+            "blocked": false,
+            "minimumSideDistance": 0.1789000928401947
+        },
+        {
+            "module": "BL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "BL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "BR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "BR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15173214673995973
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15173214673995973
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300345420837403
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300352871418
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1517322063446045
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09205684065818787
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09404999017715454
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09205693006515503
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09404999762773514
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09205684065818787
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09404999017715454
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09205693006515503
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09404999017715454
+        }
+    ],
+    "errors": [
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nRobotFramework.Controllers.GamePieceSystem.PieceController.ResolveTargetRotation (UnityEngine.Quaternion current, UnityEngine.Quaternion target, RobotFramework.Interfaces.IGamePieceData gamePieceData) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/PieceController.cs:301)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].Controlled (System.Boolean smoothHandoff) (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:334)\nRobotFramework.Controllers.GamePieceSystem.GamePieceController`2[TPiece,TData].LateUpdate () (at P:/Assets/Scripts/RobotFramework/Controllers/GamePieceSystem/GamePieceController.cs:108)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nNinjas4744.MoSim.Turbo4744FuelKeeper.FixedUpdate () (at Q:/Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs:122)\n",
+        "NullReferenceException: Object reference not set to an instance of an object\nNinjas4744.MoSim.Turbo4744FuelKeeper.FixedUpdate () (at Q:/Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs:122)\n"
+    ]
+}

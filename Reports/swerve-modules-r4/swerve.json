@@ -1,0 +1,412 @@
+{
+    "passed": true,
+    "fuelExcludedFromTraction": true,
+    "clearFloorStable": true,
+    "clearFloorDistance": 1.721928358078003,
+    "physicsStep": 0.004499992821365595,
+    "bundleSha256": "2e47f24c7e8472a1f2461be67483f6906f849697e34cb267371b6e0a0db3498f",
+    "runtimeDllSha256": "1a22bca3450abc829574d2609462c1fa035d5089fd7096768ede6ccd79a60827",
+    "cases": [
+        {
+            "module": "FL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "FL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "FR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "FR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "BL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "BL",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "BR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "BR",
+            "state": "stowed",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "FL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "FL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "FR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "FR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "BL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "BL",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "BR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "BR",
+            "state": "collecting",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "FL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "FL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "FR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "FR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "BL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "BL",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "BR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "BR",
+            "state": "reverse",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15166747570037843
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15299999713897706
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.15300007164478303
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "housing",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.1516675353050232
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.0920499861240387
+        },
+        {
+            "module": "FL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09405000507831574
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09205007553100586
+        },
+        {
+            "module": "FR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09405000507831574
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.0920499861240387
+        },
+        {
+            "module": "BL",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09405001997947693
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 0,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09205007553100586
+        },
+        {
+            "module": "BR",
+            "state": "disabled",
+            "surface": "tire",
+            "steering": 90,
+            "touched": true,
+            "pairSolid": true,
+            "blocked": true,
+            "minimumSideDistance": 0.09405001997947693
+        }
+    ],
+    "errors": []
+}

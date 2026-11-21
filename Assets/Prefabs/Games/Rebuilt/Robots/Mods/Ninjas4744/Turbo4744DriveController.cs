@@ -15,6 +15,9 @@ namespace Ninjas4744.MoSim
         protected override void Start()
         {
             base.Start();
+            ConfigureFuelContacts();
+            // Child rollers can create support cores later in Start.
+            _fuelContactsConfigured = false;
             var contacts = GetComponent<Turbo4744BumperContacts>();
             if (!contacts)
                 contacts = gameObject.AddComponent<Turbo4744BumperContacts>();
@@ -24,13 +27,17 @@ namespace Ninjas4744.MoSim
         private void ConfigureFuelContacts()
         {
             _fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
-            // Foam fuel is not a tread surface. Sampling it as carpet gives
-            // individual swerve modules grip on different moving rigidbodies.
-            // Wheel cores also must not jack the chassis up on rigid spheres.
+            // Fuel is excluded from suspension/traction queries, but the solid
+            // tire meshes still collide with it through ordinary physics.
             foreach (var wheel in GetComponentsInChildren<WheelCollider>())
             foreach (var collider in wheel.GetComponentsInChildren<Collider>())
                 if (!collider.isTrigger)
-                    collider.excludeLayers |= _fuelMask;
+                {
+                    if (collider is MeshCollider)
+                        collider.excludeLayers &= ~_fuelMask;
+                    else
+                        collider.excludeLayers |= _fuelMask;
+                }
             _fuelContactsConfigured = true;
         }
 

@@ -805,6 +805,18 @@ public static class Ninjas4744Builder
                 damper = 3500f,
                 targetPosition = .5f,
             };
+            // Conservative housing envelopes inside the CAD corner modules.
+            // The existing tire mesh supplies the lower, steering wheel shape.
+            var housing = Box(
+                root.transform,
+                "Swerve " + wheel.name + " housing contact",
+                new Vector3(wheel.transform.localPosition.x, .10f, wheel.transform.localPosition.z),
+                new Vector3(.16f, .10f, .16f)
+            );
+            housing.sharedMaterial = root.GetComponentsInChildren<BoxCollider>()
+                .First(c => c.name == "Bumper rear contact")
+                .sharedMaterial;
+            wheel.excludeLayers |= LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
         }
         var legacy = root.GetComponent<DriveController>();
         var controller = root.AddComponent<Turbo4744DriveController>();
@@ -834,6 +846,49 @@ public static class Ninjas4744Builder
         config.FindPropertyRelative("StatorLimit").floatValue = 100f;
         config.FindPropertyRelative("SupplyLimit").floatValue = 60f;
         so.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    private static void ValidateSwerveContacts(GameObject root)
+    {
+        int fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+        var chassis = root.GetComponent<Rigidbody>();
+        foreach (var wheel in root.GetComponentsInChildren<WheelCollider>(true))
+        {
+            var housing = root.GetComponentsInChildren<BoxCollider>(true)
+                .Single(c => c.name == "Swerve " + wheel.name + " housing contact");
+            var position = root.transform.InverseTransformPoint(wheel.transform.position);
+            if (
+                !housing.enabled
+                || housing.isTrigger
+                || housing.transform.parent != root.transform
+                || housing.GetComponentInParent<Rigidbody>(true) != chassis
+                || housing.gameObject.layer != LayerMask.NameToLayer("Robot")
+                || housing.excludeLayers.value != 0
+                || housing.includeLayers.value != 0
+                || Vector3.Distance(housing.size, new Vector3(.16f, .10f, .16f)) > .00001f
+                || Vector3.Distance(
+                    housing.transform.localPosition,
+                    new Vector3(position.x, .10f, position.z)
+                ) > .00001f
+                || (wheel.excludeLayers.value & fuelMask) != fuelMask
+                || !wheel
+                    .GetComponentsInChildren<MeshCollider>(true)
+                    .Any(c =>
+                        c.enabled
+                        && !c.isTrigger
+                        && c.convex
+                        && (c.excludeLayers.value & fuelMask) == 0
+                    )
+            )
+                throw new InvalidOperationException(
+                    "Missing solid swerve module contacts: " + wheel.name
+                );
+        }
+        if (
+            root.GetComponentsInChildren<BoxCollider>(true).Count(c => c.name.StartsWith("Swerve "))
+            != 4
+        )
+            throw new InvalidOperationException("Four solid swerve module housings are required");
     }
 
     private static void ConfigureNet(GameObject root, Turbo4744 robot)
@@ -1384,6 +1439,7 @@ public static class Ninjas4744Builder
                 "The trench contact handler must be included in the prefab"
             );
         ValidateBellypanContacts(prefab);
+        ValidateSwerveContacts(prefab);
         ValidateMovingHopper(prefab);
         if (
             robot.indexer.rollers.Any(r =>
@@ -1529,6 +1585,7 @@ public static class Ninjas4744Builder
             var prefab = metadata.RobotPrefab;
             ValidateBumperContacts(prefab);
             ValidateBellypanContacts(prefab);
+            ValidateSwerveContacts(prefab);
             ValidateMovingHopper(prefab);
             var robot = prefab.GetComponent<Turbo4744>();
             var renderers = prefab.GetComponentsInChildren<Renderer>(true);

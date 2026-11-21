@@ -22,6 +22,16 @@ The underside checks honor the loaded game's existing lower-chassis fuel compres
 
 [Development verification](../Reports/bellypan-verification.json) records the twenty underside probes, chassis support, six regression groups and full-field editor smoke replays. The latter retained 55 balls through the trench and 54 over the bump; they do not replace installed-player release certification.
 
+## Swerve module contacts
+
+Four solid chassis boxes cover the swerve housings inside the CAD corner cutouts. Each conservative envelope is 160 × 160 mm horizontally, between 50 and 150 mm above the chassis origin. The existing convex tire meshes supply the lower wheel profile and follow steering. Both housings and tires collide with fuel, including while collecting, reversing and disabled.
+
+Fuel remains excluded from the suspension, procedural support cores and powered tread queries. Passive tire collisions can support or deflect the chassis, without treating rolling balls as carpet. The prior blanket fuel exclusion on every wheel child collider made the modules transparent and allowed balls into the bellypan cutouts.
+
+The `Swerve` regression loads the packaged robot and sends stock dynamic fuel at each housing from two directions in four mechanism states, plus each tire at 0° and 90° steering. It requires actual collision callbacks, a solid collision pair, and no crossing through the module. Other robot colliders are isolated during each probe so the bellypan cannot mask a missing module contact. A final motor-driven clear-floor run checks ordinary driving and chassis height.
+
+Trench geometry checks isolate loose field fuel while retaining each loaded case's own payload. `-turboFieldFuel` keeps the loose balls for separate obstruction diagnostics. With solid tire contacts, a ball beneath a wheel can physically lift the chassis against the trench crossbar; the failed loose-fuel trace is preserved separately.
+
 ## Bounded slides
 
 The moving-bin correction changes the stowed storage envelope. Earlier fixed-bin full-load stow results do not certify this assembly; dense-load stow must be revalidated separately.
@@ -72,7 +82,7 @@ The intake uses an explicit one-way contact approximation. Incoming fuel follows
 
 Floor clearance is latched until the whole sphere exits the front or side of the hopper. A bounce or compression from the load cannot reopen the floor. Powered intake contact follows a narrow 60 mm roller/throat path, rising over the upper kicker before handing fuel into storage. A continuous backing surface supports this belt path, preventing incoming ground fuel from rolling underneath the storage floor when the hopper fills. Normal force is bounded to 80 N and the shared mechanism budget to 600 N, with a 3.6 m/s surface-speed ceiling. Retention classification does not cut power before this handoff finishes. The stock fuel mass, diameter and collision material remain unchanged.
 
-Turbo excludes fuel layers from the stock drivetrain's wheel-support queries and the rigid wheel-core contacts. The wheels continue to sample the field normally; bumpers, hopper surfaces and intake contacts still interact with fuel. This prevents separate modules from treating rolling balls as independent tread surfaces.
+Turbo excludes fuel layers from the stock drivetrain's suspension and powered tread queries. Its solid tire meshes, module housings, bellypan, bumpers and hopper still collide with fuel. The wheels continue to sample the field normally, while rolling balls remain passive obstacles.
 
 Tread friction is calibrated to 1.4, with the existing 0.32 bite factor. The earlier 1.3 configuration intermittently missed the short loaded-reversal speed criterion and the 3-degree wheel-path drift bound. The lower 95 N intake-traction comparison improved drift but did not consistently satisfy loaded speed; the collection budget remains 100 N. The team's drive speed, gearing, motor gains and current limits are unchanged. These are simulator contact estimates, not measured tire/carpet coefficients.
 
