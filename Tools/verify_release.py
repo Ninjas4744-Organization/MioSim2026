@@ -42,6 +42,7 @@ for name, filename in checks.items():
     passed = passed and report.get('intakeForceOverride', 0) == 0 \
         and report.get('intakeTractionOverride', 0) == 0 \
         and report.get('intakeLateralOverride', -1) < 0 \
+        and report.get('driveFrictionOverride', 0) == 0 \
         and report.get('capacityCaptureTarget', 51) == 51
     measured = {key: sum(c.get(key, 0) for c in cases) for key in
                 ['scored', 'delivered', 'seeded', 'collected', 'retained',

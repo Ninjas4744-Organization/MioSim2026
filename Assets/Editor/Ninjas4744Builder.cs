@@ -792,7 +792,9 @@ public static class Ninjas4744Builder
         Set(controller, "realWorldWeightLbs", 62f / .45359237f);
         Set(controller, "gearRatio", 5.9f);
         Set(controller, "wheelDiameterInches", .098f / .0254f);
-        Set(controller, "frictionCoefficient", 1.3f);
+        // Simulator tread calibration: retain grip with a full independent-fuel
+        // payload. Hardware motor gains, gearing and current limits stay below.
+        Set(controller, "frictionCoefficient", 1.4f);
         Set(controller, "biteFactor", .32f);
         Set(controller, "contactPatchWidthInches", 1.5f);
         var motor = new Motor();
@@ -1033,6 +1035,7 @@ public static class Ninjas4744Builder
             );
         var solver = robot.roofNet.GetComponent<NetSolver>();
         var foam = root.GetComponent<Turbo4744FuelCompliance>();
+        var drive = new SerializedObject(root.GetComponent<DriveController>());
         if (
             !solver.GetComponent<Turbo4744NetEnvironment>()
             || !foam
@@ -1048,6 +1051,7 @@ public static class Ninjas4744Builder
             || Mathf.Abs(robot.intakeContact.maxTotalTractionForce - 100) > .01f
             || Mathf.Abs(robot.railMaxForce - 350) > .01f
             || Mathf.Abs(robot.railVelocityDamping - 4200) > .01f
+            || Mathf.Abs(drive.FindProperty("frictionCoefficient").floatValue - 1.4f) > .000001f
         )
             throw new InvalidOperationException(
                 "The native-tested textile and bounded fuel compliance are required"

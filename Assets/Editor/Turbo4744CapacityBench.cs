@@ -73,6 +73,7 @@ public static class Turbo4744CapacityBench
         public float intakeForceOverride,
             intakeLateralOverride = -1;
         public float intakeTractionOverride;
+        public float driveFrictionOverride;
         public int capacityCaptureTarget;
         public List<string> errors = new List<string>();
         public List<string> editorServiceErrors = new List<string>();
@@ -160,6 +161,17 @@ public static class Turbo4744CapacityBench
             return at >= 0 && at + 1 < args.Length ? int.Parse(args[at + 1]) : 51;
         }
     }
+    private static float DriveFrictionOverride
+    {
+        get
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "-turboDriveFriction");
+            return at >= 0 && at + 1 < args.Length
+                ? float.Parse(args[at + 1], System.Globalization.CultureInfo.InvariantCulture)
+                : 0;
+        }
+    }
     private static float CycleOffset => Pile && !WheelPile ? 6 : 0;
     private static float CollectionEnd =>
         Pile && !WheelPile ? 14
@@ -220,6 +232,7 @@ public static class Turbo4744CapacityBench
             report.intakeForceOverride = IntakeForceOverride;
             report.intakeLateralOverride = IntakeLateralOverride;
             report.intakeTractionOverride = IntakeTractionOverride;
+            report.driveFrictionOverride = DriveFrictionOverride;
             report.capacityCaptureTarget = CapacityCaptureTarget;
             if (Pile)
                 report.fixture =
@@ -332,6 +345,10 @@ public static class Turbo4744CapacityBench
         benchPlayer.actions.devices = new InputDevice[] { keyboard };
         input = robot.gameObject.AddComponent<Turbo4744BenchDriver>();
         input.drive = robot.GetComponent<DriveController>();
+        if (DriveFrictionOverride > 0)
+            typeof(DriveController)
+                .GetField("frictionCoefficient", BindingFlags.NonPublic | BindingFlags.Instance)
+                .SetValue(input.drive, DriveFrictionOverride);
         hopperClosed = robot.hopperRail.transform.localPosition.z;
         intakeClosed = robot.intakeRail.transform.localPosition.z;
         current = new Case { heading = Headings[caseIndex] + (LoadedAim ? 135 : 0), stable = true };
