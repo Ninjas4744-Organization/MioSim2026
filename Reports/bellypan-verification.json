@@ -1,0 +1,209 @@
+{
+  "purpose": "Development validation of the three CAD bellypan contacts",
+  "date": "2026-11-21",
+  "build": {
+    "version": "0.6.2",
+    "directory": "Artifacts/PhysicsProject/BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64",
+    "bundleSha256": "7bbb12521f0b48b5d4a3b2313336f552ea17528fb467438e116a2a32a5d5e852",
+    "runtimeDllSha256": "ebe4ba9ad58e9c680cb49387efecbf7cbc5d304a14089deb6eba6d406b231140",
+    "runtimeUnchangedFromPreviousRelease": true
+  },
+  "nativeBoundsMetres": [
+    {
+      "section": "rear",
+      "min": [
+        -0.30114,
+        -0.2284,
+        0.0468
+      ],
+      "max": [
+        -0.0646,
+        0.22843,
+        0.0508
+      ]
+    },
+    {
+      "section": "middle",
+      "min": [
+        -0.0646,
+        -0.36404,
+        0.0468
+      ],
+      "max": [
+        0.2158,
+        0.36375,
+        0.0508
+      ]
+    },
+    {
+      "section": "front",
+      "min": [
+        0.2158,
+        -0.12745,
+        0.0468
+      ],
+      "max": [
+        0.27886,
+        0.12762,
+        0.0508
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "name": "Integration",
+      "passed": true,
+      "cases": 0,
+      "report": "bellypan/physics-diagnostics.json",
+      "embeddedArtifactHashes": false,
+      "undersideProbes": 20,
+      "bellypanBlocksFuel": true,
+      "bellypanSupportsChassis": true,
+      "bellypanFieldContact": true,
+      "bellypanSamples": [
+        "Stock chassis fuel compression allowance: 0.0350 m",
+        "stowed command active: True",
+        "stowed z=-0.205253 top=0.08180 contacts=Bellypan rear contact passed=True",
+        "stowed z=0.053218 top=0.08180 contacts=Bellypan middle contact passed=True",
+        "stowed z=0.224948 top=0.08180 contacts=Bellypan front contact,Bellypan middle contact passed=True",
+        "stowed z=-0.086983 top=0.08180 contacts=Bellypan rear contact,Bellypan middle contact passed=True",
+        "stowed z=0.193418 top=0.08180 contacts=Bellypan middle contact,Bellypan front contact passed=True",
+        "collecting command active: True",
+        "collecting z=-0.205253 top=0.08180 contacts=Bellypan rear contact passed=True",
+        "collecting z=0.053218 top=0.08180 contacts=Bellypan middle contact passed=True",
+        "collecting z=0.224948 top=0.08180 contacts=Bellypan front contact,Bellypan middle contact passed=True",
+        "collecting z=-0.086983 top=0.08180 contacts=Bellypan middle contact,Bellypan rear contact passed=True",
+        "collecting z=0.193418 top=0.08180 contacts=Bellypan front contact,Bellypan middle contact passed=True",
+        "reverse command active: True",
+        "reverse z=-0.205253 top=0.08180 contacts=Bellypan rear contact passed=True",
+        "reverse z=0.053218 top=0.08180 contacts=Bellypan middle contact passed=True",
+        "reverse z=0.224948 top=0.08180 contacts=Bellypan front contact,Bellypan middle contact passed=True",
+        "reverse z=-0.086983 top=0.08180 contacts=Bellypan rear contact,Bellypan middle contact passed=True",
+        "reverse z=0.193418 top=0.08180 contacts=Bellypan middle contact,Bellypan front contact passed=True",
+        "disabled command active: True",
+        "disabled z=-0.205253 top=0.08180 contacts=Bellypan rear contact passed=True",
+        "disabled z=0.053218 top=0.08180 contacts=Bellypan middle contact passed=True",
+        "disabled z=0.224948 top=0.08180 contacts=Bellypan front contact,Bellypan middle contact passed=True",
+        "disabled z=-0.086983 top=0.08180 contacts=Bellypan middle contact,Bellypan rear contact passed=True",
+        "disabled z=0.193418 top=0.08180 contacts=Bellypan front contact,Bellypan middle contact passed=True",
+        "Intake opened its floor pair during underside probes: True",
+        "Stock fuel support: baseline=0.9919 raised=0.0788 impulse=734.163 passed=True",
+        "Field support: raised=0.0695 impulse=363.330 passed=True"
+      ]
+    },
+    {
+      "name": "Approach",
+      "passed": true,
+      "cases": 6,
+      "report": "bellypan/approach-after.json",
+      "embeddedArtifactHashes": true
+    },
+    {
+      "name": "Indexer",
+      "passed": true,
+      "cases": 11,
+      "report": "bellypan/systems-indexer-after.json",
+      "embeddedArtifactHashes": true
+    },
+    {
+      "name": "Retention",
+      "passed": true,
+      "cases": 2,
+      "report": "bellypan/retention-after.json",
+      "embeddedArtifactHashes": true
+    },
+    {
+      "name": "Travel",
+      "passed": true,
+      "cases": 4,
+      "report": "bellypan/travel-after.json",
+      "embeddedArtifactHashes": false
+    },
+    {
+      "name": "WheelPile",
+      "passed": true,
+      "cases": 2,
+      "report": "bellypan/wheel-pile-after.json",
+      "embeddedArtifactHashes": true,
+      "measurements": [
+        {
+          "heading": 0,
+          "collected": 47,
+          "retainedAfterDrive": 47,
+          "released": 47,
+          "maxLoadedNativeSpeed": 3.8026821613311768,
+          "maxCollectionYaw": 2.0147247314453125,
+          "collectionDistance": 4.008810043334961
+        },
+        {
+          "heading": 90,
+          "collected": 44,
+          "retainedAfterDrive": 44,
+          "released": 44,
+          "maxLoadedNativeSpeed": 4.174306869506836,
+          "maxCollectionYaw": 0.7130279541015625,
+          "collectionDistance": 4.0489888191223145
+        }
+      ]
+    }
+  ],
+  "fullFieldEditorSmoke": [
+    {
+      "route": "trench",
+      "passed": true,
+      "environment": "Unity editor full-field smoke using native replay logic, robot-relative keyboard and built bundle; not installed-player certification",
+      "completed": true,
+      "fieldFuel": 504,
+      "transitStartCount": 55,
+      "transitEndCount": 55,
+      "transitCompleted": true,
+      "stowedBeforeReturn": true,
+      "trenchPassed": true,
+      "maximumTrenchHoldSeconds": 0.0,
+      "maxTilt": 0.40734419226646423,
+      "failureReason": "",
+      "releasedCaptured": 55,
+      "remainingCaptured": 0,
+      "storedSpills": 0,
+      "crossedObstacle": true,
+      "maximumCrossingHeightMetres": -0.0076,
+      "bellypanWitness": "Bellypan witness: fuel contact steps=0, field contact steps=0",
+      "report": "bellypan/bellypan-field-trench.json",
+      "request": "bellypan/bellypan-field-trench-request.json"
+    },
+    {
+      "route": "bump",
+      "passed": true,
+      "environment": "Unity editor full-field smoke using native replay logic, robot-relative keyboard and built bundle; not installed-player certification",
+      "completed": true,
+      "fieldFuel": 504,
+      "transitStartCount": 54,
+      "transitEndCount": 54,
+      "transitCompleted": true,
+      "stowedBeforeReturn": true,
+      "trenchPassed": true,
+      "maximumTrenchHoldSeconds": 0.0,
+      "maxTilt": 15.30339241027832,
+      "failureReason": "",
+      "releasedCaptured": 55,
+      "remainingCaptured": 0,
+      "storedSpills": 0,
+      "crossedObstacle": true,
+      "maximumCrossingHeightMetres": 0.19,
+      "bellypanWitness": "Bellypan witness: fuel contact steps=0, field contact steps=0",
+      "report": "bellypan/bellypan-field-bump.json",
+      "request": "bellypan/bellypan-field-bump-request.json"
+    }
+  ],
+  "installedPlayerTested": false,
+  "limitations": "Full-field smoke uses the native replay component in the Unity editor, with a robot-relative keyboard and an isolated test profile. It is not installed-player release certification. The installed mod was not replaced.",
+  "passed": true,
+  "sourceSha256": {
+    "Assets/Editor/Ninjas4744Builder.cs": "cc76410b0f021f5e89aefd7cbfdc61f5191253a721fc4292e3edf987b266e435",
+    "Assets/Editor/Turbo4744Diagnostics.cs": "5dd88d3f05bf156a225915fd436b60451e77a89fbe021f1c61a5bc8842bb0ab2",
+    "Assets/Editor/Turbo4744BellypanRegression.cs": "89d543f772d84438e8bf096d80fa56268b0c37f4941037128a7ce32ca2b584b1",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "b1850a1dffac4122332064b0cb9675130957f78f0edf1c6777616c09deda29dd"
+  },
+  "fullFieldFixtureSource": "bellypan/field-replay-fixture.cs.txt",
+  "fullFieldFixtureSha256": "6d58014996cbb239e2cd16e9d5f78552835c05fcccf42467fbc516d4ced92ea8"
+}

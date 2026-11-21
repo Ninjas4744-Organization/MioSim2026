@@ -1,0 +1,203 @@
+{
+  "passed": true,
+  "build": "pumping-trench-r2",
+  "verifiedAt": "2026-11-21T16:01:24.4223414+02:00",
+  "unity": "2023.2.22f1",
+  "certificationScope": "Targeted authoring regressions and installed MoSim player input replays",
+  "diagnosis": [
+    "Automatic pumping previously waited for aiming to finish.",
+    "The original trench handler omitted rigid hopper/frame contacts; a controlled pinch suspended the wheels with empty and loaded hoppers."
+  ],
+  "regressions": [
+    {
+      "group": "partial",
+      "passed": true,
+      "cases": 1,
+      "report": "partial.json"
+    },
+    {
+      "group": "single",
+      "passed": true,
+      "cases": 1,
+      "report": "single.json"
+    },
+    {
+      "group": "empty",
+      "passed": true,
+      "cases": 1,
+      "report": "empty.json"
+    },
+    {
+      "group": "delivery",
+      "passed": true,
+      "cases": 4,
+      "report": "delivery.json"
+    },
+    {
+      "group": "jam",
+      "passed": true,
+      "cases": 1,
+      "report": "jam.json"
+    },
+    {
+      "group": "rigid",
+      "passed": true,
+      "cases": 4,
+      "report": "rigid.json"
+    },
+    {
+      "group": "foam",
+      "passed": true,
+      "cases": 4,
+      "report": "foam.json"
+    },
+    {
+      "group": "field",
+      "passed": true,
+      "cases": 8,
+      "report": "field.json"
+    }
+  ],
+  "earlierNative": [
+    {
+      "group": "loaded",
+      "passed": true,
+      "completed": true,
+      "peakCaptured": 8,
+      "scored": 0,
+      "remaining": 8,
+      "maxTiltDegrees": 0.2373882681131363,
+      "minX": -6.991099834442139,
+      "maxX": -1.2405999898910522,
+      "finalX": -6.9699,
+      "pumpSamples": 227,
+      "preparingPumpSamples": 227,
+      "emptyPumpSamples": 0,
+      "emptyTransitSamples": 0,
+      "report": "native-loaded.json"
+    },
+    {
+      "group": "empty",
+      "passed": true,
+      "completed": true,
+      "peakCaptured": 8,
+      "scored": 8,
+      "remaining": 0,
+      "maxTiltDegrees": 0.25178831815719604,
+      "minX": -7.633200168609619,
+      "maxX": -1.868899941444397,
+      "finalX": -7.6332,
+      "pumpSamples": 59,
+      "preparingPumpSamples": 33,
+      "emptyPumpSamples": 0,
+      "emptyTransitSamples": 174,
+      "report": "native-empty.json"
+    }
+  ],
+  "suiteRuntimeSha256": "514d5b018b0751c2b66feb9bf43c6fc52f403429e2268cadf3299d4adf80f5c4",
+  "finalDelta": "Added explicit Robot-layer collider eligibility; reran loaded/empty rigid pinch and installed-player loaded/empty pumping and traversal after this restriction.",
+  "nativeFinal": {
+    "passed": true,
+    "report": "native-final.json",
+    "launches": 8,
+    "scored": 0,
+    "remaining": 0,
+    "maxTilt": 0.2866736650466919,
+    "preparingPumpSamples": 258,
+    "emptyPumpSamples": 0,
+    "traversals": [
+      {
+        "phase": "loaded",
+        "passed": true,
+        "fuel": 8,
+        "samples": 173,
+        "minX": -7.002999782562256,
+        "maxX": -1.2661999464035034,
+        "finalX": -6.9885
+      },
+      {
+        "phase": "empty",
+        "passed": true,
+        "fuel": 0,
+        "samples": 174,
+        "minX": -7.098100185394287,
+        "maxX": -1.582200050354004,
+        "finalX": -7.0981
+      }
+    ],
+    "scope": "Eight physical launches, empty-hopper pump shutdown and loaded/empty traversal. The separate earlier native-empty run recorded eight scores."
+  },
+  "sourceHashes": [
+    {
+      "name": "Turbo4744.cs",
+      "sha256": "fbd08e590681fc4909bb06358cc785ef961dbd2446c8e57ccce03d186619b511"
+    },
+    {
+      "name": "Turbo4744BumperContacts.cs",
+      "sha256": "8d53d6b159170a3000a8d8de8a3c0031e705d5ed3535b47724f3630bc1914d85"
+    },
+    {
+      "name": "Turbo4744DriveController.cs",
+      "sha256": "a8ef8119b6cc47f047253cd989bcd1fc6c87e370079c1921f43d1f4251b30079"
+    },
+    {
+      "name": "Turbo4744FuelCompliance.cs",
+      "sha256": "97d4e87dcd414550da58d84a904b527e70e0f8e5d4eba96fe7b73357cebc1603"
+    },
+    {
+      "name": "Turbo4744FuelKeeper.cs",
+      "sha256": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750"
+    },
+    {
+      "name": "Turbo4744Indexer.cs",
+      "sha256": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215"
+    },
+    {
+      "name": "Turbo4744KickerRig.cs",
+      "sha256": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3"
+    },
+    {
+      "name": "Turbo4744NativeReplay.cs",
+      "sha256": "3b9d80c0b0620b70bdf74dcd3d108349af0ec422e682853581df8a7bb22e8f2f"
+    },
+    {
+      "name": "Turbo4744NetEnvironment.cs",
+      "sha256": "27a676e9424dc4486521c4a81525900f39e5ac28e4a6a4781f8264f62feb06f9"
+    },
+    {
+      "name": "Turbo4744NetRig.cs",
+      "sha256": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05"
+    },
+    {
+      "name": "Turbo4744ShooterContact.cs",
+      "sha256": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28"
+    }
+  ],
+  "installedFiles": [
+    {
+      "name": "modpack.json",
+      "sha256": "2f416edb238c2a240e351bb80700fd5177e8f826fd27de74d016b3f6892797ba"
+    },
+    {
+      "name": "Ninjas4744.dll",
+      "sha256": "b799b3c8b2614deb0b0f605cabae6db6c4f6eef375c328ddf5e9f16d5c0fe623"
+    },
+    {
+      "name": "rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "7bbb12521f0b48b5d4a3b2313336f552ea17528fb467438e116a2a32a5d5e852"
+    },
+    {
+      "name": "rebuilt_ninjas_4744_turbo_2026_assets.manifest",
+      "sha256": "6cdc3f50a4cf7804553e0593c2841457eff7a785715662ce8df5e479cc93181f"
+    },
+    {
+      "name": "standalonewindows64",
+      "sha256": "1df6d009e8a8912f811e539bee79df04293e1599618b2629056c51a37dd64996"
+    },
+    {
+      "name": "standalonewindows64.manifest",
+      "sha256": "77d5fc74725a0b67ffccccc37c65780e186e50a3561e57e6f8d30664d1de7f9e"
+    }
+  ],
+  "replayRemoved": true
+}

@@ -1,0 +1,28 @@
+{
+    "passed": true,
+    "modpack": "Ninjas 4744 Turbo 2026",
+    "game": "Rebuilt",
+    "team": 4744,
+    "robots": 1,
+    "missingScripts": 0,
+    "renderers": 29,
+    "materials": 48,
+    "preloads": 8,
+    "tutorialCards": 3,
+    "assemblyReferences": [
+        "netstandard",
+        "Rebuilt",
+        "UnityEngine.CoreModule",
+        "UnityEngine.PhysicsModule",
+        "RobotFramework",
+        "Unity.InputSystem",
+        "UnityEngine.IMGUIModule",
+        "MoSimCore",
+        "UnityEngine.VehiclesModule",
+        "MoSimLib",
+        "Unity.Mathematics",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.JSONSerializeModule",
+        "UnityEngine.ScreenCaptureModule"
+    ]
+}

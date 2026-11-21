@@ -1,0 +1,15 @@
+{
+  "installed": true,
+  "kind": "pumping-and-trench-test-build",
+  "installedUtc": "2026-11-21T13:09:28.9100068Z",
+  "version": "0.6.2",
+  "destination": "C:\\Users\\kfiros\\AppData\\LocalLow\\CascadeStudios\\MoSim\\Mods\\Ninjas4744-Turbo2026\\standalonewindows64",
+  "backup": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\PumpingTrenchInstall-20261121-150928\\previous",
+  "payload": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\PumpingTrenchInstall-20261121-150928\\payload",
+  "verifiedFiles": 6,
+  "bundleSha256": "7bbb12521f0b48b5d4a3b2313336f552ea17528fb467438e116a2a32a5d5e852",
+  "runtimeDllSha256": "4a9d1b93381a61743fde402ebf8f3ed922a4b623b51bac8798838a30d1a9386a",
+  "bundlePumpingPassed": true,
+  "trenchChecksPassed": true,
+  "trenchRecoveredCases": 12
+}

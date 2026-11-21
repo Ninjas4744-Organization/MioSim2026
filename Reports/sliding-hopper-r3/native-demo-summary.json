@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "peakBalls": 3,
+  "launched": 3,
+  "scored": 3,
+  "remaining": 0,
+  "feedingPumpSamples": 20,
+  "binStrokeMillimetres": 40.800000000000004,
+  "playbackSpeed": 0.15,
+  "frames": 64,
+  "gif": "three-ball-hopper-pumping.gif",
+  "mp4": "three-ball-hopper-pumping.mp4"
+}

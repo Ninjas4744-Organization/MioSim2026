@@ -1,0 +1,32 @@
+[
+  {
+    "group": "partial",
+    "passed": true,
+    "cases": 1
+  },
+  {
+    "group": "delivery",
+    "passed": true,
+    "cases": 4
+  },
+  {
+    "group": "empty",
+    "passed": true,
+    "cases": 1
+  },
+  {
+    "group": "travel",
+    "passed": true,
+    "cases": 4
+  },
+  {
+    "group": "trench",
+    "passed": true,
+    "cases": 8
+  },
+  {
+    "group": "jam",
+    "passed": true,
+    "cases": 1
+  }
+]

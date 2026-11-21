@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "checkedAtUtc": "2026-11-21T15:26:46.900320+00:00",
+  "scope": "Actual sliding hopper during partial-load shooting/delivery, preserving trench contact fixes",
+  "nativeThreeBallShooting": {
+    "passed": true,
+    "peakBalls": 3,
+    "launched": 3,
+    "scored": 3,
+    "remaining": 0,
+    "feedingPumpSamples": 20,
+    "binStrokeMillimetres": 40.800000000000004,
+    "playbackSpeed": 0.15,
+    "frames": 64,
+    "gif": "three-ball-hopper-pumping.gif",
+    "mp4": "three-ball-hopper-pumping.mp4"
+  },
+  "nativeBinVelocityMetresPerSecond": {
+    "minimum": -0.1056,
+    "maximum": 0.0545
+  },
+  "packagedFieldTrenchCases": 8,
+  "packagedRigidPinchCases": 4,
+  "installedNormalMod": {
+    "installedAt": "2026-11-21T17:17:10.0699143+02:00",
+    "files": [
+      {
+        "bytes": 592,
+        "sha256": "2F416EDB238C2A240E351BB80700FD5177E8F826FD27DE74D016B3F6892797BA",
+        "file": "modpack.json"
+      },
+      {
+        "bytes": 95232,
+        "sha256": "6E8C5616F5FA51C7F66A857F21E1200C7855BA968383BAF61FD601C0E8B4DFBE",
+        "file": "Ninjas4744.dll"
+      },
+      {
+        "bytes": 8742109,
+        "sha256": "89F4FD061439AA37397B1E434838A51973B99450C3480264A3409D5C7FB7245E",
+        "file": "rebuilt_ninjas_4744_turbo_2026_assets"
+      },
+      {
+        "bytes": 12217,
+        "sha256": "4B52D48968D6BA85FE7EFE3E5FA5344C8BF77B85A54276D23C711E5AA609C838",
+        "file": "rebuilt_ninjas_4744_turbo_2026_assets.manifest"
+      },
+      {
+        "bytes": 1053,
+        "sha256": "C0180BC2FA9D1626454B12EC208C56E35C8F8DB674AF60930B0F222BFCCA9429",
+        "file": "standalonewindows64"
+      },
+      {
+        "bytes": 191,
+        "sha256": "767C37723DE01CBA021214414D664F3CED15DCD2ACBB4FBB291FCCAB7F0A5454",
+        "file": "standalonewindows64.manifest"
+      }
+    ],
+    "destination": "C:\\Users\\kfiros\\AppData\\LocalLow\\CascadeStudios\\MoSim\\Mods\\Ninjas4744-Turbo2026\\standalonewindows64",
+    "settingsRestored": true,
+    "normalRuntime": true
+  },
+  "temporaryCameraAndFuelFixtureRemoved": true,
+  "originalMatchSettingsRestored": true,
+  "earlierTargetedChecks": [
+    {
+      "group": "partial",
+      "passed": true,
+      "cases": 1
+    },
+    {
+      "group": "delivery",
+      "passed": true,
+      "cases": 4
+    },
+    {
+      "group": "empty",
+      "passed": true,
+      "cases": 1
+    },
+    {
+      "group": "travel",
+      "passed": true,
+      "cases": 4
+    },
+    {
+      "group": "trench",
+      "passed": true,
+      "cases": 8
+    },
+    {
+      "group": "jam",
+      "passed": true,
+      "cases": 1
+    }
+  ],
+  "limitations": [
+    "The earlier fixed-bin packed-load stow certification does not cover the new sliding bin.",
+    "Unity authoring prefab imports became inconsistent after SDK builds; final trench checks used the actual packaged asset bundle."
+  ],
+  "sourceSha256": {
+    "Turbo4744.cs": "0566cb3698f00fc6702658ed9663ec5dc38dcb15e07ade3a2f78c49e42858b81",
+    "Turbo4744BumperContacts.cs": "6c52bb3315f0d1b6c1bb48de826bea0f246d8c5fc0323add45b8132d4238193e",
+    "Turbo4744DriveController.cs": "8f183c1c6999be8c84ab1c484e39d37c0231dba6e8488bf29d7d00238c55589e",
+    "Turbo4744FuelCompliance.cs": "97d4e87dcd414550da58d84a904b527e70e0f8e5d4eba96fe7b73357cebc1603",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744NativeReplay.cs": "3b9d80c0b0620b70bdf74dcd3d108349af0ec422e682853581df8a7bb22e8f2f",
+    "Turbo4744NetEnvironment.cs": "27a676e9424dc4486521c4a81525900f39e5ac28e4a6a4781f8264f62feb06f9",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28"
+  }
+}

@@ -1,0 +1,150 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Games.Rebuilt.GameManagement;
+using Games.Rebuilt.GamePieceSystem;
+using Games.Rebuilt.Robots;
+using GameSystems.Management;
+using MoSimCore.BaseClasses.GameManagement;
+using MoSimCore.BaseClasses.GameManagement.TimerManagement;
+using MoSimCore.Enums;
+using MoSimCore.GameSelection;
+using Ninjas4744.MoSim;
+using RobotFramework;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using Object = UnityEngine.Object;
+
+// Local full-field smoke fixture, intentionally outside the shipped source.
+[InitializeOnLoad]
+public static class Turbo4744FieldReplayBench
+{
+    private static Turbo4744NativeReplay replay;
+    private static AssetBundle bundle;
+    private static double wall;
+    private static bool configured;
+    private static Turbo4744FieldPanWitness witness;
+    private const BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
+    static Turbo4744FieldReplayBench() => EditorApplication.playModeStateChanged += Mode;
+    public static void Run()
+    {
+        SessionState.SetString("Bellypan.OldCompany", PlayerSettings.companyName);
+        SessionState.SetString("Bellypan.OldProduct", PlayerSettings.productName);
+        PlayerSettings.companyName = "Ninjas4744ModTests";
+        PlayerSettings.productName = "TurboFieldReplaySandbox";
+        SessionState.SetBool("Bellypan.FieldPending", true);
+        EditorSceneManager.OpenScene("Assets/Scenes/Rebuilt/Rebuilt.unity");
+        Object.FindFirstObjectByType<SelectedGameManager>().SelectedGame =
+            Resources.Load<GameOption>("GameOptions/Rebuilt");
+        EditorApplication.EnterPlaymode();
+    }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void PrepareInput()
+    {
+        if (!SessionState.GetBool("Bellypan.FieldPending", false)) return;
+        InputSystem.settings = Object.Instantiate(InputSystem.settings);
+        InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+        InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        InputSystem.AddDevice<Keyboard>("Turbo field smoke setup keyboard");
+        SelectedGameManager.PendingSelectedGameGuid = Resources.LoadAll<GameOption>("GameOptions").First(g => g.GameYear == 2026).GetGuid();
+    }
+    private static void Mode(PlayModeStateChange state)
+    {
+        if (!SessionState.GetBool("Bellypan.FieldPending", false)) return;
+        if (state == PlayModeStateChange.EnteredPlayMode)
+        {
+            wall = EditorApplication.timeSinceStartup;
+            configured = false;
+            EditorApplication.update += Tick;
+        }
+        if (state == PlayModeStateChange.EnteredEditMode)
+        {
+            PlayerSettings.companyName = SessionState.GetString("Bellypan.OldCompany", "CascadeStudios");
+            PlayerSettings.productName = SessionState.GetString("Bellypan.OldProduct", "MoSim");
+            SessionState.SetBool("Bellypan.FieldPending", false);
+            EditorApplication.Exit(SessionState.GetInt("Bellypan.FieldExit", 1));
+        }
+    }
+    private static void Tick()
+    {
+        try
+        {
+            if (EditorApplication.timeSinceStartup - wall > 170) throw new TimeoutException("Full-field replay timed out");
+            if (!configured)
+            {
+                if (EditorApplication.timeSinceStartup - wall < 5 || !BaseGameManager.Instance) return;
+                var timer = BaseGameManager.Instance.GetComponent<BaseTimerManager>();
+                timer.PauseTimer();
+                typeof(BaseTimerManager).GetProperty("CurrentRobotState").SetValue(timer, RobotState.Enabled);
+                foreach (var old in Object.FindObjectsByType<RobotBase>(FindObjectsSortMode.None)) old.gameObject.SetActive(false);
+                foreach (var camera in Camera.allCameras) camera.enabled = false;
+                QualitySettings.vSyncCount = 0;
+                Application.targetFrameRate = 120;
+                string path = Path.GetFullPath(Application.dataPath + "/../BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets");
+                bundle = AssetBundle.LoadFromFile(path);
+                var prefab = bundle.LoadAllAssets<RebuiltRobotMetadataSO>().Single().RobotPrefab;
+                var robot = Object.Instantiate(prefab, new Vector3(3.8595f, .04f, 3.3758f), Quaternion.Euler(0, -90, 0)).GetComponent<Turbo4744>();
+                robot.SetAlliance(Alliance.Blue);
+                witness = robot.gameObject.AddComponent<Turbo4744FieldPanWitness>();
+                var manager = Object.FindFirstObjectByType<RebuiltFuelPreloadManager>();
+                var removable = Object.FindObjectsByType<RebuiltGamePieceController>(FindObjectsSortMode.None)
+                    .Where(f => !f.transform.IsChildOf(robot.transform) && f.transform.position.x > 0).Take(8).Select(f => f.gameObject).ToArray();
+                typeof(RebuiltFuelPreloadManager).GetField("removableFuel", Private).SetValue(manager, removable);
+                Object.FindFirstObjectByType<RebuiltSpawnInitializer>().HandleSpawnedRobots(new[] { robot });
+                var args = Environment.GetCommandLineArgs();
+                string requestPath = args[Array.IndexOf(args, "-bellypanReplay") + 1];
+                var type = typeof(Turbo4744NativeReplay).GetNestedType("Request", BindingFlags.NonPublic);
+                replay = robot.gameObject.AddComponent<Turbo4744NativeReplay>();
+                replay.enabled = false;
+                typeof(Turbo4744NativeReplay).GetField("robot", Private).SetValue(replay, robot);
+                typeof(Turbo4744NativeReplay).GetField("request", Private).SetValue(replay, JsonUtility.FromJson(File.ReadAllText(requestPath), type));
+                configured = true;
+                return;
+            }
+            if (!replay.enabled)
+            {
+                if (replay.GetComponent<Turbo4744>().IntakeAction == null) return;
+                // Match W/S to the Blue start heading without a native player camera.
+                replay.GetComponent<Turbo4744>().IsFieldCentric = false;
+                replay.enabled = true;
+            }
+            var report = typeof(Turbo4744NativeReplay).GetField("report", Private).GetValue(replay);
+            if (report != null) report.GetType().GetField("environment").SetValue(report, "Unity editor full-field smoke using native replay logic, robot-relative keyboard and built bundle; not installed-player certification");
+            if (!(bool)typeof(Turbo4744NativeReplay).GetField("finished", Private).GetValue(replay)) return;
+            string label = (string)report.GetType().GetField("label").GetValue(report);
+            ((System.Collections.Generic.List<string>)report.GetType().GetField("contacts").GetValue(report))
+                .Add($"Bellypan witness: fuel contact steps={witness.fuelSteps}, field contact steps={witness.fieldSteps}");
+            File.WriteAllText(Path.GetFullPath(Application.dataPath + "/../BuildArtifacts/" + label + ".json"), JsonUtility.ToJson(report, true));
+            SessionState.SetInt("Bellypan.FieldExit", 0);
+            EditorApplication.update -= Tick;
+            EditorApplication.ExitPlaymode();
+        }
+        catch (Exception error)
+        {
+            Debug.LogException(error);
+            SessionState.SetInt("Bellypan.FieldExit", 1);
+            EditorApplication.update -= Tick;
+            EditorApplication.ExitPlaymode();
+        }
+    }
+}
+
+public sealed class Turbo4744FieldPanWitness : MonoBehaviour
+{
+    public int fuelSteps, fieldSteps;
+    private void OnCollisionEnter(Collision collision) => Record(collision);
+    private void OnCollisionStay(Collision collision) => Record(collision);
+    private void Record(Collision collision)
+    {
+        foreach (var contact in collision.contacts)
+            if (contact.thisCollider.name.StartsWith("Bellypan "))
+            {
+                if (contact.otherCollider.GetComponentInParent<RebuiltGamePieceController>()) fuelSteps++;
+                else fieldSteps++;
+                break;
+            }
+    }
+}

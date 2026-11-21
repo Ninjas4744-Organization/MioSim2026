@@ -1,0 +1,31 @@
+{
+  "installedAt": "2026-11-21T15:58:01.0276003+02:00",
+  "source": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\PhysicsProject\\BuiltMods\\rebuilt_ninjas_4744_turbo_2026\\standalonewindows64",
+  "destination": "C:/Users/kfiros/AppData/LocalLow/CascadeStudios/MoSim/Mods/Ninjas4744-Turbo2026/standalonewindows64",
+  "files": [
+    {
+      "name": "modpack.json",
+      "sha256": "2f416edb238c2a240e351bb80700fd5177e8f826fd27de74d016b3f6892797ba"
+    },
+    {
+      "name": "Ninjas4744.dll",
+      "sha256": "b799b3c8b2614deb0b0f605cabae6db6c4f6eef375c328ddf5e9f16d5c0fe623"
+    },
+    {
+      "name": "rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "7bbb12521f0b48b5d4a3b2313336f552ea17528fb467438e116a2a32a5d5e852"
+    },
+    {
+      "name": "rebuilt_ninjas_4744_turbo_2026_assets.manifest",
+      "sha256": "6cdc3f50a4cf7804553e0593c2841457eff7a785715662ce8df5e479cc93181f"
+    },
+    {
+      "name": "standalonewindows64",
+      "sha256": "1df6d009e8a8912f811e539bee79df04293e1599618b2629056c51a37dd64996"
+    },
+    {
+      "name": "standalonewindows64.manifest",
+      "sha256": "77d5fc74725a0b67ffccccc37c65780e186e50a3561e57e6f8d30664d1de7f9e"
+    }
+  ]
+}
