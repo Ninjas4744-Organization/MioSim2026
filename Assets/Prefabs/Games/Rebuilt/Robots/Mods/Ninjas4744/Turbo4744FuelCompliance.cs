@@ -13,7 +13,7 @@ namespace Ninjas4744.MoSim
     {
         public float stiffness = 750;
         public float damping = 8;
-        public float maximumCompression = .015f;
+        public float maximumCompression = .020f;
         private int modifiedContacts;
         private int compressionMicrometres;
         public int ModifiedContacts => Volatile.Read(ref modifiedContacts);
@@ -127,7 +127,8 @@ namespace Ninjas4744.MoSim
                             break;
                         prior = observed;
                     }
-                    // The unmodified contact remains a hard bound on compression.
+                    // Restore hard contact at the hardening depth. Solver-step
+                    // transients can exceed this material transition depth.
                     if (compression >= data.limit)
                         continue;
                     float closing = Mathf.Max(0, -Vector3.Dot(a - b, pair.GetNormal(i)));

@@ -858,11 +858,12 @@ public static class Ninjas4744Builder
         solver.netWidth = .71f;
         solver.netHeight = .612f;
         solver.useAuthoredRestShape = false;
-        // Tensioned textile with photo-derived 2.3 mm cord diameter. The former
-        // 24 mm collision strands and stretchy roof produced an oversized heap.
-        // Bounded fuel-to-fuel compliance provides packing without a rigid lid.
-        solver.restLengthScale = 1;
+        // Keep the roof tensioned to its fixed frame, with the estimated 2.3 mm
+        // cord diameter and finite foam contacts. Extra textile ease allowed
+        // stored fuel to bulge over the native trench crossbar.
+        solver.restLengthScale = 1f;
         solver.subSteps = 4;
+        solver.collisionSubstepInterval = 1;
         solver.stretchCompliance = .0000003f;
         solver.shearCompliance = .00000015f;
         solver.bendCompliance = .002f;
@@ -1035,13 +1036,14 @@ public static class Ninjas4744Builder
         if (
             !solver.GetComponent<Turbo4744NetEnvironment>()
             || !foam
-            || Mathf.Abs(solver.restLengthScale - 1) > .000001f
+            || Mathf.Abs(solver.restLengthScale - 1f) > .000001f
             || Mathf.Abs(solver.collisionRadius - .00115f) > .000001f
+            || solver.collisionSubstepInterval != 1
             || Mathf.Abs(solver.stretchCompliance - .0000003f) > .00000001f
             || Mathf.Abs(solver.shearCompliance - .00000015f) > .00000001f
             || Mathf.Abs(foam.stiffness - 750) > .01f
             || Mathf.Abs(foam.damping - 8) > .01f
-            || Mathf.Abs(foam.maximumCompression - .015f) > .000001f
+            || Mathf.Abs(foam.maximumCompression - .020f) > .000001f
             || Mathf.Abs(robot.intakeContact.maxTotalForce - 600) > .01f
             || Mathf.Abs(robot.intakeContact.maxTotalTractionForce - 100) > .01f
             || Mathf.Abs(robot.railMaxForce - 350) > .01f
