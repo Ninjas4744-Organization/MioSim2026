@@ -235,8 +235,8 @@ MonoBehaviour:
   m_text: '<b>Deploy and collect</b>
 
     Intake opens Turbo''s pickup and cancels
-    shooting. Stow retracts the intake/kicker; the hopper walls, floor and net frame
-    stay fixed.'
+    shooting. Stow retracts the intake and hopper. Shooting pumps the sliding bin
+    toward the stationary indexer.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 239ba7782d5cbc94e9bb18c11ccbef4e, type: 2}
   m_sharedMaterial: {fileID: -7527997313119376473, guid: 239ba7782d5cbc94e9bb18c11ccbef4e,
