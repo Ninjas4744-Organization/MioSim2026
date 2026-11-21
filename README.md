@@ -22,13 +22,13 @@ The resulting `Ninjas4744-Turbo2026/standalonewindows64` folder must contain `mo
 | Aim/shoot at the hub or a side delivery target by field zone; press again for three hard pump cycles | K | Right trigger |
 | Start delivery; press again for three hard pump cycles | E | Right bumper |
 | Shoot at the fixed manual setting | Q | Left bumper |
-| Stow intake/kicker | Z | D-pad down |
+| Stow intake/hopper | Z | D-pad down |
 | Run three hard pump cycles, then soft pumping | V | Y / Triangle |
 | Reverse the feed path | U | A / Cross |
 
-Pumping uses partial intake/kicker extension setpoints. Z / D-pad down stows that assembly while the hopper walls, floor and net frame remain fixed.
+Pumping slides the hopper bin and its front roof frame back and forth toward the stationary indexer. Z / D-pad down retracts the intake and hopper. The tray overlaps the fixed indexer entrance as the bin moves.
 
-MoSim's control rebinding applies normally. The shooter faces the rear of the robot. Commands latch, matching the team's button-triggered state machine: release K/E after starting, and use Shift to cancel. Intake opens automatically after enable. Soft pumping starts 0.8 seconds after feeding begins. Hub aiming reduces translation to 30%, as in the team code; Shift restores normal driving. F8 toggles an optional local mechanism/status panel. Quick shoot, pump and stow taps are retained through Input System performed events. Q and U remain held manual overrides. These are MoSim action bindings, rather than the real driver's PS5 button layout.
+MoSim's control rebinding applies normally. The shooter faces the rear of the robot. Commands latch, matching the team's button-triggered state machine: release K/E after starting, and use Shift to cancel. Intake opens automatically after enable. Soft pumping starts with hub shooting or delivery while balls remain in storage, including a partial load, and stops when storage clears or shooting is cancelled. Hub aiming reduces translation to 30%, as in the team code; Shift restores normal driving. F8 toggles an optional local mechanism/status panel. Quick shoot, pump and stow taps are retained through Input System performed events. Q and U remain held manual overrides. These are MoSim action bindings, rather than the real driver's PS5 button layout.
 
 ## Build and test
 
@@ -62,6 +62,8 @@ $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Test-Visible.ps1 -MoSimProject $project -UnityEditor $unity # all 14 required groups
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Trench
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Trench -DiagnosticArguments '-turboPinch'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Approach -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Indexer -Visible
@@ -77,7 +79,16 @@ $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Package.ps1 -MoSimProject $project
 ```
 
+The verified sliding-hopper test build can be archived with
+`python Tools/package_verified_build.py`. It checks the six mod-file hashes, runtime
+source fingerprints, native shooting result and twelve packaged trench/pinch cases,
+then verifies every ZIP entry. The filename includes `0.6.2-sliding-hopper-r3`; build
+notes describe its targeted validation and the remaining full-load stow check.
+`Tools/Package.ps1` continues to require the complete release certification.
+
 The test examples use `-Visible` to show Unity's Game view. Indexer tests show a live cutaway with the fixture name and contact counts; other checks follow the robot and shooting target.
+
+`Trench` checks reverse escape at angled poses in all four field trenches, with the intake stowed and deployed. `-turboPinch` isolates opposite bumper corners with 1 mm overlap on each side. `-turboRigidPinch` pinches the hopper/frame above the bumpers with empty and loaded hoppers. Pass either flag through `-DiagnosticArguments`. Both fixtures require wheel traction to return and check that driving into a side still stops at the solid wall. `-Baseline` disables the contact handler for comparison; the controlled pinches are expected to fail. These checks use the authoring prefab in the Unity editor and are separate from installed-player release certification. [Trench contact results](Reports/trench-verification.json).
 
 The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab, runs a fresh-session SDK runtime synchronization, and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
 
@@ -102,7 +113,7 @@ All fourteen required fixture groups pass against this release's bundle and DLL.
 - Fixed the main hopper to the chassis; only the intake/kicker retracts.
 - Added opt-in visible native input replays, live hitbox outlines and saved cycle evidence. [Native testing and current limitations](Docs/NativeTesting.md).
 
-Native full-load stow now completes after correcting the assembly: the main hopper stays fixed. The 0.6.1 stowed bump cycle peaked at 59 balls and scored all 57 present before shooting, with no transit escapes. A separate moving-shot-input cycle scored 53 total, with four measured moving muzzle crossings. Full-load trench traversal remained unresolved in 0.6.1. Full-hopper native outcomes are recorded separately from the Unity fixture suite.
+The earlier 0.6.1 native full-load stow run used a fixed main hopper. Those results do not certify packed-load stow for the current sliding bin. The 0.6.1 stowed bump cycle peaked at 59 balls and scored all 57 present before shooting, with no transit escapes. A separate moving-shot-input cycle scored 53 total, with four measured moving muzzle crossings. Full-load trench traversal remained unresolved in 0.6.1. Full-hopper native outcomes are recorded separately from the Unity fixture suite.
 
 ## What changed in 0.6.0
 

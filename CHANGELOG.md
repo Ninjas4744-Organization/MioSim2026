@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Correct hopper pumping to move the bin model, rigid walls and front roof frame with the physical slide. Keep the indexer fixed and telescope the tray overlap. The supplied footage supersedes the earlier fixed-bin interpretation.
+
+- Prevent trench pinches with bounded lateral bumper compression and low-friction sliding against static field sides, including rigid hopper/frame panels. Added loaded/empty rigid-panel pinches, stowed/deployed bumper pinches, reverse-escape and solid-wall regressions.
+- Restore automatic hopper pumping for partial loads during hub shooting and delivery, starting with aiming and spin-up while stored fuel remains. Stop when storage clears or shooting ends. Preserve the calibrated strokes, jam-recovery continuity and manual hard-pump priority.
+- Added three solid CAD bellypan contacts, preserving the wheel cutouts. The underside collides with fuel and field obstacles during every mechanism state; balls can lift or beach the chassis.
+- Added integration and packaging checks for underside fuel blocking, ball-supported chassis lift, and field contact.
+- Added a reproducible ZIP of the verified sliding-hopper test build, including commit provenance, file checksums and validation notes.
+
 ## 0.6.2 (2026-11-21)
 
 - Corrected the roof contact strand diameter from 24 mm to the model's estimated 2.3 mm cord, and tensioned the textile to rest scale 1.0. Rejected 5% ease and swept-node contact experiments after native crossbar failures.

@@ -4,15 +4,35 @@ The native model is metres/Z-up, intake +X, shooter -X. Unity metres are `(-nati
 
 ## Bumper contacts
 
+Lateral contacts between the four bumper boxes and static objects on the Field layer now use a bounded foam approximation: 12,000 N/m stiffness, 120 N·s/m closing damping and an 8 mm hardening depth. The force budget is shared across each contact manifold. This prevents millimetre-scale opposing contacts from generating enough artificial friction to suspend the chassis above the wheels indefinitely. Hard contact resumes at the compression limit. Vertical support, fuel contacts, robot-to-robot contacts and the CAD bumper dimensions retain their existing behavior. These are simulator calibration values, not measured bumper material properties.
+
+Lateral static-field contacts also use 0.03 static/dynamic friction on the robot's solid surfaces, including the hopper walls, shooter sides and moving intake. Native traces identified a hopper-wall contact outside the original bumper-only handler. A controlled pinch above the bumpers reproduced lost wheel support with both empty and loaded hoppers. Rigid panels retain their full normal collision response; only bumper foam receives compression. Upward-facing support and fuel contacts retain their authored friction.
+
 The framework's root box is a trigger used for the bumper envelope. Four separate solid boxes now follow the CAD perimeter: 57.2 mm thick, from 32.28 to 159.28 mm above the chassis origin, with a hollow interior. Assembly and bundle checks require all four surfaces to be enabled, non-trigger chassis contacts that include fuel. The 0.6.0 build omitted these surfaces, allowing fuel through the bumper.
 
 The chassis now uses discrete collision detection at MoSim's 4.5 ms physics step. Installed-player A/B tests with the same solid bumper geometry found that swept continuous detection held the chassis position while its reported velocity remained above 3 m/s. Discrete detection removed that clear-floor stop-and-jump behavior. [Native measurements](../Reports/native-dense-contact-audit.json) also retain the failing full-load scoring results; this contact correction does not establish that every complete cycle passes.
 
+## Bellypan contacts
+
+Three adjoining chassis boxes approximate the CAD bellypan at native Z 46.8–50.8 mm. The rear, middle and front sections preserve the large wheel cutouts while simplifying fastener holes and small edge details. They use the Robot layer and the same default contact material as the bumper proxies, with solid fuel and field contacts throughout collection, reverse, stow and disable. The one-way intake keeper never opens their collision pairs. Balls beneath the plate can support, lift or beach the robot; this is an expected contact outcome.
+
+Assembly and bundle inspection validate the three sections. Integration diagnostics push stock fuel beneath each section and both joins in four mechanism states, then measure chassis support on stock balls and a field obstacle. Packaging requires all three bellypan checks.
+
+The underside checks honor the loaded game's existing lower-chassis fuel compression allowance. Contact can compress a ball while its centre stays beneath the plate; no game-wide contact settings are changed.
+
+[Development verification](../Reports/bellypan-verification.json) records the twenty underside probes, chassis support, six regression groups and full-field editor smoke replays. The latter retained 55 balls through the trench and 54 over the bump; they do not replace installed-player release certification.
+
 ## Bounded slides
 
-An explicit hard-pump request takes priority over the delayed soft-pump default after recovery. The rail may first need to open to 10.5 encoder rotations before starting its three hard cycles; the automatic soft command cannot interrupt that opening or an active hard cycle. The recovery regression requests hard pumping just before the automatic soft transition and requires all three cycles to finish.
+The moving-bin correction changes the stowed storage envelope. Earlier fixed-bin full-load stow results do not certify this assembly; dense-load stow must be revalidated separately.
 
-Only the intake/kicker assembly retracts. The main hopper walls, storage floor and net frame stay attached to the chassis, as confirmed by the team. The legacy `hopperRail` field now names the intake/kicker front carrier; it does not move the hopper. Each slide's configurable joint connects directly to the chassis. X/Y translation and all angular motion are locked. Z translation is **Limited**, with a symmetric limit of half the stroke and the connected anchor located halfway between closed and open. This defines a physical range of 0…0.240 m for the intake and 0…0.22946 m for the front carrier.
+Automatic pumping follows fuel occupancy during hub shooting and delivery. It starts with a shot request, including aiming and spin-up, while balls remain in storage; a sparse load could otherwise leave before any pumping began. Storage detection excludes ground fuel beneath the chassis and balls already handed to the shooter. The calibrated 9–10 rotation soft stroke continues through jam recovery without restarting its phase. Automatic pumping stops when storage clears, shooting is cancelled, reverse is requested or the robot is disabled, and resumes if more fuel arrives while firing.
+
+An explicit hard-pump request retains priority. The rail may first need to open to 10.5 encoder rotations before starting its three hard cycles; the automatic soft command cannot interrupt that opening or an active hard cycle. The recovery regression requests hard pumping after a recovery and requires all three cycles to finish.
+
+[Sliding-hopper development checks](../Reports/sliding-hopper-r3/verification.json) cover three-ball hub shots, four three-ball delivery cases, an empty hopper, four physical travel/stow headings, eight angled field-trench cases and manual hard-pump priority. They measure the bin wall itself while fuel remains, in addition to the intake rail, and require the overlapping floor to stay inside the moving front panel. Earlier automatic-pump reports measured the intake-only assembly and remain historical evidence.
+
+The hopper bin itself slides, matching the supplied pumping footage. Its CAD model, side walls, front panel, inlet lip, kicker and front roof anchors move on `hopperRail`; the rear indexer and rear roof anchors stay on the chassis. The overlapping tray bridges the moving front panel to the stationary indexer entrance, without leaving an invisible floor beyond the retracted bin. Each slide's configurable joint connects directly to the chassis. X/Y translation and all angular motion are locked. Z translation is **Limited**, with a symmetric limit of half the stroke and the connected anchor located halfway between closed and open. This defines a physical range of 0…0.240 m for the intake and 0…0.22946 m for the hopper carrier.
 
 The runtime reads each moving body's position in the chassis rigidbody frame, rather than relying on a versioned encoder offset. Velocity commands use a braking-aware speed profile, limited to 0.16 m/s, 1.8 m/s², and 350 N. The lower pump speed and braking profile reduce reversal overshoot within the short 8–11 / 9–10 rotation windows. Pump velocity brakes toward the nominal source encoder windows before reversing. The simulator uses a 0.15-rotation upper reversal tolerance, matching the source controller position-goal tolerance, and a 2 mm upper braking margin; the hardware percent-output loop has its own encoder and virtual-limit timing. The same finite force cap and physical stops remain active when disabled; the disable path commands zero velocity without re-homing the joint or restoring infinite force.
 
@@ -28,7 +48,7 @@ The kicker's original structural plates, motor housings and upper pulleys move w
 
 The lower carrier stays deployed during normal hard and soft pump strokes, matching the footage. Full stow still raises it before either slide retracts. Initial opening moves the intake/kicker carrier out before lowering the kicker. A 60-degree visual retraction about native `(0.57204, 0, 0.24405)` m clears the bumper; this is clearance calibration, since the footage does not show a complete opening or closing. Fuel contacts and rail limits retain their calibration. The integration check verifies that the kicker remains down while pumping, and the mesh audit covers both the complete stow sequence and the pump window.
 
-`Reports/Turbo4744-kicker-reference-comparison.png` compares the compact CAD assembly against the supplied footage. The older `Reports/Turbo4744-kicker-pumping.gif` predates the fixed-bin correction; current motion is verified in the visible fixtures and installed-player cycles.
+`Reports/Turbo4744-kicker-reference-comparison.png` compares the compact CAD assembly against the supplied footage. The older `Reports/Turbo4744-kicker-pumping.gif` shows an earlier assembly; the sliding-bin correction is checked separately against the newer supplied footage.
 
 ## Fuel and shooting
 
@@ -42,7 +62,7 @@ The shooter has 0.313 m of clear width, enough for two official 150 mm balls sid
 
 All transport uses bounded local forces and equal chassis reaction. Indexer traction is shared across both floors with a 320 N total budget. Forward 78 motor RPS maps to an explicitly calibrated 1.2 m/s roller surface speed; reverse is -20 motor RPS. The accelerator adapter maps its 2200 RPM reference proportionally to 2.5 m/s, with separate 60000 reference/contact RPM per second ramps and a 320 N budget, and the wide flywheel contact shares a 480 N budget. These are simulator contact calibrations, not measured hardware ratios. Every ball touching a shooter stage in the same physics step sees the same wheel speed before combined arrival load is applied. Fuel remains independent, with no parenting, repositioning, freezing, velocity assignment or corrections in flight.
 
-The fixed storage floor ends at the roller bed instead of covering its lower axes. The former captured-fuel floor contact has been removed: pumping moves the intake/kicker, while the bin remains fixed. The intake roller and all nine indexer roller meshes rotate around their measured CAD axes. `Tools/Blender/prepare_indexer.py` preserves existing game roller faces and reads the reference CAD without saving it; `Reports/indexer-model.json` records the geometry.
+The storage floor ends at the stationary roller bed instead of covering its lower axes. Its forward overlap follows the physical hopper front panel while the sliding walls push fuel toward the indexer. The intake roller and all nine indexer roller meshes rotate around their measured CAD axes. `Tools/Blender/prepare_indexer.py` preserves existing game roller faces and reads the reference CAD without saving it; `Reports/indexer-model.json` records the geometry.
 
 The intake side-guide proxies end at native X = 0.33 m, at the first lower roller. Their forward pickup extent is preserved. The former rear caps extended into the triangular shoulder area and intercepted corner fuel before it could touch the CAD support; the triangles now own that passive handoff.
 
@@ -70,7 +90,7 @@ The backing surface ends at the kicker release, leaving the storage tray clear. 
 
 This is a collision proxy for intake retention. The intake command stays latched at the team's 90 rotor RPS during collection. Disabled mode stops all rollers while retaining stored fuel through the solid contacts.
 
-Drive and shooter tables come from the team's 2026 code. Motor-to-wheel conversion, contact geometry, friction, launch channel, and mass distribution are simulation calibration. The roof uses MoSim's deforming cloth solver with a fixed frame, rather than mesh scaling or a hard roof. [The code mapping](RobotCodePort.md) records the pinned source, active state transitions, and hardware limitations.
+Drive and shooter tables come from the team's 2026 code. Motor-to-wheel conversion, contact geometry, friction, launch channel, and mass distribution are simulation calibration. The roof uses MoSim's deforming cloth solver with a sliding front frame and stationary rear lacing, rather than mesh scaling or a hard roof. [The code mapping](RobotCodePort.md) records the pinned source, active state transitions, and hardware limitations.
 
 The hopper roof material is derived from MoSim's `Assets/Materials/Net/Net.mat` and uses its supplied `ActualTileableNet.png`. The texture already contains multiple openings, so the roof tiles it twice in each direction. The earlier 18 by 16 tiling made the holes too small to remain visible at normal camera distances. Both sides render with alpha-clipped openings, depth writes and shadows; the texture supplies the strand color without an additional dark tint.
 
@@ -92,12 +112,12 @@ The retention regression starts empty and collects a group of nine official fiel
 
 The systems benchmark measures driving with an empty hopper and a seeded 20-piece load, checking how many remain before and after maneuvering. It also starts eight real preloads at each shooting distance, requests a three-cycle hard pump, and counts actual scoring events in the hub. Drive commands are applied at every physics step. Cloth scale, deployment span, finite particles, and rail motion are recorded alongside scoring and speed measurements. Reports fingerprint the packaged bundle and runtime DLL.
 
-Total intake force is shared across a dense pile. Pumping moves the intake/kicker beneath the fixed hopper. The visual audit samples the transformed Intake_Geometry mesh center, independently of the rail encoder, and saves extended/retracted pump frames. F8 toggles a local status panel and per-second diagnostic log for native-game verification.
+Total intake force is shared across a dense pile. Pumping slides the hopper walls and front roof frame toward the stationary indexer. The storage tray overlaps the fixed inlet throughout travel. The partial-load benchmark measures the actual front-panel movement as well as the intake encoder, and requires the seeded balls to score or deliver. F8 toggles a local status panel and per-second diagnostic log for native-game verification.
 
 Side keeper surfaces retain shoulder fuel beside the shooter. The passive triangular supports and wide lower guides leave the upper-floor drop open.
 
 Regression collection/retention counts include the lower roller bed and the narrow accelerator staging volume behind the hopper. Fuel there remains inside the robot even when the old rising-ramp hopper box would exclude it. Existing offered/retained counts, escape checks, drive and scoring thresholds remain unchanged.
 
-Loaded-stow retention uses the fixed main-bin volume. The front panel is at local Z about 0.626 m; a 150 mm ball inside it can have its centre at about 0.552 m. The former 0.42 m closed-bin cutoff excluded supported fuel after correcting the assembly. The revised centre cutoff is 0.56 m, while requiring every collected ball retained and zero escapes.
+Loaded-stow retention derives the available volume from the actual moving front panel. A fixed front cutoff cannot describe the sliding bin. Retention still requires every collected ball to remain inside with zero escapes. The earlier fixed-bin full-load stow results do not certify this revised mechanism; packed-load stow needs a fresh native run.
 
 Lower-mouth admission tests the physical ball surface against the configured mouth top at local Y 0.275 m. A ball can begin contacting that opening while its centre remains above it. The previous centre-only test missed partial entries under mixed loads. The lane, mouth plane, stock fuel radius and force budgets remain unchanged; upper-floor fuel still has to descend before the accelerator or shooter contact may engage.
