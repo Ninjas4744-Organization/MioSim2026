@@ -62,6 +62,7 @@ $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Test-Visible.ps1 -MoSimProject $project -UnityEditor $unity # all 14 required groups
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel -Visible
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Swerve
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Trench
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Trench -DiagnosticArguments '-turboPinch'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Retention -Visible
@@ -85,6 +86,11 @@ source fingerprints, native shooting result and twelve packaged trench/pinch cas
 then verifies every ZIP entry. The filename includes `0.6.2-sliding-hopper-r3`; build
 notes describe its targeted validation and the remaining full-load stow check.
 `Tools/Package.ps1` continues to require the complete release certification.
+
+For the swerve hitbox build, use
+`python Tools/package_verified_build.py --profile swerve --verification Reports/swerve-modules-r4/verification.json --label swerve-modules-r4`.
+This validates all forty collision probes, normal driving, three-ball shooting and
+eight empty-floor trench geometry cases against the archived build fingerprints.
 
 The test examples use `-Visible` to show Unity's Game view. Indexer tests show a live cutaway with the fixture name and contact counts; other checks follow the robot and shooting target.
 
