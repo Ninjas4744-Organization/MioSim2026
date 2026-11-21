@@ -1,5 +1,5 @@
 {
-  "version": "0.6.1",
+  "version": "0.6.2",
   "team_source_commit": "2bd34881f2c39f86a74cc7d3ea18ba6e00678493",
   "hardware_commands": {
     "indexer_forward_motor_rps": 78,
@@ -25,6 +25,11 @@
     "side_guides": "Passive convex envelopes of original CAD faces, plus continuous passive mouth guides; no powered traction or animation.",
     "retention": "Lower-entry and pre-flywheel gates open for feed/reverse and close only after their volume clears.",
     "intake_handoff": "Existing pickup rises over the kicker, then hands down to the lower roller bed. Four original backing segments stop before the downward handoff.",
+    "intake_collection_traction_budget_n": 100,
+    "intake_collection_overall_contact_budget_n": 600,
+    "intake_feeding_overall_contact_budget_n": 140,
+    "intake_traction_budget_reason": "Limit powered tangential force separately from passive normal support. A lower overall contact cap alone starved dense arrivals of support. Feeding retains its previous 140 N overall profile without the additional collection traction cap. Source 90/-20 intake motor RPS and calibrated 3.6/1.2 m/s surface speeds remain separate.",
+    "intake_capture_release": "Collection traction releases after full inlet clearance and latched storage support. Feeding can re-engage the entry contact with its lower-speed profile. The moving intake contact follows the motor command during retraction. Floor support latches once the sphere clears the tray; wall retention waits for full inlet clearance.",
     "accelerator_interlock": "Additional simulator interlock: during a firing-state re-aim, command a zero-speed contact target directly, without waiting for the motor reference to ramp down. The 60000 RPM/s contact ramp and bounded forces still apply; resume feed after accelerator readiness. No braking during reverse recovery or disabled mode.",
     "pump_braking": "Finite velocity braking toward the nominal source windows; 0.15-rotation upper reversal tolerance (source controller position-goal tolerance) and 2 mm upper approach margin are simulator adapters.",
     "pump_priority": "An explicit pending or active hard-pump request takes priority over the delayed automatic soft-pump default after recovery.",
@@ -37,9 +42,20 @@
       0.6
     ],
     "hopper_kinematics": "Main hopper walls, storage floor and net frame fixed to chassis. Only intake/kicker retracts. Legacy hopperRail names the front carrier; no stored-fuel floor traction contact.",
-    "net_rest_length_scale": 1.35,
-    "rejected_net_comparison": "1.05 rest-length scale reduced recorded trench escapes from ten to three, but failed the unchanged 50-ball capacity minimum with 48 collected in the first larger-fill heading. Keep 1.35.",
-    "lower_mouth_detection": "The configured mouth top remains local Y 0.275 m. Admission checks the physical sphere lower surface (centre minus radius) crossing that top, with centre Y at least 0.13 m, centre Z between -0.14 and 0.105 m, and centre X within 0.10 m of the lane centre. Upper-floor fuel must descend before contact; no fuel geometry is changed."
+    "net_rest_length_scale": 1.0,
+    "net_collision_strand_radius_m": 0.00115,
+    "net_stretch_compliance": 3e-07,
+    "net_shear_compliance": 1.5e-07,
+    "net_environment_contacts": "Free cloth node contacts against static field boxes, including the native 0.564 m trench underside; external normal impulse includes chassis frame motion and reaches the chassis.",
+    "fuel_compliance_stiffness_n_per_m": 750,
+    "fuel_compliance_closing_damping_ns_per_m": 8,
+    "fuel_compliance_hardening_depth_m": 0.015,
+    "fuel_compliance_scope": "Contact impulse limits between fuel colliders within the robot hopper only. At the hardening depth, native hard contact takes over. No sphere resizing, mass change, field contact change or flight correction. Material values are explicit simulator calibration; FIRST/AndyMark documents compressibility, not this fitted contact law.",
+    "rejected_net_comparison": "Earlier 1.05 rest scale with 24 mm collision cords and rigid fuel contacts reduced spills but failed capacity. The report is preserved; it does not evaluate the corrected cord and compliant-fuel configuration.",
+    "lower_mouth_detection": "The configured mouth top remains local Y 0.275 m. Admission checks the physical sphere lower surface (centre minus radius) crossing that top, with centre Y at least 0.13 m, centre Z between -0.14 and 0.105 m, and centre X within 0.10 m of the lane centre. Upper-floor fuel must descend before contact; no fuel geometry is changed.",
+    "slide_force_limit_n": 350,
+    "slide_velocity_damping_ns_per_m": 4200,
+    "slide_damping_reason": "Finite velocity servo damping increased from 1800 to 4200 N s/m after native loaded stow stalled about 15 mm short. Original 350 N force cap, 0.16 m/s speed and 1.8 m/s2 acceleration limits remain."
   },
   "limits": "Contact speeds, force budgets, hard-core compliance and lateral damping are simulator calibration, not measured hardware transmission or motor torque. Forces act only inside the mechanism with equal chassis reaction. No in-flight corrections, fuel resizing, parenting or velocity assignments.",
   "geometry_record": "indexer-model.json",

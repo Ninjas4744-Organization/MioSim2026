@@ -62,7 +62,7 @@ namespace Ninjas4744.MoSim
         public float railMaxSpeed = .16f,
             railAcceleration = 1.8f,
             railMaxForce = 350f,
-            railVelocityDamping = 1800f;
+            railVelocityDamping = 4200f;
 
         [Header("Rotor-to-contact speed adapters")]
         public float intakeRpm = 2000f,
@@ -111,7 +111,8 @@ namespace Ninjas4744.MoSim
         private Turbo4744KickerRig _kickerRig;
         private bool _backingExtended;
         private float _intakeCollectionSpeed,
-            _intakeCollectionForce;
+            _intakeCollectionForce,
+            _intakeCollectionTractionForce;
         private DriveController _drive;
         private Vector3 _intakeClosed,
             _hopperClosed;
@@ -253,6 +254,7 @@ namespace Ninjas4744.MoSim
             {
                 _intakeCollectionSpeed = intakeContact.maxSurfaceSpeed;
                 _intakeCollectionForce = intakeContact.maxTotalForce;
+                _intakeCollectionTractionForce = intakeContact.maxTotalTractionForce;
             }
             _kickerRig = GetComponent<Turbo4744KickerRig>();
             _drive = GetComponent<DriveController>();
@@ -295,7 +297,7 @@ namespace Ninjas4744.MoSim
             _statusInput.Enable();
             Turbo4744NativeReplay.AttachIfRequested(this);
             Debug.Log(
-                "[Turbo 4744 v0.6.1] Staged intake, zone-selected shooting and physical rail control enabled."
+                "[Turbo 4744 v0.6.2] Staged intake, compliant hopper, zone-selected shooting and physical rail control enabled."
             );
         }
 
@@ -707,7 +709,12 @@ namespace Ninjas4744.MoSim
             {
                 intakeContact.maxSurfaceSpeed = ActiveShot ? 1.2f : _intakeCollectionSpeed;
                 intakeContact.maxTotalForce = ActiveShot ? 140f : _intakeCollectionForce;
-                intakeContact.SetRpm(Deployed ? intakeRpm * TargetIntakeMotorRps / 90f : 0);
+                intakeContact.maxTotalTractionForce = ActiveShot
+                    ? 0
+                    : _intakeCollectionTractionForce;
+                // The rollers keep their motor command during retraction.
+                // Their moving contact must complete the same inlet handoff.
+                intakeContact.SetRpm(intakeRpm * TargetIntakeMotorRps / 90f);
             }
             SetRollers(floorRollers, -floorRpm * TargetIndexerMotorRps / 78f);
             indexer.SetMotorRps(TargetIndexerMotorRps);
@@ -1138,7 +1145,7 @@ namespace Ninjas4744.MoSim
             };
             GUI.Box(
                 new Rect(12, 180, 370, 132),
-                "Turbo 4744 v0.6.1  |  "
+                "Turbo 4744 v0.6.2  |  "
                     + ShootingState
                     + "\n"
                     + "Target: "

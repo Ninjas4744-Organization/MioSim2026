@@ -324,6 +324,7 @@ public static class Ninjas4744Builder
         robot.intakeContact.maxTractionForce = 320;
         robot.intakeContact.tractionResponse = 120;
         robot.intakeContact.maxTotalForce = 600;
+        robot.intakeContact.maxTotalTractionForce = 100;
         robot.intakeContact.normalStiffness = 900;
         robot.intakeContact.normalDamping = 28;
         robot.intakeContact.maxNormalForce = 80;
@@ -501,7 +502,7 @@ public static class Ninjas4744Builder
         var pack = AssetDatabase.LoadAssetAtPath<RebuiltModpackSO>(PackPath)
             ?? ScriptableObject.CreateInstance<RebuiltModpackSO>();
         Set(pack, "modpackName", "Ninjas 4744 Turbo 2026");
-        Set(pack, "modpackVersion", "0.6.1");
+        Set(pack, "modpackVersion", "0.6.2");
         Set(pack, "authorName", "Ninjas 4744");
         Set(
             pack,
@@ -850,24 +851,27 @@ public static class Ninjas4744Builder
         renderer.sharedMaterial = material;
         var solver = go.AddComponent<NetSolver>();
         go.AddComponent<NetParentFollower>();
+        go.AddComponent<Turbo4744NetEnvironment>();
+        root.AddComponent<Turbo4744FuelCompliance>();
         solver.resolutionX = nx;
         solver.resolutionY = ny;
         solver.netWidth = .71f;
         solver.netHeight = .612f;
         solver.useAuthoredRestShape = false;
-        // Preserve the existing textile capacity calibration. The tighter-net
-        // comparison reduced trench spill but failed the 50-ball fill minimum.
-        solver.restLengthScale = 1.35f;
+        // Tensioned textile with photo-derived 2.3 mm cord diameter. The former
+        // 24 mm collision strands and stretchy roof produced an oversized heap.
+        // Bounded fuel-to-fuel compliance provides packing without a rigid lid.
+        solver.restLengthScale = 1;
         solver.subSteps = 4;
-        solver.stretchCompliance = .0003f;
-        solver.shearCompliance = .00015f;
+        solver.stretchCompliance = .0000003f;
+        solver.shearCompliance = .00000015f;
         solver.bendCompliance = .002f;
         // 320 nodes represent a roughly 240 g textile, not a 1.6 kg roof.
         // Heavy nodes generate excessive collision reactions under a full load.
         solver.damping = .05f;
         solver.particleMass = .00075f;
         solver.visualSmoothingIntensity = .7f;
-        solver.collisionRadius = .012f;
+        solver.collisionRadius = .00115f;
         solver.collisionLayers = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
         solver.anchorBorderFraction = 0;
         var rig = root.AddComponent<Turbo4744NetRig>();
@@ -1025,6 +1029,26 @@ public static class Ninjas4744Builder
         )
             throw new InvalidOperationException(
                 "The hopper bin and net anchors must remain fixed to the chassis"
+            );
+        var solver = robot.roofNet.GetComponent<NetSolver>();
+        var foam = root.GetComponent<Turbo4744FuelCompliance>();
+        if (
+            !solver.GetComponent<Turbo4744NetEnvironment>()
+            || !foam
+            || Mathf.Abs(solver.restLengthScale - 1) > .000001f
+            || Mathf.Abs(solver.collisionRadius - .00115f) > .000001f
+            || Mathf.Abs(solver.stretchCompliance - .0000003f) > .00000001f
+            || Mathf.Abs(solver.shearCompliance - .00000015f) > .00000001f
+            || Mathf.Abs(foam.stiffness - 750) > .01f
+            || Mathf.Abs(foam.damping - 8) > .01f
+            || Mathf.Abs(foam.maximumCompression - .015f) > .000001f
+            || Mathf.Abs(robot.intakeContact.maxTotalForce - 600) > .01f
+            || Mathf.Abs(robot.intakeContact.maxTotalTractionForce - 100) > .01f
+            || Mathf.Abs(robot.railMaxForce - 350) > .01f
+            || Mathf.Abs(robot.railVelocityDamping - 4200) > .01f
+        )
+            throw new InvalidOperationException(
+                "The native-tested textile and bounded fuel compliance are required"
             );
     }
 

@@ -44,6 +44,11 @@ namespace Ninjas4744.MoSim
             "Shared motor/contact force budget across all touching fuel, in newtons. Zero preserves per-contact limits."
         )]
         public float maxTotalForce;
+
+        [Tooltip(
+            "Optional shared budget for powered tangential traction, before the overall contact-force cap."
+        )]
+        public float maxTotalTractionForce;
         public Turbo4744FuelKeeper entryKeeper;
         public Turbo4744Indexer lowerEntry;
         public float CurrentRpm { get; private set; }
@@ -54,6 +59,7 @@ namespace Ninjas4744.MoSim
         private readonly HashSet<Rigidbody> current = new HashSet<Rigidbody>();
         private readonly Rigidbody[] bodies = new Rigidbody[256];
         private readonly Vector3[] forces = new Vector3[256];
+        private readonly Vector3[] tangentForces = new Vector3[256];
         private int fuelMask;
 
         private void Awake()
@@ -115,6 +121,7 @@ namespace Ninjas4744.MoSim
             );
             Vector3 right = transform.right;
             float totalForce = 0;
+            float totalTraction = 0;
             for (int i = 0; i < count; i++)
             {
                 var rb = overlaps[i].attachedRigidbody;
@@ -122,9 +129,10 @@ namespace Ninjas4744.MoSim
                     continue;
                 if (lowerEntry && !lowerEntry.HasEnteredShooter(rb))
                     continue;
-                // Floor/gate retention can engage before the curved pickup
-                // finishes its upper handoff. Keep that narrow physical
-                // contact active until the ball leaves the path itself.
+                // Once the whole ball clears the inlet and latches floor
+                // support, collection traction has finished its handoff.
+                // A packed stored ball may remain near the path indefinitely;
+                // re-engaging it would turn the pickup into a storage conveyor.
                 if (
                     entryKeeper
                     && (
@@ -132,18 +140,7 @@ namespace Ninjas4744.MoSim
                             ? !entryKeeper.IsCaptured(rb)
                             : TargetRpm >= 0
                                 && entryKeeper.IsCaptured(rb)
-                                && (!curved || !previous.Contains(rb))
-                                && !(
-                                    curved
-                                    && (
-                                        entryKeeper.robot.Feeding
-                                        || (
-                                            entryKeeper.CameThroughIntake(rb)
-                                            && entryKeeper.robot.ShootingState
-                                                == Turbo4744.ShootState.Idle
-                                        )
-                                    )
-                                )
+                                && !entryKeeper.robot.Feeding
                     )
                 )
                     continue;
@@ -245,7 +242,21 @@ namespace Ninjas4744.MoSim
                     * widthContact;
                 bodies[Contacts - 1] = rb;
                 forces[Contacts - 1] = force;
+                tangentForces[Contacts - 1] = axis * tangentForce * widthContact;
+                totalTraction += Mathf.Abs(tangentForce * widthContact);
                 totalForce += force.magnitude;
+            }
+            // The motor's traction limit must not remove the passive support
+            // needed to lift a dense arrival packet over the intake lip.
+            if (maxTotalTractionForce > 0 && totalTraction > maxTotalTractionForce)
+            {
+                float tractionScale = maxTotalTractionForce / totalTraction;
+                totalForce = 0;
+                for (int i = 0; i < Contacts; i++)
+                {
+                    forces[i] += tangentForces[i] * (tractionScale - 1);
+                    totalForce += forces[i].magnitude;
+                }
             }
             // One intake motor cannot multiply its available force by the
             // number of balls in a dense pile. Preserve reaction forces, but

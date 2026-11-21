@@ -110,12 +110,13 @@ namespace Ninjas4744.MoSim
                             * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
                         break;
                     }
-                // New entries must clear the floor; fuel already supported
-                // inside can rest on it. Latch support before retaining it.
+                // A whole ball above the tray can land on it while still
+                // entering through the front wall. Waiting for wall clearance
+                // also kept its floor disabled during intake retraction.
+                // Wall retention still waits for full clearance below.
                 if (
                     !state.floorCleared
                     && local.y - radius > top + (state.entering ? .002f : -.004f)
-                    && Behind(frontPanel ? frontPanel : inlet, body.position, radius)
                 )
                     state.floorCleared = true;
                 if (
