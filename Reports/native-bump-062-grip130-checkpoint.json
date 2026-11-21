@@ -1,0 +1,21 @@
+{
+  "version": "0.6.2",
+  "artifacts": {
+    "Ninjas4744.dll": "ebe4ba9ad58e9c680cb49387efecbf7cbc5d304a14089deb6eba6d406b231140",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "3b81080d3e4a24cf3d8aa1d41282c25b64474ad81836a15c09e714daad339eb3"
+  },
+  "label": "062-release-blue-bump-delivery",
+  "route": "Bump beside hub at world Z 1.7",
+  "alliance": "Blue",
+  "stowed": 58,
+  "retained": 58,
+  "stored_spills": 0,
+  "inlet_departures": 0,
+  "released": 58,
+  "delivered_within_1_25_m": 57,
+  "remaining": 0,
+  "maximum_tilt_degrees": 15.144270896911621,
+  "maximum_rail_extension_m": 0.0312,
+  "maximum_return_frame_ms": 10.497300148010254,
+  "passed": true
+}

@@ -1,0 +1,273 @@
+{
+  "version": "0.6.2",
+  "bundle_sha256": "d9347cf4ef7db98ade1cf2b223357ad079d38b30f85b2224a77c551aaf1a897b",
+  "runtime_dll_sha256": "092b1b23bcd8eff14386df8e21b53f2616d027e57c9273344db816c5d2631e62",
+  "fixtures": [
+    {
+      "name": "Integration",
+      "report": "062-before-inlet-support/physics-diagnostics.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": false,
+      "cases": 0,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Travel",
+      "report": "062-before-inlet-support/travel-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": false,
+      "cases": 4,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Retention",
+      "report": "062-before-inlet-support/retention-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 18,
+        "retained": 18,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Approach",
+      "report": "062-before-inlet-support/approach-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 6,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 54,
+        "retained": 54,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Systems",
+      "report": "062-before-inlet-support/systems-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 7,
+      "measured_totals": {
+        "scored": 40,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 15
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Jam",
+      "report": "062-before-inlet-support/systems-jam.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 1,
+      "measured_totals": {
+        "scored": 1,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 3
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Indexer",
+      "report": "062-before-inlet-support/systems-indexer-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 11,
+      "measured_totals": {
+        "scored": 20,
+        "delivered": 0,
+        "seeded": 20,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 33
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Moving",
+      "report": "062-before-inlet-support/systems-moving-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 15,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 6
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Delivery",
+      "report": "062-before-inlet-support/systems-delivery-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 4,
+      "measured_totals": {
+        "scored": 3,
+        "delivered": 31,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 12
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Matrix",
+      "report": "062-before-inlet-support/systems-matrix-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 8,
+      "measured_totals": {
+        "scored": 64,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 24
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Capacity",
+      "report": "062-before-inlet-support/capacity-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 60,
+        "retained": 0,
+        "retainedAfterDrive": 60,
+        "released": 60,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Pile",
+      "report": "062-before-inlet-support/pile-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 106,
+        "retained": 0,
+        "retainedAfterDrive": 106,
+        "released": 106,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "WheelPile",
+      "report": "062-before-inlet-support/wheel-pile-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 84,
+        "retained": 0,
+        "retainedAfterDrive": 84,
+        "released": 84,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Pulse",
+      "report": "062-before-inlet-support/systems-pulse-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "embedded_hashes_present": true,
+      "cases": 1,
+      "measured_totals": {
+        "scored": 7,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 3
+      },
+      "editor_service_errors": []
+    }
+  ]
+}

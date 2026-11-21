@@ -1,0 +1,21 @@
+{
+  "version": "0.6.2",
+  "artifacts": {
+    "Ninjas4744.dll": "ebe4ba9ad58e9c680cb49387efecbf7cbc5d304a14089deb6eba6d406b231140",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "816835e241cc5d7b28f6cdbc3ef9881d1014da0f07e3374e46e7ff50f0ac4476"
+  },
+  "label": "062-grip140-blue-bump-delivery",
+  "route": "Bump beside hub at world Z 1.7",
+  "alliance": "Blue",
+  "stowed": 56,
+  "retained": 56,
+  "stored_spills": 0,
+  "inlet_departures": 0,
+  "released": 56,
+  "delivered_within_1_25_m": 56,
+  "remaining": 0,
+  "maximum_tilt_degrees": 15.043879508972168,
+  "maximum_rail_extension_m": 0.0319,
+  "maximum_return_frame_ms": 13.238300323486328,
+  "passed": true
+}

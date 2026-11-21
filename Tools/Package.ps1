@@ -29,10 +29,12 @@ $version=$manifest.version
 if([version]$version -ge [version]'0.6.2'){
     $certificate=Get-Content -LiteralPath (Join-Path $repoRoot ('Reports/verification-'+$version+'.json')) -Raw|ConvertFrom-Json
     $native=Get-Content -LiteralPath (Join-Path $repoRoot ('Reports/native-trench-'+$version+'.json')) -Raw|ConvertFrom-Json
+    $bump=Get-Content -LiteralPath (Join-Path $repoRoot ('Reports/native-bump-'+$version+'.json')) -Raw|ConvertFrom-Json
     $dllHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()
     $bundleHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower()
     if($certificate.fixtures.Count -ne 14 -or @($certificate.fixtures|Where-Object {-not $_.passed -or -not $_.embedded_hashes_match}).Count -or $certificate.runtime_dll_sha256 -ne $dllHash -or $certificate.bundle_sha256 -ne $bundleHash){throw 'The complete release certificate must match this build. Run Tools/verify_release.py.'}
     if(-not $native.passed -or $native.cases.Count -lt 3 -or $native.artifacts.PSObject.Properties[$manifest.modDll].Value -ne $dllHash -or $native.artifacts.PSObject.Properties[$manifest.id].Value -ne $bundleHash -or -not @($native.cases|Where-Object {$_.start -eq 60}).Count){throw 'Native trench verification must include an actual 60-ball crossing for this build. Run Tools/verify_native_trench.py.'}
+    if(-not $bump.passed -or $bump.artifacts.PSObject.Properties[$manifest.modDll].Value -ne $dllHash -or $bump.artifacts.PSObject.Properties[$manifest.id].Value -ne $bundleHash){throw 'Native bump and delivery verification must match this build. Run Tools/verify_native_bump.py.'}
 }
 $dist=Join-Path $repoRoot 'dist'
 $staging=Join-Path $dist ('staging-'+$version)

@@ -34,11 +34,12 @@ for label in args.labels:
     assert not report['transitEscapes'] and not report['failureReason'], label
     assert report['storedRetainedAfterStow'] == report['fullyStoredBeforeStow'], f'{label}: stored fuel lost during stow'
     assert report['maximumTrenchHoldSeconds'] < .25, label
-    assert report['maxReturnFrameMs'] < 250, f'{label}: loaded-return frame stall'
+    maximum_frame_ms = max(report[k] for k in ['maxCollectFrameMs', 'maxReturnFrameMs', 'maxShootFrameMs'])
+    assert maximum_frame_ms < 250, f'{label}: collection/return/shoot frame stall'
     assert report['compliantContacts'] > 0 and report['netContactSteps'] > 0, label
     assert report['railForce'] == 350 and report['railDamping'] == 4200, label
     assert report['intakeForceBudget'] == 600 and report['intakeTractionBudget'] == 100, label
-    assert abs(report['netStrandRadius'] - .00115) < .000001 and report['netRestScale'] == 1, label
+    assert abs(report['netStrandRadius'] - .00115) < .000001 and abs(report['netRestScale'] - 1.0) < .000001, label
     frames = list(csv.DictReader([report['frameColumns'], *report['frames']]))
     own_sign = 1 if report['alliance'] == 'Blue' else -1
     crossing = [r for r in frames if int(r['transitRetained']) > 0
@@ -72,6 +73,7 @@ for label in args.labels:
         'maximum_fuel_compression_m': report['maximumFuelCompression'],
         'scored': report['scoredCaptured'], 'remaining': report['remainingCaptured'],
         'maximum_return_frame_ms': report['maxReturnFrameMs'],
+        'maximum_recorded_frame_ms': maximum_frame_ms,
     })
 assert len(summary['cases']) >= 3, 'Need repeat crossings, including slow and normal speeds'
 assert any(c['start'] == 60 for c in summary['cases']), 'Need an actual 60-ball crossing'

@@ -1,0 +1,16 @@
+{
+    "passed": false,
+    "prefabSource": "",
+    "bundleSha256": "3b81080d3e4a24cf3d8aa1d41282c25b64474ad81836a15c09e714daad339eb3",
+    "runtimeDllSha256": "b48bc2775d8ce87f293babbdbb6f5c206e97a3c12374f898d8a91270c1ad7b38",
+    "fixture": "Thirty ground balls; collection, native keyboard loaded drive, turning, disable, up to 25 seconds delivery through pumping, then empty stow",
+    "cases": [],
+    "intakeForceOverride": 0.0,
+    "intakeLateralOverride": -1.0,
+    "intakeTractionOverride": 0.0,
+    "capacityCaptureTarget": 51,
+    "errors": [
+        "System.InvalidOperationException: Built mod DLL differs from the runtime being tested. Build again.\r\n  at Turbo4744CapacityBench.Tick () [0x001ac] in Q:\\Assets\\Editor\\Turbo4744CapacityBench.cs:811 "
+    ],
+    "editorServiceErrors": []
+}

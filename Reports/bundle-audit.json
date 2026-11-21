@@ -20,6 +20,7 @@
         "MoSimCore",
         "UnityEngine.VehiclesModule",
         "MoSimLib",
+        "Unity.Mathematics",
         "UnityEngine.TextRenderingModule",
         "UnityEngine.JSONSerializeModule",
         "UnityEngine.ScreenCaptureModule"
