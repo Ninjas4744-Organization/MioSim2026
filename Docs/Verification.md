@@ -1,6 +1,6 @@
 # Turbo 1.0.1 verification
 
-**Release checks complete; prepared for the authorized Steam upload.** All certificates below match the Windows DLL and bundle fingerprints at the end of this page. Linux/macOS retain their published binaries and bundles.
+**Published on Steam Workshop as 1.0.1.** All certificates below match the Windows DLL and bundle fingerprints at the end of this page. Linux/macOS retain their published binaries and bundles.
 
 ## Release fixtures
 
