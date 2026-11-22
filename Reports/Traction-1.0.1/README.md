@@ -1,5 +1,7 @@
 # Single-ball traction investigation
 
+Follow-up: [bump landing tests](../Landing-1.0.1/README.md) reproduced one loaded beach with all four drive patches empty. A passive recorder now measures physical tire clearance in the installed game. The results below describe the earlier settled empty-robot investigation and its unchanged runtime at that time.
+
 The reported permanent beaching on one ball was **not reproduced**. No runtime, prefab, physics setting, installed mod file or tester ZIP was changed. Steam remains held.
 
 All 28 empty-hopper fixtures pass on the existing Windows tester (`be5c115`): 14 [forward](forward.json) and 14 [reverse](reverse.json). They use default Turbo; Actual Turbo shares its drivetrain. Each direction covers intake stowed and deployed, clear carpet, one stock dynamic fuel body below each of the four wheels, one below the bellypan center, and a static support stand lifting all tires clear. The robot and ball remain unconstrained during settling and driving, at the original 4.5 ms physics step. Fixture bodies are placed only before the settling phase. Cargo acquisition and loaded beaching are not covered.

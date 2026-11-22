@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "file": "Ninjas4744-Turbo2026-1.0.1-landing-diagnostics-Windows.zip",
+  "sha256": "a83a070f96a51d60efffb15014d50ab746951dcbff75458f16b6dd776a763f27",
+  "bytes": 8868949,
+  "payload_files": {
+    "modpack.json": "752b4956188858cb8e1367edb9ff690d003a6f3ec0edc736190675027dc702dc",
+    "Ninjas4744.dll": "a4466cab7be74b1e5e4adc8506689cc5c7defb0c34e7e275bd830fe4327d5e8f",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "2d11e7b3e7580f263c8fda0d4205570080ce001bc737bd9d740e0ac94a5a3583",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "3b67b77d43488289549a3e4fae519476c2e7112a0d3fd70d4fd99cb235f681d2",
+    "standalonewindows64": "33576350d72ae220fec757a21ff3c1c6c04808cb2561d466a7ab38c018f4c2c1",
+    "standalonewindows64.manifest": "c06d619e2e91023672c85704c24bdc20726a468e964e8cbc4c06cc70cac2921a"
+  },
+  "installed_files_match": true,
+  "settings_restored": true,
+  "capture_enabled": true,
+  "steam_uploaded": false
+}

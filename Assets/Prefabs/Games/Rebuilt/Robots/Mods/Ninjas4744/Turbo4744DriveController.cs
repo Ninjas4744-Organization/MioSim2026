@@ -22,6 +22,7 @@ namespace Ninjas4744.MoSim
             if (!contacts)
                 contacts = gameObject.AddComponent<Turbo4744BumperContacts>();
             contacts.RefreshContacts();
+            Turbo4744LandingTrace.AttachIfRequested(this);
         }
 
         private void ConfigureFuelContacts()

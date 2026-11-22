@@ -1,6 +1,6 @@
 # Uploading Turbo 1.0.1 to Steam Workshop
 
-**Current status: held Windows tester build — do not upload.** The wider automatic pump stroke has focused control, shooting and native load checks. Complete release recertification and the existing mechanical holds remain outstanding; see [verification](Verification.md). The current download is `dist/Ninjas4744-Turbo2026-1.0.1-visible-pump-Windows.zip`. The prior Steam candidate is archived and uses the earlier DLL. The instructions below apply only after a new passing release is staged.
+**Current status: held Windows diagnostic tester — do not upload.** A passive local landing recorder was added; the beaching issue is not declared fixed. Complete release recertification and existing mechanical holds remain outstanding; see [verification](Verification.md). The diagnostic ZIP is `dist/Ninjas4744-Turbo2026-1.0.1-landing-diagnostics-Windows.zip`. Prior Steam candidates remain archived.
 
 This updates the existing item **3843685878** for MoSim (**4398690**).
 Publication is a separate manual step; preparing the release does not upload it.

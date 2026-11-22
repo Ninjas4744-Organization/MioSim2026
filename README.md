@@ -6,7 +6,7 @@ An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo 
 
 ## Release 1.0.1
 
-**Windows tester candidate; Steam release on hold.** Regular automatic hopper pumping now uses a visibly deeper stroke, about 42 mm instead of 21 mm. Current validation covers 58 controls checks, automatic hub/delivery, the seven systems cases and installed full-load shooting. Earlier full release certification applies to the previous DLL; see [current verification](Docs/Verification.md).
+**Windows diagnostic tester; Steam release on hold.** A loaded landing on loose fuel reproduced a beach with all drive contact patches empty. The opt-in local recorder measures wheel support and tire clearance during stalls; no physics fix is claimed. Pumping remains shooting-only with the wider 42 mm regular stroke. See [current verification](Docs/Verification.md) and [landing capture instructions](Reports/Landing-1.0.1/README.md).
 
 The Windows release improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
 

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "scope": "Installed Steam v26.6.0 startup with Actual Turbo on Red; passive recorder armed, no scripted replay or driving input injected. Not a native full-hopper release certificate.",
+  "runtime_mvid": "fd0b364a-2d73-4715-8101-5d518fd3895f",
+  "runtimeDllSha256": "a4466cab7be74b1e5e4adc8506689cc5c7defb0c34e7e275bd830fe4327d5e8f",
+  "log_evidence": [
+    "[Turbo runtime] build=sliding-hopper-r3 module=fd0b364a-2d73-4715-8101-5d518fd3895f drive=Ninjas4744.MoSim.Turbo4744DriveController",
+    "[Turbo landing capture] Armed; local stall reports only. Remove Turbo4744-capture-landings.enabled to disable.",
+    "[Turbo runtime] mechanism controls started"
+  ],
+  "settings_restored": true,
+  "capture_enabled_for_next_game": true
+}

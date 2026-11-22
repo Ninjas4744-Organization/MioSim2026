@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "scope": "Two intentional all-tires-clear stand controls; no natural landing stall captured",
+  "artifacts": {
+    "Ninjas4744.dll": "a4466cab7be74b1e5e4adc8506689cc5c7defb0c34e7e275bd830fe4327d5e8f",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "2d11e7b3e7580f263c8fda0d4205570080ce001bc737bd9d740e0ac94a5a3583"
+  },
+  "editor_module": {
+    "mvid": "fb0467e4-5c80-4a6b-ba18-6a6256624b11",
+    "sha256": "a01b6c1c125ac6b03c58767b302a9ccd5fc7512677f5426143721fb4ec0ff645"
+  },
+  "captures": [
+    {
+      "file": "captures/20261122-160636-086-42b2b1.json",
+      "sha256": "6c487f8a6f09024cdb9f9935cbc4b9d3b1655f6a0601b1a57b963017a0cfe279",
+      "frames": 250,
+      "last_tire_clearance_m": [
+        0.14129328727722168,
+        0.14129304885864258,
+        0.14129352569580078,
+        0.14129328727722168
+      ],
+      "last_load": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tire_field_collisions": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "file": "captures/20261122-160720-278-1457fa.json",
+      "sha256": "bee74e4076ec0146c3de5285d3bb7d2680ffbd67166df50db9aa8c9299d66f44",
+      "frames": 250,
+      "last_tire_clearance_m": [
+        0.14129376411437988,
+        0.14129376411437988,
+        0.14129328727722168,
+        0.14129328727722168
+      ],
+      "last_load": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tire_field_collisions": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "unexpected_captures_in_moving_trials": 0
+}

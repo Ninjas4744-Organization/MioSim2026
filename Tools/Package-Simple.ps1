@@ -21,8 +21,10 @@ New-Item -ItemType Directory -Path $destination -Force|Out-Null
 $files|Copy-Item -Destination $destination -Force
 Copy-Item -LiteralPath $reportPath -Destination (Join-Path $mod 'simple-controls.json') -Force
 Copy-Item -LiteralPath (Join-Path $repoRoot 'README.md') -Destination $mod -Force
+$captureGuide=Join-Path $repoRoot 'Docs/Landing-Capture.md'
+if(Test-Path -LiteralPath $captureGuide){Copy-Item -LiteralPath $captureGuide -Destination (Join-Path $mod 'Landing-Capture.md') -Force}
 @'
-Turbo controls test build
+Turbo 1.0.1 Windows diagnostic tester - Steam release remains held
 
 Extract Ninjas4744-Turbo2026 into %USERPROFILE%\AppData\LocalLow\CascadeStudios\MoSim\Mods\.
 Restart MoSim, enable Ninjas 4744 Turbo 2026, and select 4744 / Turbo.
@@ -35,6 +37,9 @@ Shooting leaves the intake open after the hopper empties and after release.
 V / Y / Triangle: hard pumping, only while shooting. Collection never pumps.
 Regular automatic pumping now spans about 42 mm, previously 21 mm.
 Hard pumping retains its original stroke, force and speed settings.
+The landing issue remains under investigation; no physics fix is claimed.
+Optional local stall recording is described in Landing-Capture.md. Recording is
+off unless Turbo4744-capture-landings.enabled exists next to the Mods folder.
 Z / D-pad down: stow and cancel shooting. Release shoot before restarting.
 Turbo is the default robot with hold-to-shoot and intake toggles.
 Actual Turbo retains the original team's latched controls.

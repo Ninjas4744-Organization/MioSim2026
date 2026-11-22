@@ -2,41 +2,25 @@
   "version": "1.0.1",
   "release_ready": false,
   "artifacts": {
-    "Ninjas4744.dll": "e5900e28f295b14c4d3426fe6e8552c976c31fa6759f4f93ffb2f2ce28a5b5c6",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
+    "Ninjas4744.dll": "a4466cab7be74b1e5e4adc8506689cc5c7defb0c34e7e275bd830fe4327d5e8f",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "2d11e7b3e7580f263c8fda0d4205570080ce001bc737bd9d740e0ac94a5a3583"
   },
   "controls_checks_passed": 58,
   "editor_fixture_groups_passed": 1,
-  "editor_cases_passed": 7,
-  "automatic_hub_cases_passed": 1,
-  "automatic_delivery_cases_passed": 4,
-  "native_pump_motion_passed": true,
-  "native_stored_and_released": 58,
-  "nominal_regular_stroke_mm": 41.72,
-  "previous_nominal_regular_stroke_mm": 20.86,
-  "hard_pump_stroke_unchanged": true,
-  "collision_and_actuator_parameters_changed": false,
-  "pump_stroke_changed": true,
+  "editor_cases_passed": 14,
+  "physics_parameters_changed": false,
+  "passive_landing_capture_added": true,
+  "beaching_fix_claimed": false,
+  "native_startup_smoke_passed": true,
   "blocking_checks": [
-    "The complete 14-group release suite and both-alliance native transit are not recertified for this changed runtime.",
-    "Previously observed strict empty-stow and bump limits remain unresolved; the wider-stroke test is not full mechanical certification."
+    "The bump-landing stall remains under investigation; a native capture is needed to distinguish physical tire clearance from missed tread queries.",
+    "Complete release recertification and both-alliance transit have not been rerun for this diagnostic DLL.",
+    "The earlier strict empty-stow and bump travel limits remain unresolved."
   ],
   "previous_candidate": {
-    "commit": "8398c3ad85aa6bbfb6e6f2c7576dbea805b51970",
-    "artifacts": {
-      "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
-      "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
-    },
-    "editor_fixture_groups_passed": 14,
-    "editor_cases_passed": 52,
-    "status_file": "PumpVisibility-1.0.1/previous-candidate/release-status-1.0.1.json"
+    "runtime_commit": "be5c115",
+    "investigation_commit": "54d5db0",
+    "status_file": "Landing-1.0.1/previous-candidate/release-status-1.0.1.json"
   },
-  "publication": "Windows tester build only. Not uploaded. Linux/macOS binaries unchanged.",
-  "single_ball_traction_investigation": {
-    "cases_passed": 28,
-    "report": "Traction-1.0.1/README.md",
-    "payload": "empty",
-    "reported_stuck_case_reproduced": false,
-    "runtime_changed": false
-  }
+  "publication": "Windows diagnostic tester only. Not uploaded. Linux/macOS unchanged."
 }
