@@ -1,0 +1,8 @@
+{
+  "label": "steam-b",
+  "build": "steam",
+  "version": "1.0.0",
+  "bundleSha256": "b31ca9c7cef3efbbfcb0febbcb9bb5aadaa0b979c72f4772de60361ac2b4219b",
+  "runtimeDllSha256": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+  "helperDllSha256": "c86784c8b563e7438c53f45777adfa0efaac8f046787576c3f05ff2752da319b"
+}

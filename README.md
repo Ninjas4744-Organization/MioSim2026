@@ -4,6 +4,12 @@ An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo 
 
 ![Turbo carrying a full load in installed MoSim](Reports/native/062-grip140-blue-target62-trench-clear.png)
 
+## Release candidate 1.0.1
+
+**Release hold:** loaded stow timed out in installed MoSim, including an unchanged Steam 1.0.0 control run. The 14 editor fixture groups pass, but native trench/bump certification is incomplete. See [current verification](Docs/Verification.md).
+
+The Windows candidate improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
+
 ## Install
 
 Extract the Windows release ZIP into:
@@ -15,6 +21,28 @@ Extract the Windows release ZIP into:
 The resulting `Ninjas4744-Turbo2026/standalonewindows64` folder must contain `modpack.json`, `Ninjas4744.dll`, and the asset bundle. Restart MoSim, enable **Ninjas 4744 Turbo 2026** in Mods, select Rebuilt, and choose **4744 / Turbo**. Keep one Turbo version enabled. Disable older copies by renaming their modpack.json to modpack.json.disabled. Restart after updating: Unity cannot unload the old mod assembly during a game session.
 
 ## Controls
+
+The default **Turbo** uses standard hold-to-shoot controls with intake toggles
+and the existing automatic aim:
+
+| Action | Keyboard | Gamepad |
+| --- | --- | --- |
+| Toggle intake deployment and collection | Shift | Left trigger |
+| Hold to aim and shoot at the zone-selected target | K | Right trigger |
+| Hold to aim and deliver | E | Right bumper |
+| Hold to shoot at the fixed manual setting | Q | Left bumper |
+| Stow intake and cancel shooting | Z | D-pad down |
+| Request three hard pump cycles | V | Y / Triangle |
+| Hold to reverse the feed path | U | A / Cross |
+
+Turbo starts with its intake stowed. Shooting temporarily opens the
+intake and pumps automatically. Release the shoot control to stop aiming and
+feeding and return the intake to its toggled state. Stow cancels shooting even
+while a shoot control is held; release it before starting another shot. All
+bindings follow MoSim's control settings. With multiple shoot controls held,
+manual shoot takes priority over delivery, followed by automatic shoot.
+
+Select **Actual Turbo** in the robot variant selector for the original team's latched controls:
 
 | Action | Keyboard | Gamepad |
 | --- | --- | --- |
@@ -59,6 +87,7 @@ $project = 'C:\path\to\MoSimulator-Public'
 $unity = 'C:\path\to\Unity\Editor\Unity.exe'
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Assemble
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Build
+.\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Controls -DiagnosticArguments '-turboBundle'
 .\Tools\Test-Visible.ps1 -MoSimProject $project -UnityEditor $unity # all 14 required groups
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Test -Visible
 .\Tools\Invoke-Unity.ps1 -MoSimProject $project -UnityEditor $unity -Task Travel -Visible
@@ -97,6 +126,28 @@ The test examples use `-Visible` to show Unity's Game view. Indexer tests show a
 `Trench` checks reverse escape at angled poses in all four field trenches, with the intake stowed and deployed. `-turboPinch` isolates opposite bumper corners with 1 mm overlap on each side. `-turboRigidPinch` pinches the hopper/frame above the bumpers with empty and loaded hoppers. Pass either flag through `-DiagnosticArguments`. Both fixtures require wheel traction to return and check that driving into a side still stops at the solid wall. `-Baseline` disables the contact handler for comparison; the controlled pinches are expected to fail. These checks use the authoring prefab in the Unity editor and are separate from installed-player release certification. [Trench contact results](Reports/trench-verification.json).
 
 The commands copy only this mod's assets and editor tools into the selected project. Assemble regenerates the prefab; commit manual prefab edits before using it. Build preserves the current prefab, runs a fresh-session SDK runtime synchronization, and produces the official MoSim asset bundle, DLL, manifest, and Unity package. Test checks the complete pickup-to-shot path and disabled shutdown. Travel checks physical rail limits at four headings, including an actuator impulse. Retention follows collected field fuel through maneuvering, disable, and stow. Systems measures empty/loaded driving, cloth deployment, hard pumping, and actual hub scores at five distances. Packaging verifies the reports against the exact bundle and DLL. Generated outputs go to `Artifacts/` and `dist/`.
+
+Build also updates the inherited `Turbo4744Simple.prefab` variant and its tutorial
+cards. `-Task Simple` updates those assets without rebuilding the mod or changing
+the main robot's geometry. `-Task Controls` exercises keyboard and gamepad input,
+quick taps, automatic aiming and feeding, release-to-stop, intake toggling, stow,
+disable, control rebinding, the default Turbo selection, and Actual Turbo's latched shooting. Add
+`-DiagnosticArguments '-turboBundle'` to check the built asset bundle.
+After those focused checks pass, `Tools/Package-Simple.ps1 -MoSimProject $project`
+creates an installable controls test ZIP and verifies its contents against the
+tested bundle and runtime hashes. This does not assert full mechanical release
+certification.
+
+The `Performance` task measures empty, half-full and full hopper CPU costs and GC
+allocation counts. See the [full-hopper lag investigation](Docs/HopperPerformance.md)
+for results, scope and reproduction instructions.
+
+The net collision trial adds the `NetCollision` equivalence check and
+`Tools/package_net_trial.py`. A full `Build` compiles and embeds the Windows x64
+Burst net solver and supplies a player DLL without editor references. Run `Build`
+again after runtime source changes before using `Runtime` or packaging. The
+trial documentation records the distinction between editor gameplay fixtures and
+installed-player native execution checks.
 
 ## What changed in 0.6.2
 

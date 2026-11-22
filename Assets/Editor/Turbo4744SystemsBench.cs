@@ -116,6 +116,7 @@ public static class Turbo4744SystemsBench
     {
         public bool passed;
         public string label;
+        public string editorRuntimeDllSha256;
         public string prefabSource,
             bundleSha256,
             runtimeDllSha256;
@@ -655,7 +656,7 @@ public static class Turbo4744SystemsBench
                 false;
         sample = -1;
         report.cases.Add(result);
-        result.netSolvers = robot.GetComponentsInChildren<NetSolver>().Length;
+        result.netSolvers = robot.GetComponentsInChildren<Turbo4744NetSolver>().Length;
         result.netScaleOne = robot.roofNet.localScale == Vector3.one;
         // Hold the initial cloth measurement disabled. A slow first editor
         // frame can otherwise arrive after the real 0.5 s auto-open command.
@@ -674,7 +675,7 @@ public static class Turbo4744SystemsBench
             result.closedFrameSpan = frameSpan;
         if (index == 0 && t > 2.4f && t < 2.6f)
             result.openedFrameSpan = frameSpan;
-        var solver = robot.GetComponentInChildren<NetSolver>();
+        var solver = robot.GetComponentInChildren<Turbo4744NetSolver>();
         if (solver)
         {
             var vertices = solver.GetRuntimePositions();
@@ -928,7 +929,7 @@ public static class Turbo4744SystemsBench
         // preloads have at robot spawn. Do not insert bodies through an already
         // sagged empty net and measure its depenetration as roller behavior.
         robot.GetComponent<Turbo4744NetRig>().UpdatePins();
-        robot.roofNet.GetComponent<NetSolver>().Rebuild();
+        robot.roofNet.GetComponent<Turbo4744NetSolver>().Rebuild();
         var fuel = AssetDatabase.LoadAssetAtPath<GameObject>(
             "Assets/Prefabs/Games/Rebuilt/Fuel.prefab"
         );
@@ -1515,7 +1516,12 @@ public static class Turbo4744SystemsBench
                         report.runtimeDllSha256 = Digest(
                             Path.Combine(Path.GetDirectoryName(file), "Ninjas4744.dll")
                         );
-                        if (report.runtimeDllSha256 != Digest(typeof(Turbo4744).Assembly.Location))
+                        report.editorRuntimeDllSha256 = Digest(typeof(Turbo4744).Assembly.Location);
+                        Turbo4744NetBurstBuilder.VerifyRuntime();
+                        if (
+                            report.runtimeDllSha256
+                            != Digest(Turbo4744NetBurstBuilder.PlayerAssembly)
+                        )
                             throw new InvalidOperationException(
                                 "The built DLL differs from the runtime under test"
                             );
@@ -1523,6 +1529,7 @@ public static class Turbo4744SystemsBench
                             .LoadAllAssets<BaseModpackSO>()
                             .Single(p => p.ModpackName == "Ninjas 4744 Turbo 2026")
                             .Robots.Single()
+                            .AlternateRobots.Single(v => v.DisplayName == "Actual Turbo")
                             .RobotPrefab;
                     }
                     else

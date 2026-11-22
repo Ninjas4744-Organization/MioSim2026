@@ -7,10 +7,11 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument('labels', nargs='+')
+parser.add_argument('--project', type=Path, default=Path('Artifacts/PhysicsProject'))
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 reports = root / 'Reports/native'
-platform = root / 'Artifacts/PhysicsProject/BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
+platform = args.project.resolve() / 'BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
 load = lambda path: json.loads(path.read_text(encoding='utf-8-sig'))
 manifest = load(platform / 'modpack.json')
 hashes = {name: hashlib.sha256((platform / name).read_bytes()).hexdigest()
@@ -26,6 +27,11 @@ for label in args.labels:
     assert load(reports / (label + '-artifacts.json')) == hashes, f'{label}: stale artifacts'
     assert not any(request.get(k) for k in boolean_overrides + numeric_overrides), f'{label}: diagnostic override'
     assert request['requireTrenchSuccess'] and request['stowForReturn'] and request['returnLane'] != 0
+    if tuple(map(int, manifest['version'].split('.'))) >= (1, 0, 1):
+        assert report['runtimeVersion'] == manifest['version'], 'Wrong native runtime version'
+        assert report['netBurstExecution'] and report['netNativeLibraryLoaded'], 'Native Burst path inactive'
+        assert report['netBroadphaseEnabled'] and report['netAnchorCount'] == 68
+        assert report['remainingCaptured'] == 0 and report['releasedCaptured'] >= report['transitStartCount'], 'Full load did not shoot empty'
     assert report['completed'] and report['trenchPassed'] and report['transitCompleted'], label
     assert report['stowedBeforeReturn'] and not report['stowTimedOut'] and not report['overturned'], label
     assert report['fieldFuel'] == 504 and abs(report['physicsStep'] - .0045) < .000001, label
@@ -61,6 +67,8 @@ for label in args.labels:
                    for k in ['intakeExtension', 'hopperExtension'])
     assert rail_max < .015, f'{label}: mechanism extended under crossbar'
     summary['cases'].append({
+        'native_burst': report.get('netBurstExecution', False),
+        'simple_controls': report.get('simpleControls', False),
         'label': label, 'alliance': report['alliance'], 'return_gear': request['returnGear'],
         'start': start, 'retained': report['transitEndCount'], 'spills': 0,
         'fully_stored_before_stow': report['fullyStoredBeforeStow'],
@@ -79,6 +87,8 @@ assert len(summary['cases']) >= 3, 'Need repeat crossings, including slow and no
 assert any(c['start'] == 60 for c in summary['cases']), 'Need an actual 60-ball crossing'
 assert {c['return_gear'] for c in summary['cases']} >= {1, 2}, 'Need slow and normal gears'
 assert {c['alliance'] for c in summary['cases']} >= {'Red', 'Blue'}, 'Need both alliances'
+if tuple(map(int, manifest['version'].split('.'))) >= (1, 0, 1):
+    assert any(c['simple_controls'] for c in summary['cases']), 'Test the default simple variant with a full load too'
 summary['passed'] = True
 output = root / 'Reports' / f"native-trench-{manifest['version']}.json"
 output.write_text(json.dumps(summary, indent=2) + '\n')

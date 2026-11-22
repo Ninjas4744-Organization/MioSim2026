@@ -1,0 +1,22 @@
+{
+  "Reports/HopperPerformance/WeakCpuComparison/steam-a-config.json": "c8c6858fc9aeb6f2ce07a94f1485450e6f8ecf623e4a0eb4c83157f8300eb38f",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-a-receipt.json": "07bbcec7daf70b19c187d1be0cbf9a7f48f38d7e778c36e51f0361eb911fe5f9",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-a-request.json": "1f52505cbe5e3d76ab0b599c10983636bc8493873bcca5fb6e8b431917e6ca9d",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-a.csv": "8ab8d2993b70694bcec2f0a443a1a79e5f9235df9c6ff763ca46f54d2fba55c5",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-a.json": "3aeaa348703776efe171ea69785c0ecdb5f9741daac718dfbb90417f7c2f2fb7",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-b-config.json": "00c0ec0e8333bd228a9ecf74548d8104e7b3630387c2a1b8963ec8373c02c93b",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-b-receipt.json": "fe7b0599a269ff1e322ca51497c586b4499c792cc798c9efd0f4c403e2878f31",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-b-request.json": "53b3935f462829f6d80467fe61d26f000533f5bce1a0b5fd13a0b3c52deaee02",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-b.csv": "991852fe56d4448707fbc34e26228a1b143ce759863112ac93d99a6653b8f7cf",
+  "Reports/HopperPerformance/WeakCpuComparison/steam-b.json": "2b0a0989caf66d0618fdeb73e40175a56e3013ef8e5125d572da64124720dd07",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-a-config.json": "4ac7736f8d9d223e0ceb02c5441dae9a587cd4b5a6f4e5a81c28c858871344e3",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-a-receipt.json": "f77f4d68d7ecdf5f4548d7576c1045a103a38d5ae963b1b4bb1c53786e91703c",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-a-request.json": "764587f0ab901858d5d3c29e8b5124598561876e0a2deb84d8a86193fd8884f3",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-a.csv": "5079b94c4738308ddeda20a5fafba11fcaea6753e39a170854777dccb7f9c05a",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-a.json": "3a26e05c6dab4c960d7798797d4d4af02916cec9adbe906e7f3c085eb4966dbc",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-b-config.json": "9456e14f0c9f9b41a9c66c36f3d2686b113dc22bf0f416b77f1af6b7665622f9",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-b-receipt.json": "2daa0d2e659d8d03b73f07e24162e4eb11e958340c458bd86d517b9df3dc2880",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-b-request.json": "3dd9a3c38f45df479f3c6a113671d2310f41f76e33d5431ee65061a5405b9f6c",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-b.csv": "e3927dffe9f1f1f903d749230343462eab01a613e28675cc05ca96636ad9f366",
+  "Reports/HopperPerformance/WeakCpuComparison/trial-b.json": "61e094ef6816a87b502b5d25ee7a46a3afa829a3962352bbf7fecc3195d233b4"
+}

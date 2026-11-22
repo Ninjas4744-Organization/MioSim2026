@@ -349,7 +349,10 @@ public static class Turbo4744TravelRegression
                 var pack = bundle
                     .LoadAllAssets<BaseModpackSO>()
                     .Single(p => p.ModpackName == "Ninjas 4744 Turbo 2026");
-                prefab = pack.Robots.Single().RobotPrefab;
+                prefab = pack
+                    .Robots.Single()
+                    .AlternateRobots.Single(v => v.DisplayName == "Actual Turbo")
+                    .RobotPrefab;
                 report.prefabSource = file;
                 Spawn();
                 return;

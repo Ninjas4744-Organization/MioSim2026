@@ -1,0 +1,102 @@
+{
+  "scope": "Editor net equivalence and exact-bundle full-load gameplay fixtures, plus installed-player native execution and eight-preload delivery.",
+  "netSolver": {
+    "cpu": "AMD Ryzen 5 9600X 6-Core Processor",
+    "burstOriginalMs": 1.896833203125,
+    "burstOptimizedMs": 0.927697265625,
+    "cpuReductionPercent": 51.09231195992169,
+    "originalNarrowphaseChecks": 579840,
+    "optimizedNarrowphaseChecks": 8792,
+    "stepsCompared": 960,
+    "orderedImpulsesCompared": 1842277
+  },
+  "nativeSmoke": {
+    "completed": true,
+    "burstExecution": true,
+    "anchors": 68,
+    "netSteps": 2334,
+    "preloadsReleased": 8,
+    "maxShootFrameMs": 7.820004463195801
+  },
+  "gameplay": {
+    "retention": [
+      {
+        "heading": 0,
+        "collected": 59,
+        "storedBeforeDrive": 59,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "retained": 59,
+        "escapes": [],
+        "stowed": false,
+        "stable": true,
+        "maxLoadedNativeSpeed": 3.733828544616699,
+        "maxTilt": 10.509421348571777
+      },
+      {
+        "heading": 90,
+        "collected": 59,
+        "storedBeforeDrive": 59,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "retained": 59,
+        "escapes": [],
+        "stowed": false,
+        "stable": true,
+        "maxLoadedNativeSpeed": 3.7398746013641357,
+        "maxTilt": 0.7187328934669495
+      }
+    ],
+    "loadedDriveAndManualShooting": [
+      {
+        "heading": 0,
+        "collected": 59,
+        "storedBeforeDrive": 59,
+        "retainedAfterDrive": 59,
+        "released": 59,
+        "retained": 0,
+        "escapes": [],
+        "stowed": true,
+        "stable": true,
+        "maxLoadedNativeSpeed": 3.799114942550659,
+        "maxTilt": 6.470933437347412
+      },
+      {
+        "heading": 90,
+        "collected": 59,
+        "storedBeforeDrive": 59,
+        "retainedAfterDrive": 59,
+        "released": 59,
+        "retained": 0,
+        "escapes": [],
+        "stowed": true,
+        "stable": true,
+        "maxLoadedNativeSpeed": 3.816152811050415,
+        "maxTilt": 0.7187328934669495
+      }
+    ],
+    "automaticAimingAndShooting": [
+      {
+        "heading": 225,
+        "collected": 60,
+        "storedBeforeDrive": 60,
+        "retainedAfterDrive": 0,
+        "released": 60,
+        "retained": 0,
+        "escapes": [],
+        "stowed": true,
+        "stable": true,
+        "maxLoadedNativeSpeed": 0.0216047503054142,
+        "maxTilt": 0.7192771434783936
+      }
+    ]
+  },
+  "controlsChecks": 34,
+  "installationRestored": true,
+  "build": {
+    "zip": "Ninjas4744-Turbo2026-0.6.2-net-collision-r1-Windows.zip",
+    "bundleSha256": "4ad0132da8a253ecc72abd8f8736b23a2f3ed46fad144b08e2900638ecf972c6",
+    "runtimeDllSha256": "b7852ebdcb3fa9a71f93fa8912d165d73bff31103db3bfe70bbb4096621c3d7d",
+    "nativeLibrarySha256": "7c6260cc455471eb38eaea8f9631c990db096c4a09162ca47713211d75eee7d3"
+  }
+}

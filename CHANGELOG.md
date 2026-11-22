@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 candidate (2026-11-22)
+
+- Hold Steam publication pending native loaded-stow/trench/bump certification. Loaded stow also fails in the unchanged Steam 1.0.0 control; no physics parameters were changed to force a pass.
+- Speed up Windows full-hopper net collisions with conservative spatial filtering and a player-compatible Burst job, preserving the original contact order and physics.
+- Add the standard Turbo controls and retain the original controls as Actual Turbo.
+- Use the supplied Ninjas 4744 logo in the robot selector.
+- Preserve the published Linux and macOS DLLs and asset bundles unchanged; update their manifest version labels to 1.0.1 for the Steam uploader.
+
 ## Unreleased
 
 - Add four solid swerve module housings and restore passive tire-to-fuel collisions, preventing balls from passing through the modules into the bellypan cutouts. Keep fuel excluded from suspension and powered tread queries. Add packaged collision and clear-floor drive regressions.

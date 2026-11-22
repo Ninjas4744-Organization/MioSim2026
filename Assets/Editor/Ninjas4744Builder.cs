@@ -27,6 +27,7 @@ public static class Ninjas4744Builder
     public const string Root = "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744";
     public const string PackPath = Root + "/Ninjas4744.asset";
     public const string RobotPath = Root + "/Turbo4744.prefab";
+    public const string SimpleRobotPath = Root + "/Turbo4744Simple.prefab";
     private const float CadCenterX = .0223825f;
 
     // Native CAD bounds: keep the wheel cutouts instead of filling the bumper envelope.
@@ -68,8 +69,12 @@ public static class Ninjas4744Builder
     private class BundleReport
     {
         public bool passed;
-        public string modpack,
+        public string version,
+            selectorLogo,
+            modpack,
             game;
+        public float selectorWidth,
+            selectorHeight;
         public int team,
             robots,
             missingScripts,
@@ -521,12 +526,12 @@ public static class Ninjas4744Builder
         Set(metadata, "mainRobot", main);
         Set(metadata, "teamNumber", 4744);
         Set(metadata, "teamName", "Ninjas");
-        Set(metadata, "robotImage", ImportPreview());
+        Set(metadata, "robotImage", ImportSelectorLogo());
         SaveAsset(metadata, Root + "/Turbo4744.asset");
         var pack = AssetDatabase.LoadAssetAtPath<RebuiltModpackSO>(PackPath)
             ?? ScriptableObject.CreateInstance<RebuiltModpackSO>();
         Set(pack, "modpackName", "Ninjas 4744 Turbo 2026");
-        Set(pack, "modpackVersion", "0.6.2");
+        Set(pack, "modpackVersion", "1.0.1");
         Set(pack, "authorName", "Ninjas 4744");
         Set(
             pack,
@@ -538,8 +543,89 @@ public static class Ninjas4744Builder
         SaveAsset(pack, PackPath);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        BuildSimpleVariant();
         Validate();
         Selection.activeObject = pack;
+    }
+
+    [MenuItem("Tools/Modding/Ninjas 4744/Update Control Variants")]
+    public static void BuildSimpleVariant()
+    {
+        AssetDatabase.ImportAsset(
+            RobotPath,
+            ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport
+        );
+        var metadata = AssetDatabase.LoadAssetAtPath<RebuiltRobotMetadataSO>(
+            Root + "/Turbo4744.asset"
+        );
+        var original = AssetDatabase.LoadAssetAtPath<GameObject>(RobotPath);
+        if (!metadata || !original)
+            throw new InvalidOperationException("Assemble Turbo before adding its simple variant");
+        // A prefab variant inherits the current physical robot, including later
+        // mechanism fixes, and overrides only its control scheme and name.
+        var instance = (GameObject)PrefabUtility.InstantiatePrefab(original);
+        GameObject prefab;
+        try
+        {
+            instance.name = "4744 Turbo";
+            var robot = instance.GetComponent<Turbo4744>();
+            if (!robot)
+                throw new InvalidOperationException(
+                    "Turbo script import is missing. Recreate the generated Unity compilation cache before building."
+                );
+            robot.simpleControls = true;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(robot);
+            prefab = PrefabUtility.SaveAsPrefabAsset(instance, SimpleRobotPath);
+        }
+        finally
+        {
+            Object.DestroyImmediate(instance);
+        }
+        var simple = new RobotMetadataSO.RobotVariant();
+        Set(simple, "displayName", "Turbo");
+        Set(simple, "robotPrefab", prefab);
+        Set(simple, "mainMenuPrefab", metadata.MainMenuPrefab);
+        Set(simple, "spawnSelectionPrefab", metadata.SpawnSelectionPrefab);
+        Set(simple, "preloadGamePiece", metadata.RobotPreloadGamePiece);
+        Set(simple, "tutorialCards", BuildCards(true).ToList());
+        var actual = new RobotMetadataSO.RobotVariant();
+        Set(actual, "displayName", "Actual Turbo");
+        Set(actual, "robotPrefab", original);
+        Set(actual, "mainMenuPrefab", metadata.MainMenuPrefab);
+        Set(actual, "spawnSelectionPrefab", metadata.SpawnSelectionPrefab);
+        Set(actual, "preloadGamePiece", metadata.RobotPreloadGamePiece);
+        Set(actual, "tutorialCards", BuildCards().ToList());
+        var variants = metadata
+            .AlternateRobots.Where(v =>
+                v.DisplayName != "Turbo Simple" && v.DisplayName != "Actual Turbo"
+            )
+            .ToList();
+        variants.Add(actual);
+        Set(metadata, "mainRobot", simple);
+        Set(metadata, "alternateRobots", variants);
+        EditorUtility.SetDirty(metadata);
+        AssetDatabase.SaveAssets();
+    }
+
+    private static void ValidateSimpleVariant(RobotMetadataSO metadata)
+    {
+        var actual = metadata.AlternateRobots.Single(v => v.DisplayName == "Actual Turbo");
+        if (
+            metadata.RobotName != "Turbo"
+            || !metadata.RobotPrefab.GetComponent<Turbo4744>().simpleControls
+            || metadata.TutorialCards.Count != 3
+            || metadata.TutorialCards.Any(c => !c)
+            || !actual.RobotPrefab
+            || actual.RobotPrefab.GetComponent<Turbo4744>().simpleControls
+            || !actual.MainMenuPrefab
+            || !actual.SpawnSelectionPrefab
+            || !actual.PreloadGamePiece
+            || actual.TutorialCards.Count != 3
+            || actual.TutorialCards.Any(c => !c)
+        )
+            throw new InvalidOperationException(
+                "Turbo or Actual Turbo is missing its controls or assets"
+            );
     }
 
     private static Vector3 S(float x, float y, float z) => new Vector3(-y, z, x - CadCenterX);
@@ -930,8 +1016,8 @@ public static class Ninjas4744Builder
         material.SetShaderPassEnabled("ShadowCaster", true);
         SaveAsset(material, Root + "/Materials/TurboNet.mat");
         renderer.sharedMaterial = material;
-        var solver = go.AddComponent<NetSolver>();
-        go.AddComponent<NetParentFollower>();
+        var solver = go.AddComponent<Turbo4744NetSolver>();
+        go.AddComponent<Turbo4744NetOrigin>();
         go.AddComponent<Turbo4744NetEnvironment>();
         root.AddComponent<Turbo4744FuelCompliance>();
         solver.resolutionX = nx;
@@ -1125,7 +1211,7 @@ public static class Ninjas4744Builder
             throw new InvalidOperationException(
                 "The hopper walls, model and front net anchors must follow the physical hopper rail; the indexer entrance stays fixed"
             );
-        var solver = robot.roofNet.GetComponent<NetSolver>();
+        var solver = robot.roofNet.GetComponent<Turbo4744NetSolver>();
         var foam = root.GetComponent<Turbo4744FuelCompliance>();
         var drive = new SerializedObject(root.GetComponent<DriveController>());
         if (
@@ -1334,15 +1420,24 @@ public static class Ninjas4744Builder
         return result;
     }
 
-    private static GameObject[] BuildCards()
+    private static GameObject[] BuildCards(bool simple = false)
     {
-        var titles = new[] { "Deploy and collect", "Shoot or pass", "Clear a jam" };
-        var descriptions = new[]
-        {
-            "Intake opens Turbo's pickup and cancels shooting. Stow retracts the intake and hopper. Shooting pumps the sliding bin toward the stationary indexer.",
-            "Auto Shoot selects the hub in your alliance zone and a side delivery target in neutral. Press again for three hard pump cycles. Auto Pass forces delivery. Intake cancels aiming and restores normal driving.",
-            "Soft pumping starts automatically while firing. Robot Special requests three hard cycles. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber.",
-        };
+        var titles = simple
+            ? new[] { "Toggle intake", "Hold to shoot", "Stow and clear a jam" }
+            : new[] { "Deploy and collect", "Shoot or pass", "Clear a jam" };
+        var descriptions = simple
+            ? new[]
+            {
+                "Press Intake to toggle deployment and collection. The intake starts stowed. Shooting opens it temporarily and returns it to your selected state when released.",
+                "Hold Auto Shoot to aim and fire at the zone-selected hub or delivery target. Release to stop. Auto Pass and Manual Shoot are also held controls. Pumping is automatic while shooting.",
+                "Stow closes the intake and cancels shooting; release the shoot controls before firing again. Robot Special requests three hard pump cycles. Hold Face Down to reverse. All controls follow MoSim rebinding.",
+            }
+            : new[]
+            {
+                "Intake opens Turbo's pickup and cancels shooting. Stow retracts the intake and hopper. Shooting pumps the sliding bin toward the stationary indexer.",
+                "Auto Shoot selects the hub in your alliance zone and a side delivery target in neutral. Press again for three hard pump cycles. Auto Pass forces delivery. Intake cancels aiming and restores normal driving.",
+                "Soft pumping starts automatically while firing. Robot Special requests three hard cycles. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber.",
+            };
         var cards = new List<GameObject>();
         var template = AssetDatabase.LoadAssetAtPath<GameObject>(
             "Assets/Prefabs/UI/Components/TutorialCardTemplate.prefab"
@@ -1350,7 +1445,7 @@ public static class Ninjas4744Builder
         for (int i = 0; i < titles.Length; i++)
         {
             var card = Object.Instantiate(template);
-            card.name = "Turbo tutorial " + (i + 1);
+            card.name = (simple ? "Turbo Simple tutorial " : "Turbo tutorial ") + (i + 1);
             foreach (var text in card.GetComponentsInChildren<TMP_Text>(true))
                 text.text = "<b>" + titles[i] + "</b>\n" + descriptions[i];
             var image = card.GetComponentsInChildren<Image>(true)
@@ -1370,6 +1465,17 @@ public static class Ninjas4744Builder
             Object.DestroyImmediate(card);
         }
         return cards.ToArray();
+    }
+
+    private static Sprite ImportSelectorLogo()
+    {
+        string path = Root + "/Model/selector-logo.png";
+        var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+        importer.textureType = TextureImporterType.Sprite;
+        importer.spriteImportMode = SpriteImportMode.Single;
+        importer.alphaIsTransparency = true;
+        importer.SaveAndReimport();
+        return AssetDatabase.LoadAssetAtPath<Sprite>(path);
     }
 
     private static Sprite ImportPreview()
@@ -1395,6 +1501,9 @@ public static class Ninjas4744Builder
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(RobotPath);
         if (!prefab)
             throw new InvalidOperationException("Turbo prefab missing");
+        ValidateSimpleVariant(
+            AssetDatabase.LoadAssetAtPath<RebuiltRobotMetadataSO>(Root + "/Turbo4744.asset")
+        );
         var robot = prefab.GetComponent<Turbo4744>();
         if (
             !robot
@@ -1525,11 +1634,23 @@ public static class Ninjas4744Builder
     [MenuItem("Tools/Modding/Ninjas 4744/Build Windows Mod")]
     public static void Build()
     {
+        var metadata = AssetDatabase.LoadAssetAtPath<RebuiltRobotMetadataSO>(
+            Root + "/Turbo4744.asset"
+        );
+        Set(metadata, "robotImage", ImportSelectorLogo());
+        EditorUtility.SetDirty(metadata);
+        var releasePack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
+        Set(releasePack, "modpackVersion", "1.0.1");
+        EditorUtility.SetDirty(releasePack);
+        AssetDatabase.SaveAssets();
+        BuildSimpleVariant();
         Validate();
+        Turbo4744NetBurstBuilder.CompileAndEmbed();
         var pack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
         if (!ModBuildUtility.TryBuildModpack(pack, true, out var path))
             throw new InvalidOperationException("MoSim mod build failed");
         File.WriteAllText(Artifacts + "/mod-build-path.txt", path);
+        Turbo4744NetBurstBuilder.CopyRuntime(path);
         CheckBundle(path);
         AssetDatabase.ExportPackage(
             Root,
@@ -1544,9 +1665,11 @@ public static class Ninjas4744Builder
     // mod DLL; a code-only SDK build copies the final compiled runtime instead.
     public static void SyncRuntime()
     {
+        Turbo4744NetBurstBuilder.VerifyRuntime();
         var pack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
         if (!ModBuildUtility.TryBuildModpack(pack, false, out var path))
             throw new InvalidOperationException("Runtime synchronization failed");
+        Turbo4744NetBurstBuilder.CopyRuntime(path);
         string dll = Path.Combine(
             path,
             EditorUserBuildSettings.activeBuildTarget.ToString().ToLowerInvariant(),
@@ -1554,7 +1677,7 @@ public static class Ninjas4744Builder
         );
         if (
             !File.ReadAllBytes(dll)
-                .SequenceEqual(File.ReadAllBytes(typeof(Turbo4744).Assembly.Location))
+                .SequenceEqual(File.ReadAllBytes(Turbo4744NetBurstBuilder.PlayerAssembly))
         )
             throw new InvalidOperationException(
                 "The packaged runtime differs from the compiled assembly"
@@ -1582,6 +1705,7 @@ public static class Ninjas4744Builder
                 .LoadAllAssets<BaseModpackSO>()
                 .Single(p => p.ModpackName == pack.ModpackName);
             var metadata = loaded.Robots.Single();
+            ValidateSimpleVariant(metadata);
             var prefab = metadata.RobotPrefab;
             ValidateBumperContacts(prefab);
             ValidateBellypanContacts(prefab);
@@ -1593,12 +1717,20 @@ public static class Ninjas4744Builder
             int missing = prefab
                 .GetComponentsInChildren<Transform>(true)
                 .Sum(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject));
-            var references = typeof(Turbo4744)
-                .Assembly.GetReferencedAssemblies()
+            var references = System
+                .Reflection.Assembly.ReflectionOnlyLoad(
+                    File.ReadAllBytes(Path.Combine(path, "standalonewindows64", "Ninjas4744.dll"))
+                )
+                .GetReferencedAssemblies()
                 .Select(a => a.Name)
                 .ToArray();
             bool passed =
                 missing == 0
+                && loaded.ModpackVersion == pack.ModpackVersion
+                && metadata.RobotImage
+                && metadata.RobotImage.name == "selector-logo"
+                && metadata.RobotImage.rect.width == 119
+                && metadata.RobotImage.rect.height == 144
                 && robot
                 && robot.intakeRail
                 && robot.hopperRail
@@ -1617,7 +1749,10 @@ public static class Ninjas4744Builder
                 && robot.intakeContact.centerline.Length >= 2
                 && !robot.storageContact
                 && robot.intakeContact.robotBody == robot.intakeRail.GetComponent<Rigidbody>()
-                && prefab.GetComponentsInChildren<NetSolver>().Length == 1
+                && prefab.GetComponentsInChildren<Turbo4744NetSolver>().Length == 1
+                && robot.roofNet.GetComponent<Turbo4744NetSolver>().collisionBroadphase
+                && robot.roofNet.GetComponent<Turbo4744NetSolver>().nativeLibrary
+                && robot.roofNet.GetComponent<Turbo4744NetSolver>().customAnchors.Count == 68
                 && prefab.GetComponent<Turbo4744KickerRig>()
                 && robot.shooterContact.robotBody == prefab.GetComponent<Rigidbody>()
                 && robot.indexer.robotBody == prefab.GetComponent<Rigidbody>()
@@ -1640,6 +1775,10 @@ public static class Ninjas4744Builder
             var report = new BundleReport
             {
                 passed = passed,
+                version = loaded.ModpackVersion,
+                selectorLogo = metadata.RobotImage ? metadata.RobotImage.name : "missing",
+                selectorWidth = metadata.RobotImage ? metadata.RobotImage.rect.width : 0,
+                selectorHeight = metadata.RobotImage ? metadata.RobotImage.rect.height : 0,
                 modpack = loaded.ModpackName,
                 game = loaded.GameOption.name,
                 team = metadata.TeamNumber,
@@ -1707,7 +1846,7 @@ public static class Ninjas4744Builder
             instance.GetComponent<Turbo4744KickerRig>().SetDeployment(deployed ? 1 : 0);
             net.localScale = Vector3.one;
             instance.GetComponent<Turbo4744NetRig>().UpdatePins();
-            net.GetComponent<NetSolver>().Rebuild();
+            net.GetComponent<Turbo4744NetSolver>().Rebuild();
             camera.Render();
             RenderTexture.active = target;
             texture.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0);
@@ -1736,7 +1875,7 @@ public static class Ninjas4744Builder
             hopper.localPosition = hopperClosed + Vector3.forward * (.22946f * open);
             instance.GetComponent<Turbo4744KickerRig>().SetDeployment(deployment);
             instance.GetComponent<Turbo4744NetRig>().UpdatePins();
-            net.GetComponent<NetSolver>().Rebuild();
+            net.GetComponent<Turbo4744NetSolver>().Rebuild();
             camera.Render();
             RenderTexture.active = target;
             texture.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0);
@@ -1768,7 +1907,7 @@ public static class Ninjas4744Builder
             hopper.localPosition = hopperClosed + Vector3.forward * (.22946f * open);
             instance.GetComponent<Turbo4744KickerRig>().SetDeployment(1);
             instance.GetComponent<Turbo4744NetRig>().UpdatePins();
-            net.GetComponent<NetSolver>().Rebuild();
+            net.GetComponent<Turbo4744NetSolver>().Rebuild();
             camera.Render();
             RenderTexture.active = target;
             texture.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0);

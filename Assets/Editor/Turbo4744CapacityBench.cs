@@ -67,6 +67,8 @@ public static class Turbo4744CapacityBench
         public string prefabSource,
             bundleSha256,
             runtimeDllSha256;
+        public string editorRuntimeDllSha256;
+        public float collectionEndSeconds;
         public string fixture =
             "Thirty ground balls; collection, native keyboard loaded drive, turning, disable, up to 25 seconds delivery through pumping, then empty stow";
         public List<Case> cases = new List<Case>();
@@ -172,9 +174,23 @@ public static class Turbo4744CapacityBench
                 : 0;
         }
     }
-    private static float CycleOffset => Pile && !WheelPile ? 6 : 0;
+    private static float FillExtraSeconds
+    {
+        get
+        {
+            var args = Environment.GetCommandLineArgs();
+            int at = Array.IndexOf(args, "-turboFillExtraSeconds");
+            return at >= 0 && at + 1 < args.Length
+                ? Mathf.Max(
+                    0,
+                    float.Parse(args[at + 1], System.Globalization.CultureInfo.InvariantCulture)
+                )
+                : 0;
+        }
+    }
+    private static float CycleOffset => Pile && !WheelPile ? 6 + FillExtraSeconds : 0;
     private static float CollectionEnd =>
-        Pile && !WheelPile ? 14
+        Pile && !WheelPile ? 14 + FillExtraSeconds
         // Finish the existing 3.4 m wheel-path target before loaded driving.
         // Dense fuel can slow the native drivetrain; the old eight-second
         // cutoff could end the commanded sweep before its distance target.
@@ -234,6 +250,7 @@ public static class Turbo4744CapacityBench
             report.intakeTractionOverride = IntakeTractionOverride;
             report.driveFrictionOverride = DriveFrictionOverride;
             report.capacityCaptureTarget = CapacityCaptureTarget;
+            report.collectionEndSeconds = CollectionEnd;
             if (Pile)
                 report.fixture =
                     $"Capacity fill: up to 64 official ground balls introduced individually at the pickup, with clearance between offers; stop offering after {CapacityCaptureTarget} captured, allowing the remaining incoming fuel to settle. At least 50 stored at each heading and at least one load above 50, then full-speed native loaded driving, turns, disable, complete shooter release and empty stow. Dense-pile acquisition is verified separately.";
@@ -242,10 +259,12 @@ public static class Turbo4744CapacityBench
                     "Ninety ground balls across six lanes including wheel paths; 3 m/s approach, under 3 degrees of heading drift and 0.20 m cross-track error, retain captured fuel through native loaded driving and turns, complete shooter release and empty stow; capacity is verified separately";
             if (LoadedAim)
                 report.fixture =
-                    "Collect over 50 official fuel bodies, native loaded driving and turning, then the normal AutoShoot input with automatic aiming, feed and pumping. No manual-shoot override. Record fixed-step pitch/roll throughout and require full release without overturning.";
+                    "Collect over 50 official fuel bodies, keep the collection pose, then the normal AutoShoot input with automatic aiming, feed and pumping. No manual-shoot override. Record fixed-step pitch/roll throughout and require full release without overturning.";
             if (LoadOnly)
                 report.fixture =
-                    "Static capacity stage: up to 64 official ground balls introduced individually at the pickup, stopping after 51 captured; settle and retain at least 52 in one hopper; no driving or shooter assertions in this tuning stage";
+                    "Static capacity stage: up to 64 official ground balls introduced individually at the pickup, stopping after "
+                    + CapacityCaptureTarget
+                    + " captured; settle and retain the collected load; no shooter assertions in this stage";
             caseIndex = 0;
             wallStart = EditorApplication.timeSinceStartup;
             robot = null;
@@ -740,7 +759,7 @@ public static class Turbo4744CapacityBench
         var offset = Quaternion.Inverse(collectionHeading) * (rb.position - collectionStart);
         current.collectionDistance = offset.z;
         current.wheelSweepReached |= offset.z >= 3.4f;
-        float yaw = Mathf.Abs(Mathf.DeltaAngle(Headings[caseIndex], rb.rotation.eulerAngles.y));
+        float yaw = Mathf.Abs(Mathf.DeltaAngle(current.heading, rb.rotation.eulerAngles.y));
         float speed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude;
         // Preserve every sample in the original eight-second observation,
         // and add any remaining sweep and braking. Extra stationary settling
@@ -875,14 +894,17 @@ public static class Turbo4744CapacityBench
                 report.runtimeDllSha256 = Digest(
                     Path.Combine(Path.GetDirectoryName(file), "Ninjas4744.dll")
                 );
-                if (report.runtimeDllSha256 != Digest(typeof(Turbo4744).Assembly.Location))
+                report.editorRuntimeDllSha256 = Digest(typeof(Turbo4744).Assembly.Location);
+                Turbo4744NetBurstBuilder.VerifyRuntime();
+                if (report.runtimeDllSha256 != Digest(Turbo4744NetBurstBuilder.PlayerAssembly))
                     throw new InvalidOperationException(
-                        "Built mod DLL differs from the runtime being tested. Build again."
+                        "Built player DLL differs from the audited player compilation"
                     );
                 prefab = bundle
                     .LoadAllAssets<BaseModpackSO>()
                     .Single(p => p.ModpackName == "Ninjas 4744 Turbo 2026")
                     .Robots.Single()
+                    .AlternateRobots.Single(v => v.DisplayName == "Actual Turbo")
                     .RobotPrefab;
                 report.prefabSource = file;
                 Spawn();
@@ -1096,32 +1118,42 @@ public static class Turbo4744CapacityBench
                         && c.maxTilt < 12
                         && c.maxCollectionYaw < 5
                         && c.netPeakHeight < 1.15f
-                    : c.collected
-                        >= (
-                            WheelPile ? 25
-                            : Pile ? 50
-                            : 25
-                        )
-                        && (
-                            !Pile
-                            || (WheelPile || c.storedBeforeDrive >= 50)
-                                && c.maxTilt < 12
-                                // Native swerve commands angular velocity, not
-                                // absolute heading. Bound the residual heading
-                                // drift from asymmetric intake reactions too.
-                                && c.maxCollectionYaw < (WheelPile ? 3 : 5)
-                                && c.maxCrossTrack < .20f
-                                && (!WheelPile || c.collectionDistance > 3.1f)
-                                && c.netPeakHeight < 1.15f
-                        )
-                        && c.maxLoadedNativeSpeed > 3.5f
-                        && (Pile || c.obstacleContacts.Count == 0)
-                        && c.retainedAfterDrive == c.collected
+                : LoadedAim
+                    ? c.collected >= 50
+                        && c.storedBeforeDrive >= 50
+                        && c.maxTilt < 12
+                        && c.netPeakHeight < 1.15f
                         && c.released == c.collected
                         && c.retained == 0
                         && c.escapes.Count == 0
                         && c.stowed
                         && c.stable
+                : c.collected
+                    >= (
+                        WheelPile ? 25
+                        : Pile ? 50
+                        : 25
+                    )
+                    && (
+                        !Pile
+                        || (WheelPile || c.storedBeforeDrive >= 50)
+                            && c.maxTilt < 12
+                            // Native swerve commands angular velocity, not
+                            // absolute heading. Bound the residual heading
+                            // drift from asymmetric intake reactions too.
+                            && c.maxCollectionYaw < (WheelPile ? 3 : 5)
+                            && c.maxCrossTrack < .20f
+                            && (!WheelPile || c.collectionDistance > 3.1f)
+                            && c.netPeakHeight < 1.15f
+                    )
+                    && c.maxLoadedNativeSpeed > 3.5f
+                    && (Pile || c.obstacleContacts.Count == 0)
+                    && c.retainedAfterDrive == c.collected
+                    && c.released == c.collected
+                    && c.retained == 0
+                    && c.escapes.Count == 0
+                    && c.stowed
+                    && c.stable
             )
             && (!Pile || WheelPile || LoadOnly || report.cases.Any(c => c.storedBeforeDrive > 50))
             && report.errors.Count == 0;

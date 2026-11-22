@@ -51,6 +51,7 @@ public static class Turbo4744RetentionRegression
     private sealed class Report
     {
         public bool passed;
+        public string editorRuntimeDllSha256;
         public string prefabSource,
             bundleSha256,
             runtimeDllSha256;
@@ -497,7 +498,9 @@ public static class Turbo4744RetentionRegression
                 report.runtimeDllSha256 = Digest(
                     Path.Combine(Path.GetDirectoryName(file), "Ninjas4744.dll")
                 );
-                if (report.runtimeDllSha256 != Digest(typeof(Turbo4744).Assembly.Location))
+                report.editorRuntimeDllSha256 = Digest(typeof(Turbo4744).Assembly.Location);
+                Turbo4744NetBurstBuilder.VerifyRuntime();
+                if (report.runtimeDllSha256 != Digest(Turbo4744NetBurstBuilder.PlayerAssembly))
                     throw new InvalidOperationException(
                         "Built mod DLL differs from the runtime being tested. Build again."
                     );
@@ -505,6 +508,7 @@ public static class Turbo4744RetentionRegression
                     .LoadAllAssets<BaseModpackSO>()
                     .Single(p => p.ModpackName == "Ninjas 4744 Turbo 2026")
                     .Robots.Single()
+                    .AlternateRobots.Single(v => v.DisplayName == "Actual Turbo")
                     .RobotPrefab;
                 report.prefabSource = file;
                 Spawn();
@@ -639,8 +643,11 @@ public static class Turbo4744RetentionRegression
 
     private static void TickApproach(float t)
     {
+        // Match retention: enable bindings during a neutral first second, then
+        // press intake. A key held before Init can lose its performed event.
         Press(
-            t < 8 ? new[] { Key.LeftShift }
+            t < 1 ? Array.Empty<Key>()
+            : t < 8 ? new[] { Key.LeftShift }
             : t >= 9 ? new[] { Key.Z }
             : Array.Empty<Key>()
         );

@@ -1,0 +1,6 @@
+{
+  "name": "Ninjas4744WeakCpuObserver",
+  "references": ["GameSystems", "Rebuilt", "MoSimCore"],
+  "allowUnsafeCode": false,
+  "autoReferenced": true
+}

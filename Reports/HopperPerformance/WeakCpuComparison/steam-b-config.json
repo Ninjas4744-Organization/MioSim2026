@@ -1,0 +1,8 @@
+{
+  "label": "steam-b",
+  "build": "steam",
+  "outputDirectory": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\WeakCpuComparison",
+  "minimumFuel": 55,
+  "profileSeconds": 14,
+  "warmupSeconds": 2
+}

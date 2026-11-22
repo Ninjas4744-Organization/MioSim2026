@@ -1,0 +1,8 @@
+{
+    "unityVersion": "2023.2.22f1",
+    "scene": "Assets/Scenes/Rebuilt/Rebuilt.unity",
+    "prefab": "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab",
+    "width": 1920,
+    "height": 1080,
+    "description": "Direct Unity camera capture of the actual Turbo prefab in the open Rebuilt scene. No generated imagery or text overlays."
+}

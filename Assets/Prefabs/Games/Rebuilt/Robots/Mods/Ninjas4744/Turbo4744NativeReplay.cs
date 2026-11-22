@@ -93,6 +93,12 @@ namespace Ninjas4744.MoSim
         {
             public Request request;
             public string label;
+            public string netSolver;
+            public int netAnchorCount;
+            public bool netBroadphaseEnabled,
+                netNativeLibraryLoaded,
+                netBurstExecution;
+            public bool simpleControls;
             public string alliance;
             public string activeHubAtShot;
             public bool jointProjectionDisabled;
@@ -145,7 +151,7 @@ namespace Ninjas4744.MoSim
             public List<string> frames = new List<string>();
             public string environment =
                 "Installed MoSim player; complete original field; keyboard replay only";
-            public string runtimeVersion = "0.6.2";
+            public string runtimeVersion = "1.0.1";
             public float physicsStep,
                 maxTilt;
             public bool completed,
@@ -214,7 +220,7 @@ namespace Ninjas4744.MoSim
         private readonly HashSet<RebuiltGamePieceController> transitFuel =
             new HashSet<RebuiltGamePieceController>();
         private Turbo4744NetEnvironment netEnvironment;
-        private NetSolver net;
+        private Turbo4744NetSolver net;
         private Turbo4744FuelCompliance compliance;
         private float nextNetTrace;
         private float trenchHoldSeconds;
@@ -298,7 +304,12 @@ namespace Ninjas4744.MoSim
             };
             report.jointProjectionDisabled = request.disableJointProjection;
             report.stowRequested = request.stowForReturn;
-            net = robot.roofNet.GetComponent<NetSolver>();
+            net = robot.roofNet.GetComponent<Turbo4744NetSolver>();
+            report.netSolver = net.GetType().FullName;
+            report.netAnchorCount = net.customAnchors.Count;
+            report.netBroadphaseEnabled = net.collisionBroadphase;
+            report.netNativeLibraryLoaded = Turbo4744NetBurst.Loaded;
+            report.simpleControls = robot.simpleControls;
             report.intakeForceBudget = robot.intakeContact.maxTotalForce;
             report.intakeTractionBudget = robot.intakeContact.maxTotalTractionForce;
             report.netStrandRadius = net.collisionRadius;
@@ -635,6 +646,11 @@ namespace Ninjas4744.MoSim
                     );
                 }
             }
+            // Keep shooting held through observation for the simple-control
+            // variant as well as the team's latched-control variant.
+            if (phase == 4 && timeline.Count == 0)
+                keys = keys.Concat(new[] { (Key)Enum.Parse(typeof(Key), request.shootKey) })
+                    .ToArray();
             if (timeline.Count > 0)
                 keys = timeline.FirstOrDefault(segment => t < segment.end).keys
                     ?? Array.Empty<Key>();
@@ -1034,6 +1050,7 @@ namespace Ninjas4744.MoSim
             {
                 AuditColliders("finish");
                 report.completed = complete;
+                report.netBurstExecution = net && net.BurstExecution;
                 foreach (var piece in fuel)
                 {
                     if (!piece)

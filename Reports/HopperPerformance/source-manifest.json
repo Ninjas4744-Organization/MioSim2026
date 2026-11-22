@@ -1,0 +1,18 @@
+{
+  "repositoryHead": "401e8086667c494ffea43ca1bd7a43527aa62d85",
+  "shared": {
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.prefab": "fa3eeb0f111ab8aa8d5c8f5e499af9bb2fc848c809e474133bc85a72f9758256",
+    "Assets/Editor/Turbo4744HopperPerformanceBench.cs": "99e9cf7f1366a4e4874dda27d428dc8920d1176d6d60da7cab5d7f7a0570e5e1",
+    "Assets/Prefabs/Games/Rebuilt/Fuel.prefab": "5ddf74e7a3b007b92085fe643650da27b0b03e421abaa439350ff4a7b570078a",
+    "Assets/Scripts/MoSimLib/NetSolver.cs": "1ab121a51993b8927d35ef76f8b2fdfb8708196094c4f1aad44527b57cddced6",
+    "ProjectSettings/TimeManager.asset": "d3b18ee25055b0670428f2e131467ca62e537cf5fb9c7d1e020e5a4227c41c22"
+  },
+  "baseline": {
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelCompliance.cs": "97d4e87dcd414550da58d84a904b527e70e0f8e5d4eba96fe7b73357cebc1603",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetEnvironment.cs": "27a676e9424dc4486521c4a81525900f39e5ac28e4a6a4781f8264f62feb06f9"
+  },
+  "optimized": {
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetEnvironment.cs": "91d5884e73d088489e48f0e788e8a9e956caa86e1ca17e68a99745571d41c58a"
+  }
+}

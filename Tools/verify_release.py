@@ -1,12 +1,16 @@
 """Collect passing, fingerprint-matched Unity reports for the current mod build."""
+import argparse
 import hashlib
 import json
 import shutil
 from pathlib import Path
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--project', type=Path, default=Path('Artifacts/PhysicsProject'))
+args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-build = root / 'Artifacts/PhysicsProject/BuildArtifacts'
-platform = root / 'Artifacts/PhysicsProject/BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
+build = args.project.resolve() / 'BuildArtifacts'
+platform = args.project.resolve() / 'BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
 load = lambda path: json.loads(path.read_text(encoding='utf-8-sig'))
 manifest = load(platform / 'modpack.json')
 digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
@@ -58,7 +62,7 @@ if failed:
     raise SystemExit('Current build checks failed or stale: ' + ', '.join(failed))
 for filename in [*checks.values(), 'assembly-audit.json', 'bundle-audit.json']:
     shutil.copy2(build / filename, root / 'Reports' / filename)
-for pattern in ['Turbo4744-v5-*.png', 'Turbo4744-v6-*.png', 'Turbo4744-pile-loaded-*.png']:
+for pattern in ['Turbo4744-v5-*.png', 'Turbo4744-v6-*.png', 'Turbo4744-pile-loaded-0.png', 'Turbo4744-pile-loaded-90.png']:
     for path in build.glob(pattern):
         shutil.copy2(path, root / 'Reports' / path.name)
 (root / 'Reports' / f"verification-{manifest['version']}.json").write_text(

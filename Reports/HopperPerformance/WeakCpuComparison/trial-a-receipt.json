@@ -1,0 +1,8 @@
+{
+  "label": "trial-a",
+  "build": "trial",
+  "version": "0.6.2",
+  "bundleSha256": "4ad0132da8a253ecc72abd8f8736b23a2f3ed46fad144b08e2900638ecf972c6",
+  "runtimeDllSha256": "b7852ebdcb3fa9a71f93fa8912d165d73bff31103db3bfe70bbb4096621c3d7d",
+  "helperDllSha256": "c86784c8b563e7438c53f45777adfa0efaac8f046787576c3f05ff2752da319b"
+}

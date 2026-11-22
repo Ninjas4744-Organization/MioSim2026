@@ -8,10 +8,11 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument('label')
+parser.add_argument('--project', type=Path, default=Path('Artifacts/PhysicsProject'))
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 reports = root / 'Reports/native'
-platform = root / 'Artifacts/PhysicsProject/BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
+platform = args.project.resolve() / 'BuiltMods/rebuilt_ninjas_4744_turbo_2026/standalonewindows64'
 load = lambda p: json.loads(p.read_text(encoding='utf-8-sig'))
 manifest = load(platform / 'modpack.json')
 hashes = {name: hashlib.sha256((platform / name).read_bytes()).hexdigest()
@@ -19,6 +20,10 @@ hashes = {name: hashlib.sha256((platform / name).read_bytes()).hexdigest()
 r = load(reports / (args.label + '.json'))
 q = load(reports / (args.label + '-request.json'))
 assert load(reports / (args.label + '-artifacts.json')) == hashes, 'Stale artifacts'
+if tuple(map(int, manifest['version'].split('.'))) >= (1, 0, 1):
+    assert r['runtimeVersion'] == manifest['version'], 'Wrong native runtime version'
+    assert r['netBurstExecution'] and r['netNativeLibraryLoaded'], 'Native Burst path inactive'
+    assert r['netBroadphaseEnabled'] and r['netAnchorCount'] == 68
 assert r['completed'] and r['transitCompleted'] and r['stowedBeforeReturn']
 assert not r['overturned'] and not r['stowTimedOut'] and not r['failureReason']
 assert q['stowForReturn'] and not q['requireTrenchSuccess'] and q['shootKey'] == 'E'
@@ -49,7 +54,7 @@ rail_max = max(abs(float(f[k])) for f in crossing for k in ['intakeExtension', '
 assert rail_max < .035
 assert max(float(f['y']) for f in crossing) > .05, 'No raised bump crossing'
 assert 5 < max(float(f['tilt']) for f in crossing) < 30
-summary = {'version': manifest['version'], 'artifacts': hashes, 'label': args.label,
+summary = {'native_burst': r.get('netBurstExecution', False), 'version': manifest['version'], 'artifacts': hashes, 'label': args.label,
            'route': 'Bump beside hub at world Z ' + str(q['returnLane']),
            'alliance': r['alliance'], 'stowed': start, 'retained': r['transitEndCount'],
            'stored_spills': len(r['transitEscapes']), 'inlet_departures': len(r['inletDepartures']),

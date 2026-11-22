@@ -1,0 +1,42 @@
+{
+  "version": "0.6.2",
+  "label": "net-collision-r1",
+  "sourceCommit": "401e8086667c494ffea43ca1bd7a43527aa62d85",
+  "workingTreeSources": {
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744.cs": "d4ca42c99b850c1d22279f218ccce5c9c1c761a750ee7439c0d037b0d6f5e286",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744BumperContacts.cs": "6c52bb3315f0d1b6c1bb48de826bea0f246d8c5fc0323add45b8132d4238193e",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744DriveController.cs": "1b7b2429e39ded0a4f9b754ec2a882e3d9720e010cd3abe6234f6c08edd5c0ba",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NativeReplay.cs": "4d8ed3d9e30106d385a9ba7e1d33d11e2ddfe5a32ca67521459a14cdb83e4fef",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetBurst.cs": "0b640f2399abd680d1dbd576d12d3a5ea3242c36616dd52aff92b3602b7de7af",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28"
+  },
+  "bundleSha256": "4ad0132da8a253ecc72abd8f8736b23a2f3ed46fad144b08e2900638ecf972c6",
+  "runtimeDllSha256": "b7852ebdcb3fa9a71f93fa8912d165d73bff31103db3bfe70bbb4096621c3d7d",
+  "nativeLibrarySha256": "7c6260cc455471eb38eaea8f9631c990db096c4a09162ca47713211d75eee7d3",
+  "burstVersion": "1.8.13",
+  "cpuTarget": "X64_SSE2",
+  "nativeNetOnly": true,
+  "validation": {
+    "netOriginalMs": 1.896833203125,
+    "netOptimizedMs": 0.927697265625,
+    "retainedLoads": [
+      59,
+      59
+    ],
+    "shotLoads": [
+      59,
+      59
+    ],
+    "automaticShotLoad": 60
+  },
+  "scope": "Focused trial: exact net-state/reaction equivalence; editor bundle full-load retention, loaded driving, manual shooting and automatic aiming/shooting; installed-player native/Burst execution and 8-preload delivery smoke test. Editor and player DLLs are distinct audited compilations of the same source. No complete release recertification."
+}

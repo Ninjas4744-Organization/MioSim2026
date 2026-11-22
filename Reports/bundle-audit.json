@@ -1,7 +1,11 @@
 {
     "passed": true,
+    "version": "1.0.1",
+    "selectorLogo": "selector-logo",
     "modpack": "Ninjas 4744 Turbo 2026",
     "game": "Rebuilt",
+    "selectorWidth": 119.0,
+    "selectorHeight": 144.0,
     "team": 4744,
     "robots": 1,
     "missingScripts": 0,
@@ -19,8 +23,10 @@
         "UnityEngine.IMGUIModule",
         "MoSimCore",
         "UnityEngine.VehiclesModule",
-        "MoSimLib",
         "Unity.Mathematics",
+        "Unity.Burst",
+        "MoSimLib",
+        "Unity.Collections",
         "UnityEngine.TextRenderingModule",
         "UnityEngine.JSONSerializeModule",
         "UnityEngine.ScreenCaptureModule"

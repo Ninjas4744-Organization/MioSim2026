@@ -1,0 +1,103 @@
+{
+    "unity": "2023.2.22f1",
+    "cpu": "AMD Ryzen 5 9600X 6-Core Processor ",
+    "label": "baseline",
+    "fixedDeltaTime": 0.004499992821365595,
+    "netNodes": 320,
+    "netSubsteps": 4,
+    "scope": "Editor microbenchmark: fixed stock fuel positions; timed loops exclude rendering, driving, and Physics.Simulate. Net timings include job completion and deferred impulses. Optional checks simulate physics separately. Not player FPS.",
+    "measurements": [
+        {
+            "component": "FuelCompliance",
+            "fuel": 0,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 1.462890625,
+            "p95Microseconds": 2.0,
+            "gcAllocationsPerStep": 4.0
+        },
+        {
+            "component": "NetSolver + completion",
+            "fuel": 0,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 138.8751953125,
+            "p95Microseconds": 191.9,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetEnvironment (completed net)",
+            "fuel": 0,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 76.775390625,
+            "p95Microseconds": 116.3,
+            "gcAllocationsPerStep": 9.0
+        },
+        {
+            "component": "FuelCompliance",
+            "fuel": 30,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 60.42734375,
+            "p95Microseconds": 98.4,
+            "gcAllocationsPerStep": 25.0
+        },
+        {
+            "component": "NetSolver + completion",
+            "fuel": 30,
+            "samples": 512,
+            "netCandidateColliders": 60,
+            "meanMicroseconds": 917.97421875,
+            "p95Microseconds": 1179.3,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetEnvironment (completed net)",
+            "fuel": 30,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 70.161328125,
+            "p95Microseconds": 94.7,
+            "gcAllocationsPerStep": 9.0
+        },
+        {
+            "component": "FuelCompliance",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 105.191015625,
+            "p95Microseconds": 126.6,
+            "gcAllocationsPerStep": 30.0
+        },
+        {
+            "component": "NetSolver + completion",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 120,
+            "meanMicroseconds": 1842.5853515625,
+            "p95Microseconds": 2095.0,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetSolver outer sphere only (diagnostic)",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 60,
+            "meanMicroseconds": 1048.5419921875,
+            "p95Microseconds": 1199.6,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetEnvironment (completed net)",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 68.1982421875,
+            "p95Microseconds": 72.1,
+            "gcAllocationsPerStep": 9.0
+        }
+    ],
+    "checks": [],
+    "error": ""
+}

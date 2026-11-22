@@ -1,0 +1,107 @@
+{
+    "unity": "2023.2.22f1",
+    "cpu": "AMD Ryzen 5 9600X 6-Core Processor ",
+    "label": "optimized",
+    "fixedDeltaTime": 0.004499992821365595,
+    "netNodes": 320,
+    "netSubsteps": 4,
+    "scope": "Editor microbenchmark: fixed stock fuel positions; timed loops exclude rendering, driving, and Physics.Simulate. Net timings include job completion and deferred impulses. Optional checks simulate physics separately. Not player FPS.",
+    "measurements": [
+        {
+            "component": "FuelCompliance",
+            "fuel": 0,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 0.7205078125,
+            "p95Microseconds": 0.7,
+            "gcAllocationsPerStep": 0.0
+        },
+        {
+            "component": "NetSolver + completion",
+            "fuel": 0,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 124.3619140625,
+            "p95Microseconds": 170.6,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetEnvironment (completed net)",
+            "fuel": 0,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 74.905078125,
+            "p95Microseconds": 101.2,
+            "gcAllocationsPerStep": 6.0
+        },
+        {
+            "component": "FuelCompliance",
+            "fuel": 30,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 49.378125,
+            "p95Microseconds": 76.4,
+            "gcAllocationsPerStep": 0.0
+        },
+        {
+            "component": "NetSolver + completion",
+            "fuel": 30,
+            "samples": 512,
+            "netCandidateColliders": 60,
+            "meanMicroseconds": 915.4912109375,
+            "p95Microseconds": 1136.4,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetEnvironment (completed net)",
+            "fuel": 30,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 66.9302734375,
+            "p95Microseconds": 76.1,
+            "gcAllocationsPerStep": 6.0
+        },
+        {
+            "component": "FuelCompliance",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 95.6486328125,
+            "p95Microseconds": 125.5,
+            "gcAllocationsPerStep": 0.0
+        },
+        {
+            "component": "NetSolver + completion",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 120,
+            "meanMicroseconds": 1832.8333984375,
+            "p95Microseconds": 2103.6,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetSolver outer sphere only (diagnostic)",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 60,
+            "meanMicroseconds": 1054.51953125,
+            "p95Microseconds": 1259.6,
+            "gcAllocationsPerStep": 1.0
+        },
+        {
+            "component": "NetEnvironment (completed net)",
+            "fuel": 60,
+            "samples": 512,
+            "netCandidateColliders": 0,
+            "meanMicroseconds": 70.4345703125,
+            "p95Microseconds": 99.1,
+            "gcAllocationsPerStep": 6.0
+        }
+    ],
+    "checks": [
+        "60 fuel captured; original contact flags restored on exit and disable",
+        "Two overlapping callback readers retain immutable snapshots across publication and disable",
+        "120 real physics steps exercised modified fuel contacts after re-enable"
+    ],
+    "error": ""
+}

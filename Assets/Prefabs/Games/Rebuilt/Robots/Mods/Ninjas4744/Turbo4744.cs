@@ -33,6 +33,18 @@ namespace Ninjas4744.MoSim
             ReverseBalls,
         }
 
+        private enum HeldShot
+        {
+            None,
+            Automatic,
+            Delivery,
+            Manual,
+        }
+
+        [Header("Controls")]
+        [Tooltip("Hold to shoot and toggle intake deployment using the standard MoSim actions.")]
+        public bool simpleControls;
+
         [Header("Mechanisms")]
         public ConfigurableJoint intakeRail,
             hopperRail;
@@ -139,6 +151,9 @@ namespace Ninjas4744.MoSim
             _lastPump,
             _lastStow,
             _lastManual;
+        private bool _simpleIntakeDeployed,
+            _simpleShotBlocked;
+        private HeldShot _heldShot;
         private readonly Collider[] _flowOverlaps = new Collider[128];
         private readonly Dictionary<Rigidbody, Vector3> _flowProgress =
             new Dictionary<Rigidbody, Vector3>();
@@ -250,6 +265,8 @@ namespace Ninjas4744.MoSim
         protected override void Init()
         {
             base.Init();
+            if (simpleControls)
+                _intakeRunning = false;
             _body = GetComponent<Rigidbody>();
             if (intakeContact)
             {
@@ -306,7 +323,7 @@ namespace Ninjas4744.MoSim
             Turbo4744NativeReplay.AttachIfRequested(this);
             _showStatus |= GetComponent<Turbo4744NativeReplay>();
             Debug.Log(
-                "[Turbo 4744 v0.6.2] Staged intake, compliant hopper, zone-selected shooting and physical rail control enabled."
+                "[Turbo 4744 v1.0.1] Staged intake, compliant hopper, zone-selected shooting and physical rail control enabled."
             );
             Debug.Log(
                 "[Turbo runtime] build=sliding-hopper-r3 module="
@@ -420,6 +437,70 @@ namespace Ninjas4744.MoSim
             MoveSpeedMultiplier = 1;
         }
 
+        private void Stow()
+        {
+            StopShot();
+            PumpMode = RailState.Closed;
+            Deployed = false;
+            _stowRequested = true;
+            _pendingHard = _pendingSoft = _automaticSoft = false;
+        }
+
+        private void ReadSimpleControls(
+            bool intakePress,
+            bool shoot,
+            bool pass,
+            bool manual,
+            bool pumpPress,
+            bool stowPress
+        )
+        {
+            if (intakePress)
+                _simpleIntakeDeployed = !_simpleIntakeDeployed;
+            if (!shoot && !pass && !manual)
+                _simpleShotBlocked = false;
+            if (stowPress)
+            {
+                _simpleIntakeDeployed = false;
+                // A held trigger must be released before it can undo Stow.
+                _simpleShotBlocked = shoot || pass || manual;
+            }
+            HeldShot requested =
+                _simpleShotBlocked ? HeldShot.None
+                : manual ? HeldShot.Manual
+                : pass ? HeldShot.Delivery
+                : shoot ? HeldShot.Automatic
+                : HeldShot.None;
+            if (requested == HeldShot.None)
+            {
+                if (_heldShot != HeldShot.None || ActiveShot)
+                {
+                    StopShot();
+                    if (_simpleIntakeDeployed)
+                        Open();
+                }
+                if (_simpleIntakeDeployed && !Deployed)
+                    Open();
+                else if (!_simpleIntakeDeployed && Deployed)
+                    Stow();
+            }
+            else if (
+                requested != _heldShot
+                || !ActiveShot
+                || requested == HeldShot.Automatic && Delivery != AutomaticDelivery
+            )
+                PrepareShot(
+                    requested == HeldShot.Delivery
+                        || requested == HeldShot.Automatic && AutomaticDelivery,
+                    requested == HeldShot.Manual,
+                    requested == HeldShot.Automatic
+                );
+            _heldShot = requested;
+            _intakeRunning = _simpleIntakeDeployed || requested != HeldShot.None;
+            if (pumpPress && Deployed)
+                StartHardPumping();
+        }
+
         private void ReadControls()
         {
             BindInputs();
@@ -450,54 +531,60 @@ namespace Ninjas4744.MoSim
                 AutomaticDelivery = false;
             else if (allianceX > 5.6f)
                 AutomaticDelivery = true;
-            if (_automaticShot && ActiveShot && Delivery != AutomaticDelivery)
-                PrepareShot(AutomaticDelivery, false, true);
-            if (
-                !_stowRequested
-                && PumpMode == RailState.Closed
-                && Time.fixedTime - _enableBegan >= .5f
-            )
-                Open();
-            if (intakePress || intake && !_lastIntake || IntakeAction.WasTriggered())
+            if (simpleControls)
+                ReadSimpleControls(
+                    intakePress || intake && !_lastIntake || IntakeAction.WasTriggered(),
+                    shoot,
+                    pass,
+                    manual,
+                    pumpPress || pump && !_lastPump || RobotSpecial.WasTriggered(),
+                    stowPress || stow && !_lastStow || StowAction.WasTriggered()
+                );
+            else
             {
-                bool reverse =
-                    ShootingState == ShootState.Hub || ShootingState == ShootState.Delivery;
-                StopShot();
-                if (reverse)
-                {
-                    ShootingState = ShootState.ReverseBalls;
-                    _reverseReady = -1;
-                }
-                Open();
-                _intakeRunning = true;
-            }
-            if (shootPress || shoot && !_lastShoot || OuttakeAction.WasTriggered())
-            {
-                if (ActiveShot && !_manual)
-                    StartHardPumping();
-                else
+                if (_automaticShot && ActiveShot && Delivery != AutomaticDelivery)
                     PrepareShot(AutomaticDelivery, false, true);
-            }
-            if (passPress || pass && !_lastPass || AutoPass.WasTriggered())
-            {
-                if (ActiveShot && Delivery)
+                if (
+                    !_stowRequested
+                    && PumpMode == RailState.Closed
+                    && Time.fixedTime - _enableBegan >= .5f
+                )
+                    Open();
+                if (intakePress || intake && !_lastIntake || IntakeAction.WasTriggered())
+                {
+                    bool reverse =
+                        ShootingState == ShootState.Hub || ShootingState == ShootState.Delivery;
+                    StopShot();
+                    if (reverse)
+                    {
+                        ShootingState = ShootState.ReverseBalls;
+                        _reverseReady = -1;
+                    }
+                    Open();
+                    _intakeRunning = true;
+                }
+                if (shootPress || shoot && !_lastShoot || OuttakeAction.WasTriggered())
+                {
+                    if (ActiveShot && !_manual)
+                        StartHardPumping();
+                    else
+                        PrepareShot(AutomaticDelivery, false, true);
+                }
+                if (passPress || pass && !_lastPass || AutoPass.WasTriggered())
+                {
+                    if (ActiveShot && Delivery)
+                        StartHardPumping();
+                    else
+                        PrepareShot(true);
+                }
+                if (manual && !_lastManual)
+                    PrepareShot(false, true);
+                if (!manual && _lastManual && _manual)
+                    StopShot();
+                if (pumpPress || pump && !_lastPump || RobotSpecial.WasTriggered())
                     StartHardPumping();
-                else
-                    PrepareShot(true);
-            }
-            if (manual && !_lastManual)
-                PrepareShot(false, true);
-            if (!manual && _lastManual && _manual)
-                StopShot();
-            if (pumpPress || pump && !_lastPump || RobotSpecial.WasTriggered())
-                StartHardPumping();
-            if (stowPress || stow && !_lastStow || StowAction.WasTriggered())
-            {
-                StopShot();
-                PumpMode = RailState.Closed;
-                Deployed = false;
-                _stowRequested = true;
-                _pendingHard = _pendingSoft = false;
+                if (stowPress || stow && !_lastStow || StowAction.WasTriggered())
+                    Stow();
             }
             _lastIntake = intake;
             _lastShoot = shoot;
@@ -1122,6 +1209,7 @@ namespace Ninjas4744.MoSim
             _automaticSoft = false;
             _spinning = false;
             ShootingState = ShootState.Idle;
+            MoveSpeedMultiplier = 1;
         }
 
         private void AnimateRoller()

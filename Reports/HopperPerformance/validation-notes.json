@@ -1,0 +1,20 @@
+{
+  "capacityFixturePassed": true,
+  "cases": [
+    { "heading": 0, "collected": 53, "retained": 53 },
+    { "heading": 90, "collected": 53, "retained": 53 }
+  ],
+  "scope": "Authoring prefab with patched runtime. Static collection and retention checks; not installed-player FPS, shooting, or stowed trench certification.",
+  "startupException": {
+    "type": "NullReferenceException",
+    "message": "Object reference not set to an instance of an object",
+    "stack": [
+      "GameSystems.Settings.SettingsService.Validate (AppSettings settings), SettingsService.cs:355",
+      "GameSystems.Settings.SettingsService.Save (), SettingsService.cs:77",
+      "GameSystems.Settings.SettingsService.OnApplicationFocus (Boolean hasFocus), SettingsService.cs:72"
+    ],
+    "phase": "Scene startup, before the robot fixture began",
+    "log": "Artifacts/HopperPerformance/loaded-retention-current-prefab.log:532",
+    "interpretation": "The fixture's passed result does not assert an error-free editor startup. No robot contact exception was observed."
+  }
+}

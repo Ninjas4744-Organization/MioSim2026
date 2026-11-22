@@ -23,6 +23,9 @@ namespace Ninjas4744.MoSim
         private readonly Dictionary<Collider, bool> originalFlags =
             new Dictionary<Collider, bool>();
         private readonly List<Collider> removed = new List<Collider>();
+        private readonly object snapshotGate = new object();
+        private readonly Stack<Snapshot> available = new Stack<Snapshot>();
+        private int fuelMask;
 
         private sealed class Snapshot
         {
@@ -32,9 +35,53 @@ namespace Ninjas4744.MoSim
                 stiffness,
                 damping,
                 limit;
+            public int readers;
         }
 
         private Snapshot snapshot = new Snapshot();
+
+        private void Awake() =>
+            fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
+
+        private Snapshot RentSnapshot()
+        {
+            Snapshot next;
+            lock (snapshotGate)
+                next = available.Count > 0 ? available.Pop() : new Snapshot();
+            next.colliders.Clear();
+            next.velocity.Clear();
+            return next;
+        }
+
+        private void Publish(Snapshot next)
+        {
+            lock (snapshotGate)
+            {
+                var previous = snapshot;
+                snapshot = next;
+                if (previous.readers == 0)
+                    available.Push(previous);
+            }
+        }
+
+        private Snapshot AcquireSnapshot()
+        {
+            lock (snapshotGate)
+            {
+                snapshot.readers++;
+                return snapshot;
+            }
+        }
+
+        private void ReleaseSnapshot(Snapshot data)
+        {
+            lock (snapshotGate)
+            {
+                data.readers--;
+                if (data.readers == 0 && data != snapshot)
+                    available.Push(data);
+            }
+        }
 
         private void OnEnable()
         {
@@ -44,19 +91,19 @@ namespace Ninjas4744.MoSim
 
         private void FixedUpdate()
         {
-            var next = new Snapshot
-            {
-                step = Time.fixedDeltaTime,
-                stiffness = stiffness,
-                damping = damping,
-                limit = maximumCompression,
-            };
+            // Reuse storage only after every physics callback has released it.
+            // Published snapshots remain immutable, including across disable.
+            var next = RentSnapshot();
+            next.step = Time.fixedDeltaTime;
+            next.stiffness = stiffness;
+            next.damping = damping;
+            next.limit = maximumCompression;
             int count = Physics.OverlapBoxNonAlloc(
                 transform.TransformPoint(new Vector3(0, .45f, .26f)),
                 new Vector3(.40f, .33f, .44f),
                 overlaps,
                 transform.rotation,
-                LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt"),
+                fuelMask,
                 QueryTriggerInteraction.Ignore
             );
             for (int i = 0; i < count; i++)
@@ -85,7 +132,7 @@ namespace Ninjas4744.MoSim
                     collider.hasModifiableContacts = true;
                 }
             }
-            Volatile.Write(ref snapshot, next);
+            Publish(next);
             removed.Clear();
             foreach (var pair in originalFlags)
                 if (!pair.Key || !next.colliders.Contains(pair.Key.GetInstanceID()))
@@ -100,7 +147,19 @@ namespace Ninjas4744.MoSim
 
         private void Resolve(PhysicsScene scene, NativeArray<ModifiableContactPair> pairs)
         {
-            var data = Volatile.Read(ref snapshot);
+            var data = AcquireSnapshot();
+            try
+            {
+                Resolve(data, pairs);
+            }
+            finally
+            {
+                ReleaseSnapshot(data);
+            }
+        }
+
+        private void Resolve(Snapshot data, NativeArray<ModifiableContactPair> pairs)
+        {
             int changed = 0;
             foreach (var pair in pairs)
             {
@@ -144,7 +203,7 @@ namespace Ninjas4744.MoSim
         {
             Physics.ContactModifyEvent -= Resolve;
             Physics.ContactModifyEventCCD -= Resolve;
-            Volatile.Write(ref snapshot, new Snapshot());
+            Publish(RentSnapshot());
             foreach (var pair in originalFlags)
                 if (pair.Key)
                     pair.Key.hasModifiableContacts = pair.Value;

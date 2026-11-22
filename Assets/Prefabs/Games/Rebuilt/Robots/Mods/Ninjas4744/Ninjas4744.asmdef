@@ -1,9 +1,9 @@
 {
   "name": "Ninjas4744",
   "rootNamespace": "Ninjas4744.MoSim",
-  "references": ["Rebuilt", "RobotFramework", "MoSimCore", "MoSimLib", "GameSystems", "Unity.InputSystem", "Unity.Collections", "Unity.Mathematics"],
+  "references": ["Rebuilt", "RobotFramework", "MoSimCore", "MoSimLib", "GameSystems", "Unity.InputSystem", "Unity.Collections", "Unity.Mathematics", "Unity.Burst"],
   "includePlatforms": [],
   "excludePlatforms": [],
-  "allowUnsafeCode": false,
+  "allowUnsafeCode": true,
   "autoReferenced": true
 }

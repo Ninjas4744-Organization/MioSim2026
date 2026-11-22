@@ -1,7 +1,3 @@
-using System;
-using System.Reflection;
-using MoSimLib;
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -11,7 +7,7 @@ namespace Ninjas4744.MoSim
     [DefaultExecutionOrder(50)]
     public sealed class Turbo4744NetEnvironment : MonoBehaviour
     {
-        public NetSolver solver;
+        public Turbo4744NetSolver solver;
         public int ContactNodes { get; private set; }
         public int TotalContacts { get; private set; }
         public float MaximumPenetration { get; private set; }
@@ -19,23 +15,13 @@ namespace Ninjas4744.MoSim
         public int MaximumOverlaps { get; private set; }
         public float friction = .05f;
         private readonly Collider[] overlaps = new Collider[64];
-        private const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
-        private static readonly FieldInfo Positions = typeof(NetSolver).GetField("_pos", Private);
-        private static readonly FieldInfo Previous = typeof(NetSolver).GetField(
-            "_prevPos",
-            Private
-        );
-        private static readonly FieldInfo Velocities = typeof(NetSolver).GetField("_vel", Private);
-        private static readonly FieldInfo InverseMass = typeof(NetSolver).GetField(
-            "_invMass",
-            Private
-        );
-        private static readonly FieldInfo LastJob = typeof(NetSolver).GetField(
-            "_lastJobHandle",
-            Private
-        );
+        private int fieldMask;
 
-        private void Awake() => solver = GetComponent<NetSolver>();
+        private void Awake()
+        {
+            solver = GetComponent<Turbo4744NetSolver>();
+            fieldMask = LayerMask.GetMask("Default", "Field");
+        }
 
         private void FixedUpdate()
         {
@@ -43,25 +29,15 @@ namespace Ninjas4744.MoSim
             Steps++;
             if (!solver || !solver.enabled)
                 return;
-            // NetSolver 26.6 owns these buffers in a job. Join before resolving
-            // the missing contact type, and re-read buffers after any Rebuild.
-            if (
-                Positions == null
-                || Previous == null
-                || Velocities == null
-                || InverseMass == null
-                || LastJob == null
-            )
-                throw new InvalidOperationException("Unsupported MoSim NetSolver buffer layout");
-            object handle = LastJob.GetValue(solver);
-            handle.GetType().GetMethod("Complete", Type.EmptyTypes).Invoke(handle, null);
-            LastJob.SetValue(solver, handle);
-            var positions = (NativeArray<float3>)Positions.GetValue(solver);
+            // Join at the same point as the original adapter. Read the current
+            // buffers each step so Rebuild and disable/re-enable remain safe.
+            solver.CompleteSimulation();
+            var positions = solver.Positions;
             if (!positions.IsCreated || positions.Length == 0)
                 return;
-            var previous = (NativeArray<float3>)Previous.GetValue(solver);
-            var velocities = (NativeArray<float3>)Velocities.GetValue(solver);
-            var inverseMass = (NativeArray<float>)InverseMass.GetValue(solver);
+            var previous = solver.PreviousPositions;
+            var velocities = solver.Velocities;
+            var inverseMass = solver.InverseMasses;
             var bounds = new Bounds((Vector3)positions[0], Vector3.zero);
             for (int i = 1; i < positions.Length; i++)
                 bounds.Encapsulate((Vector3)positions[i]);
@@ -72,7 +48,7 @@ namespace Ninjas4744.MoSim
                 bounds.extents,
                 overlaps,
                 Quaternion.identity,
-                LayerMask.GetMask("Default", "Field"),
+                fieldMask,
                 QueryTriggerInteraction.Ignore
             );
             MaximumOverlaps = Mathf.Max(MaximumOverlaps, count);

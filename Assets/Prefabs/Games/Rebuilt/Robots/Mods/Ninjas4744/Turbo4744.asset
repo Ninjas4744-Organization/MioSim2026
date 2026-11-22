@@ -14,9 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamNumber: 4744
   teamName: Ninjas
-  robotImage: {fileID: 21300000, guid: 4e533639fe6f48d42ba9533b429800d4, type: 3}
+  robotImage: {fileID: 21300000, guid: 545de24b0e2e4b7a94476f65bcb18fc6, type: 3}
   mainRobot:
     displayName: Turbo
+    robotPrefab: {fileID: 2949001182849316725, guid: 6636a2d714f3edb4594bd9e120dcbf31,
+      type: 3}
+    mainMenuPrefab: {fileID: 8485839208033508337, guid: 3420f9a229b331e43a2d8e9c26831fce,
+      type: 3}
+    spawnSelectionPrefab: {fileID: 6744870420099769156, guid: 7a9184d625621184eab0da2b097649e0,
+      type: 3}
+    preloadGamePiece: {fileID: 2886892246794840118, guid: 96adc4350dc09d942b6bf56af73710ca,
+      type: 3}
+    tutorialCards:
+    - {fileID: 3703180570106430989, guid: 4dfaf623cb94917449419cfd678ae311, type: 3}
+    - {fileID: 40030091198032573, guid: ea45295d77ad7b041a4cbd097dac0acb, type: 3}
+    - {fileID: 4654943381900360113, guid: 1aeda75fa2f9cd84ea03c3ac207264d9, type: 3}
+  alternateRobots:
+  - displayName: Actual Turbo
     robotPrefab: {fileID: 2267328597818814721, guid: 5f5a520c777e484418ee2df1cca51660,
       type: 3}
     mainMenuPrefab: {fileID: 8485839208033508337, guid: 3420f9a229b331e43a2d8e9c26831fce,
@@ -29,4 +43,3 @@ MonoBehaviour:
     - {fileID: 2195879421615557198, guid: 5fc3fc02758f9f54e8c4fde619a64c08, type: 3}
     - {fileID: 2617800223399414745, guid: 2718fab51589dd34c9c132a7ca1535af, type: 3}
     - {fileID: 1308158237969018287, guid: bd0ba3e63632b6a4299cf25d35f014d5, type: 3}
-  alternateRobots: []

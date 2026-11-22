@@ -1,0 +1,10 @@
+{
+  "collectSeconds": 0,
+  "retreatSeconds": 0,
+  "label": "net-collision-r1-native-dispatch",
+  "waitForTeleop": false,
+  "shootKey": "E",
+  "observeSeconds": 8,
+  "targetCaptured": 0,
+  "shootWhileRetreatingSeconds": 0
+}

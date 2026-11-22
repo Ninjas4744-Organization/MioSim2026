@@ -1,0 +1,23 @@
+{
+  "label": "steam-b",
+  "collectSeconds": 12,
+  "retreatSeconds": 0,
+  "shootWhileRetreatingSeconds": 0.25,
+  "observeSeconds": 90,
+  "strafeInSeconds": 4,
+  "strafeOutSeconds": 0,
+  "returnToOwnZone": false,
+  "shootKey": "E",
+  "hardPumpAfterSeconds": 5,
+  "waitForTeleop": false,
+  "targetCaptured": 58,
+  "collectGear": 1,
+  "returnGear": 1,
+  "waitForActiveHub": false,
+  "collectionSettleSeconds": 300,
+  "repeatHardPumpEverySeconds": 10,
+  "stowForReturn": false,
+  "collectionBackoffAfterSeconds": 4,
+  "collectionBackoffSeconds": 1.7,
+  "collectionPumpAfterSeconds": 10
+}

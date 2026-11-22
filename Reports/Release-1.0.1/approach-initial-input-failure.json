@@ -1,0 +1,11 @@
+{
+  "passed": false,
+  "fixture": "Approach",
+  "build": "1.0.1",
+  "reason": "Cancelled the first case while waiting for deployment; input was held from the first frame before action initialization. No collection or driving began.",
+  "observed_seconds": 234.0,
+  "collected": 0,
+  "offered": 9,
+  "runtime_changed": false,
+  "correction": "Use the same one-second neutral input start as the passing retention fixture, then press intake. Preserve the physical trajectory, six cases, speed targets and all acceptance thresholds."
+}

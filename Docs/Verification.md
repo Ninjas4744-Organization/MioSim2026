@@ -1,51 +1,48 @@
-# Turbo 0.6.2 verification
+# Version 1.0.1 verification — release held
 
-All fourteen complete fixture groups pass against the fingerprints below. Tests run in visible Game views using the built Windows bundle and normal action bindings. Shooting and indexer fixtures run at simulation speed 1 and the native 4.5 ms physics step. Existing pickup, capacity, retention, drift, scoring and pair-timing thresholds remain unchanged.
+The 1.0.1 candidate passes all 14 editor fixture groups (52 cases plus the 15 integration flags), all 34 control checks, and the 480-step Burst net equivalence regression. Installed-player loaded stow failed, including in the unchanged Steam 1.0.0 control. Full native trench/bump certification is therefore incomplete. Steam publication remains on hold.
 
-| Check | Measured result |
-| --- | --- |
-| [Integration](../Reports/physics-diagnostics.json) | Pickup, same-ball feed/release, preloads, reverse support, disable and staged stow pass. |
-| [Travel](../Reports/travel-after.json) | Four headings; actuator impulse, disable and end stops pass. |
-| [Retention](../Reports/retention-after.json) | 18 collected and 18 retained; zero escapes; loaded stow passes. |
-| [Approach](../Reports/approach-after.json) | 54 collected and 54 retained; zero escapes; loaded stow passes. |
-| [Systems](../Reports/systems-after.json) | 7 cases; 40/40 scores; required pumping and movement checks pass. |
-| [Jam](../Reports/systems-jam.json) | 3 recoveries; 0.492 s reverse; obstruction contact and resumed release pass. |
-| [Indexer](../Reports/systems-indexer-after.json) | Eleven cases; 20/20 scores; pair exits 0.00 ms/0.00 ms, interpolated from 4.5 ms steps and both below 50 ms; passive guides, corners, singles and blocked paths pass. |
-| [Moving](../Reports/systems-moving-after.json) | 2 cases; 16/16 scores; required pumping and movement checks pass. |
-| [Delivery](../Reports/systems-delivery-after.json) | 32/32 first landings within the unchanged 1.25 m tolerance. |
-| [Matrix](../Reports/systems-matrix-after.json) | 8 cases; 64/64 scores; required pumping and movement checks pass. |
-| [Capacity](../Reports/capacity-after.json) | 0Â°: 30/30/30; 90Â°: 30/30/30 collected/retained/released; zero escapes. |
-| [Pile](../Reports/pile-after.json) | 0Â°: 53/53/53; 90Â°: 52/52/52 collected/retained/released; zero escapes. |
-| [WheelPile](../Reports/wheel-pile-after.json) | 0Â°: 46/46/46; 90Â°: 44/44/44 collected/retained/released; zero escapes. Drift 0.71Â°/0.66Â°. |
-| [Pulse](../Reports/systems-pulse-after.json) | 1 case; 8/8 scores; required pumping and movement checks pass. |
+[Release status](../Reports/release-status-1.0.1.json) · [Editor certificate](../Reports/verification-1.0.1.json) · [Controls](../Reports/simple-controls.json) · [Net equivalence](../Reports/Release-1.0.1/net-collision-burst.json)
 
-Capacity, Pile and WheelPile schedule their existing 0.5 s forward / 1 s reverse keyboard pulses on physics steps. Velocity samples include the result of the final commanded step: Unity advances physics after `FixedUpdate` ([execution order](https://docs.unity3d.com/2023.2/Documentation/Manual/ExecutionOrder.html)). The 3.5 m/s loaded-speed minimum is unchanged. The [frame-driven failure](../Reports/pile-062-loaded-speed-failure.json), [short-pulse physics measurement](../Reports/pile-062-physics-sampled-short-input.json), [pre-step endpoint comparison](../Reports/pile-062-physics-pulses-prestep.json) and [isolated corrected-clock check](../Reports/pile-062-physics-pulses-endpoint.json) remain preserved separately from the complete release groups above.
+| Fixture group | Cases | Result |
+| --- | ---: | --- |
+| [Integration](../Reports/physics-diagnostics.json) | 0 | Pass |
+| [Travel](../Reports/travel-after.json) | 4 | Pass |
+| [Retention](../Reports/retention-after.json) | 2 | Pass |
+| [Approach](../Reports/approach-after.json) | 6 | Pass |
+| [Systems](../Reports/systems-after.json) | 7 | Pass |
+| [Jam](../Reports/systems-jam.json) | 1 | Pass |
+| [Indexer](../Reports/systems-indexer-after.json) | 11 | Pass |
+| [Moving](../Reports/systems-moving-after.json) | 2 | Pass |
+| [Delivery](../Reports/systems-delivery-after.json) | 4 | Pass |
+| [Matrix](../Reports/systems-matrix-after.json) | 8 | Pass |
+| [Capacity](../Reports/capacity-after.json) | 2 | Pass |
+| [Pile](../Reports/pile-after.json) | 2 | Pass |
+| [WheelPile](../Reports/wheel-pile-after.json) | 2 | Pass |
+| [Pulse](../Reports/systems-pulse-after.json) | 1 | Pass |
 
-The installed-player trench cycles use the original 504 field fuel bodies. Actual stowed loads are counted before driving, and every member must remain through the crossing. Acceptance requires zero spills, full retraction, no sustained stop, matched installed artifact hashes and no diagnostic overrides. At least one cycle carries exactly 60 balls; both alliances and slow/normal gears are covered.
+The full-hopper editor cases retained and released all 52 and 53 collected balls through driving, turns, disable and empty stow after shooting. The unchanged 3.5 m/s loaded-speed threshold passed. These checks use the built bundle and an audited editor compilation of the same runtime source; the player DLL is a distinct audited compilation.
 
-| Installed-player cycle | Alliance | Stowed / retained | Minimum trench speed (m/s) | Stored spills / inlet departures | Scored / remaining |
-| --- | --- | --- | --- | --- | --- |
-| [062-grip140-blue-full](../Reports/native/062-grip140-blue-full.json) | Blue | 57 â†’ 57 | 1.50 | 0 / 0 | 57 / 0 |
-| [062-grip140-blue-repeat](../Reports/native/062-grip140-blue-repeat.json) | Blue | 58 â†’ 58 | 1.53 | 0 / 0 | 55 / 0 |
-| [062-grip140-blue-target62](../Reports/native/062-grip140-blue-target62.json) | Blue | 60 â†’ 60 | 1.52 | 0 / 5 | 58 / 0 |
-| [062-grip140-red-normal](../Reports/native/062-grip140-red-normal.json) | Red | 56 â†’ 56 | 3.15 | 0 / 0 | 54 / 0 |
+## Native release hold
 
-The additional [native bump/delivery cycle](../Reports/native/062-grip140-blue-bump-delivery.json) carried 56 balls over the bump beside the hub and retained all 56, with zero stored spills. It released 56, delivered 56 within 1.25 m of the target, and ended empty. Peak tilt was 15.04Â°. The front carrier briefly deflected 31.9 mm during the impact, within the existing Travel fixture's 35 mm impact/stow envelope. Trench acceptance retains its stricter 15 mm rail-clearance limit. The [bump certificate](../Reports/native-bump-0.6.2.json) checks the raised route, retained bodies, normal input commands and matching artifacts.
+| Run | Peak captured | Stored before stow | Final intake / hopper extension | Result |
+| --- | ---: | ---: | --- | --- |
+| [101-blue-full](../Reports/native/101-blue-full.json) (candidate 1.0.1) | 59 | 59 | 0.0000 / 0.2247 m | Stow timeout |
+| [101-blue-full-2](../Reports/native/101-blue-full-2.json) (candidate 1.0.1) | 56 | 50 | 0.0016 / 0.1756 m | Stow timeout |
+| [101-steam-stow-control](../Reports/native/101-steam-stow-control.json) (Steam 1.0.0) | 57 | 55 | 0.0015 / 0.2065 m | Stow timeout |
 
-Across these 4 trench cycles, recorded collection, return and shooting frames peaked at 16.64 ms. The checker rejects recorded phase frames at or above 250 ms and sustained pose/velocity holds under the trench.
+The shortened collection request was identical between the second candidate run and the Steam control apart from its label; both used the same saved spawn and original control scheme. Both timed out after eight seconds. This reproduces the failure in the published build; it does not complete candidate certification. The tests keep the 2 mm pre-transit stow gate, 15 mm trench envelope, 50–60-ball load gate and all original force/contact settings. No native trench or bump certificate was fabricated or carried forward from 0.6.2.
 
-Inlet departures count arrivals that never completed storage; they are recorded separately from losses of stored fuel. Pre-stow stored fuel must also survive retraction. Scoring counts are actual game events; remaining means fuel still in the robot at the end. The native traces record the full collection, stow, transit and shooting cycle separately from the fixture suite. [Native procedures and evidence](NativeTesting.md) explain the measurements.
+The first approach-fixture attempt held intake before input initialization and stalled before collection. A one-second neutral start matching the retention fixture corrected the harness; all six approach cases then passed with unchanged physical thresholds. [Preserved failed attempt](../Reports/Release-1.0.1/approach-initial-input-failure.json).
 
-The powered floors and wide shooter retain shared force budgets and chassis reaction. Side triangles remain passive. The main hopper and roof frame stay fixed; only the intake/kicker retracts. Fuel stays independent, with original geometry and mass, no parenting, repositioning, freezing or assigned velocity. Contact compliance and textile/traction parameters are explicit simulator calibration; see [mechanisms](Mechanisms.md) and [calibration](../Reports/indexer-calibration.json).
+The native 8-preload simple-control smoke test released all eight and ended empty. Its first collection route missed the field pile, so it is not counted as a full-hopper test. The corrected [default-control full-load run](../Reports/native/101-simple-full-shoot-2.json) collected 60, began shooting with 60, released all 60 and ended empty, with native Burst execution confirmed. Peak collection/shooting frames were 12.92/8.45 ms; peak tilt was 0.62 degrees. This stationary collection/holding/shooting test does not certify stowed transit.
 
-![Side cutaway](../Reports/Turbo4744-v6-indexer-cutaway-side.png)
+## Artifacts and platforms
 
-The cutaway hides panels and cloth rendering for inspection; their physics remain active.
+Bundle SHA-256: `bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe`
 
-![Two-ball shooter](../Reports/Turbo4744-v6-indexer-pair-top.png)
+Player DLL SHA-256: `e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6`
 
-Bundle SHA-256: `816835e241cc5d7b28f6cdbc3ef9881d1014da0f07e3374e46e7ff50f0ac4476`
+The supplied Ninjas logo is used by the Windows robot selector and was checked visually in installed MoSim. All Linux/macOS DLLs, bundles and Unity bundle manifests are preserved from Steam; only their JSON version labels change to satisfy the uploader. Their existing behavior and artwork remain. [Original platform fingerprints](../Reports/Release-1.0.1/preserved-platform-source.json).
 
-DLL SHA-256: `ebe4ba9ad58e9c680cb49387efecbf7cbc5d304a14089deb6eba6d406b231140`
-
-The [certificate](../Reports/verification-0.6.2.json) records every group and matching hash. Earlier results and fixture corrections remain in [0.6.1 verification](Verification-0.6.1.md).
+[Steam preparation and upload steps](Steam-1.0.1.md) · [Historical 0.6.2 verification](Verification-0.6.2.md) · [Reduced CPU comparison](WeakCpuComparison.md)
