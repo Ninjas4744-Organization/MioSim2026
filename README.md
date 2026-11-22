@@ -6,7 +6,7 @@ An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo 
 
 ## Release 1.0.1
 
-All release checks pass: full-load blocked-stow retention, shooting and empty-stow recovery in both control variants, plus both-alliance trench transit and bump/delivery. Full fuel loads can physically prevent retraction, matching the real robot. See [current verification](Docs/Verification.md).
+**Windows tester candidate; Steam release on hold.** The two tester control fixes pass all 58 controls checks and the 14 editor fixture groups. Native runs fire full loads of 58, 60 and 61 stored balls and preserve intake deployment after shooting. Strict empty-stow and bump limits still block release; see [current verification](Docs/Verification.md).
 
 The Windows release improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
 
@@ -32,12 +32,14 @@ and the existing automatic aim:
 | Hold to aim and deliver | E | Right bumper |
 | Hold to shoot at the fixed manual setting | Q | Left bumper |
 | Stow intake and cancel shooting | Z | D-pad down |
-| Request three hard pump cycles | V | Y / Triangle |
+| Request three hard pump cycles while shooting | V | Y / Triangle |
 | Hold to reverse the feed path | U | A / Cross |
 
-Turbo starts with its intake stowed. Shooting temporarily opens the
-intake and pumps automatically. Release the shoot control to stop aiming and
-feeding and return the intake to its toggled state. Stow cancels shooting even
+Turbo starts with its intake stowed. Shooting opens the intake and pumps
+automatically while fuel remains. Release the shoot control to stop aiming,
+feeding and pumping. The intake stays open after emptying the hopper and after
+release; use the intake toggle or Stow to close it. Pumping, including manual
+hard-pump requests, runs only while shooting and never while collecting. Stow cancels shooting even
 while a shoot control is held; release it before starting another shot. All
 bindings follow MoSim's control settings. With multiple shoot controls held,
 manual shoot takes priority over delivery, followed by automatic shoot.
@@ -51,7 +53,7 @@ Select **Actual Turbo** in the robot variant selector for the original team's la
 | Start delivery; press again for three hard pump cycles | E | Right bumper |
 | Shoot at the fixed manual setting | Q | Left bumper |
 | Stow intake/hopper | Z | D-pad down |
-| Run three hard pump cycles, then soft pumping | V | Y / Triangle |
+| Run three hard pump cycles while shooting, then soft pumping | V | Y / Triangle |
 | Reverse the feed path | U | A / Cross |
 
 Pumping slides the hopper bin and its front roof frame back and forth toward the stationary indexer. Z / D-pad down requests intake and hopper retraction. Fuel or a physical obstruction can stop the hopper short of full closure, matching the real robot; shooting out the load allows it to close. The tray overlaps the fixed indexer entrance as the bin moves.
@@ -131,7 +133,10 @@ Build also updates the inherited `Turbo4744Simple.prefab` variant and its tutori
 cards. `-Task Simple` updates those assets without rebuilding the mod or changing
 the main robot's geometry. `-Task Controls` exercises keyboard and gamepad input,
 quick taps, automatic aiming and feeding, release-to-stop, intake toggling, stow,
-disable, control rebinding, the default Turbo selection, and Actual Turbo's latched shooting. Add
+disable, control rebinding, the default Turbo selection, and Actual Turbo's latched shooting.
+Its 58 checks also cover pumping only while shooting, cancellation of queued and
+active pumps, physical three-ball shooting in both variants, and keeping the
+intake open after emptying the hopper and ending the shot. Add
 `-DiagnosticArguments '-turboBundle'` to check the built asset bundle.
 After those focused checks pass, `Tools/Package-Simple.ps1 -MoSimProject $project`
 creates an installable controls test ZIP and verifies its contents against the
@@ -158,7 +163,7 @@ installed-player native execution checks.
 - Calibrated full-load tread grip to 1.4 while preserving the team drive constants.
 - Verified native stowed trench crossings with actual loads of 57, 58, 60, 56 balls, retaining every member through the crossing. Those historical fixed-bin checks covered both alliances, slow and normal returns, and an actual 60-ball load; they do not certify packed-load stow of the current sliding hopper.
 
-All fourteen required fixture groups pass against this release's bundle and DLL. [Measured results](Docs/Verification.md) · [Native requests, traces and screenshots](Docs/NativeTesting.md). Incomplete arrivals at the inlet are reported separately; pre-stow stored fuel must survive retraction as well as transit. Earlier failed runs remain preserved.
+All fourteen editor fixture groups pass against this candidate's bundle and DLL; native release certification remains on hold. [Measured results](Docs/Verification.md) · [Native requests, traces and screenshots](Docs/NativeTesting.md). Incomplete arrivals at the inlet are reported separately; pre-stow stored fuel must survive retraction as well as transit. Earlier failed runs remain preserved.
 
 ## What changed in 0.6.1
 

@@ -1,0 +1,27 @@
+{
+  "native_burst": true,
+  "version": "1.0.1",
+  "artifacts": {
+    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f"
+  },
+  "label": "101-final-bump-simple-blue",
+  "route": "Bump beside hub at world Z 1.7",
+  "alliance": "Blue",
+  "stowed": 22,
+  "retained": 22,
+  "stored_spills": 0,
+  "inlet_departures": 0,
+  "released": 22,
+  "delivered_within_1_25_m": 21,
+  "remaining": 0,
+  "maximum_tilt_degrees": 15.138060569763184,
+  "maximum_rail_extension_m": 0.0345,
+  "maximum_return_frame_ms": 7.309800148010254,
+  "passed": true,
+  "selector_artwork_equivalence": "selector-artwork-equivalence-1.0.1.json",
+  "tested_artifacts": {
+    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe"
+  }
+}

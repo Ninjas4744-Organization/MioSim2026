@@ -31,7 +31,7 @@ assert certificate['runtime_dll_sha256'] == hashes[manifest['modDll']]
 assert len(certificate['fixtures']) == 14
 assert all(f['passed'] and (f['embedded_hashes_match'] or f.get('gameplay_assets_match')) for f in certificate['fixtures'])
 controls = load(ROOT / 'Reports/simple-controls.json')
-assert controls['passed'] and len(controls['checks']) >= 34 and not controls['errors']
+assert controls['passed'] and len(controls['checks']) >= 58 and not controls['errors']
 assert controls['bundleSha256'] == hashes[manifest['id']]
 assert controls['runtimeDllSha256'] == hashes[manifest['modDll']]
 net = load(ROOT / 'Reports/Release-1.0.1/net-collision-burst.json')

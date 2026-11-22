@@ -115,8 +115,8 @@ public static class Turbo4744SimpleControlsRegression
     {
         try
         {
-            if (EditorApplication.timeSinceStartup - began > 120)
-                throw new TimeoutException("Simple controls regression exceeded 120 seconds");
+            if (EditorApplication.timeSinceStartup - began > 180)
+                throw new TimeoutException("Simple controls regression exceeded 180 seconds");
             if (steps == null)
             {
                 if (EditorApplication.timeSinceStartup - began < 5 || !BaseGameManager.Instance)
@@ -218,7 +218,7 @@ public static class Turbo4744SimpleControlsRegression
         yield return .2f;
         Check(
             robot.Deployed && robot.ShootingState != Turbo4744.ShootState.Idle,
-            "Holding shoot temporarily opens intake and starts automatic aiming"
+            "Holding shoot opens intake and starts automatic aiming"
         );
         for (int i = 0; i < 80 && !robot.Feeding; i++)
             yield return .1f;
@@ -229,11 +229,16 @@ public static class Turbo4744SimpleControlsRegression
         Keys();
         yield return .1f;
         CheckStopped("Releasing shoot stops feeding, aiming and shooter commands");
-        Check(!robot.Deployed && !robot.Collecting, "Release restores toggled-off intake");
+        Check(
+            robot.Deployed && robot.Collecting,
+            "Shoot release leaves the intake open for collection"
+        );
         Keys(Key.K);
         Keys();
         yield return .2f;
         CheckStopped("Quick shoot tap never latches shooting");
+        Keys(Key.Z);
+        yield return .15f;
         Keys(Key.LeftShift);
         yield return .15f;
         Keys(Key.K);
@@ -288,6 +293,11 @@ public static class Turbo4744SimpleControlsRegression
         yield return .2f;
         CheckStopped("Re-enable without held input stays idle");
 
+        Keys(Key.Z);
+        yield return .15f;
+        Keys();
+        yield return .1f;
+
         Pad(new GamepadState { leftTrigger = 1 });
         yield return .2f;
         Pad(new GamepadState());
@@ -319,6 +329,9 @@ public static class Turbo4744SimpleControlsRegression
         CheckStopped("Rebound shoot release stops shooting");
         shoot.RemoveBindingOverride(binding);
 
+        foreach (float delay in PumpAndEmptyHopper())
+            yield return delay;
+
         // Outposts retain registered robots until the scene is torn down.
         robot.gameObject.SetActive(false);
         yield return .15f;
@@ -335,6 +348,150 @@ public static class Turbo4744SimpleControlsRegression
         Keys(Key.Z);
         yield return .2f;
         CheckStopped("Actual Turbo still supports Stow");
+        Keys();
+        foreach (float delay in PumpAndEmptyHopper())
+            yield return delay;
+    }
+
+    private static IEnumerable<float> PumpAndEmptyHopper()
+    {
+        string variant = robot.simpleControls ? "Turbo" : "Actual Turbo";
+        Keys(Key.Z);
+        yield return 2f;
+        Keys(Key.LeftShift, Key.V);
+        yield return .15f;
+        Keys();
+        yield return 3f;
+        Check(
+            robot.Deployed && robot.Collecting && robot.PumpMode == Turbo4744.RailState.Opened,
+            variant + ": pump press during collection cannot queue a pump after opening"
+        );
+
+        Keys(Key.K, Key.V);
+        yield return .2f;
+        Check(
+            robot.PumpMode == Turbo4744.RailState.HardPumping,
+            variant + ": hard pumping remains available while shooting"
+        );
+        Keys(robot.simpleControls ? Array.Empty<Key>() : new[] { Key.LeftShift });
+        yield return .15f;
+        Check(
+            robot.PumpMode == Turbo4744.RailState.Opened,
+            variant + ": cancelling a shot immediately cancels hard pumping"
+        );
+        Keys();
+        yield return 3f;
+        Check(
+            robot.PumpMode == Turbo4744.RailState.Opened && robot.Collecting,
+            variant + ": collection stays free of delayed hard or soft pumping"
+        );
+
+        Keys(Key.Z);
+        yield return 2f;
+        Keys(Key.K, Key.V);
+        yield return .1f;
+        Keys(robot.simpleControls ? Array.Empty<Key>() : new[] { Key.LeftShift });
+        yield return .15f;
+        Keys();
+        yield return 3f;
+        Check(
+            robot.Deployed && robot.Collecting && robot.PumpMode == Turbo4744.RailState.Opened,
+            variant + ": cancelling during opening also clears the pending pump request"
+        );
+
+        // Match normal spawn initialization: avoid inserting fuel through an
+        // already sagged empty net and measuring depenetration as feed behavior.
+        robot.GetComponent<Turbo4744NetRig>().UpdatePins();
+        robot.roofNet.GetComponent<Turbo4744NetSolver>().Rebuild();
+        var fuel = AssetDatabase.LoadAssetAtPath<GameObject>(
+            "Assets/Prefabs/Games/Rebuilt/Fuel.prefab"
+        );
+        var world = GameObject.FindWithTag("GamePieceWorld").transform;
+        var balls = new List<Rigidbody>();
+        foreach (
+            var position in new[]
+            {
+                new Vector3(-.22f, .32f, .23f),
+                new Vector3(.22f, .32f, .23f),
+                new Vector3(.0131f, .405f, .13f),
+            }
+        )
+        {
+            var piece = Object.Instantiate(
+                fuel,
+                robot.transform.TransformPoint(position),
+                Quaternion.identity,
+                world
+            );
+            balls.Add(piece.GetComponent<Rigidbody>());
+        }
+        yield return .8f;
+        Check(
+            balls.All(body =>
+            {
+                var local = robot.transform.InverseTransformPoint(body.position);
+                return Mathf.Abs(local.x) < .36f
+                    && local.y > .16f
+                    && local.y < .65f
+                    && local.z > .03f
+                    && local.z < .68f;
+            }),
+            variant
+                + ": three dynamic fuel pieces are retained before shooting: "
+                + string.Join(
+                    ", ",
+                    balls.Select(body =>
+                        robot.transform.InverseTransformPoint(body.position).ToString("F3")
+                    )
+                )
+        );
+        Keys(Key.V);
+        yield return .15f;
+        Keys();
+        yield return .5f;
+        Check(
+            robot.PumpMode == Turbo4744.RailState.Opened,
+            variant + ": stored fuel and a pump press do not pump while collecting"
+        );
+
+        Keys(Key.K);
+        yield return .05f;
+        if (!robot.simpleControls)
+            Keys();
+        var released = new HashSet<Rigidbody>();
+        bool pumped = false;
+        for (int i = 0; i < 240 && released.Count < balls.Count; i++)
+        {
+            pumped |= robot.PumpMode == Turbo4744.RailState.SoftPumping;
+            foreach (var body in balls)
+            {
+                var local = robot.transform.InverseTransformPoint(body.position);
+                if (local.z < -.18f && local.y > .55f && body.velocity.y > 1f)
+                    released.Add(body);
+            }
+            yield return .05f;
+        }
+        Check(pumped, variant + ": loaded shooting starts automatic soft pumping");
+        Check(
+            released.Count == 3,
+            variant + ": all three stored fuel pieces physically leave the shooter"
+        );
+        yield return 2f;
+        Check(
+            robot.Deployed && robot.PumpMode == Turbo4744.RailState.Opened,
+            variant + ": emptying the hopper stops pumping and leaves the intake open"
+        );
+        Keys(robot.simpleControls ? Array.Empty<Key>() : new[] { Key.LeftShift });
+        yield return .6f;
+        Keys();
+        yield return .15f;
+        Check(
+            robot.Deployed && robot.Collecting && robot.PumpMode == Turbo4744.RailState.Opened,
+            variant + ": ending the empty shot keeps the intake open for collection"
+        );
+        Keys(Key.Z);
+        yield return .2f;
+        Check(!robot.Deployed, variant + ": explicit Stow still closes the empty intake");
         Keys();
     }
 

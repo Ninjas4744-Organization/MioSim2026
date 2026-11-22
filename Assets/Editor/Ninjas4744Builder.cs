@@ -1428,15 +1428,15 @@ public static class Ninjas4744Builder
         var descriptions = simple
             ? new[]
             {
-                "Press Intake to toggle deployment and collection. The intake starts stowed. Shooting opens it temporarily and returns it to your selected state when released.",
+                "Press Intake to toggle deployment and collection. The intake starts stowed. Shooting opens it and leaves it open after firing or releasing the shoot control.",
                 "Hold Auto Shoot to aim and fire at the zone-selected hub or delivery target. Release to stop. Auto Pass and Manual Shoot are also held controls. Pumping is automatic while shooting.",
-                "Stow closes the intake and cancels shooting; release the shoot controls before firing again. Robot Special requests three hard pump cycles. Hold Face Down to reverse. All controls follow MoSim rebinding.",
+                "Stow closes the intake and cancels shooting; release the shoot controls before firing again. Robot Special requests three hard pump cycles only while shooting. Hold Face Down to reverse. All controls follow MoSim rebinding.",
             }
             : new[]
             {
                 "Intake opens Turbo's pickup and cancels shooting. Stow retracts the intake and hopper. Shooting pumps the sliding bin toward the stationary indexer.",
                 "Auto Shoot selects the hub in your alliance zone and a side delivery target in neutral. Press again for three hard pump cycles. Auto Pass forces delivery. Intake cancels aiming and restores normal driving.",
-                "Soft pumping starts automatically while firing. Robot Special requests three hard cycles. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber.",
+                "Soft pumping starts automatically while firing. Robot Special requests three hard cycles only while shooting. Collecting never pumps. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber.",
             };
         var cards = new List<GameObject>();
         var template = AssetDatabase.LoadAssetAtPath<GameObject>(

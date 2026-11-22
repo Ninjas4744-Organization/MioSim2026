@@ -141,7 +141,6 @@ namespace Ninjas4744.MoSim
             _manual,
             _intakeRunning = true,
             _spinning,
-            _automaticSoft,
             _pendingHard,
             _pendingSoft,
             _stowRequested;
@@ -373,12 +372,12 @@ namespace Ninjas4744.MoSim
             _stowRequested = false;
             PumpMode = RailState.Opened;
             _pendingHard = _pendingSoft = false;
-            _automaticSoft = false;
         }
 
         public void StartHardPumping()
         {
-            _automaticSoft = false;
+            if (!ActiveShot || _reverse)
+                return;
             if (!Deployed || IntakeEncoderRotations < 10.5f)
             {
                 Open();
@@ -393,6 +392,8 @@ namespace Ninjas4744.MoSim
 
         private void Soft()
         {
+            if (!ActiveShot || _reverse)
+                return;
             if (!Deployed || IntakeEncoderRotations < 8f)
             {
                 Open();
@@ -423,6 +424,10 @@ namespace Ninjas4744.MoSim
             _spinning = false;
             _shotBegan = Time.fixedTime;
             _intakeRunning = true;
+            // Opening for a shot also enables collection after the trigger is
+            // released. Only an explicit intake toggle or Stow closes it.
+            if (simpleControls)
+                _simpleIntakeDeployed = true;
             if (!Deployed)
                 Open();
             ShootingState = delivery ? ShootState.PrepareDelivery : ShootState.PrepareHub;
@@ -435,6 +440,14 @@ namespace Ninjas4744.MoSim
             _spinning = false;
             _manual = false;
             MoveSpeedMultiplier = 1;
+            StopPumping();
+        }
+
+        private void StopPumping()
+        {
+            _pendingHard = _pendingSoft = false;
+            if (PumpMode == RailState.HardPumping || PumpMode == RailState.SoftPumping)
+                PumpMode = Deployed ? RailState.Opened : RailState.Closed;
         }
 
         private void Stow()
@@ -443,7 +456,6 @@ namespace Ninjas4744.MoSim
             PumpMode = RailState.Closed;
             Deployed = false;
             _stowRequested = true;
-            _pendingHard = _pendingSoft = _automaticSoft = false;
         }
 
         private void ReadSimpleControls(
@@ -942,25 +954,25 @@ namespace Ninjas4744.MoSim
 
         private void UpdateAutomaticPumping()
         {
+            // Pump requests, including pending opening travel, belong to the
+            // active shot. They must never carry over into collection.
+            if (!ActiveShot || _reverse)
+            {
+                StopPumping();
+                return;
+            }
             // Preserve an explicit three-cycle request, including its opening travel.
             if (_pendingHard || PumpMode == RailState.HardPumping)
                 return;
             // A shot request includes aiming and spin-up. Fuel must continue to
             // move toward the indexer even when a field contact delays aiming.
-            bool requested = ActiveShot && !_reverse && HasHopperFuel();
-            if (!requested)
+            if (!HasHopperFuel())
             {
-                if (_automaticSoft)
-                {
-                    _pendingSoft = false;
-                    PumpMode = Deployed ? RailState.Opened : RailState.Closed;
-                    _automaticSoft = false;
-                }
+                StopPumping();
                 return;
             }
             if (PumpMode != RailState.SoftPumping && !_pendingSoft)
                 Soft();
-            _automaticSoft = true;
         }
 
         private bool HasHopperFuel()
@@ -1201,12 +1213,7 @@ namespace Ninjas4744.MoSim
             _intakeVelocity = _hopperVelocity = 0;
             intakeRail.targetVelocity = hopperRail.targetVelocity = Vector3.zero;
             _enableBegan = -1;
-            if (_automaticSoft)
-            {
-                PumpMode = Deployed ? RailState.Opened : RailState.Closed;
-                _pendingSoft = false;
-            }
-            _automaticSoft = false;
+            StopPumping();
             _spinning = false;
             ShootingState = ShootState.Idle;
             MoveSpeedMultiplier = 1;

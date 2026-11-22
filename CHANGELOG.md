@@ -2,6 +2,8 @@
 
 ## 1.0.1 (2026-11-22)
 
+- Pump only while shooting: ignore hard-pump requests during collection and cancel active or queued pumping when shooting stops.
+- Keep the intake open after emptying the hopper or releasing shoot; close it only with the intake toggle or Stow.
 - Correct release acceptance to match the real load-limited hopper: retain full loads during blocked stow, shoot empty and recover full retraction. Verify both control variants, partially loaded trench travel on both alliances, and normal-speed bump delivery. Keep the original physics and actuator limits.
 - Speed up Windows full-hopper net collisions with conservative spatial filtering and a player-compatible Burst job, preserving the original contact order and physics.
 - Add the standard Turbo controls and retain the original controls as Actual Turbo.

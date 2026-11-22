@@ -1,21 +1,22 @@
 {
   "version": "1.0.1",
-  "release_ready": true,
+  "release_ready": false,
   "artifacts": {
-    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f"
+    "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
   },
   "editor_fixture_groups_passed": 14,
   "editor_cases_passed": 52,
-  "controls_checks_passed": 34,
+  "controls_checks_passed": 58,
   "net_equivalence_steps": 480,
-  "blocking_checks": [],
-  "native_certificates": [
-    "native-full-hopper-1.0.1.json",
-    "native-trench-1.0.1.json",
-    "native-bump-1.0.1.json"
+  "requested_control_fixes_passed": true,
+  "blocking_checks": [
+    "Strict empty-stow recovery: 60 and 61-ball attempts report 2.0 and 2.1 mm; the requirement remains below 2 mm.",
+    "Default-controls bump departure at 23 balls: 37.2 mm rail extension exceeds 35 mm. A separate 22-ball comparison after settling below 5 mm passes at 33.8 mm.",
+    "Both-alliance native trench recertification is incomplete for this runtime DLL."
   ],
-  "stow_policy": "Owner-confirmed load-limited closure. Full load is retained while blocked; shoot empty and recover below 2 mm. Loaded transit settles below 10 mm and stays below 15 mm under the crossbar.",
-  "selector_artwork_equivalence": "selector-artwork-equivalence-1.0.1.json",
-  "historical_candidate_status": "Release-1.0.1/held-candidate-status.json"
+  "publication": "Not uploaded. Tester package only; Steam remains on hold.",
+  "baseline_commit": "e375eac5f3f66aa5842c03bce492b8c78c611b11",
+  "historical_release_certificates": "Release-1.0.1/pre-tester-fixes",
+  "physics_changed": false
 }

@@ -1,8 +1,10 @@
-# Version 1.0.1 verification
+# Version 1.0.1 tester verification
 
-All release gates pass for the Windows 1.0.1 build. The 14 editor fixture groups cover 52 cases plus 15 integration flags; all 34 control checks and the 480-step Burst net-equivalence regression pass. The latter compared 929,182 ordered impulses with bitwise matching state. No experimental force, material, geometry or physics changes were selected. A later selector-logo edit removed the 4744 text. The runtime DLL is byte-identical; all 2,607 non-logo bundle objects and every streamed mesh/texture resource are identical in content. Only the selector Sprite and Texture2D changed. [Artwork equivalence proof](../Reports/selector-artwork-equivalence-1.0.1.json) binds the original test artifacts to the final bundle; raw reports and installed-artifact receipts remain unchanged. The 34 control checks and selector preview were repeated on the final artwork bundle.
+**Steam release remains on hold.** The tester's requested control fixes pass against the current Windows DLL and bundle: pumping runs only during a shot, pending/active pumps stop when shooting stops, and the intake remains deployed after the hopper empties and the shot ends. The owner reports that the original lag is gone or improved.
 
-[Release status](../Reports/release-status-1.0.1.json) · [Editor certificate](../Reports/verification-1.0.1.json) · [Controls](../Reports/simple-controls.json) · [Net equivalence](../Reports/Release-1.0.1/net-collision-burst.json)
+All 58 keyboard/gamepad/control checks pass, including physical three-ball shooting in both variants. All 14 editor fixture groups pass (52 cases plus 15 integration flags). The repeated Burst comparison passes 480 steps and 929,182 ordered impulses with bitwise matching state. These are fresh reports for this runtime; historical artwork equivalence is not used to bind old gameplay results to the changed DLL.
+
+[Release hold](../Reports/release-status-1.0.1.json) · [Controls](../Reports/simple-controls.json) · [Editor certificate](../Reports/verification-1.0.1.json) · [Net comparison](../Reports/Release-1.0.1/net-collision-burst.json)
 
 | Fixture group | Cases | Result |
 | --- | ---: | --- |
@@ -21,46 +23,34 @@ All release gates pass for the Windows 1.0.1 build. The 14 editor fixture groups
 | [WheelPile](../Reports/wheel-pile-after.json) | 2 | Pass |
 | [Pulse](../Reports/systems-pulse-after.json) | 1 | Pass |
 
-The full-hopper editor cases retained and released all 52 and 53 collected balls through driving, turns, disable and empty stow. The existing 3.5 m/s loaded-speed threshold remains unchanged. Every certificate fingerprints the packaged Windows DLL and bundle; the audited editor compilation is a distinct assembly.
+## Installed full-hopper behavior
 
-## Native load-limited stow and recovery
+Each completed run retained its stored cohort during eight seconds of load-blocked stow, fired every stored ball, and ended empty. Collection did not pump. After the empty shot ended, pumping stopped and both slides stayed deployed during the three-second check; only explicit Stow closed them. The owner's clarification that a full hopper cannot physically retract remains the acceptance policy.
 
-The owner confirmed that the real hopper does not fully retract when a full load or another physical obstruction prevents closure. The earlier release hold required a physically inappropriate 60-ball closure. Acceptance now checks the actual intended behavior: retain the full load during eight seconds of blocked stow, shoot empty, then fully close both slides to within 2 mm. Both control variants are covered by [the full-hopper certificate](../Reports/native-full-hopper-1.0.1.json).
+| Run | Controls | Stored | Released | Final empty-stow maximum (mm) | Strict <2 mm gate |
+| --- | --- | ---: | ---: | ---: | --- |
+| [101-controls-full-simple-final](../Reports/native/101-controls-full-simple-final.json) | Turbo | 58 | 58 | 1.8 | Pass |
+| [101-controls-full-simple-60](../Reports/native/101-controls-full-simple-60.json) | Turbo | 61 | 61 | 2.1 | Hold |
+| [101-controls-full-actual](../Reports/native/101-controls-full-actual.json) | Actual Turbo | 60 | 60 | 2.0 | Hold |
 
-| Run | Controls | Stored | Retained during blocked stow | Released | Empty-stow maximum extension (mm) |
-| --- | --- | ---: | ---: | ---: | ---: |
-| [101-final-full-simple](../Reports/native/101-final-full-simple.json) | Turbo | 62 | 62 | 62 | 1.4 |
-| [101-final-full-simple-60](../Reports/native/101-final-full-simple-60.json) | Turbo | 59 | 59 | 59 | 1.5 |
-| [101-final-full-actual](../Reports/native/101-final-full-actual.json) | Actual Turbo | 58 | 58 | 58 | 1.4 |
+The trace records rail positions to 0.1 mm. The 2.0 and 2.1 mm readings do not pass the original strict below-2-mm test and are not relabeled as passing. The 58-ball run held final Stow for four seconds; the 60-ball Actual Turbo run held it for six. The controller has a 1.5 mm settling band on each slide and commands the hopper from measured intake travel; residuals adding across that coupling are a likely explanation. No precision, force or physics change was selected for this tester package.
 
-Every case ended empty with zero stored spills. Native Burst execution was confirmed. Recorded phase frames in these full-load checks peaked at 9.79 ms on this computer; this is a local observation, not a hardware-independent performance guarantee.
+## Loaded transit and remaining checks
 
-## Native loaded transit
+The [Blue default-controls trench run](../Reports/native/101-controls-trench-simple-blue.json) retained 22/22 balls and fired all 22 afterward. Both-alliance and normal-gear trench recertification is incomplete for this runtime; the [current aggregate](../Reports/native-trench-1.0.1.json) is explicitly not passing.
 
-The [trench certificate](../Reports/native-trench-1.0.1.json) covers three partially loaded crossings, both alliances, slow and normal gears, and the default Turbo controls. The loaded pre-transit settling limit is 10 mm; the actual crossbar-clearance limit stays below 15 mm, with every stored body retained and no sustained stop under the bar. Empty-stow recovery retains the separate 2 mm criterion.
+The [default-controls bump run](../Reports/native/101-controls-bump-simple-blue.json) retained and delivered 23/23 balls, but peak rail deflection was 37.2 mm against the existing 35 mm limit. A [separate Actual Turbo comparison](../Reports/native/101-controls-bump-actual-blue-settled.json), requiring the slides to settle within 5 mm before departure, retained and delivered 22/22 with 33.8 mm peak deflection. That conditional comparison does not clear the earlier 23-ball departure failure. Normal gear, original forces and the 35 mm impact limit were preserved.
 
-| Run | Alliance | Gear | Stored / retained | Maximum rail extension under bar (mm) | Maximum recorded phase frame (ms) |
-| --- | --- | ---: | ---: | ---: | ---: |
-| [101-final-trench-simple-blue-clearance](../Reports/native/101-final-trench-simple-blue-clearance.json) | Blue | 1 | 22 / 22 | 3.1 | 8.34 |
-| [101-final-trench-actual-blue](../Reports/native/101-final-trench-actual-blue.json) | Blue | 2 | 23 / 23 | 2.9 | 8.46 |
-| [101-final-trench-actual-red](../Reports/native/101-final-trench-actual-red.json) | Red | 2 | 24 / 24 | 10.7 | 10.00 |
+All native checks used the original 504 field fuel bodies, 4.5 ms physics step, normal inputs and disabled diagnostic overrides. The [serialized asset comparison](../Reports/Release-1.0.1/tester-controls-physics-assets.json) found all physics settings, colliders, joints, materials and streamed meshes/textures unchanged. Of 2,609 bundle objects, only three tutorial text fields and the rebuilt native Burst binary differ from the previous tester build. Runtime control behavior changed as documented.
 
-The [normal-speed bump/delivery cycle](../Reports/native-bump-1.0.1.json) retained 22/22 balls, released all 22, delivered 21 within 1.25 m, and ended empty. This exceeds the existing 7/8 delivery criterion. Peak tilt was 15.14 degrees and impact rail deflection 34.5 mm, within the existing 35 mm Travel impact envelope. This bump envelope does not replace the stricter trench limit.
+## Preserved attempts and provenance
 
-All native acceptance uses the original 504 independent field fuel bodies, a 4.5 ms physics step and ordinary input actions, with all diagnostic overrides disabled. Rail force/damping remain 350 N / 4200 N s/m; intake budgets remain 600 N total and 100 N traction. The net calibration and bounded fuel response are unchanged. See [native test reproduction](NativeTesting.md).
+The [initial concurrent native attempt](../Reports/native/101-controls-full-simple.json) was interrupted after the editor took focus and paused MoSim. It is incomplete and excluded from certification. The [concurrent wheel-path attempt](../Reports/Release-1.0.1/wheel-pile-concurrent-attempt.json) retained and fired every ball but measured 3.20 degrees of heading drift against 3 degrees. Its isolated repeat passed with unchanged physics and thresholds. The native checks thereafter ran separately from Unity.
 
-## Investigation history
+The earlier passing 1.0.1 certificates are archived under [pre-tester-fixes](../Reports/Release-1.0.1/pre-tester-fixes/release-status-1.0.1.json). They apply to the earlier DLL and are not current certification. Historical native reports and discarded loaded-stow investigations remain preserved.
 
-The [held candidate status](../Reports/Release-1.0.1/held-candidate-status.json) preserves the earlier aborted full-closure requests, including the unchanged Steam 1.0.0 control. Those requests timed out before any transit attempt; they are not relabeled as passing crossings. The [isolated comparisons](../Reports/LoadedStow/investigation-summary.json) were discarded after the real behavior was confirmed. The subsequent 2 mm requests with 29 and 23 balls retained their load but settled 8.3 and 4.7 mm short; their raw failures also remain preserved. The final transit requests use the stated 10 mm settling envelope and must still pass the 15 mm measured crossing limit.
+Bundle SHA-256: `ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941`
 
-The first approach-fixture attempt held intake before input initialization. A one-second neutral start corrected that harness; all six approach cases passed with unchanged physical thresholds. [Preserved attempt](../Reports/Release-1.0.1/approach-initial-input-failure.json). Historical 0.6.2 full-load trench records used the earlier fixed-bin geometry and are not evidence for the current sliding hopper.
+Player DLL SHA-256: `40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c`
 
-## Artifacts and platforms
-
-Bundle SHA-256: `546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f`
-
-Player DLL SHA-256: `e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6`
-
-The supplied Ninjas logo, with the 4744 text removed, was verified in the installed Windows robot selector. Linux/macOS DLLs, asset bundles and binary Unity bundle manifests are preserved byte for byte from Steam; only their JSON version labels change to 1.0.1 for the uploader. Their existing behavior and artwork remain. [Original fingerprints](../Reports/Release-1.0.1/preserved-platform-source.json).
-
-[Steam preparation and upload](Steam-1.0.1.md) · [Reduced CPU comparison](WeakCpuComparison.md)
+Linux/macOS binaries and bundles remain byte-identical to the published Steam builds; only their candidate manifest version labels change to 1.0.1. [Original platform fingerprints](../Reports/Release-1.0.1/preserved-platform-source.json). The current deliverable is a Windows tester ZIP and a held Steam candidate, not an approved upload.

@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "artifacts": {
+    "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
+  },
+  "checks": 58,
+  "native_full_hopper_cases": [
+    {
+      "label": "101-controls-full-simple-final",
+      "simple_controls": true,
+      "full_load": 58,
+      "released": 58,
+      "remaining": 0,
+      "collection_does_not_pump": true,
+      "empty_shot_release_keeps_intake_open": true,
+      "empty_stow_maximum_extension_m": 0.0018,
+      "empty_stow_gate_passed": true
+    },
+    {
+      "label": "101-controls-full-simple-60",
+      "simple_controls": true,
+      "full_load": 61,
+      "released": 61,
+      "remaining": 0,
+      "collection_does_not_pump": true,
+      "empty_shot_release_keeps_intake_open": true,
+      "empty_stow_maximum_extension_m": 0.0021,
+      "empty_stow_gate_passed": false
+    },
+    {
+      "label": "101-controls-full-actual",
+      "simple_controls": false,
+      "full_load": 60,
+      "released": 60,
+      "remaining": 0,
+      "collection_does_not_pump": true,
+      "empty_shot_release_keeps_intake_open": true,
+      "empty_stow_maximum_extension_m": 0.002,
+      "empty_stow_gate_passed": false
+    }
+  ],
+  "scope": "The requested pumping and intake deployment behaviors; this does not certify all mechanical release gates."
+}

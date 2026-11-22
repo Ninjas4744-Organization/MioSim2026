@@ -8,7 +8,7 @@ $platform=Join-Path $projectRoot 'BuiltMods/rebuilt_ninjas_4744_turbo_2026/stand
 $manifest=Get-Content -LiteralPath (Join-Path $platform 'modpack.json') -Raw|ConvertFrom-Json
 $bundleHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLowerInvariant()
 $dllHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLowerInvariant()
-if(-not $report.passed -or $report.checks.Count -lt 34 -or $report.errors.Count -ne 0 -or $report.bundleSha256 -ne $bundleHash -or $report.runtimeDllSha256 -ne $dllHash){
+if(-not $report.passed -or $report.checks.Count -lt 58 -or $report.errors.Count -ne 0 -or $report.bundleSha256 -ne $bundleHash -or $report.runtimeDllSha256 -ne $dllHash){
     throw 'Run Build, then Controls with -DiagnosticArguments -turboBundle for this exact build before packaging.'
 }
 $files=@(Get-ChildItem -LiteralPath $platform -File)
@@ -31,16 +31,26 @@ Keep one Turbo mod version enabled.
 Shift / left trigger: toggle intake deployment and collection.
 K / right trigger: hold to aim and shoot; release to stop.
 E / right bumper: hold to deliver. Q / left bumper: hold manual shoot.
+Shooting leaves the intake open after the hopper empties and after release.
+V / Y / Triangle: hard pumping, only while shooting. Collection never pumps.
 Z / D-pad down: stow and cancel shooting. Release shoot before restarting.
 Turbo is the default robot with hold-to-shoot and intake toggles.
 Actual Turbo retains the original team's latched controls.
 
-Validated against this exact bundle and DLL: 34 control checks covering keyboard,
-gamepad, quick taps, aiming and feed readiness, release, intake state restoration,
-stow, disable, rebinding and the original latched controls. Bundle asset and runtime
-reference checks also passed. This focused test build has not been recertified
-with the complete mechanical release suite or installed-player load tests.
+Validated against this exact bundle and DLL: at least 58 control checks covering
+keyboard, gamepad, quick taps, aiming and feed readiness, release, intake deployment,
+shooting-only pumping, pending-pump cancellation, physical three-ball shooting in
+both variants, stow, disable, rebinding and the original latched controls. Asset and runtime
+reference checks also passed. This focused test package does not certify that
+all mechanical release gates pass. Consult RELEASE-STATUS.json when included.
 '@|Set-Content -LiteralPath (Join-Path $mod 'BUILD-NOTES.txt') -Encoding utf8
+$statusPath=Join-Path $repoRoot ('Reports/release-status-'+$manifest.version+'.json')
+if(Test-Path -LiteralPath $statusPath){
+    $status=Get-Content -LiteralPath $statusPath -Raw|ConvertFrom-Json
+    if($status.artifacts.PSObject.Properties[$manifest.id].Value -eq $bundleHash -and $status.artifacts.PSObject.Properties[$manifest.modDll].Value -eq $dllHash){
+        Copy-Item -LiteralPath $statusPath -Destination (Join-Path $mod 'RELEASE-STATUS.json') -Force
+    }
+}
 $zip=Join-Path $repoRoot ('dist/'+$label+'-Windows.zip')
 Compress-Archive -LiteralPath $mod -DestinationPath $zip -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem

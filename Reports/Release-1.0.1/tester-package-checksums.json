@@ -1,0 +1,18 @@
+{
+  "release_ready": false,
+  "packages": [
+    {
+      "filename": "Ninjas4744-Turbo2026-1.0.1-tester-fixes-Windows.zip",
+      "bytes": 8863288,
+      "entries": 10,
+      "sha256": "5086aa15cc324f82faf673b729c867d613dc72fe8058989c0d506d3af2c8f8e9"
+    },
+    {
+      "filename": "Ninjas4744-Turbo2026-1.0.1-Steam-candidate.zip",
+      "bytes": 26986269,
+      "entries": 14,
+      "sha256": "ee5d749c2c38507ace4965f586339c19c3429069d43058ebd5e859e4f5de4068"
+    }
+  ],
+  "policy": "Windows tester ZIP and held Steam candidate. Linux/macOS preserved; not uploaded."
+}

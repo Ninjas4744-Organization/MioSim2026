@@ -23,6 +23,8 @@ $manifest=Get-Content -LiteralPath (Join-Path $platform 'modpack.json') -Raw|Con
 
 $currentBundleHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.id)).Hash.ToLower()
 $currentDllHash=(Get-FileHash -LiteralPath (Join-Path $platform $manifest.modDll)).Hash.ToLower()
+$controls=Get-Content -LiteralPath (Join-Path $artifacts 'simple-controls.json') -Raw|ConvertFrom-Json
+if(-not $controls.passed -or $controls.checks.Count -lt 58 -or $controls.errors.Count -ne 0 -or $controls.bundleSha256 -ne $currentBundleHash -or $controls.runtimeDllSha256 -ne $currentDllHash){throw 'Run all control, pumping and empty-hopper checks against this exact bundle and DLL before packaging.'}
 $acceptedBundleHashes=@($currentBundleHash)
 $artProofPath=Join-Path $repoRoot 'Reports/selector-artwork-equivalence-1.0.1.json'
 if(Test-Path -LiteralPath $artProofPath){

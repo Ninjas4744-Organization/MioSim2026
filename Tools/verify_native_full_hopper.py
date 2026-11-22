@@ -59,6 +59,18 @@ for label in args.labels:
     blocked = [f for f in frames if stows[0][1] - 2 <= float(f['seconds']) < stows[0][1]]
     final = [f for f in frames if float(f['seconds']) >= end - 1]
     assert len(blocked) >= 50 and len(final) >= 25, f'{label}: missing stow traces'
+    collecting = [f for f in frames if 2.5 < float(f['seconds']) < stows[0][0]]
+    assert collecting and all(f['pump'] == 'Opened' for f in collecting), \
+        f'{label}: pumping while collecting'
+    # After firing, release the simple trigger or cancel the latched shot with
+    # Intake. Leave three seconds before explicitly requesting final Stow.
+    a, b, keys = segments[-2]
+    assert b - a >= 3 and keys == (set() if r['simpleControls'] else {'LeftShift'})
+    reopened = [f for f in frames if b - 1 <= float(f['seconds']) < b]
+    assert len(reopened) >= 25 and all(int(f['captured']) == 0
+        and f['pump'] == 'Opened' and f['state'] == 'Idle' and f['feeding'] == 'False'
+        and float(f['intakeExtension']) > .22 and float(f['hopperExtension']) > .21
+        for f in reopened), f'{label}: empty-shot release closed the intake or kept pumping'
     count = r['fullyStoredBeforeStow']
     # Arrival/braking can add a few balls after a nominal 60-ball fill. Keep
     # those harder, over-capacity holds eligible without calling a small load full.
@@ -78,6 +90,8 @@ for label in args.labels:
                              'alliance': r['alliance'], 'full_load': count,
                              'retained_while_blocked': count, 'released': r['releasedCaptured'],
                              'remaining': 0, 'empty_stow_maximum_extension_m': final_rail,
+                             'collection_does_not_pump': True,
+                             'empty_shot_release_keeps_intake_open': True,
                              'maximum_frame_ms': peak_ms, 'native_burst': True})
 assert {c['simple_controls'] for c in summary['cases']} == {False, True}, 'Need both control variants'
 assert any(c['full_load'] >= 60 for c in summary['cases']), 'Need at least one actual 60+ ball load'

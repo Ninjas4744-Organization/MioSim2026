@@ -2,10 +2,10 @@
   "native_burst": true,
   "version": "1.0.1",
   "artifacts": {
-    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f"
+    "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
   },
-  "label": "101-final-bump-simple-blue",
+  "label": "101-controls-bump-actual-blue-settled",
   "route": "Bump beside hub at world Z 1.7",
   "alliance": "Blue",
   "stowed": 22,
@@ -13,15 +13,13 @@
   "stored_spills": 0,
   "inlet_departures": 0,
   "released": 22,
-  "delivered_within_1_25_m": 21,
+  "delivered_within_1_25_m": 22,
   "remaining": 0,
-  "maximum_tilt_degrees": 15.138060569763184,
-  "maximum_rail_extension_m": 0.0345,
-  "maximum_return_frame_ms": 7.309800148010254,
+  "maximum_tilt_degrees": 15.228371620178223,
+  "maximum_rail_extension_m": 0.0338,
+  "maximum_return_frame_ms": 8.767702102661133,
   "passed": true,
-  "selector_artwork_equivalence": "selector-artwork-equivalence-1.0.1.json",
-  "tested_artifacts": {
-    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe"
-  }
+  "pre_return_stow_tolerance_m": 0.005,
+  "simple_controls": false,
+  "limitation": "Conditional comparison after settling below 5 mm. The earlier default-controls 23-ball departure below 10 mm retained/delivered every ball but exceeded the unchanged 35 mm impact limit at 37.2 mm."
 }

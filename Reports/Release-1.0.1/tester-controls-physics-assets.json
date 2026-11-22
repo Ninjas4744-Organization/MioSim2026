@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "scope": "All prefab objects unchanged except three tutorial text fields and the rebuilt native Burst binary. Physics settings, geometry and resource contents match. Runtime control changes require fresh gameplay tests.",
+  "before_bundle_sha256": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f",
+  "after_bundle_sha256": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941",
+  "identical_objects_by_type": {
+    "BoxCollider": 132,
+    "Texture2D": 8,
+    "WheelCollider": 12,
+    "CapsuleCollider": 27,
+    "SphereCollider": 34,
+    "Mesh": 21,
+    "PhysicMaterial": 3,
+    "MeshCollider": 18,
+    "ConfigurableJoint": 4,
+    "Rigidbody": 24
+  },
+  "other_changed_objects": [
+    {
+      "path_id": -1886746220313775972,
+      "type": "TextAsset",
+      "name": "Ninjas4744NetBurst"
+    },
+    {
+      "path_id": -838562817127482832,
+      "type": "MonoBehaviour",
+      "name": "",
+      "changed_fields": [
+        "m_text"
+      ],
+      "after_text": "<b>Stow and clear a jam</b>\nStow closes the intake and cancels shooting; release the shoot controls before firing again. Robot Special requests three hard pump cycles only while shooting. Hold Face Down to reverse. All controls follow MoSim rebinding."
+    },
+    {
+      "path_id": 1602240016112940295,
+      "type": "MonoBehaviour",
+      "name": "",
+      "changed_fields": [
+        "m_text"
+      ],
+      "after_text": "<b>Clear a jam</b>\nSoft pumping starts automatically while firing. Robot Special requests three hard cycles only while shooting. Collecting never pumps. Face Down is a held reverse override. Manual Shoot bypasses aiming. Turbo has no simulated climber."
+    },
+    {
+      "path_id": 1697266565846323613,
+      "type": "MonoBehaviour",
+      "name": "",
+      "changed_fields": [
+        "m_text"
+      ],
+      "after_text": "<b>Toggle intake</b>\nPress Intake to toggle deployment and collection. The intake starts stowed. Shooting opens it and leaves it open after firing or releasing the shoot control."
+    }
+  ],
+  "all_other_prefab_objects_identical": true,
+  "object_count": 2609,
+  "unchanged_object_count": 2605
+}

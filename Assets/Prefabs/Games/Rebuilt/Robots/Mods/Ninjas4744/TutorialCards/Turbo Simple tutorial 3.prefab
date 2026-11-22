@@ -236,7 +236,8 @@ MonoBehaviour:
 
     Stow closes the intake and cancels shooting;
     release the shoot controls before firing again. Robot Special requests three
-    hard pump cycles. Hold Face Down to reverse. All controls follow MoSim rebinding.'
+    hard pump cycles only while shooting. Hold Face Down to reverse. All controls
+    follow MoSim rebinding.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 239ba7782d5cbc94e9bb18c11ccbef4e, type: 2}
   m_sharedMaterial: {fileID: -7527997313119376473, guid: 239ba7782d5cbc94e9bb18c11ccbef4e,

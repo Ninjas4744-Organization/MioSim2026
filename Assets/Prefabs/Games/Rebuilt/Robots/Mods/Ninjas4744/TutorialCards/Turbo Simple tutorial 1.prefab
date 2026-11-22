@@ -160,8 +160,8 @@ MonoBehaviour:
   m_text: '<b>Toggle intake</b>
 
     Press Intake to toggle deployment and collection.
-    The intake starts stowed. Shooting opens it temporarily and returns it to your
-    selected state when released.'
+    The intake starts stowed. Shooting opens it and leaves it open after firing or
+    releasing the shoot control.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 239ba7782d5cbc94e9bb18c11ccbef4e, type: 2}
   m_sharedMaterial: {fileID: -7527997313119376473, guid: 239ba7782d5cbc94e9bb18c11ccbef4e,

@@ -1,12 +1,13 @@
 # Uploading Turbo 1.0.1 to Steam Workshop
 
-**Current status: ready for manual upload.** The final archive is `dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`; all three platforms are staged. Full-load retention/recovery and partially loaded transit checks pass. See [verification](Verification.md).
+**Current status: held tester candidate — do not upload.** The control fixes and editor regressions pass, but the native empty-stow and earlier bump limits remain unresolved, and both-alliance trench recertification is incomplete. See [verification](Verification.md). `dist/Ninjas4744-Turbo2026-1.0.1-Steam-candidate.zip` records the hold and preserves Linux/macOS binaries. Earlier ready archives apply to the previous DLL and are superseded. The instructions below apply only after a fresh passing release has been staged.
 
 This updates the existing item **3843685878** for MoSim (**4398690**).
 Publication is a separate manual step; preparing the release does not upload it.
 
 The Windows build contains the net collision optimization, control variants and
-Ninjas selector logo. Linux and macOS retain their published DLLs and asset
+Ninjas selector logo. Pumping runs only while shooting; the intake stays open
+after the hopper empties and after shoot is released. Linux and macOS retain their published DLLs and asset
 bundles, including their existing behavior and artwork. Their manifest version
 labels change to 1.0.1 because the official uploader requires all three platform
 manifests to match the release version. The original Steam files remain untouched.
