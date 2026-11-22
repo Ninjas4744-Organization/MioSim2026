@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "before_bundle_sha256": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941",
+  "after_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+  "before_count": 2609,
+  "after_count": 2609,
+  "changed": [
+    {
+      "type": "TextAsset",
+      "id": -1886746220313775972,
+      "name": "Ninjas4744NetBurst"
+    }
+  ],
+  "added": [],
+  "removed": [],
+  "native_pe_sections": {
+    "before": {
+      ".text": "51bbbdf5082aa736cb90a1703396179b999b6dc96de5b54ed8e974709ab068fb",
+      ".rdata": "81e4f0702f5b6726f417ad0e030076fce9970e004bea470df0535514133c6aba",
+      ".data": "75652c7b060ad57200a0d771a2dea30aa19ed244cfc85fc036075dbc2ffda208",
+      ".pdata": "b0a98a6244615e095b9375ae37807c8e5545002c4aefc08f4c41a41e255cf5d7"
+    },
+    "after": {
+      ".text": "51bbbdf5082aa736cb90a1703396179b999b6dc96de5b54ed8e974709ab068fb",
+      ".rdata": "67798323be3fdf15553ac426391117ac4639ca975902a4e956577978b6b87f40",
+      ".data": "75652c7b060ad57200a0d771a2dea30aa19ed244cfc85fc036075dbc2ffda208",
+      ".pdata": "b0a98a6244615e095b9375ae37807c8e5545002c4aefc08f4c41a41e255cf5d7"
+    },
+    "identical": {
+      ".text": true,
+      ".rdata": false,
+      ".data": true,
+      ".pdata": true
+    }
+  },
+  "native_build_metadata_only": true,
+  "scope": "All 2,608 scene, collider, rigidbody, mechanism, material, mesh and texture objects match. The only different object is the embedded native Burst DLL. Executable .text, .data and .pdata sections match; normalizing the linker-generated DLL module name and PE build metadata makes the full DLL byte-identical. Exported function names are not normalized."
+}

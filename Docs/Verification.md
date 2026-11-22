@@ -1,25 +1,27 @@
-# Version 1.0.1 landing diagnostic tester
+# Windows 1.0.1 contact correction candidate
 
-**Windows diagnostic build; Steam remains on hold.** A loaded rear-first landing on one loose ball reproduced a beach. All four drive contact patches were empty for about 5.5 seconds while input remained commanded. That run did not measure solid tire clearance, so it does not conclusively distinguish a physically lifted chassis from missed contact queries. No physics fix is claimed.
+**Installed and confirmed by the owner to recover from the reported landing. Steam remains held; nothing was uploaded.** This candidate aligns the traction probes with the rigid solid tires and uses the existing smooth feed-plastic friction profile on passive bellypan/module contacts. Tire grip, motor settings and solid collision shapes remain intact. All four fully lifted tires still provide no propulsion.
 
-The opt-in local recorder now measures each wheel's contacts, load, tread speed, solid tire lower bounds and recent physical field collisions alongside input, body movement and underside collisions. It never sets input, position, velocity, forces or contact properties. [Recording instructions and landing evidence](../Reports/Landing-1.0.1/README.md).
+The native evidence showed a solid tire touching carpet while the drive model assigned only a small suspension load, alongside a lifted tire intermittently receiving a floor patch. A rigid-wheel-only candidate also reproduced a persistent two-ball trap. The underside friction correction clears that failed case. [Evidence, failed candidate and implementation scope](../Reports/BeachingFix-1.0.1/README.md).
 
 ## Current checks
 
-- [58 controls checks](../Reports/simple-controls.json) pass for both variants with recording off.
-- [14 single-ball and all-tires-clear controls](../Reports/Landing-1.0.1/current-traction.json) pass with recording enabled. Partial support continues to drive; deliberately beached controls remain stationary.
-- [Capture validation](../Reports/Landing-1.0.1/capture-validation.json) verifies two expected stall reports, including zero wheel load and measured tire clearance, with no false stall reports from the moving trials.
-- [Asset comparison](../Reports/Landing-1.0.1/asset-comparison.json) finds all 2,608 scene, mechanism, collider, rigidbody, material, mesh and texture objects unchanged. The embedded Burst DLL differs only in linker/build metadata; its executable code and data match.
-- [Native startup smoke](../Reports/Landing-1.0.1/native-smoke.json) records the installed runtime check separately; it is not a native full-hopper or transit certificate.
+- All **38 traction cases** pass: 16 inboard paired-ball recovery cases across all four corners, both drive directions and intake states; 10 centered/under-wheel fuel cases; six clear-carpet controls; six fully lifted controls.
+- All **58 control checks** pass, including physical three-ball shooting in both variants, intake state, shooting-only pumping, cancellation, disabled states and rebinding.
+- Probe/solid tire centers agree within 0.1 mm throughout the recorded fixtures. Fully lifted controls retain zero supported patches and negligible movement.
+- The native Actual Turbo sequence collected a peak of 65 tagged balls, identified 59 fully stored balls before stow, began shooting with 60 captured balls, and released 62 tracked balls including later arrivals. No fully stored cohort escapes were recorded, and none remained captured after shooting. Maximum recorded collection/return/shoot frame time was below 9 ms. The final empty-stow measurement was below 2 mm in this run.
+- The owner then tested the installed candidate and reported: **“It recovers now.”** Test automation and capture requests were removed, saved settings were restored byte-for-byte, and ordinary manual play was reopened.
+- All 2,608 serialized scene/mechanism/mesh/material objects and the net's native executable code/data match the earlier bundle. The managed runtime intentionally changes wheel support and underside friction; serialized asset equality is not a claim that runtime physics parameters are unchanged.
+- The eight published Linux/macOS files still match their preserved source hashes.
 
-The landing investigation ran 28 trials on the earlier runtime and initial recorder prototype, including actual collection of 58–63 stored balls. Twenty-seven cleared, one remained beached, and every trial retained its stored cargo. Raw reports preserve their exact artifact hashes and the failed escape. Repeated trials vary with load and contact dynamics; the user report is not cleared by the passing cases.
+See the [fingerprint-bound verification](../Reports/BeachingFix-1.0.1/verification.json), [native functional check](../Reports/BeachingFix-1.0.1/native-full/summary.json), and [optional passive F9 captures](Landing-Capture.md).
 
 ## Release scope
 
-Only the current focused checks above certify this diagnostic DLL. Prior automatic shooting, seven systems cases and native 58-ball shooting apply to the previous pump-visibility runtime, whose [status is archived](../Reports/Landing-1.0.1/previous-candidate/release-status-1.0.1.json). The earlier full 14-group certificate applies to commit `8398c3a`.
+These are focused contact-correction checks. The native full-hopper run includes an extra inlet ball and later arrivals; it is not substituted for the stricter complete release certificate. Both control variants/alliances and the full release fixture/transit matrix have not been recertified against this DLL. Earlier empty-stow and bump limits retain their historical results; one current empty-stow pass does not clear every release gate.
 
-Final empty-stow readings of 2.0–2.1 mm failed the unchanged below-2-mm gate. A prior 23-ball bump departure measured 37.2 mm against 35 mm. These holds and both-alliance transit recertification remain outstanding. The new package is a diagnostic tester; no Steam upload is prepared or performed. Linux/macOS files remain unchanged.
+The Windows ZIP is a test candidate. The previous Steam staging and archive belong to earlier binaries. Linux/macOS are unchanged, and no Steam upload was prepared or performed for this candidate.
 
-Player DLL SHA-256: `a4466cab7be74b1e5e4adc8506689cc5c7defb0c34e7e275bd830fe4327d5e8f`
+Player DLL SHA-256: `2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1`
 
-Bundle SHA-256: `2d11e7b3e7580f263c8fda0d4205570080ce001bc737bd9d740e0ac94a5a3583`
+Bundle SHA-256: `4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e`

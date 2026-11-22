@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MoSimCore.BaseClasses.GameManagement;
 using MoSimCore.Enums;
 using RobotFramework.Controllers.Drivetrain;
@@ -5,17 +6,20 @@ using UnityEngine;
 
 namespace Ninjas4744.MoSim
 {
-    /// <summary>Team joystick shaping, scoped to Turbo. The stock controller
-    /// retains motor, traction, collision, camera perspective and aim behavior.</summary>
+    /// <summary>Team joystick shaping and rigid tire/underside contact calibration.
+    /// The stock controller retains motor, slip, steering and aim calculations.</summary>
     public sealed class Turbo4744DriveController : DriveController
     {
         private bool _fuelContactsConfigured;
         private int _fuelMask;
+        private PhysicMaterial _undersideMaterial;
+        private readonly Dictionary<Collider, PhysicMaterial> _undersideOriginals =
+            new Dictionary<Collider, PhysicMaterial>();
 
         protected override void Start()
         {
             base.Start();
-            ConfigureFuelContacts();
+            ConfigureWheelContacts();
             // Child rollers can create support cores later in Start.
             _fuelContactsConfigured = false;
             var contacts = GetComponent<Turbo4744BumperContacts>();
@@ -25,21 +29,74 @@ namespace Ninjas4744.MoSim
             Turbo4744LandingTrace.AttachIfRequested(this);
         }
 
-        private void ConfigureFuelContacts()
+        private void ConfigureWheelContacts()
         {
             _fuelMask = LayerMask.GetMask("GamePiece1", "GamePiece2", "GamePieceAlt");
             // Fuel is excluded from suspension/traction queries, but the solid
             // tire meshes still collide with it through ordinary physics.
             foreach (var wheel in GetComponentsInChildren<WheelCollider>())
-            foreach (var collider in wheel.GetComponentsInChildren<Collider>())
-                if (!collider.isTrigger)
+            {
+                foreach (var collider in wheel.GetComponentsInChildren<Collider>())
                 {
-                    if (collider is MeshCollider)
+                    if (collider.isTrigger)
+                        continue;
+                    if (collider is MeshCollider tire)
+                    {
                         collider.excludeLayers &= ~_fuelMask;
+                        // These modules have rigid, solid tires. A second,
+                        // moving suspension probe can miss a loaded solid tire
+                        // or sample carpet below a lifted tire. Query the same
+                        // center as the physical tread, without a second spring.
+                        wheel.center = wheel.transform.InverseTransformPoint(tire.bounds.center);
+                        wheel.suspensionDistance = 0;
+                        wheel.suspensionSpring = new JointSpring();
+                    }
                     else
                         collider.excludeLayers |= _fuelMask;
                 }
+            }
+            contactTolerance = Mathf.Min(contactTolerance, .002f);
+            if (!_undersideMaterial)
+                _undersideMaterial = new PhysicMaterial("Turbo smooth underside")
+                {
+                    staticFriction = .03f,
+                    dynamicFriction = .03f,
+                    bounciness = 0,
+                    frictionCombine = PhysicMaterialCombine.Minimum,
+                    bounceCombine = PhysicMaterialCombine.Minimum,
+                };
+            foreach (var collider in GetComponentsInChildren<BoxCollider>())
+                if (
+                    collider.attachedRigidbody == _rb
+                    && (
+                        collider.name.StartsWith("Bellypan ") || collider.name.StartsWith("Swerve ")
+                    )
+                )
+                {
+                    // The default material becomes very grippy when the game's
+                    // compressed-fuel modifier multiplies its friction. Use the
+                    // existing feed-plastic profile for passive sliding plates,
+                    // without changing tire grip, bumpers or contact geometry.
+                    if (!_undersideOriginals.ContainsKey(collider))
+                        _undersideOriginals.Add(collider, collider.sharedMaterial);
+                    collider.sharedMaterial = _undersideMaterial;
+                }
             _fuelContactsConfigured = true;
+        }
+
+        protected override void OnDestroy()
+        {
+            foreach (var pair in _undersideOriginals)
+                if (pair.Key)
+                    pair.Key.sharedMaterial = pair.Value;
+            if (_undersideMaterial)
+            {
+                if (Application.isPlaying)
+                    Destroy(_undersideMaterial);
+                else
+                    DestroyImmediate(_undersideMaterial);
+            }
+            base.OnDestroy();
         }
 
         private static float Deadband(float value) =>
@@ -48,7 +105,7 @@ namespace Ninjas4744.MoSim
         protected override void FixedUpdate()
         {
             if (!_fuelContactsConfigured)
-                ConfigureFuelContacts();
+                ConfigureWheelContacts();
             _fieldLayerMask |= _fuelMask;
             if (
                 _robotBase

@@ -1,5 +1,7 @@
 # Single-ball traction investigation
 
+This is the earlier investigation. The subsequent native reproduction and contact correction are recorded in [the current report](../BeachingFix-1.0.1/README.md).
+
 Follow-up: [bump landing tests](../Landing-1.0.1/README.md) reproduced one loaded beach with all four drive patches empty. A passive recorder now measures physical tire clearance in the installed game. The results below describe the earlier settled empty-robot investigation and its unchanged runtime at that time.
 
 The reported permanent beaching on one ball was **not reproduced**. No runtime, prefab, physics setting, installed mod file or tester ZIP was changed. Steam remains held.

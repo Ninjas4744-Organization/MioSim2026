@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "scope": "Focused contact correction candidate checks; not complete Steam release certification",
+  "artifacts": {
+    "Ninjas4744.dll": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e"
+  },
+  "physics_parameters_changed": true,
+  "traction_cases": 38,
+  "airborne_controls": 6,
+  "controls_checks": 58,
+  "matrices": [
+    {
+      "file": "inboard-pair-forward.json",
+      "cases": 12,
+      "passed": true,
+      "sha256": "a44f9f2e5980e14adbc93d8ea7507c5d5a93960a6e8bfb5edd407dd5ae64b58d",
+      "airborne_controls": 2
+    },
+    {
+      "file": "inboard-pair-reverse.json",
+      "cases": 12,
+      "passed": true,
+      "sha256": "e413847b773aa2e055803cc0acdec8f704bb186f74a96b7e5d9cdc1f7dd7a3e5",
+      "airborne_controls": 2
+    },
+    {
+      "file": "centered-fuel.json",
+      "cases": 14,
+      "passed": true,
+      "sha256": "89c179cbe4e399d3dc21f86b681f38e6ccdb7617bfa93678115fc1f08eab0fac",
+      "airborne_controls": 2
+    }
+  ],
+  "runtime_sources_sha256": {
+    "Turbo4744.cs": "961a79249fe48dc5d9075d40065cb638062654ac5dd11a78c2ea437b3420deb5",
+    "Turbo4744BumperContacts.cs": "6c52bb3315f0d1b6c1bb48de826bea0f246d8c5fc0323add45b8132d4238193e",
+    "Turbo4744DriveController.cs": "862ffc8e0beb0f00976a3bf9533bf74e333b4a163c2a8193614b932ecd708db6",
+    "Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744LandingTrace.cs": "7f6ceecf800b0ab4c24752a2d162544faaae82a7117f99b0c2d78ce8e17fb38e",
+    "Turbo4744NativeReplay.cs": "7694e0d4ed71ea1000ed5e77fb73a2e7842d34530e6972d11d6c8047dccbba83",
+    "Turbo4744NetBurst.cs": "0b640f2399abd680d1dbd576d12d3a5ea3242c36616dd52aff92b3602b7de7af",
+    "Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28"
+  },
+  "serialized_assets_unchanged": true,
+  "linux_macos_files_unchanged": true,
+  "native_full_hopper": "functional pass; see native-full/summary.json for certificate limits",
+  "native_recovery": "Owner confirmed: It recovers now",
+  "runtime_module": "f537b662-7486-4617-9aab-0a5b68d0aafd",
+  "settings_restored": true,
+  "test_automation_removed": true
+}

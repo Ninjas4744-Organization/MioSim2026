@@ -2,10 +2,13 @@
 
 ## 1.0.1 (2026-11-22)
 
+- Align traction queries with the rigid solid tires and remove the secondary virtual suspension. Use the existing smooth feed-plastic friction profile on passive bellypan and module housings so compressed fuel can slide free, retaining tire grip and solid collision shapes.
+- Test inboard paired-ball recovery at all four corners in both directions, including intake open/stowed and fully airborne controls. Preserve the rigid-wheel-only failed case and native contact evidence.
+- Add immediate F9 contact captures, retain history after automatic captures, and write nested frame records explicitly so the native player saves complete reports.
 - Double the regular hopper pump stroke from approximately 21 to 42 mm for clearer visible motion, keeping the physical walls and model together and preserving force, speed and collision settings.
 - Pump only while shooting: ignore hard-pump requests during collection and cancel active or queued pumping when shooting stops.
 - Keep the intake open after emptying the hopper or releasing shoot; close it only with the intake toggle or Stow.
-- Correct release acceptance to match the real load-limited hopper: retain full loads during blocked stow, shoot empty and recover full retraction. Verify both control variants, partially loaded trench travel on both alliances, and normal-speed bump delivery. Keep the original physics and actuator limits.
+- Correct release acceptance to match the real load-limited hopper: retain full loads during blocked stow, shoot empty and recover full retraction. Verify both control variants, partially loaded trench travel on both alliances, and normal-speed bump delivery. Keep the mechanism geometry, fuel compliance and actuator limits.
 - Speed up Windows full-hopper net collisions with conservative spatial filtering and a player-compatible Burst job, preserving the original contact order and physics.
 - Add the standard Turbo controls and retain the original controls as Actual Turbo.
 - Use the supplied Ninjas 4744 logo in the robot selector.

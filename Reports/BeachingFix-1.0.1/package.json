@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "kind": "Windows contact correction test candidate",
+  "zip": "dist/Ninjas4744-Turbo2026-1.0.1-contact-correction-test-Windows.zip",
+  "sha256": "d516a118c62de5c2a4301319b4336c2f6e66d9182c2cf5960161441b0168631a",
+  "bytes": 8880880,
+  "latest_alias": "dist/Ninjas4744-Turbo2026-1.0.1-Windows.zip",
+  "platform_files": {
+    "modpack.json": "752b4956188858cb8e1367edb9ff690d003a6f3ec0edc736190675027dc702dc",
+    "Ninjas4744.dll": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "c57fe48ca7ee1cdb272e3a55d2287221a78d3990aba46ff8a51ca67c63e7f5fc",
+    "standalonewindows64": "5c2c5056ed835333a8db13c6d14cfd641eaaed29f91035502ffda4a02986d1c3",
+    "standalonewindows64.manifest": "e914caae56d93adf0d9d2c76a70bc07d5ae94cb6a9636e20512fc29c51d82b12"
+  },
+  "metadata_and_controls_match": true,
+  "linux_macos_included": false,
+  "uploaded": false
+}

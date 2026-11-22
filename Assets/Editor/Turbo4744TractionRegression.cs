@@ -28,13 +28,26 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
         public string name,
             direction;
         public bool deployed,
-            passed;
+            passed,
+            inboard,
+            paired,
+            solidTread,
+            undersideSlidePrototype;
         public int initialGrounded,
             minimumGrounded,
             maximumGrounded;
         public float distance,
             height,
-            fuelMovement;
+            fuelMovement,
+            forwardDistance,
+            lateralDistance,
+            finalTilt,
+            maximumProbeOffset,
+            minimumTireClearance;
+        public Vector3 fuelLocalEnd,
+            secondFuelLocalEnd;
+        public bool undersideCleared,
+            physicallyBeached;
         public List<string> frames = new List<string>();
     }
 
@@ -82,12 +95,25 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
         var prefab = bundle.LoadAsset<GameObject>(
             bundle.GetAllAssetNames().First(n => n.EndsWith("/turbo4744simple.prefab"))
         );
+        bool inboard = Environment.GetCommandLineArgs().Contains("-turboInboard");
+        bool paired = Environment.GetCommandLineArgs().Contains("-turboInboardPair");
+        inboard |= paired;
+        bool cornerOnly = Environment.GetCommandLineArgs().Contains("-turboCornerCaseOnly");
+        bool undersideSlide = Environment.GetCommandLineArgs().Contains("-turboUndersideSlide");
         fuelPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
             "Assets/Prefabs/Games/Rebuilt/Fuel.prefab"
         );
-        Box("Traction carpet", new Vector3(9, .1f, 9), new Vector3(6, 2.95f, 2));
-        foreach (bool deployed in new[] { false, true })
-        foreach (int support in Enumerable.Range(-1, 7))
+        Box(
+            "Traction carpet",
+            inboard ? new Vector3(30, .1f, 32) : new Vector3(9, .1f, 9),
+            new Vector3(6, 2.95f, 2)
+        );
+        foreach (bool deployed in (cornerOnly ? new[] { true } : new[] { false, true }))
+        foreach (
+            int support in Enumerable
+                .Range(-1, 7)
+                .Where(s => cornerOnly ? s == 0 : !inboard || s != 4)
+        )
         {
             robot = Object
                 .Instantiate(prefab, new Vector3(6, 3.3f, 2), Quaternion.identity)
@@ -98,6 +124,17 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             robot.GetComponent<PlayerInput>().actions.devices = new InputDevice[] { keyboard };
             body = robot.GetComponent<Rigidbody>();
             drive = robot.GetComponent<DriveController>();
+            if (undersideSlide)
+            {
+                var material = AssetDatabase.LoadAssetAtPath<PhysicMaterial>(
+                    "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Materials/FeedPlastic.physicMaterial"
+                );
+                foreach (var collider in robot.GetComponentsInChildren<BoxCollider>())
+                    if (
+                        collider.name.StartsWith("Bellypan ") || collider.name.StartsWith("Swerve ")
+                    )
+                        collider.sharedMaterial = material;
+            }
             wheels = robot.GetComponentsInChildren<WheelCollider>();
             yield return Wait(.3f);
             Press(deployed ? new[] { Key.LeftShift } : new[] { Key.Z });
@@ -113,10 +150,18 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                     : "all tires clear",
                 direction = reverse ? "reverse" : "forward",
                 deployed = deployed,
+                inboard = inboard,
+                paired = paired,
+                undersideSlidePrototype = undersideSlide,
+                solidTread = wheels.All(w =>
+                    w.suspensionDistance == 0 && w.suspensionSpring.spring == 0
+                ),
                 minimumGrounded = 4,
+                minimumTireClearance = float.PositiveInfinity,
             };
             report.cases.Add(trial);
             Rigidbody fuel = null;
+            Rigidbody secondFuel = null;
             GameObject stand = null;
             if (support >= 0)
             {
@@ -124,6 +169,16 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                 if (support < 5)
                 {
                     Vector3 p = support < 4 ? wheels[support].transform.position : body.position;
+                    // Native evidence found a ball just inboard of a module,
+                    // beneath the bellypan edge, rather than centered on a tire.
+                    if (inboard && support < 4)
+                        p = robot.transform.TransformPoint(
+                            new Vector3(
+                                Mathf.Sign(wheels[support].transform.localPosition.x) * .27f,
+                                0,
+                                Mathf.Sign(wheels[support].transform.localPosition.z) * .16f
+                            )
+                        );
                     fuel = Object
                         .Instantiate(
                             fuelPrefab,
@@ -132,6 +187,24 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                             GameObject.FindWithTag("GamePieceWorld").transform
                         )
                         .GetComponent<Rigidbody>();
+                    if (paired && support < 4)
+                    {
+                        Vector3 second = robot.transform.TransformPoint(
+                            new Vector3(
+                                Mathf.Sign(wheels[support].transform.localPosition.x) * .14f,
+                                0,
+                                -Mathf.Sign(wheels[support].transform.localPosition.z) * .15f
+                            )
+                        );
+                        secondFuel = Object
+                            .Instantiate(
+                                fuelPrefab,
+                                new Vector3(second.x, 3.075f, second.z),
+                                Quaternion.identity,
+                                GameObject.FindWithTag("GamePieceWorld").transform
+                            )
+                            .GetComponent<Rigidbody>();
+                    }
                 }
                 else
                     stand = Box(
@@ -144,32 +217,100 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             trial.initialGrounded = Grounded();
             Vector3 start = body.position;
             Vector3 fuelStart = fuel ? fuel.position : Vector3.zero;
-            for (float t = 0; t < 2; t += Time.fixedDeltaTime)
+            for (float t = 0; t < (inboard ? 8 : 2); t += Time.fixedDeltaTime)
             {
-                drive.OverrideInput(
-                    reverse ? -1.5f : 1.5f,
-                    0,
-                    0,
-                    DriveController.DrivePerspective.RobotRelative
-                );
+                if (inboard)
+                    drive.OverrideInput(
+                        0,
+                        reverse ? -1.5f : 1.5f,
+                        0,
+                        DriveController.DrivePerspective.FieldOriented
+                    );
+                else
+                    drive.OverrideInput(
+                        reverse ? -1.5f : 1.5f,
+                        0,
+                        0,
+                        DriveController.DrivePerspective.RobotRelative
+                    );
                 yield return step;
                 int grounded = Grounded();
                 trial.minimumGrounded = Mathf.Min(trial.minimumGrounded, grounded);
                 trial.maximumGrounded = Mathf.Max(trial.maximumGrounded, grounded);
                 if (trial.frames.Count == 0 || t >= trial.frames.Count * .1f)
+                {
+                    foreach (var wheel in wheels)
+                    {
+                        wheel.GetWorldPose(out var center, out _);
+                        foreach (var tire in wheel.GetComponentsInChildren<MeshCollider>())
+                            if (tire.enabled && !tire.isTrigger)
+                            {
+                                trial.maximumProbeOffset = Mathf.Max(
+                                    trial.maximumProbeOffset,
+                                    Vector3.Distance(center, tire.bounds.center)
+                                );
+                                trial.minimumTireClearance = Mathf.Min(
+                                    trial.minimumTireClearance,
+                                    tire.bounds.min.y - 3
+                                );
+                            }
+                    }
                     trial.frames.Add(
                         $"t={t:F2} pos={body.position.ToString("F4")} vel={body.velocity.ToString("F3")} supported={grounded} patches={Patches()}"
                     );
+                }
+                if (
+                    inboard
+                    && t > 2
+                    && (body.position.z - start.z) * (reverse ? -1 : 1) > 2
+                    && Mathf.Abs(body.position.x - start.x) < 1
+                    && Vector3.Angle(body.rotation * Vector3.up, Vector3.up) < 2
+                    && (
+                        !fuel
+                        || OutsideUnderside(robot.transform.InverseTransformPoint(fuel.position))
+                    )
+                    && (
+                        !secondFuel
+                        || OutsideUnderside(
+                            robot.transform.InverseTransformPoint(secondFuel.position)
+                        )
+                    )
+                )
+                    break;
             }
             trial.distance = Vector3.ProjectOnPlane(body.position - start, Vector3.up).magnitude;
             trial.height = start.y - 3;
             trial.fuelMovement = fuel ? Vector3.Distance(fuelStart, fuel.position) : 0;
+            trial.forwardDistance = (body.position.z - start.z) * (reverse ? -1 : 1);
+            trial.lateralDistance = Mathf.Abs(body.position.x - start.x);
+            trial.finalTilt = Vector3.Angle(body.rotation * Vector3.up, Vector3.up);
+            trial.fuelLocalEnd = fuel
+                ? robot.transform.InverseTransformPoint(fuel.position)
+                : Vector3.zero;
+            trial.secondFuelLocalEnd = secondFuel
+                ? robot.transform.InverseTransformPoint(secondFuel.position)
+                : Vector3.zero;
+            trial.undersideCleared =
+                (!fuel || OutsideUnderside(trial.fuelLocalEnd))
+                && (!secondFuel || OutsideUnderside(trial.secondFuelLocalEnd));
+            trial.physicallyBeached =
+                trial.maximumGrounded == 0
+                && trial.minimumTireClearance > .004f
+                && trial.distance < .05f;
             trial.passed =
                 support == 5
                     ? trial.initialGrounded == 0
                         && trial.maximumGrounded == 0
                         && trial.distance < .05f
-                    : trial.distance > 1 && trial.maximumGrounded > 0;
+                        && trial.physicallyBeached
+                : inboard
+                    ? trial.forwardDistance > 2
+                        && trial.lateralDistance < 1
+                        && trial.undersideCleared
+                        && trial.finalTilt < 2
+                        && trial.maximumGrounded > 0
+                : support == 4 && trial.physicallyBeached
+                    || trial.distance > 1 && trial.maximumGrounded > 0;
             Debug.Log(
                 $"TURBO_TRACTION {trial.name} deployed={deployed} ground={trial.initialGrounded} distance={trial.distance:F3} passed={trial.passed}"
             );
@@ -178,6 +319,8 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             robot.gameObject.SetActive(false);
             if (fuel)
                 Object.Destroy(fuel.gameObject);
+            if (secondFuel)
+                Object.Destroy(secondFuel.gameObject);
             if (stand)
                 Object.Destroy(stand);
             yield return step;
@@ -188,6 +331,14 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             : "after";
         if (Environment.GetCommandLineArgs().Contains("-turboReverse"))
             label += "-reverse";
+        if (inboard)
+            label += "-inboard";
+        if (paired)
+            label += "-pair";
+        if (cornerOnly)
+            label += "-corner-only";
+        if (undersideSlide)
+            label += "-slide-prototype";
         File.WriteAllText(
             Path.GetFullPath(Application.dataPath + $"/../BuildArtifacts/traction-{label}.json"),
             JsonUtility.ToJson(report, true)
@@ -197,6 +348,9 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
         SessionState.SetInt("Turbo.Trench.Exit", report.passed ? 0 : 1);
         EditorApplication.ExitPlaymode();
     }
+
+    private static bool OutsideUnderside(Vector3 local) =>
+        local.y > .2f || Mathf.Abs(local.x) > .48f || Mathf.Abs(local.z) > .52f;
 
     private int Grounded()
     {

@@ -1,0 +1,33 @@
+{
+  "functional_passed": true,
+  "scope": "Single Blue Actual Turbo native retention/shooting check; not the complete strict release certificate",
+  "artifacts": {
+    "Ninjas4744.dll": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e"
+  },
+  "runtime_module": "f537b662-7486-4617-9aab-0a5b68d0aafd",
+  "raw_report_sha256": "70a9c4bc2247fd073231dcfc7411dcdc86a9b516f1fe3f5f0112ea57d168d23d",
+  "request_sha256": "0f0c3e8bc81d2d1a73f786167619d6b17b5a9594123ee7213c0809fcbfe1d550",
+  "peak_tagged_captured": 65,
+  "fully_stored_cohort_before_stow": 59,
+  "entering_before_stow": 4,
+  "stored_cohort_escapes": 0,
+  "inlet_departures": 0,
+  "captured_at_shot": 60,
+  "released_tracked_fuel_including_arrivals": 62,
+  "remaining_captured": 0,
+  "maximum_frame_ms": 8.88290023803711,
+  "empty_stow_maximum_extension_m": 0.0018,
+  "collection_does_not_pump": true,
+  "empty_shot_release_keeps_intake_open": true,
+  "native_burst": true,
+  "strict_release_certificate_generated": false,
+  "strict_certificate_limits": [
+    "One control variant/alliance only",
+    "Captured-at-shot count includes an inlet ball beyond the 59 fully stored cohort; later arrivals also occur"
+  ],
+  "user_recovery_confirmation": "It recovers now",
+  "settings_restored_before_manual_relaunch": true,
+  "test_requests_removed": true,
+  "manual_relaunch_module_verified": true
+}

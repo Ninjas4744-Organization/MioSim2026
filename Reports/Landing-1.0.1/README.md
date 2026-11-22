@@ -1,5 +1,7 @@
 # Bump landing investigation
 
+This is archived diagnostic evidence. The subsequent native captures and contact correction are recorded in [the current investigation](../BeachingFix-1.0.1/README.md).
+
 The user's clarification was that the robot often sticks after landing on loose fuel beyond a bump. This differs from the earlier settled, empty-robot probes.
 
 **One lasting beach was reproduced.** A rear-first, full-speed landing with 61 stored fuel and one loose ball at the centre left all four drivetrain patches empty for about 5.5 seconds. Drive input remained commanded. The ball contacted the bellypan; the robot retained all 61 stored balls. See [the raw failed escape case](full-stowed-rear-fast.json), case three. This failure is preserved, not marked fixed or converted into a passing escape check.

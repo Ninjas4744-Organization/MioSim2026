@@ -1,6 +1,6 @@
 # Uploading Turbo 1.0.1 to Steam Workshop
 
-**Current status: held Windows diagnostic tester — do not upload.** A passive local landing recorder was added; the beaching issue is not declared fixed. Complete release recertification and existing mechanical holds remain outstanding; see [verification](Verification.md). The diagnostic ZIP is `dist/Ninjas4744-Turbo2026-1.0.1-landing-diagnostics-Windows.zip`. Prior Steam candidates remain archived.
+**Current status: Windows contact correction tester; Steam remains held.** The owner confirmed recovery from the reported landing, and 38 traction plus 58 control checks pass. Complete release recertification remains outstanding; see [verification](Verification.md). The current ZIP is `dist/Ninjas4744-Turbo2026-1.0.1-contact-correction-test-Windows.zip`. Prior Steam candidates remain archived.
 
 This updates the existing item **3843685878** for MoSim (**4398690**).
 Publication is a separate manual step; preparing the release does not upload it.
@@ -24,9 +24,10 @@ BuiltMods/_Staging/rebuilt_ninjas_4744_turbo_2026/
   standaloneosx/
 ```
 
-The same certified content is archived in
-`dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`. Upload the staged folder, rather than
-the Windows-only trial ZIP.
+The previous content is archived in `dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`.
+That staging and archive belong to earlier binaries. Regenerate them only after
+the current candidate passes complete release certification. The Windows-only
+contact-correction ZIP is for local testing.
 
 1. Run Steam and sign in as the owner of the existing Workshop item.
 2. In Unity, select `Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Ninjas4744.asset`.

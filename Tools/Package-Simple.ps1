@@ -13,7 +13,7 @@ if(-not $report.passed -or $report.checks.Count -lt 58 -or $report.errors.Count 
 }
 $files=@(Get-ChildItem -LiteralPath $platform -File)
 if($files.Count -ne 6){throw 'Expected the six MoSim platform build files.'}
-$label='Ninjas4744-Turbo2026-'+$manifest.version+'-simple-controls-test'
+$label='Ninjas4744-Turbo2026-'+$manifest.version+'-contact-correction-test'
 $staging=Join-Path $repoRoot ('dist/'+$label)
 $mod=Join-Path $staging 'Ninjas4744-Turbo2026'
 $destination=Join-Path $mod 'standalonewindows64'
@@ -24,7 +24,7 @@ Copy-Item -LiteralPath (Join-Path $repoRoot 'README.md') -Destination $mod -Forc
 $captureGuide=Join-Path $repoRoot 'Docs/Landing-Capture.md'
 if(Test-Path -LiteralPath $captureGuide){Copy-Item -LiteralPath $captureGuide -Destination (Join-Path $mod 'Landing-Capture.md') -Force}
 @'
-Turbo 1.0.1 Windows diagnostic tester - Steam release remains held
+Turbo 1.0.1 Windows contact correction candidate - Steam release remains held
 
 Extract Ninjas4744-Turbo2026 into %USERPROFILE%\AppData\LocalLow\CascadeStudios\MoSim\Mods\.
 Restart MoSim, enable Ninjas 4744 Turbo 2026, and select 4744 / Turbo.
@@ -37,9 +37,14 @@ Shooting leaves the intake open after the hopper empties and after release.
 V / Y / Triangle: hard pumping, only while shooting. Collection never pumps.
 Regular automatic pumping now spans about 42 mm, previously 21 mm.
 Hard pumping retains its original stroke, force and speed settings.
-The landing issue remains under investigation; no physics fix is claimed.
+This candidate aligns the drivetrain probes with the rigid solid tires and
+removes their secondary virtual suspension. Airborne tires do not propel the chassis.
+Passive bellypan and module housings use the existing low-friction feed-plastic
+profile so compressed fuel can slide free; tire grip and solid shapes remain.
+The landing correction is under test; the complete Steam release remains held.
 Optional local stall recording is described in Landing-Capture.md. Recording is
 off unless Turbo4744-capture-landings.enabled exists next to the Mods folder.
+With recording enabled, F9 immediately saves the recent wheel/contact history.
 Z / D-pad down: stow and cancel shooting. Release shoot before restarting.
 Turbo is the default robot with hold-to-shoot and intake toggles.
 Actual Turbo retains the original team's latched controls.
@@ -57,7 +62,18 @@ if(Test-Path -LiteralPath $statusPath){
     if($status.artifacts.PSObject.Properties[$manifest.id].Value -eq $bundleHash -and $status.artifacts.PSObject.Properties[$manifest.modDll].Value -eq $dllHash){
         Copy-Item -LiteralPath $statusPath -Destination (Join-Path $mod 'RELEASE-STATUS.json') -Force
     }
+    else {throw 'Release status does not match the current DLL and bundle; refusing a stale test package.'}
 }
+else {throw 'A current RELEASE-STATUS.json source is required for this test package.'}
+$sourceHashes=@{}
+foreach($sourceName in @('Turbo4744DriveController.cs','Turbo4744LandingTrace.cs')){
+    $sourcePath=Join-Path $repoRoot ('Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/'+$sourceName)
+    $sourceHashes[$sourceName]=(Get-FileHash -LiteralPath $sourcePath).Hash.ToLowerInvariant()
+}
+@{version=$manifest.version;kind='Windows contact correction test candidate';steam_uploaded=$false;
+  artifacts=@{'Ninjas4744.dll'=$dllHash;$manifest.id=$bundleHash};
+  source_sha256=$sourceHashes;capture_enabled_by_default=$false
+}|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $mod 'BUILD-INFO.json') -Encoding utf8
 $zip=Join-Path $repoRoot ('dist/'+$label+'-Windows.zip')
 Compress-Archive -LiteralPath $mod -DestinationPath $zip -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem

@@ -1,11 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using MoSimCore.BaseClasses.GameManagement;
 using MoSimCore.Enums;
 using RobotFramework.Controllers.Drivetrain;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Ninjas4744.MoSim
 {
@@ -15,6 +19,7 @@ namespace Ninjas4744.MoSim
     public sealed class Turbo4744LandingTrace : MonoBehaviour
     {
         public const string OptInFile = "Turbo4744-capture-landings.enabled";
+        public const string CaptureRequestFile = "Turbo4744-capture-now.txt";
         private const int Capacity = 250;
         private const float SampleInterval = .02f;
 
@@ -25,7 +30,9 @@ namespace Ninjas4744.MoSim
                 otherCollider;
             public int otherLayer;
             public Vector3 point,
-                normal;
+                normal,
+                otherPosition;
+            public Quaternion otherRotation;
         }
 
         [Serializable]
@@ -37,6 +44,11 @@ namespace Ninjas4744.MoSim
                 velocity,
                 angularVelocity,
                 target;
+            public Quaternion rotation;
+            public Vector3[] wheelQueryCenter = new Vector3[4],
+                tireCenter = new Vector3[4],
+                suspensionPoint = new Vector3[4],
+                suspensionNormal = new Vector3[4];
             public Vector2 playerInput;
             public float playerTurn;
             public bool kinematic;
@@ -94,6 +106,8 @@ namespace Ninjas4744.MoSim
             stalled,
             writeAt = -1,
             cooldown;
+        private float nextRequestCheck;
+        private DateTime lastRequestWrite;
         public string LastCapturePath { get; private set; }
 
         public static void AttachIfRequested(Turbo4744DriveController controller)
@@ -152,7 +166,7 @@ namespace Ninjas4744.MoSim
                     )
                         underside.Add(collider);
                 Debug.Log(
-                    "[Turbo landing capture] Armed; local stall reports only. Remove "
+                    "[Turbo landing capture] Armed; F9 saves wheel contacts immediately. Remove "
                         + OptInFile
                         + " to disable."
                 );
@@ -164,9 +178,34 @@ namespace Ninjas4744.MoSim
             }
         }
 
+        private void Update()
+        {
+            if (!drive || !body)
+                return;
+            bool requested = Keyboard.current != null && Keyboard.current.f9Key.wasPressedThisFrame;
+            if (Time.unscaledTime >= nextRequestCheck)
+            {
+                nextRequestCheck = Time.unscaledTime + .5f;
+                string path = Path.Combine(Application.persistentDataPath, CaptureRequestFile);
+                DateTime written = File.Exists(path)
+                    ? File.GetLastWriteTimeUtc(path)
+                    : DateTime.MinValue;
+                if (written > lastRequestWrite)
+                {
+                    lastRequestWrite = written;
+                    requested = true;
+                }
+            }
+            if (requested)
+            {
+                Sample();
+                Save("Manual snapshot; no movement or enabled state required", false);
+            }
+        }
+
         private void FixedUpdate()
         {
-            if (!drive || !body || captures >= 2 || !BaseGameManager.Instance)
+            if (!drive || !body || !BaseGameManager.Instance)
                 return;
             if (BaseGameManager.Instance.RobotState != RobotState.Enabled)
             {
@@ -180,10 +219,33 @@ namespace Ninjas4744.MoSim
             float elapsed = lastSample > 0 ? Time.fixedTime - lastSample : 0;
             lastSample = Time.fixedTime;
             nextSample = Time.fixedTime + SampleInterval;
+            Frame frame = Sample();
+            if (captures >= 2)
+                return;
+            bool requested =
+                frame.target.sqrMagnitude > .25f
+                || frame.playerInput.sqrMagnitude > .25f
+                || Mathf.Abs(frame.playerTurn) > .5f;
+            bool stopped = Vector3.ProjectOnPlane(frame.velocity, Vector3.up).sqrMagnitude < .0225f;
+            stalled = requested && stopped ? stalled + elapsed : 0;
+            if (writeAt < 0 && stalled >= .8f && Time.fixedTime >= cooldown)
+                writeAt = Time.fixedTime + .5f;
+            if (writeAt >= 0 && Time.fixedTime >= writeAt)
+            {
+                Save("Drive requested, speed below 0.15 m/s for 0.8 seconds", true);
+                writeAt = -1;
+                cooldown = Time.fixedTime + 10;
+                stalled = 0;
+            }
+        }
+
+        private Frame Sample()
+        {
             var frame = new Frame
             {
                 time = Time.fixedTime,
                 position = body.position,
+                rotation = body.rotation,
                 velocity = body.velocity,
                 angularVelocity = body.angularVelocity,
                 target = drive.GetTargetWorldVelocity(),
@@ -202,16 +264,28 @@ namespace Ninjas4744.MoSim
                 frame.normalLoad[i] = (float)load.GetValue(patch);
                 frame.treadSpeed[i] = (float)tread.GetValue(patch);
                 frame.tireMinimumY[i] = float.PositiveInfinity;
+                wheels[i].Collider.GetWorldPose(out var wheelCenter, out _);
+                frame.wheelQueryCenter[i] = wheelCenter;
+                int tireCount = 0;
                 foreach (var tire in tires[i])
                     if (tire && tire.enabled && !tire.isTrigger)
+                    {
                         frame.tireMinimumY[i] = Mathf.Min(frame.tireMinimumY[i], tire.bounds.min.y);
+                        frame.tireCenter[i] += tire.bounds.center;
+                        tireCount++;
+                    }
+                frame.tireCenter[i] =
+                    tireCount > 0 ? frame.tireCenter[i] / tireCount : wheels[i].transform.position;
                 if (float.IsPositiveInfinity(frame.tireMinimumY[i]))
                     frame.tireMinimumY[i] = body.position.y;
                 frame.tireFieldCollision[i] =
                     Time.fixedTime - tireContactTime[i] <= 2 * Time.fixedDeltaTime;
-                frame.suspensionForce[i] = wheels[i].Collider.GetGroundHit(out var ground)
-                    ? ground.force
-                    : 0;
+                if (wheels[i].Collider.GetGroundHit(out var ground))
+                {
+                    frame.suspensionForce[i] = ground.force;
+                    frame.suspensionPoint[i] = ground.point;
+                    frame.suspensionNormal[i] = ground.normal;
+                }
             }
             for (int i = 0; i < collisionCount; i++)
             {
@@ -223,35 +297,26 @@ namespace Ninjas4744.MoSim
                     otherLayer = contact.other ? contact.other.gameObject.layer : -1,
                     point = contact.point,
                     normal = contact.normal,
+                    otherPosition = contact.other ? contact.other.transform.position : Vector3.zero,
+                    otherRotation = contact.other
+                        ? contact.other.transform.rotation
+                        : Quaternion.identity,
                 };
             }
             collisionCount = 0;
             ring[cursor] = frame;
             cursor = (cursor + 1) % Capacity;
             samples = Mathf.Min(Capacity, samples + 1);
-            bool requested =
-                frame.target.sqrMagnitude > .25f
-                || frame.playerInput.sqrMagnitude > .25f
-                || Mathf.Abs(frame.playerTurn) > .5f;
-            bool stopped = Vector3.ProjectOnPlane(frame.velocity, Vector3.up).sqrMagnitude < .0225f;
-            stalled = requested && stopped ? stalled + elapsed : 0;
-            if (writeAt < 0 && stalled >= .8f && Time.fixedTime >= cooldown)
-                writeAt = Time.fixedTime + .5f;
-            if (writeAt >= 0 && Time.fixedTime >= writeAt)
-            {
-                Save();
-                writeAt = -1;
-                cooldown = Time.fixedTime + 10;
-                stalled = 0;
-            }
+            return frame;
         }
 
-        private void Save()
+        private void Save(string reason, bool automatic)
         {
             try
             {
                 var report = new Capture
                 {
+                    reason = reason,
                     robot = robot.name,
                     runtimeModule =
                         typeof(Turbo4744).Assembly.ManifestModule.ModuleVersionId.ToString(),
@@ -271,8 +336,15 @@ namespace Ninjas4744.MoSim
                         + Guid.NewGuid().ToString("N").Substring(0, 6)
                         + ".json"
                 );
-                File.WriteAllText(LastCapturePath, JsonUtility.ToJson(report, true));
-                captures++;
+                // Native MoSim loads the mod after the player is built. Its
+                // Unity serializer omits lists of mod-defined nested records.
+                // Write public data fields directly so native reports retain
+                // the same wheel/frame evidence as editor reports.
+                var json = new StringBuilder();
+                WriteJson(json, report);
+                File.WriteAllText(LastCapturePath, json.ToString());
+                if (automatic)
+                    captures++;
                 Debug.Log("[Turbo landing capture] Saved " + LastCapturePath);
             }
             catch (Exception exception)
@@ -284,13 +356,75 @@ namespace Ninjas4744.MoSim
             }
         }
 
+        private static void WriteJson(StringBuilder json, object value)
+        {
+            if (value == null)
+                json.Append("null");
+            else if (value is string text)
+            {
+                json.Append('"');
+                foreach (char c in text)
+                {
+                    if (c == '"' || c == '\\')
+                        json.Append('\\').Append(c);
+                    else if (c < ' ')
+                        json.Append("\\u").Append(((int)c).ToString("x4"));
+                    else
+                        json.Append(c);
+                }
+                json.Append('"');
+            }
+            else if (value is bool flag)
+                json.Append(flag ? "true" : "false");
+            else if (value is float number)
+                json.Append(
+                    float.IsNaN(number) || float.IsInfinity(number)
+                        ? "null"
+                        : number.ToString("R", CultureInfo.InvariantCulture)
+                );
+            else if (value is int integer)
+                json.Append(integer.ToString(CultureInfo.InvariantCulture));
+            else if (value is IEnumerable items)
+            {
+                json.Append('[');
+                bool first = true;
+                foreach (object item in items)
+                {
+                    if (!first)
+                        json.Append(',');
+                    first = false;
+                    WriteJson(json, item);
+                }
+                json.Append(']');
+            }
+            else
+            {
+                json.Append('{');
+                bool first = true;
+                foreach (
+                    var field in value
+                        .GetType()
+                        .GetFields(BindingFlags.Public | BindingFlags.Instance)
+                )
+                {
+                    if (!first)
+                        json.Append(',');
+                    first = false;
+                    WriteJson(json, field.Name);
+                    json.Append(':');
+                    WriteJson(json, field.GetValue(value));
+                }
+                json.Append('}');
+            }
+        }
+
         private void OnCollisionEnter(Collision collision) => Record(collision);
 
         private void OnCollisionStay(Collision collision) => Record(collision);
 
         private void Record(Collision collision)
         {
-            if (!enabled || captures >= 2)
+            if (!enabled)
                 return;
             for (int i = 0; i < collision.contactCount; i++)
             {

@@ -2,25 +2,26 @@
   "version": "1.0.1",
   "release_ready": false,
   "artifacts": {
-    "Ninjas4744.dll": "a4466cab7be74b1e5e4adc8506689cc5c7defb0c34e7e275bd830fe4327d5e8f",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "2d11e7b3e7580f263c8fda0d4205570080ce001bc737bd9d740e0ac94a5a3583"
+    "Ninjas4744.dll": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e"
   },
   "controls_checks_passed": 58,
-  "editor_fixture_groups_passed": 1,
-  "editor_cases_passed": 14,
-  "physics_parameters_changed": false,
-  "passive_landing_capture_added": true,
-  "beaching_fix_claimed": false,
+  "focused_traction_cases_passed": 38,
+  "airborne_controls_passed": 6,
+  "physics_parameters_changed": true,
+  "contact_correction_implemented": true,
+  "beaching_fix_claimed": true,
+  "beaching_fix_scope": "Reported partial-support landing; owner confirmed recovery. Fully lifted tires remain beached.",
   "native_startup_smoke_passed": true,
+  "native_full_hopper_functional_passed": true,
+  "native_full_hopper_strict_release_certificate": false,
   "blocking_checks": [
-    "The bump-landing stall remains under investigation; a native capture is needed to distinguish physical tire clearance from missed tread queries.",
-    "Complete release recertification and both-alliance transit have not been rerun for this diagnostic DLL.",
-    "The earlier strict empty-stow and bump travel limits remain unresolved."
+    "The complete release fixture matrix and both-variant/alliance native transit checks have not been recertified for this DLL.",
+    "Previous bump acceptance remains historical; the current single native empty-stow pass does not clear all mechanical release gates."
   ],
   "previous_candidate": {
-    "runtime_commit": "be5c115",
-    "investigation_commit": "54d5db0",
-    "status_file": "Landing-1.0.1/previous-candidate/release-status-1.0.1.json"
+    "runtime_commit": "3551658",
+    "status_file": "BeachingFix-1.0.1/previous-diagnostic/release-status-1.0.1.json"
   },
-  "publication": "Windows diagnostic tester only. Not uploaded. Linux/macOS unchanged."
+  "publication": "Windows contact correction test candidate only. Not uploaded. Linux/macOS unchanged."
 }

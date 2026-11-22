@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "scope": "Published Linux and macOS source files; no copies or uploads performed",
+  "files": {
+    "standalonelinux64/modpack.json": "d01b36f52e9cad4ed7f4a22505c687fd4fc6be7eb7313c70e6d1c3f8c3de3e38",
+    "standalonelinux64/Ninjas4744.dll": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+    "standalonelinux64/rebuilt_ninjas_4744_turbo_2026_assets": "6906dbdd5cb0cbe9d93c440f7c60e93c3318129658c72dda78044d6d032a9dd6",
+    "standalonelinux64/standalonelinux64": "3828629b77552dc53511e2a00e81df1336eb94add1caee06d473161fbff8b89d",
+    "standaloneosx/modpack.json": "d01b36f52e9cad4ed7f4a22505c687fd4fc6be7eb7313c70e6d1c3f8c3de3e38",
+    "standaloneosx/Ninjas4744.dll": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+    "standaloneosx/rebuilt_ninjas_4744_turbo_2026_assets": "88116f8dbc75d3765e2097e312c19dc9e5b2f6b0a604ce98642c31a958bef298",
+    "standaloneosx/standaloneosx": "cb5253b53ce6492514a1d4fc123ef3e23ea0efa9baec388a713d6f64c7d34624"
+  }
+}
