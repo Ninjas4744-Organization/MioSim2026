@@ -6,6 +6,8 @@ Force (350 N), damping (4200 N s/m), speed, acceleration, physical end stops, co
 
 ## Current checks
 
+The [single-ball traction investigation](../Reports/Traction-1.0.1/README.md) adds 28 focused trials against the same current runtime: forward/reverse, intake stowed/deployed, fuel under each corner and the chassis center, plus clear-carpet and fully beached controls. All pass. Several cases drive with only two supported tires; all four fully clear produces no powered movement. These are empty-hopper fixtures, not a reproduction or resolution of the user's stuck case. No drive physics change was made. The installed Steam game's five relevant drivetrain method bodies also match the SDK player code used by the fixtures.
+
 - [58 control checks](../Reports/simple-controls.json) pass for both variants, including shooting-only pumping, cancellation, keeping intake deployment after emptying, keyboard/gamepad and physical three-ball shooting.
 - [Automatic hub](../Reports/PumpVisibility-1.0.1/automatic-hub.json): 3/3 fired and scored, with no pumping during collection or after emptying.
 - [Automatic delivery](../Reports/PumpVisibility-1.0.1/automatic-delivery.json): all four cases delivered 3/3, with the same pumping checks.

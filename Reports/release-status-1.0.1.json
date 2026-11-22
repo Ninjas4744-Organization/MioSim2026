@@ -31,5 +31,12 @@
     "editor_cases_passed": 52,
     "status_file": "PumpVisibility-1.0.1/previous-candidate/release-status-1.0.1.json"
   },
-  "publication": "Windows tester build only. Not uploaded. Linux/macOS binaries unchanged."
+  "publication": "Windows tester build only. Not uploaded. Linux/macOS binaries unchanged.",
+  "single_ball_traction_investigation": {
+    "cases_passed": 28,
+    "report": "Traction-1.0.1/README.md",
+    "payload": "empty",
+    "reported_stuck_case_reproduced": false,
+    "runtime_changed": false
+  }
 }

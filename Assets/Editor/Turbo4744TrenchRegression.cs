@@ -96,7 +96,9 @@ public static class Turbo4744TrenchRegression
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 120;
         var fixture = new GameObject("Robot contact regression");
-        if (Environment.GetCommandLineArgs().Contains("-turboSwerve"))
+        if (Environment.GetCommandLineArgs().Contains("-turboTraction"))
+            fixture.AddComponent<Turbo4744TractionFixture>();
+        else if (Environment.GetCommandLineArgs().Contains("-turboSwerve"))
             fixture.AddComponent<Turbo4744SwerveFixture>();
         else
             fixture.AddComponent<Turbo4744TrenchFixture>();

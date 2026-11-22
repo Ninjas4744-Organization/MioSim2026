@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "scope": "Read-only inspection, not a native single-ball driving test",
+  "native_game_version": "26.6.0",
+  "normalization": "Cecil instructions, resolved member names, branch target instruction indices, omit nop instructions",
+  "native_robotframework_sha256": "93329c16deb6728b9364035eb20572994630ee6743ff153c39fee32a94801f24",
+  "sdk_player_robotframework_sha256": "50f9071f1ed46b94aadbba97842a1b6ca9731ff55b60bbf316d3655ca053f6ea",
+  "methods": [
+    {
+      "method": "DriveSwerve",
+      "native": "b3a0435e9a90a58de7898543f6efb6f82f8a96af12d40a402929a89b9af9604a",
+      "sdk": "b3a0435e9a90a58de7898543f6efb6f82f8a96af12d40a402929a89b9af9604a",
+      "equal": true
+    },
+    {
+      "method": "UpdateWheelContacts",
+      "native": "65d24dcee97c19a7028d02d6db96abb44fb66d529cdd58559fd6ed8ddb3bc372",
+      "sdk": "65d24dcee97c19a7028d02d6db96abb44fb66d529cdd58559fd6ed8ddb3bc372",
+      "equal": true
+    },
+    {
+      "method": "ApplyDriveTorque",
+      "native": "7b6a4812114f72b4102690cb1d76a4bccb470f8fff3b5930dacfbc1e1f2ab98b",
+      "sdk": "7b6a4812114f72b4102690cb1d76a4bccb470f8fff3b5930dacfbc1e1f2ab98b",
+      "equal": true
+    },
+    {
+      "method": "AddObstacleContacts",
+      "native": "21c890f5eeed995140d28f1dbb099cdc30212a29b9b9deccc9a42724d56f41e3",
+      "sdk": "21c890f5eeed995140d28f1dbb099cdc30212a29b9b9deccc9a42724d56f41e3",
+      "equal": true
+    },
+    {
+      "method": "UpdatePassiveTraction",
+      "native": "cb5c2d643422e265f691355f971fcdcd128456cebc64bbac141492d65a5a358d",
+      "sdk": "cb5c2d643422e265f691355f971fcdcd128456cebc64bbac141492d65a5a358d",
+      "equal": true
+    }
+  ]
+}
