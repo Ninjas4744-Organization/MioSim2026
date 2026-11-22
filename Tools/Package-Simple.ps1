@@ -33,6 +33,8 @@ K / right trigger: hold to aim and shoot; release to stop.
 E / right bumper: hold to deliver. Q / left bumper: hold manual shoot.
 Shooting leaves the intake open after the hopper empties and after release.
 V / Y / Triangle: hard pumping, only while shooting. Collection never pumps.
+Regular automatic pumping now spans about 42 mm, previously 21 mm.
+Hard pumping retains its original stroke, force and speed settings.
 Z / D-pad down: stow and cancel shooting. Release shoot before restarting.
 Turbo is the default robot with hold-to-shoot and intake toggles.
 Actual Turbo retains the original team's latched controls.

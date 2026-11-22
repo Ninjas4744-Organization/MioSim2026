@@ -2,8 +2,8 @@
     "passed": true,
     "source": "R:\\BuiltMods\\rebuilt_ninjas_4744_turbo_2026\\standalonewindows64\\rebuilt_ninjas_4744_turbo_2026_assets",
     "bundleSha256": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941",
-    "runtimeDllSha256": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
-    "editorRuntimeDllSha256": "f7d00f63faedac26b312e8e3d77f6c3aa901bd40de13ca4fbd096b093703fb6b",
+    "runtimeDllSha256": "e5900e28f295b14c4d3426fe6e8552c976c31fa6759f4f93ffb2f2ce28a5b5c6",
+    "editorRuntimeDllSha256": "c77577738bc8ae2e2d853e658acd21d959e384d82afcabb591a9c83062d3138f",
     "checks": [
         "Turbo defaults to simple controls and Actual Turbo keeps team controls",
         "Simple variant stays stowed on enable",

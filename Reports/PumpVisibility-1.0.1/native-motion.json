@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "scope": "Full-load retention and automatic-pump shooting; nominal stroke doubled. Observed motion includes opening/startup travel and is not a measured steady-cycle amplification ratio. Full release certification remains held.",
+  "label": "101-visible-pump-full-actual",
+  "simple_controls": false,
+  "fully_stored": 58,
+  "peak_captured_including_arrivals": 60,
+  "released": 58,
+  "remaining": 0,
+  "nominal_stroke_before_m": 0.02086,
+  "nominal_stroke_after_m": 0.04172,
+  "observed_soft_motion_range_m": 0.046400000000000025,
+  "manual_hard_pumps": 0,
+  "artifacts": {
+    "Ninjas4744.dll": "e5900e28f295b14c4d3426fe6e8552c976c31fa6759f4f93ffb2f2ce28a5b5c6",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
+  }
+}

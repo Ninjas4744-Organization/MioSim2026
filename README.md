@@ -6,7 +6,7 @@ An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo 
 
 ## Release 1.0.1
 
-**Windows tester candidate; Steam release on hold.** The two tester control fixes pass all 58 controls checks and the 14 editor fixture groups. Native runs fire full loads of 58, 60 and 61 stored balls and preserve intake deployment after shooting. Strict empty-stow and bump limits still block release; see [current verification](Docs/Verification.md).
+**Windows tester candidate; Steam release on hold.** Regular automatic hopper pumping now uses a visibly deeper stroke, about 42 mm instead of 21 mm. Current validation covers 58 controls checks, automatic hub/delivery, the seven systems cases and installed full-load shooting. Earlier full release certification applies to the previous DLL; see [current verification](Docs/Verification.md).
 
 The Windows release improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
 
@@ -163,7 +163,7 @@ installed-player native execution checks.
 - Calibrated full-load tread grip to 1.4 while preserving the team drive constants.
 - Verified native stowed trench crossings with actual loads of 57, 58, 60, 56 balls, retaining every member through the crossing. Those historical fixed-bin checks covered both alliances, slow and normal returns, and an actual 60-ball load; they do not certify packed-load stow of the current sliding hopper.
 
-All fourteen editor fixture groups pass against this candidate's bundle and DLL; native release certification remains on hold. [Measured results](Docs/Verification.md) · [Native requests, traces and screenshots](Docs/NativeTesting.md). Incomplete arrivals at the inlet are reported separately; pre-stow stored fuel must survive retraction as well as transit. Earlier failed runs remain preserved.
+All fourteen editor fixture groups passed on the previous candidate; the wider-stroke build has focused validation and remains on release hold. [Measured results](Docs/Verification.md) · [Native requests, traces and screenshots](Docs/NativeTesting.md). Incomplete arrivals at the inlet are reported separately; pre-stow stored fuel must survive retraction as well as transit. Earlier failed runs remain preserved.
 
 ## What changed in 0.6.1
 

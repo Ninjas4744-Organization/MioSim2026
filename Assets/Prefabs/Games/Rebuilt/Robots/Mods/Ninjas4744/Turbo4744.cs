@@ -1010,8 +1010,10 @@ namespace Ninjas4744.MoSim
             if (PumpMode == RailState.HardPumping || PumpMode == RailState.SoftPumping)
             {
                 bool hard = PumpMode == RailState.HardPumping;
-                float high = hard ? 11 : 10,
-                    low = hard ? 8 : 9;
+                // Double the regular stroke around the same midpoint so the
+                // physical hopper motion is visible without a separate mesh offset.
+                float high = hard ? 11 : 10.5f,
+                    low = hard ? 8 : 8.5f;
                 bool reached =
                     _pumpDirection > 0
                         ? IntakeEncoderRotations >= high - .15f
@@ -1028,7 +1030,7 @@ namespace Ninjas4744.MoSim
                     _pumpPhaseStart = Time.fixedTime;
                 }
                 float duty = hard ? .25f : .15f;
-                // Brake before the same source encoder endpoints. A constant
+                // Brake before the pump encoder endpoints. A constant
                 // velocity through the endpoint overshoots when the chassis
                 // is accelerating, even with a finite joint motor and stops.
                 float remaining = Mathf.Max(

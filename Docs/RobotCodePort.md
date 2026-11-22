@@ -19,6 +19,13 @@ Hub heading tolerance follows `12 − 1.9 × distance` degrees, with a 0.2 degre
 
 ## Physical adapters
 
+For clearer visible pumping, the simulator's regular stroke uses 8.5–10.5 motor
+rotations instead of the source's 9–10. This doubles nominal hopper movement
+from 20.9 mm to 41.7 mm around the same midpoint. The rendered model, rigid walls
+and front net frame travel together. Hard pumping remains 8–11 rotations; force,
+speed, acceleration, end stops and collision settings remain unchanged. Pumping
+still runs only while shooting, and an empty hopper returns to the open pose.
+
 The simulator tread coefficient is calibrated to 1.4 with bite factor 0.32 for full independent-fuel loads. Team gearing, wheel diameter, motor gains, current limits and speed commands remain unchanged. This contact coefficient is a simulator adapter rather than a measured tread material value.
 
 Motor rotations do not specify a rail length without the transmission geometry. The 0–11 rotation range is mapped to the existing CAD-based 0.240 m intake stroke. The hopper carrier follows that measured extension over its estimated 0.22946 m stroke. Its `hopperRail` rigidbody carries the bin model, walls and front roof frame, matching the supplied pumping footage. The indexer and rear roof lacing remain stationary, with an overlapping tray between them. Force, speed, acceleration, and physical end stops remain finite. The source's `Box.java` is retained for reference, but `RobotContainer.java` does not construct a Box subsystem; its unused state machine is not presented as active robot behavior.

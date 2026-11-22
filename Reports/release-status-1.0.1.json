@@ -2,21 +2,34 @@
   "version": "1.0.1",
   "release_ready": false,
   "artifacts": {
-    "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+    "Ninjas4744.dll": "e5900e28f295b14c4d3426fe6e8552c976c31fa6759f4f93ffb2f2ce28a5b5c6",
     "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
   },
-  "editor_fixture_groups_passed": 14,
-  "editor_cases_passed": 52,
   "controls_checks_passed": 58,
-  "net_equivalence_steps": 480,
-  "requested_control_fixes_passed": true,
+  "editor_fixture_groups_passed": 1,
+  "editor_cases_passed": 7,
+  "automatic_hub_cases_passed": 1,
+  "automatic_delivery_cases_passed": 4,
+  "native_pump_motion_passed": true,
+  "native_stored_and_released": 58,
+  "nominal_regular_stroke_mm": 41.72,
+  "previous_nominal_regular_stroke_mm": 20.86,
+  "hard_pump_stroke_unchanged": true,
+  "collision_and_actuator_parameters_changed": false,
+  "pump_stroke_changed": true,
   "blocking_checks": [
-    "Strict empty-stow recovery: 60 and 61-ball attempts report 2.0 and 2.1 mm; the requirement remains below 2 mm.",
-    "Default-controls bump departure at 23 balls: 37.2 mm rail extension exceeds 35 mm. A separate 22-ball comparison after settling below 5 mm passes at 33.8 mm.",
-    "Both-alliance native trench recertification is incomplete for this runtime DLL."
+    "The complete 14-group release suite and both-alliance native transit are not recertified for this changed runtime.",
+    "Previously observed strict empty-stow and bump limits remain unresolved; the wider-stroke test is not full mechanical certification."
   ],
-  "publication": "Not uploaded. Tester package only; Steam remains on hold.",
-  "baseline_commit": "e375eac5f3f66aa5842c03bce492b8c78c611b11",
-  "historical_release_certificates": "Release-1.0.1/pre-tester-fixes",
-  "physics_changed": false
+  "previous_candidate": {
+    "commit": "8398c3ad85aa6bbfb6e6f2c7576dbea805b51970",
+    "artifacts": {
+      "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+      "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
+    },
+    "editor_fixture_groups_passed": 14,
+    "editor_cases_passed": 52,
+    "status_file": "PumpVisibility-1.0.1/previous-candidate/release-status-1.0.1.json"
+  },
+  "publication": "Windows tester build only. Not uploaded. Linux/macOS binaries unchanged."
 }

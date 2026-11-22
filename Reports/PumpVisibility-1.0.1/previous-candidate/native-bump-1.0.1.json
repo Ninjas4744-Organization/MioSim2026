@@ -1,0 +1,25 @@
+{
+  "native_burst": true,
+  "version": "1.0.1",
+  "artifacts": {
+    "Ninjas4744.dll": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941"
+  },
+  "label": "101-controls-bump-actual-blue-settled",
+  "route": "Bump beside hub at world Z 1.7",
+  "alliance": "Blue",
+  "stowed": 22,
+  "retained": 22,
+  "stored_spills": 0,
+  "inlet_departures": 0,
+  "released": 22,
+  "delivered_within_1_25_m": 22,
+  "remaining": 0,
+  "maximum_tilt_degrees": 15.228371620178223,
+  "maximum_rail_extension_m": 0.0338,
+  "maximum_return_frame_ms": 8.767702102661133,
+  "passed": true,
+  "pre_return_stow_tolerance_m": 0.005,
+  "simple_controls": false,
+  "limitation": "Conditional comparison after settling below 5 mm. The earlier default-controls 23-ball departure below 10 mm retained/delivered every ball but exceeded the unchanged 35 mm impact limit at 37.2 mm."
+}

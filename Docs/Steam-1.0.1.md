@@ -1,6 +1,6 @@
 # Uploading Turbo 1.0.1 to Steam Workshop
 
-**Current status: held tester candidate — do not upload.** The control fixes and editor regressions pass, but the native empty-stow and earlier bump limits remain unresolved, and both-alliance trench recertification is incomplete. See [verification](Verification.md). `dist/Ninjas4744-Turbo2026-1.0.1-Steam-candidate.zip` records the hold and preserves Linux/macOS binaries. Earlier ready archives apply to the previous DLL and are superseded. The instructions below apply only after a fresh passing release has been staged.
+**Current status: held Windows tester build — do not upload.** The wider automatic pump stroke has focused control, shooting and native load checks. Complete release recertification and the existing mechanical holds remain outstanding; see [verification](Verification.md). The current download is `dist/Ninjas4744-Turbo2026-1.0.1-visible-pump-Windows.zip`. The prior Steam candidate is archived and uses the earlier DLL. The instructions below apply only after a new passing release is staged.
 
 This updates the existing item **3843685878** for MoSim (**4398690**).
 Publication is a separate manual step; preparing the release does not upload it.

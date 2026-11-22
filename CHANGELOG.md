@@ -2,6 +2,7 @@
 
 ## 1.0.1 (2026-11-22)
 
+- Double the regular hopper pump stroke from approximately 21 to 42 mm for clearer visible motion, keeping the physical walls and model together and preserving force, speed and collision settings.
 - Pump only while shooting: ignore hard-pump requests during collection and cancel active or queued pumping when shooting stops.
 - Keep the intake open after emptying the hopper or releasing shoot; close it only with the intake toggle or Stow.
 - Correct release acceptance to match the real load-limited hopper: retain full loads during blocked stow, shoot empty and recover full retraction. Verify both control variants, partially loaded trench travel on both alliances, and normal-speed bump delivery. Keep the original physics and actuator limits.

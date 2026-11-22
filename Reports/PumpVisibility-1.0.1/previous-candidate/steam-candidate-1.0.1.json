@@ -1,0 +1,85 @@
+{
+  "version": "1.0.1",
+  "workshop_item": "3843685878",
+  "release_ready": false,
+  "policy": "New Windows build; unchanged Linux/macOS binaries and bundles. Only the preserved platform manifest version labels change.",
+  "files": {
+    "standalonewindows64/modpack.json": {
+      "sha256": "752b4956188858cb8e1367edb9ff690d003a6f3ec0edc736190675027dc702dc",
+      "source_sha256": "752b4956188858cb8e1367edb9ff690d003a6f3ec0edc736190675027dc702dc",
+      "preserved": false,
+      "manifest_version_only": false
+    },
+    "standalonewindows64/Ninjas4744.dll": {
+      "sha256": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+      "source_sha256": "40cbd627854741e8b5d3e77452d563f2e9ee64fe3ca7f66cd73f88e961b2015c",
+      "preserved": false,
+      "manifest_version_only": false
+    },
+    "standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets": {
+      "sha256": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941",
+      "source_sha256": "ca5935cb1ca55cd1937d7313b74e1950408b99eb0c3ede0f32e28b63e5ade941",
+      "preserved": false,
+      "manifest_version_only": false
+    },
+    "standalonewindows64/standalonewindows64": {
+      "sha256": "8d5c627549c33d73e7c853440ad46ac607c84c038329ce2e2367f2911c306989",
+      "source_sha256": "8d5c627549c33d73e7c853440ad46ac607c84c038329ce2e2367f2911c306989",
+      "preserved": false,
+      "manifest_version_only": false
+    },
+    "standalonelinux64/modpack.json": {
+      "sha256": "68445b86a7927daffb43c653f2a19df1d9d8c0162891fbe210c5bb0c00480175",
+      "source_sha256": "d01b36f52e9cad4ed7f4a22505c687fd4fc6be7eb7313c70e6d1c3f8c3de3e38",
+      "preserved": true,
+      "manifest_version_only": true
+    },
+    "standalonelinux64/Ninjas4744.dll": {
+      "sha256": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+      "source_sha256": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+      "preserved": true,
+      "manifest_version_only": false
+    },
+    "standalonelinux64/rebuilt_ninjas_4744_turbo_2026_assets": {
+      "sha256": "6906dbdd5cb0cbe9d93c440f7c60e93c3318129658c72dda78044d6d032a9dd6",
+      "source_sha256": "6906dbdd5cb0cbe9d93c440f7c60e93c3318129658c72dda78044d6d032a9dd6",
+      "preserved": true,
+      "manifest_version_only": false
+    },
+    "standalonelinux64/standalonelinux64": {
+      "sha256": "3828629b77552dc53511e2a00e81df1336eb94add1caee06d473161fbff8b89d",
+      "source_sha256": "3828629b77552dc53511e2a00e81df1336eb94add1caee06d473161fbff8b89d",
+      "preserved": true,
+      "manifest_version_only": false
+    },
+    "standaloneosx/modpack.json": {
+      "sha256": "68445b86a7927daffb43c653f2a19df1d9d8c0162891fbe210c5bb0c00480175",
+      "source_sha256": "d01b36f52e9cad4ed7f4a22505c687fd4fc6be7eb7313c70e6d1c3f8c3de3e38",
+      "preserved": true,
+      "manifest_version_only": true
+    },
+    "standaloneosx/Ninjas4744.dll": {
+      "sha256": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+      "source_sha256": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+      "preserved": true,
+      "manifest_version_only": false
+    },
+    "standaloneosx/rebuilt_ninjas_4744_turbo_2026_assets": {
+      "sha256": "88116f8dbc75d3765e2097e312c19dc9e5b2f6b0a604ce98642c31a958bef298",
+      "source_sha256": "88116f8dbc75d3765e2097e312c19dc9e5b2f6b0a604ce98642c31a958bef298",
+      "preserved": true,
+      "manifest_version_only": false
+    },
+    "standaloneosx/standaloneosx": {
+      "sha256": "cb5253b53ce6492514a1d4fc123ef3e23ea0efa9baec388a713d6f64c7d34624",
+      "source_sha256": "cb5253b53ce6492514a1d4fc123ef3e23ea0efa9baec388a713d6f64c7d34624",
+      "preserved": true,
+      "manifest_version_only": false
+    }
+  },
+  "staging_folder": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\dist\\steam-candidate-1.0.1\\Content",
+  "archive": {
+    "filename": "Ninjas4744-Turbo2026-1.0.1-Steam-candidate.zip",
+    "sha256": "ee5d749c2c38507ace4965f586339c19c3429069d43058ebd5e859e4f5de4068"
+  }
+}
