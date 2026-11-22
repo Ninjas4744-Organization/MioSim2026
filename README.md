@@ -2,13 +2,13 @@
 
 An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo CAD asset. This repository contains the robot assets, runtime code, authoring tools, and regression checks. Unity, the MoSim framework, and generated caches stay outside the repository.
 
-![Turbo carrying a full load in installed MoSim](Reports/native/062-grip140-blue-target62-trench-clear.png)
+![Turbo carrying a full load in installed MoSim](Reports/native/101-final-full-simple-loaded.png)
 
-## Release candidate 1.0.1
+## Release 1.0.1
 
-**Release hold:** loaded stow timed out in installed MoSim, including an unchanged Steam 1.0.0 control run. The 14 editor fixture groups pass, but native trench/bump certification is incomplete. See [current verification](Docs/Verification.md).
+All release checks pass: full-load blocked-stow retention, shooting and empty-stow recovery in both control variants, plus both-alliance trench transit and bump/delivery. Full fuel loads can physically prevent retraction, matching the real robot. See [current verification](Docs/Verification.md).
 
-The Windows candidate improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
+The Windows release improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
 
 ## Install
 
@@ -54,7 +54,7 @@ Select **Actual Turbo** in the robot variant selector for the original team's la
 | Run three hard pump cycles, then soft pumping | V | Y / Triangle |
 | Reverse the feed path | U | A / Cross |
 
-Pumping slides the hopper bin and its front roof frame back and forth toward the stationary indexer. Z / D-pad down retracts the intake and hopper. The tray overlaps the fixed indexer entrance as the bin moves.
+Pumping slides the hopper bin and its front roof frame back and forth toward the stationary indexer. Z / D-pad down requests intake and hopper retraction. Fuel or a physical obstruction can stop the hopper short of full closure, matching the real robot; shooting out the load allows it to close. The tray overlaps the fixed indexer entrance as the bin moves.
 
 MoSim's control rebinding applies normally. The shooter faces the rear of the robot. Commands latch, matching the team's button-triggered state machine: release K/E after starting, and use Shift to cancel. Intake opens automatically after enable. Soft pumping starts with hub shooting or delivery while balls remain in storage, including a partial load, and stops when storage clears or shooting is cancelled. Hub aiming reduces translation to 30%, as in the team code; Shift restores normal driving. F8 toggles an optional local mechanism/status panel. Quick shoot, pump and stow taps are retained through Input System performed events. Q and U remain held manual overrides. These are MoSim action bindings, rather than the real driver's PS5 button layout.
 
@@ -156,7 +156,7 @@ installed-player native execution checks.
 - Separated powered intake traction from passive support and completed the moving inlet handoff during stow.
 - Increased slide velocity damping while preserving the 350 N force limit.
 - Calibrated full-load tread grip to 1.4 while preserving the team drive constants.
-- Verified native stowed trench crossings with actual loads of 57, 58, 60, 56 balls, retaining every member through the crossing. Both alliances, slow and normal returns, and an actual 60-ball load are covered.
+- Verified native stowed trench crossings with actual loads of 57, 58, 60, 56 balls, retaining every member through the crossing. Those historical fixed-bin checks covered both alliances, slow and normal returns, and an actual 60-ball load; they do not certify packed-load stow of the current sliding hopper.
 
 All fourteen required fixture groups pass against this release's bundle and DLL. [Measured results](Docs/Verification.md) · [Native requests, traces and screenshots](Docs/NativeTesting.md). Incomplete arrivals at the inlet are reported separately; pre-stow stored fuel must survive retraction as well as transit. Earlier failed runs remain preserved.
 

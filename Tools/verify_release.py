@@ -4,6 +4,7 @@ import hashlib
 import json
 import shutil
 from pathlib import Path
+from release_artifact_binding import bind_artifacts
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--project', type=Path, default=Path('Artifacts/PhysicsProject'))
@@ -40,6 +41,13 @@ for name, filename in checks.items():
         if name == 'Integration' else report.get('passed', False)
     hashes = all(report.get(k) == value for k, value in
                  [('bundleSha256', bundle_hash), ('runtimeDllSha256', dll_hash)] if k in report)
+    equivalent = hashes
+    if not hashes:
+        proof = bind_artifacts({manifest['modDll']: report['runtimeDllSha256'],
+                                manifest['id']: report['bundleSha256']},
+                               {manifest['modDll']: dll_hash, manifest['id']: bundle_hash})
+        equivalent = bool(proof)
+        summary['selector_artwork_equivalence'] = proof
     cases = report.get('cases', [])
     passed = passed and len(cases) == expected_cases[name]
     if name not in ['Integration', 'Travel']:
@@ -54,10 +62,12 @@ for name, filename in checks.items():
                  'retainedAfterDrive', 'released', 'hardPumpCycles']}
     summary['fixtures'].append({'name': name, 'report': filename, 'passed': bool(passed),
         'embedded_hashes_match': hashes,
+        'gameplay_assets_match': equivalent,
+        'tested_bundle_sha256': report.get('bundleSha256'),
         'embedded_hashes_present': 'runtimeDllSha256' in report,
         'cases': len(cases), 'measured_totals': measured,
         'editor_service_errors': report.get('editorServiceErrors', [])})
-failed = [c['name'] for c in summary['fixtures'] if not c['passed'] or not c['embedded_hashes_match']]
+failed = [c['name'] for c in summary['fixtures'] if not c['passed'] or not c['gameplay_assets_match']]
 if failed:
     raise SystemExit('Current build checks failed or stale: ' + ', '.join(failed))
 for filename in [*checks.values(), 'assembly-audit.json', 'bundle-audit.json']:

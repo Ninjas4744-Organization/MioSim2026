@@ -1,8 +1,8 @@
 # Uploading Turbo 1.0.1 to Steam Workshop
 
-**Current status: release held.** The candidate archive is `dist/Ninjas4744-Turbo2026-1.0.1-Steam-candidate.zip`. Its `Content` folder preserves all three platforms. Native loaded stow failed in the candidate and the old Steam build; the existing trench/bump release gates remain unsatisfied. The candidate is kept outside the uploader staging folder. See [verification](Verification.md).
+**Current status: ready for manual upload.** The final archive is `dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`; all three platforms are staged. Full-load retention/recovery and partially loaded transit checks pass. See [verification](Verification.md).
 
-After the native release hold is resolved, this updates the existing item **3843685878** for MoSim (**4398690**).
+This updates the existing item **3843685878** for MoSim (**4398690**).
 Publication is a separate manual step; preparing the release does not upload it.
 
 The Windows build contains the net collision optimization, control variants and
@@ -11,7 +11,7 @@ bundles, including their existing behavior and artwork. Their manifest version
 labels change to 1.0.1 because the official uploader requires all three platform
 manifests to match the release version. The original Steam files remain untouched.
 
-## Upload after the release checks pass
+## Upload the prepared update
 
 Open the pinned Unity 2023.2.22f1 project at
 `Artifacts/PumpingProject-20261121`. The prepared content is in:
@@ -23,7 +23,7 @@ BuiltMods/_Staging/rebuilt_ninjas_4744_turbo_2026/
   standaloneosx/
 ```
 
-Once certified, the same content is archived in
+The same certified content is archived in
 `dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`. Upload the staged folder, rather than
 the Windows-only trial ZIP.
 
@@ -51,17 +51,12 @@ delivers the update to existing subscribers. See the
 
 ## Reproducing preparation
 
-To reproduce the held candidate without enabling upload:
-
-```powershell
-python Tools/prepare_steam.py --project Artifacts/PumpingProject-20261121 --candidate
-```
-
 After all final-build fixtures and native cycles pass:
 
 ```powershell
 python Tools/verify_release.py --project Artifacts/PumpingProject-20261121
-# Generate the version-matched native trench and bump certificates too.
+# Generate all three version-matched native certificates first:
+# verify_native_full_hopper.py, verify_native_trench.py, verify_native_bump.py.
 .\Tools\Package.ps1 -MoSimProject Artifacts/PumpingProject-20261121
 python Tools/prepare_steam.py --project Artifacts/PumpingProject-20261121
 .\Tools\Invoke-Unity.ps1 -MoSimProject Artifacts/PumpingProject-20261121 `

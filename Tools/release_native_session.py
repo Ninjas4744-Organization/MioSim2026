@@ -82,11 +82,14 @@ def restore():
 
 parser = argparse.ArgumentParser()
 parser.add_argument('action', choices=('prepare', 'request', 'restore'))
+parser.add_argument('--session-dir', type=Path, default=OUT)
 parser.add_argument('--template', type=Path)
 parser.add_argument('--label')
 parser.add_argument('--alliance', type=int, choices=(0, 1), default=0)
 parser.add_argument('--variant', type=int, choices=(0, 1), default=1)
 args = parser.parse_args()
+OUT = args.session_dir.resolve()
+assert OUT.is_relative_to((ROOT / 'Artifacts').resolve()), 'Session backup must remain under workspace Artifacts'
 if args.action == 'prepare':
     prepare()
 elif args.action == 'request':

@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "scope": "selector-artwork-only",
+  "unitypy_version": "1.25.4",
+  "before_artifacts": {
+    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe"
+  },
+  "after_artifacts": {
+    "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f"
+  },
+  "runtime_dll_identical": true,
+  "object_count": 2609,
+  "unchanged_object_count": 2607,
+  "unchanged_objects_sha256": "b8b9a2a04cd8d6dcf53faed2267da323dc3db0a26da926053118073a26678ef0",
+  "object_types": {
+    "GameObject": 903,
+    "MeshFilter": 121,
+    "Transform": 885,
+    "MeshRenderer": 121,
+    "Material": 95,
+    "Shader": 7,
+    "BoxCollider": 132,
+    "Texture2D": 8,
+    "MonoBehaviour": 123,
+    "WheelCollider": 12,
+    "CapsuleCollider": 27,
+    "SphereCollider": 34,
+    "Mesh": 21,
+    "MonoScript": 29,
+    "CanvasRenderer": 18,
+    "PhysicMaterial": 3,
+    "Sprite": 3,
+    "MeshCollider": 18,
+    "ConfigurableJoint": 4,
+    "RectTransform": 18,
+    "Rigidbody": 24,
+    "TextAsset": 1,
+    "AssetBundle": 1,
+    "Animator": 1
+  },
+  "changed_objects": [
+    {
+      "path_id": -8196850174639121343,
+      "type": "Sprite",
+      "name": "selector-logo",
+      "before_sha256": "4f6d1106e3bb722d47f03402a713fa3fb6632a6e45589f933436abc1b9ab61ad",
+      "after_sha256": "7d38fa909914e5687333690d536a953fcabfe7876952601789fd3998a1ec9363"
+    },
+    {
+      "path_id": -4463935513249371945,
+      "type": "Texture2D",
+      "name": "selector-logo",
+      "before_sha256": "0ce28dc444210085f6733f63dada6dffda2d32240fd40c0d3a3259027c30d501",
+      "after_sha256": "8ec743e407c65f8d0106bf15dfef8404540e7ee352b07ebbb76b23489a3983c4"
+    }
+  ],
+  "resource_comparison": "Every Mesh and Texture2D streamed payload compared by content, resolving transport offsets/paths; all other objects compared as exact serialized bytes."
+}

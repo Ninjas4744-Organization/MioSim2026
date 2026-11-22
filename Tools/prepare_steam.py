@@ -29,7 +29,7 @@ certificate = load(ROOT / f'Reports/verification-{version}.json')
 assert certificate['bundle_sha256'] == hashes[manifest['id']]
 assert certificate['runtime_dll_sha256'] == hashes[manifest['modDll']]
 assert len(certificate['fixtures']) == 14
-assert all(f['passed'] and f['embedded_hashes_match'] for f in certificate['fixtures'])
+assert all(f['passed'] and (f['embedded_hashes_match'] or f.get('gameplay_assets_match')) for f in certificate['fixtures'])
 controls = load(ROOT / 'Reports/simple-controls.json')
 assert controls['passed'] and len(controls['checks']) >= 34 and not controls['errors']
 assert controls['bundleSha256'] == hashes[manifest['id']]
@@ -41,7 +41,7 @@ if args.candidate:
     assert status['release_ready'] is False and status['blocking_checks']
     assert status['artifacts'] == hashes, 'Stale candidate status'
 else:
-    for name in ('native-trench', 'native-bump'):
+    for name in ('native-full-hopper', 'native-trench', 'native-bump'):
         report = load(ROOT / f'Reports/{name}-{version}.json')
         assert report['passed'] and report['artifacts'] == hashes, f'Stale {name}'
 

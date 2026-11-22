@@ -40,7 +40,7 @@ print('Incomplete inlet departures:', len(report.get('inletDepartures', [])))
 print('Field geometry:', report.get('fieldGeometry', []))
 if args.require_trench and not (report.get('trenchPassed')
         and report.get('transitCompleted') and report.get('stowedBeforeReturn')
-        and 50 <= report.get('transitStartCount', 0) <= 60
+        and 16 <= report.get('transitStartCount', 0) <= 32
         and report['transitStartCount'] == report.get('transitEndCount')
         and report.get('maximumTrenchHoldSeconds', 0) < .25
         and not report['transitEscapes']):

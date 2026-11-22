@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.0.1 candidate (2026-11-22)
+## 1.0.1 (2026-11-22)
 
-- Hold Steam publication pending native loaded-stow/trench/bump certification. Loaded stow also fails in the unchanged Steam 1.0.0 control; no physics parameters were changed to force a pass.
+- Correct release acceptance to match the real load-limited hopper: retain full loads during blocked stow, shoot empty and recover full retraction. Verify both control variants, partially loaded trench travel on both alliances, and normal-speed bump delivery. Keep the original physics and actuator limits.
 - Speed up Windows full-hopper net collisions with conservative spatial filtering and a player-compatible Burst job, preserving the original contact order and physics.
 - Add the standard Turbo controls and retain the original controls as Actual Turbo.
 - Use the supplied Ninjas 4744 logo in the robot selector.

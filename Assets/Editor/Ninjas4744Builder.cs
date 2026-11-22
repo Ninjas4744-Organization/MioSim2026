@@ -1724,13 +1724,16 @@ public static class Ninjas4744Builder
                 .GetReferencedAssemblies()
                 .Select(a => a.Name)
                 .ToArray();
+            var expectedLogo = AssetDatabase.LoadAssetAtPath<Sprite>(
+                Root + "/Model/selector-logo.png"
+            );
             bool passed =
                 missing == 0
                 && loaded.ModpackVersion == pack.ModpackVersion
                 && metadata.RobotImage
                 && metadata.RobotImage.name == "selector-logo"
-                && metadata.RobotImage.rect.width == 119
-                && metadata.RobotImage.rect.height == 144
+                && expectedLogo
+                && metadata.RobotImage.rect.size == expectedLogo.rect.size
                 && robot
                 && robot.intakeRail
                 && robot.hopperRail

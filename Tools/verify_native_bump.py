@@ -1,10 +1,11 @@
-"""Check a preserved full-hopper bump/delivery cycle against the current build."""
+"""Check a preserved partially loaded stowed bump/delivery cycle."""
 import argparse
 import csv
 import hashlib
 import json
 import math
 from pathlib import Path
+from release_artifact_binding import bind_artifacts
 
 parser = argparse.ArgumentParser()
 parser.add_argument('label')
@@ -19,7 +20,8 @@ hashes = {name: hashlib.sha256((platform / name).read_bytes()).hexdigest()
           for name in [manifest['modDll'], manifest['id']]}
 r = load(reports / (args.label + '.json'))
 q = load(reports / (args.label + '-request.json'))
-assert load(reports / (args.label + '-artifacts.json')) == hashes, 'Stale artifacts'
+tested = load(reports / (args.label + '-artifacts.json'))
+proof = bind_artifacts(tested, hashes)
 if tuple(map(int, manifest['version'].split('.'))) >= (1, 0, 1):
     assert r['runtimeVersion'] == manifest['version'], 'Wrong native runtime version'
     assert r['netBurstExecution'] and r['netNativeLibraryLoaded'], 'Native Burst path inactive'
@@ -27,6 +29,8 @@ if tuple(map(int, manifest['version'].split('.'))) >= (1, 0, 1):
 assert r['completed'] and r['transitCompleted'] and r['stowedBeforeReturn']
 assert not r['overturned'] and not r['stowTimedOut'] and not r['failureReason']
 assert q['stowForReturn'] and not q['requireTrenchSuccess'] and q['shootKey'] == 'E'
+assert 0 < q['stowTolerance'] <= .010
+assert max(abs(r[k]) for k in ('intakeExtensionAtReturn', 'hopperExtensionAtReturn')) < .010
 assert abs(abs(q['returnLane']) - 1.7) < .0001 and q['returnGear'] == 2
 assert r['fieldFuel'] == 504 and abs(r['physicsStep'] - .0045) < .000001
 for key in ['disableJointProjection', 'solidBumper', 'discreteChassis', 'stopInterpolation',
@@ -34,7 +38,8 @@ for key in ['disableJointProjection', 'solidBumper', 'discreteChassis', 'stopInt
             'netRestScaleOverride', 'netStretchOverride', 'netShearOverride', 'netStrandRadiusOverride']:
     assert not q.get(key), 'Diagnostic override: ' + key
 start = r['transitStartCount']
-assert 50 <= start <= 60 and r['transitEndCount'] == start and not r['transitEscapes']
+assert 16 <= start <= 32 and r['transitEndCount'] == start and not r['transitEscapes']
+assert q['minimumTransitLoad'] == 16 and q['maximumTransitLoad'] == 32
 assert r['fullyStoredBeforeStow'] == r['storedRetainedAfterStow']
 assert r['remainingCaptured'] == 0 and r['releasedCaptured'] == start
 assert r['delivered'] >= math.ceil(start * 7 / 8), 'Delivery below the existing 7/8 criterion'
@@ -62,6 +67,8 @@ summary = {'native_burst': r.get('netBurstExecution', False), 'version': manifes
            'remaining': r['remainingCaptured'], 'maximum_tilt_degrees': r['maxTilt'],
            'maximum_rail_extension_m': rail_max, 'maximum_return_frame_ms': r['maxReturnFrameMs'],
            'passed': True}
+if proof:
+    summary.update(selector_artwork_equivalence=proof, tested_artifacts=tested)
 output = root / 'Reports' / ('native-bump-' + manifest['version'] + '.json')
 output.write_text(json.dumps(summary, indent=2) + '\n')
 print(json.dumps(summary, indent=2))

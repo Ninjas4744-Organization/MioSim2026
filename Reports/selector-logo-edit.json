@@ -1,0 +1,8 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. Edit target: the supplied Ninjas 4744 logo. Primary request: cut off the bottom strip containing the white '4744' text, leaving only the complete white ninja head and its two ribbon/streamer shapes above it. This is a crop/text-removal edit, not a redesign. Preserve the exact original emblem silhouette, navy background color, proportions and white shapes. Keep the entire emblem including the top streamer and chin, with a small navy margin. Return a compact nearly square icon with no letters, numbers, new symbols, gradients or added details.",
+  "asset": "Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Model/selector-logo.png",
+  "original_sha256": "ae49567b111ea95d0b8ac3d0a5066f8a00a0025cc78b4ae1ba050f0b33b8a024",
+  "edited_sha256": "42d3d8b6cfcdaad241c486a79677e8dd4c0e87e4fe0f27023a48f13985f48eec",
+  "in_game_max_texture_size": 256
+}

@@ -1,0 +1,153 @@
+{
+  "conclusion": "The owner confirmed the real hopper does not retract fully when full or physically obstructed. A 60-ball forced stow was an incorrect acceptance requirement. All diagnostic changes were discarded; release physics stays unchanged.",
+  "raw_report_note": "comparison-35mm.json has an early harness predicate error: raw passed=true despite stowed=false; it is not acceptance evidence. A closed-envelope count excludes retained fuel in the still-extended bin and is not a spill count.",
+  "experiments": [
+    {
+      "file": "baseline-20mm.json",
+      "collected": 59,
+      "reported_retained_in_closed_envelope": 46,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-1400N-high-response.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 48,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-1400N.json",
+      "collected": 59,
+      "reported_retained_in_closed_envelope": 45,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-35mm.json",
+      "collected": 59,
+      "reported_retained_in_closed_envelope": 59,
+      "closed": false,
+      "raw_passed": true
+    },
+    {
+      "file": "comparison-40mm-375Npm.json",
+      "collected": 47,
+      "reported_retained_in_closed_envelope": 47,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-50mm.json",
+      "collected": 59,
+      "reported_retained_in_closed_envelope": 59,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-60mm-375Npm.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 56,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-floor-rear-012.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 42,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-hopper-first.json",
+      "collected": 58,
+      "reported_retained_in_closed_envelope": 44,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-kicker-down.json",
+      "collected": 58,
+      "reported_retained_in_closed_envelope": 45,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-no-carrier-contacts.json",
+      "collected": 58,
+      "reported_retained_in_closed_envelope": 10,
+      "closed": true,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-no-feed-gate.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 45,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-no-front-roller.json",
+      "collected": 55,
+      "reported_retained_in_closed_envelope": 42,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-no-inlet.json",
+      "collected": 57,
+      "reported_retained_in_closed_envelope": 45,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-no-net-solver.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 43,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-no-roof.json",
+      "collected": 58,
+      "reported_retained_in_closed_envelope": 44,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-position-drive.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 47,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-soft-separation.json",
+      "collected": 58,
+      "reported_retained_in_closed_envelope": 43,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-solver128.json",
+      "collected": 56,
+      "reported_retained_in_closed_envelope": 42,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-stop-intake.json",
+      "collected": 54,
+      "reported_retained_in_closed_envelope": 41,
+      "closed": false,
+      "raw_passed": false
+    },
+    {
+      "file": "comparison-wall-compliance.json",
+      "collected": 58,
+      "reported_retained_in_closed_envelope": 44,
+      "closed": false,
+      "raw_passed": false
+    }
+  ]
+}

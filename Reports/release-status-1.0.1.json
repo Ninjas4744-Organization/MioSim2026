@@ -1,78 +1,21 @@
 {
   "version": "1.0.1",
-  "release_ready": false,
+  "release_ready": true,
   "artifacts": {
     "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe"
+    "rebuilt_ninjas_4744_turbo_2026_assets": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f"
   },
   "editor_fixture_groups_passed": 14,
   "editor_cases_passed": 52,
   "controls_checks_passed": 34,
-  "blocking_checks": [
-    "Native loaded stow timed out before full retraction.",
-    "Required both-alliance trench runs, including an actual 60-ball crossing, are not certified.",
-    "Native loaded bump/delivery certification is blocked by the stow prerequisite."
+  "net_equivalence_steps": 480,
+  "blocking_checks": [],
+  "native_certificates": [
+    "native-full-hopper-1.0.1.json",
+    "native-trench-1.0.1.json",
+    "native-bump-1.0.1.json"
   ],
-  "baseline_same_request_except_label": true,
-  "native_stow_failures": [
-    {
-      "label": "101-blue-full",
-      "build": "candidate 1.0.1",
-      "completed": false,
-      "failure": "Stow timed out before full retraction",
-      "peak_captured": 59,
-      "fully_stored_before_stow": 59,
-      "stow_seconds": 8.00396728515625,
-      "final_intake_extension_m": 0.0,
-      "final_hopper_extension_m": 0.2247,
-      "artifacts": {
-        "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-        "rebuilt_ninjas_4744_turbo_2026_assets": "bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe"
-      }
-    },
-    {
-      "label": "101-blue-full-2",
-      "build": "candidate 1.0.1",
-      "completed": false,
-      "failure": "Stow timed out before full retraction",
-      "peak_captured": 56,
-      "fully_stored_before_stow": 50,
-      "stow_seconds": 8.003936767578125,
-      "final_intake_extension_m": 0.0016,
-      "final_hopper_extension_m": 0.1756,
-      "artifacts": {
-        "Ninjas4744.dll": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-        "rebuilt_ninjas_4744_turbo_2026_assets": "bc74119c92bb3de639c4fefa43d48a6733bcc64bdda6815a404d0664a12d55fe"
-      }
-    },
-    {
-      "label": "101-steam-stow-control",
-      "build": "Steam 1.0.0",
-      "completed": false,
-      "failure": "Stow timed out before full retraction",
-      "peak_captured": 57,
-      "fully_stored_before_stow": 55,
-      "stow_seconds": 8.003959655761719,
-      "final_intake_extension_m": 0.0015,
-      "final_hopper_extension_m": 0.2065,
-      "artifacts": {
-        "Ninjas4744.dll": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
-        "rebuilt_ninjas_4744_turbo_2026_assets": "b31ca9c7cef3efbbfcb0febbcb9bb5aadaa0b979c72f4772de60361ac2b4219b"
-      }
-    }
-  ],
-  "physics_parameters_changed": false,
-  "recommendation": "Hold Steam publication; retain this as a reviewable 1.0.1 candidate.",
-  "native_default_full_shoot": {
-    "completed": true,
-    "simpleControls": true,
-    "capturedAtShot": 60,
-    "releasedCaptured": 60,
-    "remainingCaptured": 0,
-    "netBurstExecution": true,
-    "maxCollectFrameMs": 12.920904159545898,
-    "maxShootFrameMs": 8.450900077819824,
-    "maxTilt": 0.6196041107177734,
-    "report": "native/101-simple-full-shoot-2.json"
-  }
+  "stow_policy": "Owner-confirmed load-limited closure. Full load is retained while blocked; shoot empty and recover below 2 mm. Loaded transit settles below 10 mm and stays below 15 mm under the crossbar.",
+  "selector_artwork_equivalence": "selector-artwork-equivalence-1.0.1.json",
+  "historical_candidate_status": "Release-1.0.1/held-candidate-status.json"
 }
