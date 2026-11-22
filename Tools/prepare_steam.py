@@ -95,7 +95,9 @@ receipt['staging_folder'] = str(stage)
 suffix = '-candidate' if args.candidate else ''
 reports = ROOT / f'Reports/steam{suffix}-{version}.json'
 reports.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-ready = {'release_ready': not args.candidate, 'version': version, 'artifacts': hashes}
+ready = {'release_ready': not args.candidate, 'version': version, 'artifacts': hashes,
+         'files': [{'relativePath': relative, 'sha256': record['sha256']}
+                   for relative, record in sorted(receipt['files'].items())]}
 (project / 'BuildArtifacts/steam-release-status.json').write_text(json.dumps(ready, indent=2) + '\n')
 output = ROOT / f'dist/Ninjas4744-Turbo2026-{version}-Steam{suffix}.zip'
 output.parent.mkdir(exist_ok=True)

@@ -1,0 +1,25 @@
+{
+  "scope": "Editor fixture correction only; shipped runtime and bundle unchanged",
+  "runtime_dll_sha256": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+  "before": {
+    "reports": [
+      "jam-contact-correction-first-failure.json",
+      "jam-contact-correction-repeat-failure.json",
+      "jam-contact-correction-sleep-trace.json"
+    ],
+    "scored": 0,
+    "sleeping_after_removal": true,
+    "height_m": 0.2775,
+    "powered_roller_contacts": 0
+  },
+  "correction": "Disable each artificial cage collider immediately before deferred Destroy, clear the fixture list, and call WakeUp once on the affected fuel. No force, pose, velocity, robot code or acceptance threshold change.",
+  "after": {
+    "report": "jam-obstruction-removal-corrected.json",
+    "passed": true,
+    "scored": 1,
+    "first_launch_seconds": 8.038320541381836,
+    "backoff_seconds": 0.5077400207519531,
+    "hard_pump_cycles": 3
+  },
+  "reference": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/rigidbody/wakeup"
+}

@@ -1,0 +1,39 @@
+{
+  "version": "1.0.1",
+  "artifacts": {
+    "Ninjas4744.dll": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e"
+  },
+  "scenario": "Full load blocks closure; retain, shoot empty, then stow",
+  "cases": [
+    {
+      "label": "101-steam-full-simple",
+      "simple_controls": true,
+      "alliance": "Blue",
+      "full_load": 59,
+      "retained_while_blocked": 59,
+      "released": 59,
+      "remaining": 0,
+      "empty_stow_maximum_extension_m": 0.0014,
+      "collection_does_not_pump": true,
+      "empty_shot_release_keeps_intake_open": true,
+      "maximum_frame_ms": 10.572200775146484,
+      "native_burst": true
+    },
+    {
+      "label": "101-steam-full-actual",
+      "simple_controls": false,
+      "alliance": "Blue",
+      "full_load": 62,
+      "retained_while_blocked": 62,
+      "released": 62,
+      "remaining": 0,
+      "empty_stow_maximum_extension_m": 0.0014,
+      "collection_does_not_pump": true,
+      "empty_shot_release_keeps_intake_open": true,
+      "maximum_frame_ms": 49.05720138549805,
+      "native_burst": true
+    }
+  ],
+  "passed": true
+}

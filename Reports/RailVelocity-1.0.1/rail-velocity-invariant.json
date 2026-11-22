@@ -1,0 +1,264 @@
+{
+  "passed": true,
+  "maximumError": 8.940696716308594e-08,
+  "maximumLegacyError": 0.6000003814697266,
+  "cases": [
+    {
+      "heading": 0.0,
+      "pitchRate": -2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000003457069397,
+      "legacy": -0.7200000882148743
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": -2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": -0.6000000834465027
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": -2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000003457069397,
+      "legacy": -0.48000001907348633
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": 0.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000002712011337,
+      "legacy": -0.12000002712011337
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": 0.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.0
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": 0.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.11999999731779099,
+      "legacy": 0.11999999731779099
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": 2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000002712011337,
+      "legacy": 0.4800000488758087
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": 2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.6000000834465027
+    },
+    {
+      "heading": 0.0,
+      "pitchRate": 2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.11999999731779099,
+      "legacy": 0.7200000882148743
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": -2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000003457069397,
+      "legacy": -0.7200002074241638
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": -2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": -0.6000001430511475
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": -2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000003457069397,
+      "legacy": -0.4800001382827759
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": 0.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000002712011337,
+      "legacy": -0.12000002712011337
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": 0.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.0
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": 0.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000002712011337,
+      "legacy": 0.12000002712011337
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": 2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000002712011337,
+      "legacy": 0.4800001382827759
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": 2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.6000001430511475
+    },
+    {
+      "heading": 90.0,
+      "pitchRate": 2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000002712011337,
+      "legacy": 0.7200002074241638
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": -2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000004947185516,
+      "legacy": -0.7200003266334534
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": -2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": -0.6000003218650818
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": -2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000004947185516,
+      "legacy": -0.48000025749206543
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": 0.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000003457069397,
+      "legacy": -0.12000003457069397
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": 0.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.0
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": 0.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000003457069397,
+      "legacy": 0.12000003457069397
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": 2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.11999998986721039,
+      "legacy": 0.4800003170967102
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": 2.0,
+      "expected": 0.0,
+      "measured": 4.986026169717661e-08,
+      "legacy": 0.6000003814697266
+    },
+    {
+      "heading": 180.0,
+      "pitchRate": 2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000008672475815,
+      "legacy": 0.7200003862380981
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": -2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000003457069397,
+      "legacy": -0.720000147819519
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": -2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": -0.6000000834465027
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": -2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000003457069397,
+      "legacy": -0.4800000786781311
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": 0.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000002712011337,
+      "legacy": -0.12000002712011337
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": 0.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.0
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": 0.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000002712011337,
+      "legacy": 0.12000002712011337
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": 2.0,
+      "expected": -0.11999999731779099,
+      "measured": -0.12000002712011337,
+      "legacy": 0.4800000786781311
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": 2.0,
+      "expected": 0.0,
+      "measured": 0.0,
+      "legacy": 0.6000000834465027
+    },
+    {
+      "heading": -90.0,
+      "pitchRate": 2.0,
+      "expected": 0.11999999731779099,
+      "measured": 0.12000002712011337,
+      "legacy": 0.720000147819519
+    }
+  ],
+  "artifacts": {
+    "Ninjas4744.dll": "588232c7cdd68fd46f83624e124c4d4cfe6c135ee0934bfddc2134ce487f258c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5"
+  },
+  "source_sha256": "defa7face55147b7a42e5f133778aa261b8da2ecbfe1c9baa13a14ecc3f77616"
+}

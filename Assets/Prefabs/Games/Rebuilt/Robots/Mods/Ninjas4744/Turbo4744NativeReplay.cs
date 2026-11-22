@@ -1019,8 +1019,8 @@ namespace Ninjas4744.MoSim
         {
             var moving = joint.GetComponent<Rigidbody>();
             return Vector3.Dot(
-                moving.velocity - body.GetPointVelocity(moving.position),
-                robot.transform.forward
+                moving.GetPointVelocity(moving.position) - body.GetPointVelocity(moving.position),
+                body.rotation * Vector3.forward
             );
         }
 

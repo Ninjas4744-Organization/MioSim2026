@@ -1,27 +1,19 @@
 {
   "version": "1.0.1",
-  "release_ready": false,
+  "release_ready": true,
   "artifacts": {
-    "Ninjas4744.dll": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
-    "rebuilt_ninjas_4744_turbo_2026_assets": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e"
+    "Ninjas4744.dll": "588232c7cdd68fd46f83624e124c4d4cfe6c135ee0934bfddc2134ce487f258c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5"
   },
+  "fixture_groups_passed": 14,
   "controls_checks_passed": 58,
   "focused_traction_cases_passed": 38,
   "airborne_controls_passed": 6,
-  "physics_parameters_changed": true,
-  "contact_correction_implemented": true,
-  "beaching_fix_claimed": true,
-  "beaching_fix_scope": "Reported partial-support landing; owner confirmed recovery. Fully lifted tires remain beached.",
-  "native_startup_smoke_passed": true,
-  "native_full_hopper_functional_passed": true,
-  "native_full_hopper_strict_release_certificate": false,
-  "blocking_checks": [
-    "The complete release fixture matrix and both-variant/alliance native transit checks have not been recertified for this DLL.",
-    "Previous bump acceptance remains historical; the current single native empty-stow pass does not clear all mechanical release gates."
-  ],
-  "previous_candidate": {
-    "runtime_commit": "3551658",
-    "status_file": "BeachingFix-1.0.1/previous-diagnostic/release-status-1.0.1.json"
-  },
-  "publication": "Windows contact correction test candidate only. Not uploaded. Linux/macOS unchanged."
+  "rail_velocity_cases_passed": 36,
+  "native_full_hopper_passed": true,
+  "native_trench_cases_passed": 3,
+  "native_bump_passed": true,
+  "actuator_limits_unchanged": true,
+  "blocking_checks": [],
+  "publication": "Prepared for the owner-authorized upload; not yet uploaded."
 }

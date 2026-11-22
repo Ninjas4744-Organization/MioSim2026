@@ -854,10 +854,7 @@ namespace Ninjas4744.MoSim
                 // its speed follows the measured rail, rather than an invisible
                 // high-speed belt carrying every stored ball to the shooter.
                 var hb = hopperRail.GetComponent<Rigidbody>();
-                float railSpeed = (
-                    Quaternion.Inverse(_body.rotation)
-                    * (hb.velocity - _body.GetPointVelocity(hb.position))
-                ).z;
+                float railSpeed = RailSpeed(hb, _body);
                 float transferSpeed =
                     Feeding ? Mathf.Max(0, -railSpeed)
                     : backing || _reverse ? -.18f
@@ -1069,16 +1066,25 @@ namespace Ninjas4744.MoSim
             // carrier, so the pump stroke pushes fuel toward the fixed indexer.
             float extension = Mathf.Clamp(Extension(intakeRail, _intakeClosed), 0, intakeTravel);
             var irb = intakeRail.GetComponent<Rigidbody>();
-            float velocity = (
-                Quaternion.Inverse(_body.rotation)
-                * (irb.velocity - _body.GetPointVelocity(irb.position))
-            ).z;
+            float velocity = RailSpeed(irb, _body);
             DrivePosition(
                 hopperRail,
                 _hopperClosed,
                 extension * hopperTravel / intakeTravel,
                 velocity * hopperTravel / intakeTravel,
                 ref _hopperVelocity
+            );
+        }
+
+        private static float RailSpeed(Rigidbody moving, Rigidbody chassis)
+        {
+            // Rigidbody.velocity is measured at its centre of mass, which is
+            // offset from the slide origin. Compare velocities at the same
+            // world point so chassis pitching cannot look like slide travel.
+            var point = moving.position;
+            return Vector3.Dot(
+                moving.GetPointVelocity(point) - chassis.GetPointVelocity(point),
+                chassis.rotation * Vector3.forward
             );
         }
 

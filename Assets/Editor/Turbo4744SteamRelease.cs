@@ -17,7 +17,9 @@ public static class Turbo4744SteamRelease
     public const string ChangeNote =
         "1.0.1: Improve Windows performance with a full hopper while preserving net physics. "
         + "Add standard Turbo controls (original controls remain as Actual Turbo) and the Ninjas selector logo. "
-        + "Pump only while shooting and leave the intake open after emptying the hopper or releasing shoot. "
+        + "Make the shooting-only hopper pump more visible and leave the intake open after emptying or releasing shoot. "
+        + "Correct wheel contacts and underside friction so a ball under a module does not immobilize the robot. "
+        + "Correct hopper slide feedback during pitching to keep it stowed over bumps. "
         + "Keep existing Linux and macOS binaries.";
 
     [MenuItem("Tools/Modding/Ninjas 4744/Prepare Steam 1.0.1 Upload")]

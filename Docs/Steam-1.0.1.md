@@ -1,70 +1,30 @@
-# Uploading Turbo 1.0.1 to Steam Workshop
+# Turbo 1.0.1 Steam Workshop update
 
-**Current status: Windows contact correction tester; Steam remains held.** The owner confirmed recovery from the reported landing, and 38 traction plus 58 control checks pass. Complete release recertification remains outstanding; see [verification](Verification.md). The current ZIP is `dist/Ninjas4744-Turbo2026-1.0.1-contact-correction-test-Windows.zip`. Prior Steam candidates remain archived.
+**Release checks complete; prepared for the authorized Steam upload.**
 
-This updates the existing item **3843685878** for MoSim (**4398690**).
-Publication is a separate manual step; preparing the release does not upload it.
+This updates the existing public [Turbo by 4744 item](https://steamcommunity.com/sharedfiles/filedetails/?id=3843685878), item **3843685878** for MoSim **4398690**. The Windows release contains the performance, control, artwork, module-contact and slide-feedback corrections. Linux/macOS keep their published DLLs and bundles, including their existing behavior and artwork. Only their manifest version labels become 1.0.1 to satisfy the official three-platform staging checks.
 
-The Windows build contains the net collision optimization, control variants and
-Ninjas selector logo. Pumping runs only while shooting; the intake stays open
-after the hopper empties and after shoot is released. Linux and macOS retain their published DLLs and asset
-bundles, including their existing behavior and artwork. Their manifest version
-labels change to 1.0.1 because the official uploader requires all three platform
-manifests to match the release version. The original Steam files remain untouched.
+## Prepared files
 
-## Upload the prepared update
+The checked Steam archive is `dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`. Its 12 files are staged at `Artifacts/PumpingProject-20261121/BuiltMods/_Staging/rebuilt_ninjas_4744_turbo_2026`: four files for each platform. [Staging receipt](../Reports/steam-1.0.1.json) records each hash and the preserved platform source hashes. The original published files are backed up at `Artifacts/Steam101-20261122/published-before`.
 
-Open the pinned Unity 2023.2.22f1 project at
-`Artifacts/PumpingProject-20261121`. The prepared content is in:
+The Windows installer ZIP is `dist/Ninjas4744-Turbo2026-1.0.1-Windows.zip`. Earlier contact-correction and diagnostic archives remain historical test builds. [Release verification](Verification.md) describes the tested limits and retained failed evidence.
 
-```text
-BuiltMods/_Staging/rebuilt_ninjas_4744_turbo_2026/
-  standalonewindows64/
-  standalonelinux64/
-  standaloneosx/
-```
+## Upload procedure
 
-The previous content is archived in `dist/Ninjas4744-Turbo2026-1.0.1-Steam.zip`.
-That staging and archive belong to earlier binaries. Regenerate them only after
-the current candidate passes complete release certification. The Windows-only
-contact-correction ZIP is for local testing.
-
-1. Run Steam and sign in as the owner of the existing Workshop item.
-2. In Unity, select `Assets/Prefabs/Games/Rebuilt/Robots/Mods/Ninjas4744/Ninjas4744.asset`.
-   Open **Tools → Modding → Steam Workshop Uploader**.
-3. Check **Published File Id = 3843685878**, **Displayed Version = 1.0.1**, and
-   **Auto Bump Patch On Build** is off. Review the title, description, tags and
-   visibility shown in the uploader; these listing fields are submitted too.
-   A blank preview image preserves the existing item's Steam preview.
-   The local `Ninjas4744_WorkshopMetadata.asset` already has the existing item ID
-   and auto-bump setting configured.
-4. Paste the change note from `BuildArtifacts/steam-change-note.txt` into
-   **Change Note**. The content is already staged. **Build All Platforms + Stage**
-   would replace the preserved Linux/macOS builds and is unnecessary for this update.
-5. Click **Upload Staged Build to Steam**, verify the confirmation says it updates
-   item **3843685878**, then click **Upload**. Wait for the successful result.
-6. Open the existing Workshop page and check its version/change note. Restart
-   Steam/MoSim after the download. For a subscriber smoke test, disable the local
-   `Ninjas4744-Turbo2026` copy in MoSim's Mods menu so it cannot mask the Workshop copy.
-
-The uploader uses Steam's existing-item update API. Keeping the same item ID
-delivers the update to existing subscribers. See the
-[Steam Workshop implementation guide](https://partner.steamgames.com/doc/features/workshop/implementation).
-
-## Reproducing preparation
-
-After all final-build fixtures and native cycles pass:
+Run Steam signed in as the owner of the existing item. Use the pinned Unity 2023.2.22f1 project and editor. After all current certificates pass, run:
 
 ```powershell
-python Tools/verify_release.py --project Artifacts/PumpingProject-20261121
-# Generate all three version-matched native certificates first:
-# verify_native_full_hopper.py, verify_native_trench.py, verify_native_bump.py.
 .\Tools\Package.ps1 -MoSimProject Artifacts/PumpingProject-20261121
-python Tools/prepare_steam.py --project Artifacts/PumpingProject-20261121
-.\Tools\Invoke-Unity.ps1 -MoSimProject Artifacts/PumpingProject-20261121 `
-  -UnityEditor <Unity2023.2.22f1/Editor/Unity.exe> -Task Steam
+python Tools/prepare_steam.py --project Artifacts/PumpingProject-20261121 --steam-item Artifacts/Steam101-20261122/published-before
+.\Tools\Invoke-Unity.ps1 -MoSimProject Artifacts/PumpingProject-20261121 -UnityEditor ../davinci-creator/projects/mosim-4744-2026/tools/Unity2023/Editor/Unity.exe -Task Steam
+.\Tools\Invoke-Unity.ps1 -MoSimProject Artifacts/PumpingProject-20261121 -UnityEditor ../davinci-creator/projects/mosim-4744-2026/tools/Unity2023/Editor/Unity.exe -Task SteamInspect
+# The following command publishes the update to the existing item:
+.\Tools\Invoke-Unity.ps1 -MoSimProject Artifacts/PumpingProject-20261121 -UnityEditor ../davinci-creator/projects/mosim-4744-2026/tools/Unity2023/Editor/Unity.exe -Task SteamUpload
 ```
 
-`Reports/steam-1.0.1.json` records every staged file hash and the corresponding
-Linux/macOS source hash. The preparation tool rejects stale release certificates,
-changed preserved binaries, missing platforms and unexpected staged files.
+`Steam` validates preparation without contacting Steam. `SteamInspect` reads the existing listing. `SteamUpload` uses the official Steam SDK, rechecks the exact 12-file hash inventory, submits content plus the 1.0.1 version tag and change note, and verifies the remote version and listing fields. It preserves the existing title, description, regular tags, visibility and preview. The local metadata asset has the existing item ID and auto-bump disabled.
+
+The raw result is written to the project's `BuildArtifacts/steam-upload-receipt.json` and preserved in `Reports/steam-upload-1.0.1.json` after publication. A timeout has an unknown outcome: inspect the current remote item before attempting another submission.
+
+Restart Steam/MoSim after the update downloads. Testers using the manually installed test ZIP should disable that local copy in MoSim's Mods menu to use the Workshop copy. This avoids an older local copy taking priority over the subscription.

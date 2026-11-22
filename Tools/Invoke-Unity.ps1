@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Simple','Steam','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
     [switch]$SyncOnly,
     [switch]$Authoring,
     [switch]$Baseline,
@@ -46,6 +46,9 @@ $methods=@{Assemble='Ninjas4744Builder.Assemble';Simple='Ninjas4744Builder.Build
 $methods['Performance']='Turbo4744HopperPerformanceBench.Run'
 $methods['NetCollision']='Turbo4744NetCollisionRegression.Run'
 $methods['Traction']='Turbo4744TrenchRegression.Run'
+$methods['SteamInspect']='Turbo4744SteamUpload.Inspect'
+$methods['SteamUpload']='Turbo4744SteamUpload.Run'
+$methods['RailVelocity']='Turbo4744RailVelocityRegression.Run'
 $artifactRoot=Join-Path $repoRoot 'Artifacts'
 New-Item -ItemType Directory -Path $artifactRoot -Force|Out-Null
 $logPath=Join-Path $artifactRoot ($Task+'-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'.log')
@@ -85,6 +88,8 @@ try {
     if($Visible){$arguments=$arguments|Where-Object {$_ -ne '-batchmode'};$arguments+=@('-turboVisible','-turboTask',$Task)}
     if($Task -in @('Travel','Retention','Capacity')){$arguments+='-turboFixed'}
     if($Task -eq 'Approach'){$arguments+='-turboApproach'}
+    if($Task -eq 'Controls' -and -not $Authoring){$arguments+='-turboBundle'}
+    if($Task -eq 'SteamUpload'){$arguments+='-turboPublishSteam101'}
     if($Task -eq 'Approach' -and -not $Baseline){$arguments+='-turboFixed'}
     if($Task -in @('Trench','Traction') -and $Baseline){$arguments+='-turboBaseline'}
     if($Task -eq 'Swerve'){$arguments+='-turboSwerve'}
@@ -108,7 +113,7 @@ try {
     if($Task -eq 'Pulse'){$arguments+='-turboPulse'}
     if($Task -eq 'Indexer'){$arguments+=@('-turboIndexer','-turboStrict');if(-not $Authoring){$arguments+='-turboBundle'}}
     if($Task -eq 'Indexer' -and $IndexerCase){$arguments+=@('-turboIndexerCase',$IndexerCase)}
-    if($Task -in @('Assemble','Simple','Steam','Build','Runtime','Preview')){$arguments+='-quit'}
+    if($Task -in @('Assemble','Simple','Steam','Build','Runtime','Preview','RailVelocity')){$arguments+='-quit'}
     Write-Output ('Running '+$Task+'. Log: '+$logPath)
     $windowStyle=if($Visible){'Normal'}else{'Hidden'}
     $process=Start-Process -FilePath $editorPath -ArgumentList $arguments -WindowStyle $windowStyle -PassThru

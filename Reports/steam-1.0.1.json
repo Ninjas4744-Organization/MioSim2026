@@ -11,20 +11,20 @@
       "manifest_version_only": false
     },
     "standalonewindows64/Ninjas4744.dll": {
-      "sha256": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
-      "source_sha256": "e96d2ee52cfc0801d2d0f25ccb7f911ef8ece421245e288e658a7054ee4278e6",
+      "sha256": "588232c7cdd68fd46f83624e124c4d4cfe6c135ee0934bfddc2134ce487f258c",
+      "source_sha256": "588232c7cdd68fd46f83624e124c4d4cfe6c135ee0934bfddc2134ce487f258c",
       "preserved": false,
       "manifest_version_only": false
     },
     "standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets": {
-      "sha256": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f",
-      "source_sha256": "546b25f35e76b30ccee677ab20442152a7fc13028780958f7273b09ced6de41f",
+      "sha256": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
+      "source_sha256": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
       "preserved": false,
       "manifest_version_only": false
     },
     "standalonewindows64/standalonewindows64": {
-      "sha256": "be5f43b6dc83671fe769063eb18972237750c8c65cc9275983417cadcc6db0f3",
-      "source_sha256": "be5f43b6dc83671fe769063eb18972237750c8c65cc9275983417cadcc6db0f3",
+      "sha256": "384baf7e2307bd7cb89a11faa8ff597bac318a2b02f190be15c0ff4816e24f8c",
+      "source_sha256": "384baf7e2307bd7cb89a11faa8ff597bac318a2b02f190be15c0ff4816e24f8c",
       "preserved": false,
       "manifest_version_only": false
     },
@@ -80,6 +80,6 @@
   "staging_folder": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\PumpingProject-20261121\\BuiltMods\\_Staging\\rebuilt_ninjas_4744_turbo_2026",
   "archive": {
     "filename": "Ninjas4744-Turbo2026-1.0.1-Steam.zip",
-    "sha256": "96151fb173b21e2fb94172cbeebefc25826f9de62338fe3b27868ddbe8363066"
+    "sha256": "821aa358f2749b58e64e8edf298a6c9c08e66b55864417c3a9b8bcfe99a55aba"
   }
 }

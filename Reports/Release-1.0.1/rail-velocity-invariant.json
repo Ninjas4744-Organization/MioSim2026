@@ -1,0 +1,259 @@
+{
+    "passed": true,
+    "maximumError": 8.940696716308594e-8,
+    "maximumLegacyError": 0.6000003814697266,
+    "cases": [
+        {
+            "heading": 0.0,
+            "pitchRate": -2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000003457069397,
+            "legacy": -0.7200000882148743
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": -2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": -0.6000000834465027
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": -2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000003457069397,
+            "legacy": -0.48000001907348635
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": 0.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000002712011337,
+            "legacy": -0.12000002712011337
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": 0.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.0
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": 0.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.11999999731779099,
+            "legacy": 0.11999999731779099
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": 2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000002712011337,
+            "legacy": 0.4800000488758087
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": 2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.6000000834465027
+        },
+        {
+            "heading": 0.0,
+            "pitchRate": 2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.11999999731779099,
+            "legacy": 0.7200000882148743
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": -2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000003457069397,
+            "legacy": -0.7200002074241638
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": -2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": -0.6000001430511475
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": -2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000003457069397,
+            "legacy": -0.4800001382827759
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": 0.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000002712011337,
+            "legacy": -0.12000002712011337
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": 0.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.0
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": 0.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000002712011337,
+            "legacy": 0.12000002712011337
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": 2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000002712011337,
+            "legacy": 0.4800001382827759
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": 2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.6000001430511475
+        },
+        {
+            "heading": 90.0,
+            "pitchRate": 2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000002712011337,
+            "legacy": 0.7200002074241638
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": -2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000004947185517,
+            "legacy": -0.7200003266334534
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": -2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": -0.6000003218650818
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": -2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000004947185517,
+            "legacy": -0.48000025749206545
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": 0.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000003457069397,
+            "legacy": -0.12000003457069397
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": 0.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.0
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": 0.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000003457069397,
+            "legacy": 0.12000003457069397
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": 2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.11999998986721039,
+            "legacy": 0.4800003170967102
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": 2.0,
+            "expected": 0.0,
+            "measured": 4.986026169717661e-8,
+            "legacy": 0.6000003814697266
+        },
+        {
+            "heading": 180.0,
+            "pitchRate": 2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000008672475815,
+            "legacy": 0.7200003862380981
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": -2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000003457069397,
+            "legacy": -0.720000147819519
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": -2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": -0.6000000834465027
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": -2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000003457069397,
+            "legacy": -0.4800000786781311
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": 0.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000002712011337,
+            "legacy": -0.12000002712011337
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": 0.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.0
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": 0.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000002712011337,
+            "legacy": 0.12000002712011337
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": 2.0,
+            "expected": -0.11999999731779099,
+            "measured": -0.12000002712011337,
+            "legacy": 0.4800000786781311
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": 2.0,
+            "expected": 0.0,
+            "measured": 0.0,
+            "legacy": 0.6000000834465027
+        },
+        {
+            "heading": -90.0,
+            "pitchRate": 2.0,
+            "expected": 0.11999999731779099,
+            "measured": 0.12000002712011337,
+            "legacy": 0.720000147819519
+        }
+    ]
+}

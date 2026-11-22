@@ -1,7 +1,8 @@
 # Changelog
 
-## 1.0.1 (2026-11-22)
+## 1.0.1 (2026-11-23)
 
+- Correct slide velocity feedback during chassis pitching so the controller does not command the stowed hopper open over bumps. Preserve actuator force, damping, speed, acceleration and travel limits.
 - Align traction queries with the rigid solid tires and remove the secondary virtual suspension. Use the existing smooth feed-plastic friction profile on passive bellypan and module housings so compressed fuel can slide free, retaining tire grip and solid collision shapes.
 - Test inboard paired-ball recovery at all four corners in both directions, including intake open/stowed and fully airborne controls. Preserve the rigid-wheel-only failed case and native contact evidence.
 - Add immediate F9 contact captures, retain history after automatic captures, and write nested frame records explicitly so the native player saves complete reports.

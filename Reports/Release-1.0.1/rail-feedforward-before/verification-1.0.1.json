@@ -1,0 +1,301 @@
+{
+  "version": "1.0.1",
+  "bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+  "runtime_dll_sha256": "2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1",
+  "fixtures": [
+    {
+      "name": "Integration",
+      "report": "physics-diagnostics.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": null,
+      "embedded_hashes_present": false,
+      "cases": 0,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Travel",
+      "report": "travel-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": null,
+      "embedded_hashes_present": false,
+      "cases": 4,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Retention",
+      "report": "retention-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 18,
+        "retained": 18,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Approach",
+      "report": "approach-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 6,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 54,
+        "retained": 54,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Systems",
+      "report": "systems-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 7,
+      "measured_totals": {
+        "scored": 39,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 15
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Jam",
+      "report": "systems-jam.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 1,
+      "measured_totals": {
+        "scored": 1,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 3
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Indexer",
+      "report": "systems-indexer-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 11,
+      "measured_totals": {
+        "scored": 20,
+        "delivered": 0,
+        "seeded": 20,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 33
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Moving",
+      "report": "systems-moving-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 14,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 6
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Delivery",
+      "report": "systems-delivery-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 4,
+      "measured_totals": {
+        "scored": 4,
+        "delivered": 29,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 12
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Matrix",
+      "report": "systems-matrix-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 8,
+      "measured_totals": {
+        "scored": 64,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 24
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Capacity",
+      "report": "capacity-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 60,
+        "retained": 0,
+        "retainedAfterDrive": 60,
+        "released": 60,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Pile",
+      "report": "pile-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 105,
+        "retained": 0,
+        "retainedAfterDrive": 105,
+        "released": 105,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "WheelPile",
+      "report": "wheel-pile-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 2,
+      "measured_totals": {
+        "scored": 0,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 91,
+        "retained": 0,
+        "retainedAfterDrive": 91,
+        "released": 91,
+        "hardPumpCycles": 0
+      },
+      "editor_service_errors": []
+    },
+    {
+      "name": "Pulse",
+      "report": "systems-pulse-after.json",
+      "passed": true,
+      "embedded_hashes_match": true,
+      "gameplay_assets_match": true,
+      "tested_bundle_sha256": "4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e",
+      "embedded_hashes_present": true,
+      "cases": 1,
+      "measured_totals": {
+        "scored": 8,
+        "delivered": 0,
+        "seeded": 0,
+        "collected": 0,
+        "retained": 0,
+        "retainedAfterDrive": 0,
+        "released": 0,
+        "hardPumpCycles": 3
+      },
+      "editor_service_errors": []
+    }
+  ]
+}

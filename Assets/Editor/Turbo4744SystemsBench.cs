@@ -1278,7 +1278,7 @@ public static class Turbo4744SystemsBench
         var probe = ball.body.gameObject.AddComponent<Turbo4744GuideProbe>();
         probe.observed = detail =>
         {
-            if (Time.time - began < 7)
+            if (Time.time - began < (Flag("-turboJamTrace") ? 16 : 7))
                 result.obstructionTrace.Add(
                     (Time.time - began).ToString("F4") + " contact " + detail
                 );
@@ -1296,14 +1296,21 @@ public static class Turbo4744SystemsBench
     private static void MeasureObstruction()
     {
         float t = Time.fixedTime - began;
-        if (t > 7.1f || t < nextObstructionSample || balls.Count == 0 || !balls[0].body)
+        if (
+            t > (Flag("-turboJamTrace") ? 16 : 7.1f)
+            || t < nextObstructionSample
+            || balls.Count == 0
+            || !balls[0].body
+        )
             return;
         nextObstructionSample = t + .1f;
         var moving = balls[0].body;
         var wall = jamFixture.FirstOrDefault(o => o);
-        if (!wall)
+        if (!wall && !Flag("-turboJamTrace"))
             return;
-        var blocker = wall.GetComponent<Collider>();
+        var blocker = wall
+            ? wall.GetComponent<Collider>()
+            : robot.GetComponentInChildren<Collider>();
         string shapes = string.Join(
             ";",
             moving
@@ -1324,7 +1331,7 @@ public static class Turbo4744SystemsBench
         );
         result.obstructionTrace.Add(
             FormattableString.Invariant(
-                $"{t:F4} p={robot.transform.InverseTransformPoint(moving.position):F4} v={moving.velocity:F3} parent={(moving.transform.parent ? moving.transform.parent.name : "none")} body={moving.collisionDetectionMode} feed={robot.Feeding} rps={robot.TargetIndexerMotorRps} walls={jamFixture.Count(o => o && o.activeInHierarchy)} shapes={shapes}"
+                $"{t:F4} p={robot.transform.InverseTransformPoint(moving.position):F4} v={moving.velocity:F3} parent={(moving.transform.parent ? moving.transform.parent.name : "none")} body={moving.collisionDetectionMode} sleeping={moving.IsSleeping()} gravity={moving.useGravity} kinematic={moving.isKinematic} constraints={moving.constraints} feed={robot.Feeding} rps={robot.TargetIndexerMotorRps} contacts={robot.indexer.Contacts}/{robot.indexer.LowerContacts}/{robot.indexer.UpperContacts} force={robot.indexer.AppliedForce:F3} walls={jamFixture.Count(o => o && o.activeInHierarchy)} shapes={shapes}"
             )
         );
     }
@@ -1711,10 +1718,23 @@ public static class Turbo4744SystemsBench
                 if (
                     (Flag("-turboJam") || Indexer && result.indexerCase.StartsWith("blocked-"))
                     && t > 7
+                    && jamFixture.Count != 0
                 )
+                {
                     foreach (var obstacle in jamFixture)
                         if (obstacle)
+                        {
+                            // Destroy is deferred until the end of the frame.
+                            // Remove test support now, then wake its resting fuel
+                            // once so it can fall under ordinary gravity.
+                            obstacle.GetComponent<Collider>().enabled = false;
                             Object.Destroy(obstacle);
+                        }
+                    jamFixture.Clear();
+                    foreach (var ball in balls)
+                        if (ball.body)
+                            ball.body.WakeUp();
+                }
                 if (Flag("-turboPulse"))
                 {
                     Press();

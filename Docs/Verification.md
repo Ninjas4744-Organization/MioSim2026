@@ -1,27 +1,57 @@
-# Windows 1.0.1 contact correction candidate
+# Turbo 1.0.1 verification
 
-**Installed and confirmed by the owner to recover from the reported landing. Steam remains held; nothing was uploaded.** This candidate aligns the traction probes with the rigid solid tires and uses the existing smooth feed-plastic friction profile on passive bellypan/module contacts. Tire grip, motor settings and solid collision shapes remain intact. All four fully lifted tires still provide no propulsion.
+**Release checks complete; prepared for the authorized Steam upload.** All certificates below match the Windows DLL and bundle fingerprints at the end of this page. Linux/macOS retain their published binaries and bundles.
 
-The native evidence showed a solid tire touching carpet while the drive model assigned only a small suspension load, alongside a lifted tire intermittently receiving a floor patch. A rigid-wheel-only candidate also reproduced a persistent two-ball trap. The underside friction correction clears that failed case. [Evidence, failed candidate and implementation scope](../Reports/BeachingFix-1.0.1/README.md).
+## Release fixtures
 
-## Current checks
+| Fixture | Cases | Result |
+| --- | --- | --- |
+| Integration | Full cycle | Passed |
+| Travel | 4 | Passed |
+| Retention | 2 | Passed |
+| Approach | 6 | Passed |
+| Systems | 7 | Passed |
+| Jam | 1 | Passed |
+| Indexer | 11 | Passed |
+| Moving | 2 | Passed |
+| Delivery | 4 | Passed |
+| Matrix | 8 | Passed |
+| Capacity | 2 | Passed |
+| Pile | 2 | Passed |
+| WheelPile | 2 | Passed |
+| Pulse | 1 | Passed |
 
-- All **38 traction cases** pass: 16 inboard paired-ball recovery cases across all four corners, both drive directions and intake states; 10 centered/under-wheel fuel cases; six clear-carpet controls; six fully lifted controls.
-- All **58 control checks** pass, including physical three-ball shooting in both variants, intake state, shooting-only pumping, cancellation, disabled states and rebinding.
-- Probe/solid tire centers agree within 0.1 mm throughout the recorded fixtures. Fully lifted controls retain zero supported patches and negligible movement.
-- The native Actual Turbo sequence collected a peak of 65 tagged balls, identified 59 fully stored balls before stow, began shooting with 60 captured balls, and released 62 tracked balls including later arrivals. No fully stored cohort escapes were recorded, and none remained captured after shooting. Maximum recorded collection/return/shoot frame time was below 9 ms. The final empty-stow measurement was below 2 mm in this run.
-- The owner then tested the installed candidate and reported: **“It recovers now.”** Test automation and capture requests were removed, saved settings were restored byte-for-byte, and ordinary manual play was reopened.
-- All 2,608 serialized scene/mechanism/mesh/material objects and the net's native executable code/data match the earlier bundle. The managed runtime intentionally changes wheel support and underside friction; serialized asset equality is not a claim that runtime physics parameters are unchanged.
-- The eight published Linux/macOS files still match their preserved source hashes.
+The [complete fixture certificate](../Reports/verification-1.0.1.json) includes the existing pickup, retention, drift, scoring, impact and pair-timing gates. Tests use the packaged assets, normal simulation speed and the 4.5 ms physics step.
 
-See the [fingerprint-bound verification](../Reports/BeachingFix-1.0.1/verification.json), [native functional check](../Reports/BeachingFix-1.0.1/native-full/summary.json), and [optional passive F9 captures](Landing-Capture.md).
+## Installed-game checks
 
-## Release scope
+| Full hopper | Stored and retained during blocked stow | Released | Final empty stow |
+| --- | --- | --- | --- |
+| Turbo | 58 | 58 | 1.5 mm |
+| Actual Turbo | 62 | 62 | 1.4 mm |
 
-These are focused contact-correction checks. The native full-hopper run includes an extra inlet ball and later arrivals; it is not substituted for the stricter complete release certificate. Both control variants/alliances and the full release fixture/transit matrix have not been recertified against this DLL. Earlier empty-stow and bump limits retain their historical results; one current empty-stow pass does not clear every release gate.
+Both variants retain their full stored cohort during load-blocked closure, shoot empty, leave the intake open after shoot release/cancellation, and retract only after an explicit final Stow. Collection does not pump. [Full-hopper certificate](../Reports/native-full-hopper-1.0.1.json).
 
-The Windows ZIP is a test candidate. The previous Steam staging and archive belong to earlier binaries. Linux/macOS are unchanged, and no Steam upload was prepared or performed for this candidate.
+| Trench cycle | Gear | Stored / retained | Maximum extension under crossbar |
+| --- | --- | --- | --- |
+| Blue / Turbo | 1 | 23 / 23 | 6.3 mm |
+| Red / Actual Turbo | 2 | 24 / 24 | 5.1 mm |
+| Blue / Actual Turbo | 2 | 23 / 23 | 3.7 mm |
 
-Player DLL SHA-256: `2533c62343f2ffc168aa54d8c156f2b0d016207ae56237ff3e1aa2405a9818c1`
+All three cycles preserve every stored ball, record zero stored spills or sustained holds, and shoot empty. The existing limits remain 10 mm before transit and 15 mm under the crossbar. These partial loads permit stow; the full hopper remains physically load limited. [Trench certificate](../Reports/native-trench-1.0.1.json).
 
-Bundle SHA-256: `4ec30ddf9e758f25b0a8eb1cecb0900ede097bafa692c565b6dc44b6ab02f82e`
+The [bump/delivery check](../Reports/native-bump-1.0.1.json) retains 23/23, releases 23, delivers 22 within the unchanged 1.25 m target tolerance, and ends empty. Maximum slide extension is 9.5 mm against the existing 35 mm impact limit.
+
+## Corrections and focused checks
+
+The slide controller now compares both rigidbodies' velocities at the same world point. The previous centre-of-mass/origin comparison interpreted chassis pitching as rail movement and commanded the closed hopper forward. A [36-case regression](../Reports/RailVelocity-1.0.1/rail-velocity-invariant.json) covers four headings, both pitch directions and genuine forward/reverse slide motion. The old calculation errs by up to 0.6 m/s; the corrected calculation stays within 0.00000009 m/s. The same 23-ball native bump changes from 45.5 mm to 9.5 mm maximum deflection, preserving the 350 N force, 4200 N s/m damping, speed, acceleration and travel limits. The [pre-fix trace](../Reports/native/101-steam-bump-simple-blue.json) remains preserved.
+
+All [38 contact-recovery cases and 58 packaged control checks](../Reports/RailVelocity-1.0.1/verification.json) pass, including every module in both drive directions and intake states. All six fully unsupported controls retain zero powered ground patches. Probe/tire centres stay within 0.1 mm. The [asset comparison](../Reports/RailVelocity-1.0.1/asset-comparison.json) preserves all 2,608 scene/mechanism/material/mesh/texture objects and the net's executable code; only native build metadata differs in the bundle. Native net equivalence passes 480 steps and 929,182 compared impulses.
+
+The [jam-fixture correction](../Reports/Release-1.0.1/jam-fixture-correction.json) disables the artificial support cage immediately and wakes its resting fuel once after removal. The original sleeping-ball failures remain preserved. This is an editor fixture change; it adds no production recovery force. Invalid late-start native routes and the stricter 2 mm partial-load stow timeout remain in the raw native evidence; accepted trench runs use the existing 10/15 mm protocol with input takeover from enable.
+
+The original field contains 504 independent fuel bodies. Native checks use normal keys with no diagnostic force, geometry, compliance, net or drivetrain overrides. These are measurements on this Windows PC, not a guarantee for every hardware configuration. [Earlier weak-CPU comparison](WeakCpuComparison.md).
+
+Player DLL SHA-256: `588232c7cdd68fd46f83624e124c4d4cfe6c135ee0934bfddc2134ce487f258c`
+
+Bundle SHA-256: `0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5`

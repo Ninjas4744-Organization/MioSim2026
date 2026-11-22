@@ -45,7 +45,10 @@ def request(template, label, alliance, variant):
     assert not state['restored']
     match = load(OUT / 'backup/MatchSettings.json')
     player = match['playerSettings'][0]
+    # Keep a connected gamepad from driving during the pre-teleop wait before
+    # the replay installs its virtual keyboard. Restore the original file later.
     player.update(alliance=alliance, cameraMode=0, robotVariantIndex=variant,
+                  device=0, deviceUserSet=True,
                   modpackGuid='651ec15a-e146-13ad-192f-f3dea3d0315a',
                   robotGuid='052ab25d-f613-7169-5bec-b019de26f506')
     key = str(variant) + ':' + player['robotGuid']

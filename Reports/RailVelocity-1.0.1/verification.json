@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "artifacts": {
+    "Ninjas4744.dll": "588232c7cdd68fd46f83624e124c4d4cfe6c135ee0934bfddc2134ce487f258c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5"
+  },
+  "kinematics_cases": 36,
+  "traction_cases": 38,
+  "airborne_controls": 6,
+  "controls_checks": 58,
+  "matrices": [
+    {
+      "file": "inboard-pair-forward.json",
+      "cases": 12,
+      "sha256": "97818f16d6d85a8440ae6a0b365817a2471e977e6c40ff87c872eabfc2b56dc1",
+      "airborne_controls": 2
+    },
+    {
+      "file": "inboard-pair-reverse.json",
+      "cases": 12,
+      "sha256": "06c2d977a251f1d97233977edf771c3f918f2504511aba99c8d8d15986817d3a",
+      "airborne_controls": 2
+    },
+    {
+      "file": "centered-fuel.json",
+      "cases": 14,
+      "sha256": "db2da5b2fb2777cac4264231beacbd4fdb59031a4889c6d25e2a466d6af51287",
+      "airborne_controls": 2
+    }
+  ],
+  "actuator_limits_unchanged": true,
+  "net_executable_unchanged": true
+}
