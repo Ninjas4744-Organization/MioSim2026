@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Mobility','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
     [switch]$SyncOnly,
     [switch]$Authoring,
     [switch]$Baseline,
@@ -49,6 +49,12 @@ $methods['Traction']='Turbo4744TrenchRegression.Run'
 $methods['SteamInspect']='Turbo4744SteamUpload.Inspect'
 $methods['SteamUpload']='Turbo4744SteamUpload.Run'
 $methods['RailVelocity']='Turbo4744RailVelocityRegression.Run'
+$methods['Mobility']='Turbo4744MobilityRegression.Run'
+if($Task -eq 'Mobility'){
+    $mobilityArtifacts=Join-Path $projectRoot 'BuildArtifacts'
+    New-Item -ItemType Directory -Path $mobilityArtifacts -Force|Out-Null
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'Reports/Drivability-1.0.1/captured-poses.json') -Destination (Join-Path $mobilityArtifacts 'mobility-captured-poses.json') -Force
+}
 $artifactRoot=Join-Path $repoRoot 'Artifacts'
 New-Item -ItemType Directory -Path $artifactRoot -Force|Out-Null
 $logPath=Join-Path $artifactRoot ($Task+'-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'.log')
@@ -90,6 +96,7 @@ try {
     if($Task -eq 'Approach'){$arguments+='-turboApproach'}
     if($Task -eq 'Controls' -and -not $Authoring){$arguments+='-turboBundle'}
     if($Task -eq 'SteamUpload'){$arguments+='-turboPublishSteam101'}
+    if($Task -eq 'Mobility'){$arguments+='-turboMobility'}
     if($Task -eq 'Approach' -and -not $Baseline){$arguments+='-turboFixed'}
     if($Task -in @('Trench','Traction') -and $Baseline){$arguments+='-turboBaseline'}
     if($Task -eq 'Swerve'){$arguments+='-turboSwerve'}

@@ -1,0 +1,37 @@
+{
+  "automated_checks_passed": true,
+  "private_trial": true,
+  "not_uploaded": true,
+  "runtime_dll_sha256": "7ac02d340e2e3b71b743a6f884fcf3bb87cdcb9a93b37abe5a591dec89cf40a5",
+  "bundle_sha256": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
+  "captured_pose_cases": 6,
+  "loaded_corner_cases": 2,
+  "controls_checks": 58,
+  "traction_cases": 38,
+  "fully_unsupported_controls": 6,
+  "authoring_trench_cases": 8,
+  "matrices": [
+    {
+      "file": "candidate-centered-fuel.json",
+      "cases": 14,
+      "airborne_controls": 2,
+      "sha256": "75cf3cb1b2d85d2dd450368164c238299d792cad75c2c28188a58c40ec248071"
+    },
+    {
+      "file": "candidate-inboard-forward.json",
+      "cases": 12,
+      "airborne_controls": 2,
+      "sha256": "1aa77b7160bad40098d20217d4aed5f8b33cbce38927c2c481a198fe3850e771"
+    },
+    {
+      "file": "candidate-inboard-reverse.json",
+      "cases": 12,
+      "airborne_controls": 2,
+      "sha256": "9762c976d27e05b5d21b886be22be0a14d4dd23d4acec9be33673c0554855776"
+    }
+  ],
+  "native_trial_module_verified": true,
+  "native_owner_feedback": "pending",
+  "published_steam_archive_unchanged": true,
+  "bumper_source_sha256": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2"
+}

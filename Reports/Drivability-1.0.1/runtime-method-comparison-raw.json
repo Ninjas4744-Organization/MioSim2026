@@ -1,0 +1,14 @@
+{
+  "passed": false,
+  "compared_methods": 338,
+  "changed_methods": [
+    "System.Void __JobReflectionRegistrationOutput__497990316::CreateJobReflectionData()",
+    "System.Void __JobReflectionRegistrationOutput__497990316::EarlyInit()",
+    "System.Void Ninjas4744.MoSim.Turbo4744BumperContacts::ResolvePairs(Unity.Collections.NativeArray`1<UnityEngine.ModifiableContactPair>,System.Single)"
+  ],
+  "removed_methods": [
+    "System.Void __JobReflectionRegistrationOutput__2249561332::EarlyInit()",
+    "System.Void __JobReflectionRegistrationOutput__2249561332::CreateJobReflectionData()"
+  ],
+  "normalization": "Ignore debug nops, normalize branch destinations; retain all operations, literals and call targets"
+}

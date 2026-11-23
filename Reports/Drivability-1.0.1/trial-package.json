@@ -1,0 +1,14 @@
+{
+  "label": "private-drivability-trial",
+  "not_uploaded": true,
+  "files": {
+    "modpack.json": "752b4956188858cb8e1367edb9ff690d003a6f3ec0edc736190675027dc702dc",
+    "Ninjas4744.dll": "7ac02d340e2e3b71b743a6f884fcf3bb87cdcb9a93b37abe5a591dec89cf40a5",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "ead25029c1f18880cfd063987856a62d02f2fb914e00e1a3a4d34e4e7c3c3ddb",
+    "standalonewindows64": "384baf7e2307bd7cb89a11faa8ff597bac318a2b02f190be15c0ff4816e24f8c",
+    "standalonewindows64.manifest": "b2bcb763b7fc96c1d090961a3b2c22d3a180d56785dc9c016656a9ef5ccf106d"
+  },
+  "archive": "Ninjas4744-Turbo2026-1.0.1-drivability-trial-Windows.zip",
+  "archive_sha256": "b412600d35c447486e5f45486ebe468f9352b9c76dad9f7b89a7c4ba66ac626c"
+}

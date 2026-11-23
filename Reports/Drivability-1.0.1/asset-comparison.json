@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "before_bundle_sha256": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
+  "after_bundle_sha256": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
+  "before_count": 2609,
+  "after_count": 2609,
+  "changed": [],
+  "added": [],
+  "removed": [],
+  "native_pe_sections": {
+    "before": {
+      ".text": "51bbbdf5082aa736cb90a1703396179b999b6dc96de5b54ed8e974709ab068fb",
+      ".rdata": "24152ae66eac19d0bf2f66d5d46548f4f920f3ff3849b645ec109330727e837c",
+      ".data": "75652c7b060ad57200a0d771a2dea30aa19ed244cfc85fc036075dbc2ffda208",
+      ".pdata": "b0a98a6244615e095b9375ae37807c8e5545002c4aefc08f4c41a41e255cf5d7"
+    },
+    "after": {
+      ".text": "51bbbdf5082aa736cb90a1703396179b999b6dc96de5b54ed8e974709ab068fb",
+      ".rdata": "24152ae66eac19d0bf2f66d5d46548f4f920f3ff3849b645ec109330727e837c",
+      ".data": "75652c7b060ad57200a0d771a2dea30aa19ed244cfc85fc036075dbc2ffda208",
+      ".pdata": "b0a98a6244615e095b9375ae37807c8e5545002c4aefc08f4c41a41e255cf5d7"
+    },
+    "identical": {
+      ".text": true,
+      ".rdata": true,
+      ".data": true,
+      ".pdata": true
+    }
+  },
+  "native_build_metadata_only": true,
+  "scope": "The entire bundle is byte-identical, including all 2,609 objects and the embedded native Burst DLL. No normalization is required for this comparison."
+}

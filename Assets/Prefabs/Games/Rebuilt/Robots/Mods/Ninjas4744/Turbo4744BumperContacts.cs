@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Ninjas4744.MoSim
 {
     /// <summary>Keep lateral field contacts from suspending the robot on its
-    /// bumper foam or rigid hopper panels. Vertical support stays unchanged.</summary>
+    /// bumper foam or rigid hopper panels. Bumper foam has bounded compression;
+    /// rigid panels retain their normal support.</summary>
     public sealed class Turbo4744BumperContacts : MonoBehaviour
     {
         private const float CompressionLimit = .008f;
@@ -131,21 +132,23 @@ namespace Ninjas4744.MoSim
                 for (int i = 0; i < pair.contactCount; i++)
                 {
                     var normal = pair.GetNormal(i);
-                    // Keep hard vertical support on carpet, bump tops and other
-                    // surfaces. Only the sides of static field structures soften.
-                    if (Mathf.Abs(normal.y) > .25f)
+                    bool bumper =
+                        data.bumpers.Contains(pair.colliderInstanceID)
+                        || data.bumpers.Contains(pair.otherColliderInstanceID);
+                    // A bumper can also catch under the chassis on a ramp or
+                    // carpet after fuel lifts a corner. Let that same foam slide
+                    // and compress by at most 8 mm so tires can regain contact.
+                    // Rigid panels retain their original supporting contacts.
+                    if (Mathf.Abs(normal.y) > .25f && !bumper)
                         continue;
                     // Rigid hopper/frame contacts need to slide along trench
                     // sides rather than clamp the wheels above the carpet.
                     // Keep their normal response rigid, and leave fuel/robot
-                    // contacts and upward-facing field support untouched.
+                    // contacts untouched.
                     pair.SetStaticFriction(i, PanelFriction);
                     pair.SetDynamicFriction(i, PanelFriction);
                     changed++;
-                    if (
-                        !data.bumpers.Contains(pair.colliderInstanceID)
-                        && !data.bumpers.Contains(pair.otherColliderInstanceID)
-                    )
+                    if (!bumper)
                         continue;
                     float depth = Mathf.Max(0, -pair.GetSeparation(i));
                     if (depth >= CompressionLimit)
