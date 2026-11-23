@@ -5,6 +5,15 @@
   "runtime_module": "4d7c9676-a7ac-4f8b-bd55-4d93e65969fa",
   "user_settings_unchanged": true,
   "steam_workshop_untouched": true,
-  "native_feedback": "pending",
-  "native_runtime_verified": true
+  "native_feedback": "Owner confirmed improvement in both cases",
+  "native_runtime_verified": true,
+  "owner_feedback": {
+    "response": "Better in both cases",
+    "scenarios": [
+      "bump recovery",
+      "corner ball pile after shooting"
+    ],
+    "date_local": "2026-11-23",
+    "scope": "Owner-reported improvement in the installed private trial; not a guarantee against every future lockup."
+  }
 }

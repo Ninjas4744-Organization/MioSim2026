@@ -31,7 +31,17 @@
     }
   ],
   "native_trial_module_verified": true,
-  "native_owner_feedback": "pending",
+  "native_owner_feedback": "Better in both cases",
   "published_steam_archive_unchanged": true,
-  "bumper_source_sha256": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2"
+  "bumper_source_sha256": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2",
+  "native_owner_confirmed_improvement": true,
+  "owner_feedback": {
+    "response": "Better in both cases",
+    "scenarios": [
+      "bump recovery",
+      "corner ball pile after shooting"
+    ],
+    "date_local": "2026-11-23",
+    "scope": "Owner-reported improvement in the installed private trial; not a guarantee against every future lockup."
+  }
 }

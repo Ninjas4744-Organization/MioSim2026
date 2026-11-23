@@ -1,6 +1,6 @@
 # Post-release drivability investigation
 
-The owner reported slower control on bumps and a ball trapped after corner shooting. Steam still contains the original published 1.0.1. This branch prepares a private Windows trial; native feedback on this trial is pending.
+The owner reported slower control on bumps and a ball trapped after corner shooting. Steam still contains the original published 1.0.1. The installed private Windows trial passed automated checks, and the owner reported **“Better in both cases”** after testing bump recovery and the corner ball pile. This confirms improvement in those tests; it does not guarantee that every future lockup is resolved.
 
 ## Native evidence
 
@@ -16,7 +16,7 @@ The [asset comparison](asset-comparison.json) confirms that the entire bundle, i
 
 ## Captured-pose comparison
 
-The fixture initializes the recorded chassis poses on the SDK field, lets the robot settle, and tries both recorded drive directions. It stops after 1.5 m of escape, before reaching the far wall. It does not restore every mechanism, fuel and motor state from the live game, so this is an approximation requiring native feedback.
+The fixture initializes the recorded chassis poses on the SDK field, lets the robot settle, and tries both recorded drive directions. It stops after 1.5 m of escape, before reaching the far wall. It does not restore every mechanism, fuel and motor state from the live game, so this is an approximation interpreted alongside the owner’s native feedback.
 
 | Capture / direction | Published escape | Trial escape | Longest stationary pause, published / trial |
 | --- | --- | --- | --- |
@@ -33,11 +33,11 @@ The built trial clears all six directions. One escape still takes about three se
 
 ## Other checks and limits
 
-The corrected corner fixture uses 49 independent stock fuel bodies inside the game's active field bounds, two static walls, intake collection, manual shooting, and diagonal retreat. The two orientations load/feed 1 and 22 balls respectively, empty the captured cohort and escape. [Result](candidate-corner-pile.json). It does not reproduce a persistent under-module trap; that remains a native feedback case.
+The corrected corner fixture uses 49 independent stock fuel bodies inside the game's active field bounds, two static walls, intake collection, manual shooting, and diagonal retreat. The two orientations load/feed 1 and 22 balls respectively, empty the captured cohort and escape. [Result](candidate-corner-pile.json). It does not reproduce a persistent under-module trap. The owner subsequently reported improvement in the native corner-pile case as well.
 
 All 58 packaged control checks and 38 packaged module-contact cases pass. All six fully unsupported controls have zero powered patches and less than 0.05 m movement. The eight authoring trench/solid-wall cases also pass with zero recorded wall penetration. [Final automated certificate](verification.json), [controls](candidate-controls.json), [trench](candidate-trench.json).
 
-The [338-method comparison](runtime-method-comparison.json) finds only the bumper contact resolver changed after canonicalizing the compiler-generated job-registration type identifier. The raw identifier differences are retained separately. The local trial is installed, its native module is verified running, and owner feedback remains pending.
+The [338-method comparison](runtime-method-comparison.json) finds only the bumper contact resolver changed after canonicalizing the compiler-generated job-registration type identifier. The raw identifier differences are retained separately. The local trial is installed, its native module is verified running, and the owner confirmed improvement in both requested scenarios. [Installation and feedback receipt](local-install.json).
 
 The isolated wheel-setting comparison restores only the old wheel settings on the 1.0.1 robot. It is not a complete 1.0.0 simulation. The old asset's [wheel settings](1.0.0-wheel-settings.json) confirm 25 mm travel, 50,000 spring, 3,500 damping and 10 mm contact tolerance. The 1.0.1 runtime uses zero travel/spring and 2 mm tolerance. Restoring those settings alone did not clear every recorded pose; this does not contradict the owner's comparison of the complete builds.
 
