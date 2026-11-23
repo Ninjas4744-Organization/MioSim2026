@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "before_bundle_sha256": "0c0dc2b59a93bc17e5519030af81b5acd2556b760cf8edf2a58ddcc8683b35b5",
+  "after_bundle_sha256": "530e4b51774b2db2d16da31ec6bdb8677a91298cb8ae9ff08a1c85b428799af1",
+  "object_count": 2609,
+  "changed": [
+    {
+      "type": "MonoBehaviour",
+      "id": -2352184833050290869,
+      "field": "modpackVersion",
+      "before": "1.0.1",
+      "after": "1.0.2"
+    },
+    {
+      "type": "TextAsset",
+      "id": -1886746220313775972,
+      "field": "native PE build metadata only"
+    }
+  ],
+  "unchanged_objects": 2607,
+  "native_net_executable_identical": true,
+  "scope": "All scene and physics objects match exactly. Allow only the pack version field and native PE build metadata; native executable/data sections match and exported function names are not normalized."
+}

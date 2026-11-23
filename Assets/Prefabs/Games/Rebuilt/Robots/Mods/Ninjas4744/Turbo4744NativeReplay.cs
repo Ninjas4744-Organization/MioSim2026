@@ -151,7 +151,7 @@ namespace Ninjas4744.MoSim
             public List<string> frames = new List<string>();
             public string environment =
                 "Installed MoSim player; complete original field; keyboard replay only";
-            public string runtimeVersion = "1.0.1";
+            public string runtimeVersion = Turbo4744.ReleaseVersion;
             public float physicsStep,
                 maxTilt;
             public bool completed,

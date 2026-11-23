@@ -8,6 +8,8 @@ using UnityEngine;
 /// Prepares and validates the existing Workshop item without contacting Steam.
 public static class Turbo4744SteamRelease
 {
+    public const string Version = Ninjas4744.MoSim.Turbo4744.ReleaseVersion;
+
     [Serializable]
     private sealed class ReleaseStatus
     {
@@ -15,19 +17,17 @@ public static class Turbo4744SteamRelease
     }
 
     public const string ChangeNote =
-        "1.0.1: Improve Windows performance with a full hopper while preserving net physics. "
-        + "Add standard Turbo controls (original controls remain as Actual Turbo) and the Ninjas selector logo. "
-        + "Make the shooting-only hopper pump more visible and leave the intake open after emptying or releasing shoot. "
-        + "Correct wheel contacts and underside friction so a ball under a module does not immobilize the robot. "
-        + "Correct hopper slide feedback during pitching to keep it stowed over bumps. "
+        "1.0.2: Improve Windows recovery when stopped on bumps or leaving a dense ball pile. "
+        + "Extend the existing bounded bumper-foam response to ramp and carpet contacts. "
+        + "Preserve steering, motor tuning, tire grip and net physics. "
         + "Keep existing Linux and macOS binaries.";
 
-    [MenuItem("Tools/Modding/Ninjas 4744/Prepare Steam 1.0.1 Upload")]
+    [MenuItem("Tools/Modding/Ninjas 4744/Prepare Steam Upload")]
     public static void Prepare()
     {
         var pack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(Ninjas4744Builder.PackPath);
-        if (!pack || pack.ModpackVersion != "1.0.1")
-            throw new InvalidOperationException("Build the checked 1.0.1 release first.");
+        if (!pack || pack.ModpackVersion != Version)
+            throw new InvalidOperationException("Build the checked " + Version + " release first.");
         var metadata = ModpackWorkshopMetadataEditorUtility.FindMetadata(pack)
             ?? ModpackWorkshopMetadataEditorUtility.CreateMetadata(pack);
         if (metadata.PublishedFileId != 0 && metadata.PublishedFileId != 3843685878UL)

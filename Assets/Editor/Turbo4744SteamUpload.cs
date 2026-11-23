@@ -16,6 +16,7 @@ using UnityEngine;
 public static class Turbo4744SteamUpload
 {
     private const ulong ItemId = 3843685878UL;
+    private const string Version = Turbo4744SteamRelease.Version;
 
     [Serializable]
     private sealed class ContentFile
@@ -47,7 +48,7 @@ public static class Turbo4744SteamUpload
     private sealed class Receipt
     {
         public string itemId = ItemId.ToString();
-        public string version = "1.0.1";
+        public string version = Version;
         public string startedUtc = DateTime.UtcNow.ToString("o");
         public string finishedUtc;
         public bool submitted;
@@ -109,7 +110,7 @@ public static class Turbo4744SteamUpload
         var status = JsonUtility.FromJson<Status>(
             File.ReadAllText(Artifacts + "/steam-release-status.json")
         );
-        if (!status.release_ready || status.version != "1.0.1" || status.files?.Length != 12)
+        if (!status.release_ready || status.version != Version || status.files?.Length != 12)
             throw new InvalidOperationException(
                 "A certified three-platform content manifest is required."
             );
@@ -171,8 +172,8 @@ public static class Turbo4744SteamUpload
             );
         try
         {
-            if (!Environment.GetCommandLineArgs().Contains("-turboPublishSteam101"))
-                throw new InvalidOperationException("Explicit -turboPublishSteam101 is required.");
+            if (!Environment.GetCommandLineArgs().Contains("-turboPublishSteam"))
+                throw new InvalidOperationException("Explicit -turboPublishSteam is required.");
             Turbo4744SteamRelease.Prepare();
             var pack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(Ninjas4744Builder.PackPath);
             var staging = ModBuildUtility.GetStagingPath(pack);
@@ -182,12 +183,16 @@ public static class Turbo4744SteamUpload
             using (session)
             {
                 receipt.before = await ReadListing();
+                if (receipt.before.version != "1.0.1")
+                    throw new InvalidOperationException(
+                        "The Workshop version changed since this patch was prepared; inspect before submitting."
+                    );
                 Save();
                 var editor = new Steamworks.Ugc.Editor(ItemId)
                     .WithContent(staging)
                     .WithChangeLog(Turbo4744SteamRelease.ChangeNote)
                     .RemoveKeyValueTags(WorkshopPublisher.VersionTagKey)
-                    .AddKeyValueTag(WorkshopPublisher.VersionTagKey, "1.0.1");
+                    .AddKeyValueTag(WorkshopPublisher.VersionTagKey, Version);
                 receipt.submitted = true;
                 Save();
                 var upload = editor.SubmitAsync(
@@ -210,7 +215,7 @@ public static class Turbo4744SteamUpload
                 {
                     receipt.after = await ReadListing();
                     receipt.remoteVerified =
-                        receipt.after.version == "1.0.1"
+                        receipt.after.version == Version
                         && receipt.after.title == receipt.before.title
                         && receipt.after.descriptionSha256 == receipt.before.descriptionSha256
                         && receipt.after.isPublic == receipt.before.isPublic

@@ -22,30 +22,41 @@ digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 build = project / 'BuiltMods' / MOD_ID
 manifest = load(build / PLATFORMS[0] / 'modpack.json')
 version = manifest['version']
-assert version == '1.0.1', 'This release preparation targets 1.0.1'
+assert version in ('1.0.1', '1.0.2'), 'Unsupported release version'
 hashes = {n: digest(build / PLATFORMS[0] / n)
           for n in (manifest['modDll'], manifest['id'])}
-certificate = load(ROOT / f'Reports/verification-{version}.json')
-assert certificate['bundle_sha256'] == hashes[manifest['id']]
-assert certificate['runtime_dll_sha256'] == hashes[manifest['modDll']]
-assert len(certificate['fixtures']) == 14
-assert all(f['passed'] and (f['embedded_hashes_match'] or f.get('gameplay_assets_match')) for f in certificate['fixtures'])
-controls = load(ROOT / 'Reports/simple-controls.json')
-assert controls['passed'] and len(controls['checks']) >= 58 and not controls['errors']
-assert controls['bundleSha256'] == hashes[manifest['id']]
-assert controls['runtimeDllSha256'] == hashes[manifest['modDll']]
-net = load(ROOT / 'Reports/Release-1.0.1/net-collision-burst.json')
-assert net['passed'] and net['burstEnabled'] and net['comparedSteps'] == 480
-if args.candidate:
-    status = load(ROOT / f'Reports/release-status-{version}.json')
-    assert status['release_ready'] is False and status['blocking_checks']
-    assert status['artifacts'] == hashes, 'Stale candidate status'
+if version == '1.0.2':
+    assert not args.candidate, 'The patch requires the completed owner-approved promotion checks'
+    from patch_release_checks import verify_patch_checks
+    verify_patch_checks(ROOT, project)
 else:
-    for name in ('native-full-hopper', 'native-trench', 'native-bump'):
-        report = load(ROOT / f'Reports/{name}-{version}.json')
-        assert report['passed'] and report['artifacts'] == hashes, f'Stale {name}'
+    certificate = load(ROOT / f'Reports/verification-{version}.json')
+    assert certificate['bundle_sha256'] == hashes[manifest['id']]
+    assert certificate['runtime_dll_sha256'] == hashes[manifest['modDll']]
+    assert len(certificate['fixtures']) == 14
+    assert all(f['passed'] and (f['embedded_hashes_match'] or f.get('gameplay_assets_match')) for f in certificate['fixtures'])
+    controls = load(ROOT / 'Reports/simple-controls.json')
+    assert controls['passed'] and len(controls['checks']) >= 58 and not controls['errors']
+    assert controls['bundleSha256'] == hashes[manifest['id']]
+    assert controls['runtimeDllSha256'] == hashes[manifest['modDll']]
+    net = load(ROOT / 'Reports/Release-1.0.1/net-collision-burst.json')
+    assert net['passed'] and net['burstEnabled'] and net['comparedSteps'] == 480
+    if args.candidate:
+        status = load(ROOT / f'Reports/release-status-{version}.json')
+        assert status['release_ready'] is False and status['blocking_checks']
+        assert status['artifacts'] == hashes, 'Stale candidate status'
+    else:
+        for name in ('native-full-hopper', 'native-trench', 'native-bump'):
+            report = load(ROOT / f'Reports/{name}-{version}.json')
+            assert report['passed'] and report['artifacts'] == hashes, f'Stale {name}'
 
-baseline = load(ROOT / 'Reports/Release-1.0.1/preserved-platform-source.json')['files']
+if version == '1.0.2':
+    previous = load(ROOT / 'Reports/steam-upload-1.0.1.json')
+    assert previous['success'] and previous['remoteVerified'] and previous['version'] == '1.0.1'
+    baseline = {f['relativePath']: f['sha256'] for f in previous['files']
+                if not f['relativePath'].startswith('standalonewindows64/')}
+else:
+    baseline = load(ROOT / 'Reports/Release-1.0.1/preserved-platform-source.json')['files']
 receipt = {'version': version, 'workshop_item': '3843685878', 'release_ready': not args.candidate,
            'policy': 'New Windows build; unchanged Linux/macOS binaries and bundles. '
                      'Only the preserved platform manifest version labels change.',

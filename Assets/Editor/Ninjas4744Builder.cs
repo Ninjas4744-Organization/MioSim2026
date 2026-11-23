@@ -531,7 +531,7 @@ public static class Ninjas4744Builder
         var pack = AssetDatabase.LoadAssetAtPath<RebuiltModpackSO>(PackPath)
             ?? ScriptableObject.CreateInstance<RebuiltModpackSO>();
         Set(pack, "modpackName", "Ninjas 4744 Turbo 2026");
-        Set(pack, "modpackVersion", "1.0.1");
+        Set(pack, "modpackVersion", Turbo4744.ReleaseVersion);
         Set(pack, "authorName", "Ninjas 4744");
         Set(
             pack,
@@ -1640,7 +1640,7 @@ public static class Ninjas4744Builder
         Set(metadata, "robotImage", ImportSelectorLogo());
         EditorUtility.SetDirty(metadata);
         var releasePack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
-        Set(releasePack, "modpackVersion", "1.0.1");
+        Set(releasePack, "modpackVersion", Turbo4744.ReleaseVersion);
         EditorUtility.SetDirty(releasePack);
         AssetDatabase.SaveAssets();
         BuildSimpleVariant();

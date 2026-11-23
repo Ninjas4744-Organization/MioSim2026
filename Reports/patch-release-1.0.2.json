@@ -1,0 +1,46 @@
+{
+  "version": "1.0.2",
+  "passed": true,
+  "artifacts": {
+    "Ninjas4744.dll": "d19e535c556d38728782832b4e8898667cac72476f0041f332315550074fb455",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "530e4b51774b2db2d16da31ec6bdb8677a91298cb8ae9ff08a1c85b428799af1"
+  },
+  "scope": "Version-only promotion of the owner-approved bumper-contact patch; targeted regression checks, not a repeat of the full original release matrix.",
+  "fresh_checks": [
+    {
+      "report": "controls.json",
+      "cases_or_checks": 58,
+      "sha256": "4a8846ce86b915b4f2d1581e9d6e434d9966f5974f43e0db49c8ca23138de00d"
+    },
+    {
+      "report": "captured-poses.json",
+      "cases_or_checks": 6,
+      "sha256": "bc4fc27713405842f845d52cd8bbe03fefccf2e47cc175a216675817c2d173f9"
+    },
+    {
+      "report": "corner-pile.json",
+      "cases_or_checks": 2,
+      "sha256": "e86caca1acc36e086edac0ef37c8a17367da48e502938be62337fdd4c0ce4d15"
+    },
+    {
+      "report": "systems.json",
+      "cases_or_checks": 7,
+      "sha256": "76f2406dead9d9a859997a1baf4cb8e5a6442340f2c57d17853458b4a8858a98"
+    }
+  ],
+  "equivalent_trial_traction_cases": 38,
+  "equivalent_trial_airborne_controls": 6,
+  "equivalent_authoring_trench_cases": 8,
+  "trial_certificate_sha256": "175d594fb9c7bcda6ca963f37d1486945ee788f93b557bc6307211391b87eadc",
+  "runtime_equivalence_sha256": "ad95a32fd00cd73d0ca3edf895e7c003763baa8ab0bcc858537f5b687f30109b",
+  "asset_equivalence_sha256": "4c6ad91f53adafd7ce554775a88f72016aa0344441767a231e22ed52aebbdbd6",
+  "owner_confirmation": {
+    "response": "Better in both cases",
+    "scenarios": [
+      "bump recovery",
+      "corner ball pile after shooting"
+    ],
+    "date_local": "2026-11-23",
+    "scope": "Owner-reported improvement in the installed private trial; not a guarantee against every future lockup."
+  }
+}

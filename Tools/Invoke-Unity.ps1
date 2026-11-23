@@ -95,7 +95,7 @@ try {
     if($Task -in @('Travel','Retention','Capacity')){$arguments+='-turboFixed'}
     if($Task -eq 'Approach'){$arguments+='-turboApproach'}
     if($Task -eq 'Controls' -and -not $Authoring){$arguments+='-turboBundle'}
-    if($Task -eq 'SteamUpload'){$arguments+='-turboPublishSteam101'}
+    if($Task -eq 'SteamUpload'){$arguments+='-turboPublishSteam'}
     if($Task -eq 'Mobility'){$arguments+='-turboMobility'}
     if($Task -eq 'Approach' -and -not $Baseline){$arguments+='-turboFixed'}
     if($Task -in @('Trench','Traction') -and $Baseline){$arguments+='-turboBaseline'}
@@ -133,7 +133,7 @@ try {
         foreach($file in Get-ChildItem -LiteralPath $modTarget -Recurse -File){
             if($file.Extension -notin @('.prefab','.asset','.mat','.meta')){continue}
             $relative=$file.FullName.Substring($modTarget.Length).TrimStart('\')
-            if($Task -ne 'Assemble' -and $relative -notmatch '^(Turbo4744\.asset(\.meta)?|Turbo4744Simple\.prefab(\.meta)?|TutorialCards\\Turbo Simple tutorial [1-3]\.prefab(\.meta)?)$'){continue}
+            if($Task -ne 'Assemble' -and $relative -notmatch '^(Ninjas4744\.asset(\.meta)?|Turbo4744\.asset(\.meta)?|Turbo4744Simple\.prefab(\.meta)?|TutorialCards\\Turbo Simple tutorial [1-3]\.prefab(\.meta)?)$'){continue}
             $destination=Join-Path (Join-Path $repoRoot $modRelative) $relative
             if((Test-Path -LiteralPath $destination) -and (Get-FileHash -LiteralPath $file.FullName).Hash -eq (Get-FileHash -LiteralPath $destination).Hash){continue}
             New-Item -ItemType Directory -Path (Split-Path -Parent $destination) -Force|Out-Null

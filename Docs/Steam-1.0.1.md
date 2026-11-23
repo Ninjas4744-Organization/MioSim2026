@@ -1,5 +1,7 @@
 # Turbo 1.0.1 Steam Workshop update
 
+Historical release record. See the [1.0.2 patch instructions](Steam-1.0.2.md) for the current update.
+
 **Published on Steam Workshop as 1.0.1.**
 
 This updates the existing public [Turbo by 4744 item](https://steamcommunity.com/sharedfiles/filedetails/?id=3843685878), item **3843685878** for MoSim **4398690**. The Windows release contains the performance, control, artwork, module-contact and slide-feedback corrections. Linux/macOS keep their published DLLs and bundles, including their existing behavior and artwork. Only their manifest version labels become 1.0.1 to satisfy the official three-platform staging checks.

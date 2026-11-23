@@ -1,9 +1,9 @@
 # Changelog
 
-## Unreleased Windows drivability trial
+## 1.0.2 (2026-11-23)
 
 - Extend the existing bounded bumper foam response to ramp and carpet contacts so a tilted robot can settle onto its tires and escape. Preserve rigid panel support, tire grip, motor tuning, controls and net assets.
-- Add captured-pose comparisons, loaded corner shooting checks and retained native evidence. The private trial remains separate from the published Steam 1.0.1 build.
+- Add captured-pose comparisons, loaded corner shooting checks and retained native evidence. Promote the owner-approved fix to Windows; preserve existing Linux/macOS binaries and assets.
 
 ## 1.0.1 (2026-11-23)
 

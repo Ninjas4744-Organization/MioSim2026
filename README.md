@@ -4,11 +4,11 @@ An editable MoSim / Rebuilt robot mod built from the team's approved 2026 Turbo 
 
 ![Turbo carrying a full load in installed MoSim](Reports/native/101-final-full-simple-loaded.png)
 
-## Release 1.0.1
+## Release 1.0.2
 
-**Published on Steam Workshop as 1.0.1.** Windows includes the full-hopper net optimization, both control variants, cropped Ninjas selector logo, shooting-only visible pumping, intake-state fixes, module recovery and corrected slide feedback over bumps. See [verification](Docs/Verification.md) and [Steam update procedure](Docs/Steam-1.0.1.md).
+Version 1.0.2 improves Windows recovery when stopped on bumps or moving away after corner shooting beside a ball pile. The owner confirmed improvement in both cases. Steering, motor tuning, tire grip and net physics are preserved. See the [patch verification and Steam update](Docs/Steam-1.0.2.md).
 
-The Windows release improves full-hopper performance without changing net physics, adds the Ninjas selector logo, and includes both Turbo control variants. The Steam update preserves the existing Linux/macOS binaries and bundles; their manifest version labels become 1.0.1. See [Steam upload instructions](Docs/Steam-1.0.1.md) and [weak CPU comparison](Docs/WeakCpuComparison.md).
+The update retains the full-hopper performance optimization, both Turbo control variants and the cropped Ninjas selector logo. Linux/macOS binaries and asset bundles are unchanged; only their manifest version labels advance to 1.0.2 for the SDK's three-platform staging requirement. The original [1.0.1 release verification](Docs/Verification.md) remains historical evidence.
 
 ## Install
 
