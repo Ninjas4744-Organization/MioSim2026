@@ -1,6 +1,6 @@
 # Turbo 1.0.2 Steam patch
 
-Prepared for the owner-authorized update to the existing [Turbo by 4744 Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3843685878), app 4398690. Publication is pending the final SDK submission and remote verification.
+**Published and remotely verified as 1.0.2** on the existing [Turbo by 4744 Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3843685878), app 4398690.
 
 This Windows patch extends the existing bounded bumper-foam response to ramp and carpet contacts. The owner tested the private trial and reported “Better in both cases” for bump recovery and a corner ball pile. Steering, motor tuning, tire grip and net physics are unchanged.
 

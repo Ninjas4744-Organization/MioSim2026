@@ -1,6 +1,6 @@
 # Post-release drivability investigation
 
-The owner reported slower control on bumps and a ball trapped after corner shooting. Steam still contains the original published 1.0.1. The installed private Windows trial passed automated checks, and the owner reported **“Better in both cases”** after testing bump recovery and the corner ball pile. This confirms improvement in those tests; it does not guarantee that every future lockup is resolved.
+The owner reported slower control on bumps and a ball trapped after corner shooting. This investigation preceded the [1.0.2 Steam patch](../../Docs/Steam-1.0.2.md), which now contains the owner-approved fix. The installed private Windows trial passed automated checks, and the owner reported **“Better in both cases”** after testing bump recovery and the corner ball pile. This confirms improvement in those tests; it does not guarantee that every future lockup is resolved.
 
 ## Native evidence
 
