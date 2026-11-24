@@ -1,0 +1,15 @@
+{
+  "item_id": "3843685878",
+  "version": "1.0.3",
+  "success": true,
+  "remote_verified": true,
+  "platforms": [
+    "standalonelinux64",
+    "standaloneosx",
+    "standalonewindows64"
+  ],
+  "payload_files": 12,
+  "receipt_sha256": "0c820cf7c0799cfc0c1486ab2d98a766c069a66d53494c0d8609159c6cc6e061",
+  "listing_preserved": true,
+  "finished_utc": "2026-11-24T22:11:02.1580439Z"
+}

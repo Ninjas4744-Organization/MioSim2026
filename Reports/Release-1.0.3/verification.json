@@ -64,8 +64,8 @@
   },
   "proof_sha256": {
     "build.json": "bd841ae54387e7bdc5eb5eed0f84667631bd7bef9a5ccd5eae41040bf909ee33",
-    "runtime-equivalence.json": "b0c3961593090a5f1bf3e5c2ca5e6874ddc77de5fceb06f0882ea9cfb7d94be6",
-    "asset-equivalence.json": "79908575832fda73a21ecabffd361c9d35d0e0fca4655de7352f2749894c8a6f",
+    "runtime-equivalence.json": "75ddc5420b658131dda66b68d9c600fdc6c95f4fcd0afc4fea228d2e723ca8a7",
+    "asset-equivalence.json": "36480ad9e903f3d59a08540ec71ee153a2a0e93b88ef0af3da9381b1e240373e",
     "platform-bundles.json": "5709279524a995cee5834b9909149a8ca52e95dec049c091c04466f770e2dea0",
     "local-install.json": "8cfe336e7d782a8ab9e8dfab02d7d88effdbc851f56c9ee268c014c4174f4695",
     "native-startup.json": "523d09f2db23746ac87fe3ad659ef085c20e6bed8e69760d55176dc0c17981df",

@@ -26,4 +26,8 @@ Run `Tools/Invoke-Unity.ps1` with project `Artifacts/PumpingProject-20261121`, t
 
 `Tools/Compare-ClearanceRuntime.ps1` compares the approved trial assembly against the release. `Tools/verify_version_assets.py` accepts explicit before/after version labels for the asset comparison. `Tools/verify_platform_bundles.py` checks the three bundle targets and gameplay data. The native startup capture and installation receipt supply the final Windows smoke check.
 
+## Publication
+
+Steam accepted the update with result `OK` at `2026-11-24T22:11:02Z` (00:11 on November 25 in Asia/Jerusalem). The remote item reports 1.0.3 and retains its title, description, tags and public visibility. All twelve submitted payload hashes match the certified Windows, Linux and macOS files. The complete receipt is `Reports/steam-upload-1.0.3.json`; `publication.json` records its checksum. No Git remote push was performed.
+
 Run `python Tools/prepare_clearance_patch.py --project Artifacts/PumpingProject-20261121 --check-only` to verify the release certificate inputs. Omit `--check-only` to stage exactly twelve files and create the three-platform Steam ZIP. The existing publisher validates the staged hashes again, requires the live item to be at 1.0.2, submits the 1.0.3 change note to item `3843685878`, and verifies version, title, description, tags and visibility afterward. The submission receipt is retained separately; a successful upload with incomplete remote verification must be inspected rather than automatically resubmitted.

@@ -1,0 +1,82 @@
+{
+  "itemId": "3843685878",
+  "version": "1.0.3",
+  "startedUtc": "2026-11-24T22:10:45.0557272Z",
+  "finishedUtc": "2026-11-24T22:11:02.1580439Z",
+  "submitted": true,
+  "success": true,
+  "needsWorkshopAgreement": false,
+  "remoteVerified": true,
+  "result": "OK",
+  "error": "",
+  "files": [
+    {
+      "relativePath": "standalonelinux64/Ninjas4744.dll",
+      "sha256": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438"
+    },
+    {
+      "relativePath": "standalonelinux64/modpack.json",
+      "sha256": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996"
+    },
+    {
+      "relativePath": "standalonelinux64/rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "d9e922b140dea4e998d92febbe41905c37ddad11248a361b56c828f0984642be"
+    },
+    {
+      "relativePath": "standalonelinux64/standalonelinux64",
+      "sha256": "480fd06c3490dddb4de760376e035f049daaa7ebe85b774b4d0fa60e076d7644"
+    },
+    {
+      "relativePath": "standaloneosx/Ninjas4744.dll",
+      "sha256": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438"
+    },
+    {
+      "relativePath": "standaloneosx/modpack.json",
+      "sha256": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996"
+    },
+    {
+      "relativePath": "standaloneosx/rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "324c496e1185fb70e80a25dcec18cd14c0d4d4bea3c716dcc6e295d417d43408"
+    },
+    {
+      "relativePath": "standaloneosx/standaloneosx",
+      "sha256": "62a982077f6e346e0aed929e77ed79a814897fef613c857be4f14845ee65a935"
+    },
+    {
+      "relativePath": "standalonewindows64/Ninjas4744.dll",
+      "sha256": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438"
+    },
+    {
+      "relativePath": "standalonewindows64/modpack.json",
+      "sha256": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996"
+    },
+    {
+      "relativePath": "standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets",
+      "sha256": "ae7bb480a18dd5776696cc76f00774a62930fcde1ca09b0f8ff17ed1bd415111"
+    },
+    {
+      "relativePath": "standalonewindows64/standalonewindows64",
+      "sha256": "2fc2a4627ab781c6935634333bd700305b1576234b791f9ff9024d0717e18975"
+    }
+  ],
+  "before": {
+    "id": "3843685878",
+    "title": "Turbo by 4744",
+    "descriptionSha256": "c4f832439278bac04cf74d21132dd2ef26e973cb33bccbbd1d555ee154c7618b",
+    "tags": [
+      "rebuilt"
+    ],
+    "isPublic": true,
+    "version": "1.0.2"
+  },
+  "after": {
+    "id": "3843685878",
+    "title": "Turbo by 4744",
+    "descriptionSha256": "c4f832439278bac04cf74d21132dd2ef26e973cb33bccbbd1d555ee154c7618b",
+    "tags": [
+      "rebuilt"
+    ],
+    "isPublic": true,
+    "version": "1.0.3"
+  }
+}
