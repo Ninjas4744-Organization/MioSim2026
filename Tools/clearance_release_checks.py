@@ -69,6 +69,8 @@ def verify(root: Path, project: Path):
             assert data['burstEnabled']
             assert data['configuredTargetFps'] == 120
             assert all(c['observerSamples'] > 200 for c in data['cases'])
+            assert all(c['maximumObserverStep'] < .2 for c in data['cases']
+                       if c['kind'] == 'shoot')
         fresh[name] = {'checks_or_cases': count, 'sha256': sha(release / name)}
     for case in load(release / 'underbody.json')['cases']:
         assert case['allBallsPreserved'] and case['robotUnmoved']

@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.3 (2026-11-24)
+## 1.0.3 (2026-11-25)
 
 - Keep structural robot contacts solid during grounded fuel recovery. Clear trapped underbody fuel and the low rear pocket while at least one tire touches the field, avoiding the private rolling trial's collision bypass and overlap restoration.
 - Smooth the existing ball mesh's visible exit without spawning replacement balls or applying recovery forces to the chassis. Physical clearance is immediate; the mesh can trail it for up to 0.65 seconds.
