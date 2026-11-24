@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.3 (2026-11-24)
+
+- Keep structural robot contacts solid during grounded fuel recovery. Clear trapped underbody fuel and the low rear pocket while at least one tire touches the field, avoiding the private rolling trial's collision bypass and overlap restoration.
+- Smooth the existing ball mesh's visible exit without spawning replacement balls or applying recovery forces to the chassis. Physical clearance is immediate; the mesh can trail it for up to 0.65 seconds.
+- Update Windows, Linux and macOS bundles and runtime code. Keep Windows native net acceleration; select the existing portable solver on Linux and macOS before any Windows API calls.
+- Split the approved fix into recovery logic, visual animation, regressions and evidence commits. Add compiled platform-guard checks and cross-platform bundle inspection. [Release evidence](Reports/Release-1.0.3/README.md).
+
 ## 1.0.2 (2026-11-23)
 
 - Extend the existing bounded bumper foam response to ramp and carpet contacts so a tilted robot can settle onto its tires and escape. Preserve rigid panel support, tire grip, motor tuning, controls and net assets.
@@ -21,8 +28,6 @@
 - Preserve the published Linux and macOS DLLs and asset bundles unchanged; update their manifest version labels to 1.0.1 for the Steam uploader.
 
 ## Unreleased
-
-- Keep structural robot contacts solid during grounded fuel recovery, removing the private roll-out trial's collision bypass that could admit fuel into frame pockets or restore contacts while overlapping. Return to safe physical clearance and ease the original collider-free ball mesh out with a rolling animation. Cover the low rear pocket behind the feed path; require at least one grounded tire for every new clearance. Add continuous collision-state, visible-motion, interrupted-presentation and upward-velocity checks. [Private trial evidence](Reports/SolidClearance-20261124/README.md).
 
 - Add four solid swerve module housings and restore passive tire-to-fuel collisions, preventing balls from passing through the modules into the bellypan cutouts. Keep fuel excluded from suspension and powered tread queries. Add packaged collision and clear-floor drive regressions.
 

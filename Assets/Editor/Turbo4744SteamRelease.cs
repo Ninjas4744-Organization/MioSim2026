@@ -17,10 +17,10 @@ public static class Turbo4744SteamRelease
     }
 
     public const string ChangeNote =
-        "1.0.2: Improve Windows recovery when stopped on bumps or leaving a dense ball pile. "
-        + "Extend the existing bounded bumper-foam response to ramp and carpet contacts. "
-        + "Preserve steering, motor tuning, tire grip and net physics. "
-        + "Keep existing Linux and macOS binaries.";
+        "1.0.3: Improve recovery from balls trapped beneath the robot and in the rear frame pocket. "
+        + "Keep structural contacts solid during recovery and smooth the ball's visible exit. "
+        + "Clear trapped balls while at least one tire remains grounded. "
+        + "Update Windows, Linux and macOS; preserve drive tuning and net physics.";
 
     [MenuItem("Tools/Modding/Ninjas 4744/Prepare Steam Upload")]
     public static void Prepare()

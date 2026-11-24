@@ -11,6 +11,8 @@ parser.add_argument('--before', type=Path, required=True)
 parser.add_argument('--after', type=Path, required=True)
 parser.add_argument('--report', type=Path, required=True)
 parser.add_argument('--module-path', type=Path)
+parser.add_argument('--before-version', default='1.0.1')
+parser.add_argument('--after-version', default='1.0.2')
 args = parser.parse_args()
 if args.module_path:
     sys.path.insert(0, str(args.module_path.resolve()))
@@ -84,12 +86,12 @@ for key in before:
         changed.append({'type':'TextAsset','id':key[1],'field':'native PE build metadata only'})
         continue
     assert key[0] == 'MonoBehaviour', f'Unexpected changed asset: {key}'
-    assert a.get('modpackVersion') == '1.0.1' and b.get('modpackVersion') == '1.0.2'
+    assert a.get('modpackVersion') == args.before_version and b.get('modpackVersion') == args.after_version
     a = dict(a, modpackVersion='<release-version>')
     b = dict(b, modpackVersion='<release-version>')
     assert a == b, f'Non-version asset fields changed: {key}'
     changed.append({'type': key[0], 'id': key[1], 'field': 'modpackVersion',
-                    'before': '1.0.1', 'after': '1.0.2'})
+                    'before': args.before_version, 'after': args.after_version})
 assert sum(c['field']=='modpackVersion' for c in changed)==1, 'Expected exactly one pack version field change'
 result = {'passed': True, 'before_bundle_sha256': digest(args.before),
           'after_bundle_sha256': digest(args.after), 'object_count': len(before),

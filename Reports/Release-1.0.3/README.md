@@ -1,0 +1,27 @@
+# Steam 1.0.3: grounded fuel recovery on all platforms
+
+The owner approved the installed solid-contact trial with "Recovers smoothly; pocket clears", then requested publication on Windows, Linux and macOS after splitting the combined commit. The former `bbb5f8a` was local-only. It was split on `master` into `6949b38` (solid clearance), `b518057` (mesh presentation), `0f381b3` (regressions), and `7f2f9c0` (evidence). The final tree after splitting was verified identical to the original commit. The original commit remains reachable through a local recovery ref, preserving private archive provenance.
+
+All three bundles are freshly built with Unity 2023.2.22f1. They share the same player DLL and identical gameplay data. Platform headers match Windows, Linux and macOS; all 2,602 non-shader objects match exactly, while seven shaders contain the corresponding platform builds. This release intentionally replaces the previously preserved Linux/macOS payloads.
+
+The embedded accelerated net library uses a Windows symbol loader. The new runtime platform guard returns before that loader on Linux/macOS, selecting the existing portable net job path. Packaged IL checks exercise Windows, Linux, macOS, editor and already-loaded guard paths. Of 381 methods compared with the approved trial, only this guard changes; the rest of its Windows loader body and all recovery, drive and mechanism methods remain identical. The native executable's code/data sections also remain identical. The Windows asset comparison permits only the version label and native PE build metadata.
+
+The recovery remains a gameplay approximation: it moves the physical ball to a checked free floor position, while its original collider-free mesh eases out over at most 0.65 seconds. Structural collision-pair states stay unchanged. No new clearance occurs if all four tires are off the field. A blocked placement search keeps the ball and retries. The rear-pocket strip stays behind the normal feed envelope.
+
+## Validation scope
+
+Fresh checks cover 17 contact/presentation cases, 58 control checks, both accelerated and portable net comparisons (480 steps each), the seven-case mechanism/shooting matrix and feed-obstruction recovery. The exact runtime/asset equivalence also binds the approved trial's 26 free-body driving cases, two 30-ball collection/retention/release cycles, eight targeted shots and both corner-pile escapes. These inherited checks are identified as such in the certificate, not claimed as new runs.
+
+Two initial mechanism runs failed scoring at very low editor frame rates (5/40 and 8/40 scores); both reports are preserved. Closing MoSim and focusing the editor did not fix this by itself: the Game view statistics still showed 1.9 FPS, and the cadence report recorded observation gaps up to one simulated second. The mechanism harness now records the inherited FPS/vsync/display settings and applies the same 120 FPS, vsync-off fixture configuration already used by control/driving checks. This changes editor test timing, not the shipped robot code, shot calibration, physics timestep or scoring acceptance.
+
+The initial private corner run retained two balls when its seven-second shooting observation ended. A repeat emptied both headings. Both observations remain recorded in the trial evidence; the repeat does not establish when the initial pair would have cleared. This patch does not retune feeding in response to that observation.
+
+Native Windows startup loads module `56add812-eca0-4aef-b06f-dfe35725f97e`, observes grounded tires and initializes native net dispatch with ABI size 568. Installed files match the built Windows payload, and user settings remain byte-identical. Native macOS/Linux gameplay was not run on this Windows host; their coverage is cross-build, compiled runtime guard, portable solver comparison and exact gameplay asset inspection.
+
+## Reproduce and publish
+
+Run `Tools/Invoke-Unity.ps1` with project `Artifacts/PumpingProject-20261121`, the pinned editor and task `BuildAll`. It builds all three asset targets and synchronizes the final player assembly into every platform. Run visible `Underbody`, `Controls`, `NetCollision`, `NetCollision -DiagnosticArguments @('-turboNetManaged')`, `Systems` and `Jam`, then `SteamInspect`. The source and artifact hashes are recorded in `build.json`.
+
+`Tools/Compare-ClearanceRuntime.ps1` compares the approved trial assembly against the release. `Tools/verify_version_assets.py` accepts explicit before/after version labels for the asset comparison. `Tools/verify_platform_bundles.py` checks the three bundle targets and gameplay data. The native startup capture and installation receipt supply the final Windows smoke check.
+
+Run `python Tools/prepare_clearance_patch.py --project Artifacts/PumpingProject-20261121 --check-only` to verify the release certificate inputs. Omit `--check-only` to stage exactly twelve files and create the three-platform Steam ZIP. The existing publisher validates the staged hashes again, requires the live item to be at 1.0.2, submits the 1.0.3 change note to item `3843685878`, and verifies version, title, description, tags and visibility afterward. The submission receipt is retained separately; a successful upload with incomplete remote verification must be inspected rather than automatically resubmitted.

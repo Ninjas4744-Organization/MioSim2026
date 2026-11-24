@@ -183,7 +183,7 @@ public static class Turbo4744SteamUpload
             using (session)
             {
                 receipt.before = await ReadListing();
-                if (receipt.before.version != "1.0.1")
+                if (receipt.before.version != "1.0.2")
                     throw new InvalidOperationException(
                         "The Workshop version changed since this patch was prepared; inspect before submitting."
                     );

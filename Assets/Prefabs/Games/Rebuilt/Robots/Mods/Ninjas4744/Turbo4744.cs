@@ -14,7 +14,7 @@ namespace Ninjas4744.MoSim
     /// linear rail travel are explicit adapters to MoSim's physical model.</summary>
     public sealed class Turbo4744 : RebuiltRobotBase
     {
-        public const string ReleaseVersion = "1.0.2";
+        public const string ReleaseVersion = "1.0.3";
 
         public enum RailState
         {
