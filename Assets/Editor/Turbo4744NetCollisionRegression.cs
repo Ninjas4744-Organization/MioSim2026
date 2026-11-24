@@ -28,7 +28,8 @@ public static class Turbo4744NetCollisionRegression
     private sealed class Report
     {
         public bool passed,
-            burstEnabled;
+            burstEnabled,
+            burstSettingRestored;
         public string cpu,
             error,
             solverSha256,
@@ -78,6 +79,8 @@ public static class Turbo4744NetCollisionRegression
     private static void Check()
     {
         var report = new Report { cpu = SystemInfo.processorType };
+        bool previousBurst = BurstCompiler.Options.EnableBurstCompilation;
+        bool previousSynchronous = BurstCompiler.Options.EnableBurstCompileSynchronously;
         GameObject fixture = null;
         try
         {
@@ -221,6 +224,11 @@ public static class Turbo4744NetCollisionRegression
         {
             if (fixture)
                 Object.DestroyImmediate(fixture);
+            BurstCompiler.Options.EnableBurstCompilation = previousBurst;
+            BurstCompiler.Options.EnableBurstCompileSynchronously = previousSynchronous;
+            report.burstSettingRestored =
+                BurstCompiler.Options.EnableBurstCompilation == previousBurst
+                && BurstCompiler.Options.EnableBurstCompileSynchronously == previousSynchronous;
             var suffix = report.burstEnabled ? "burst" : "managed";
             var output = Path.GetFullPath(
                 Application.dataPath + "/../BuildArtifacts/net-collision-" + suffix + ".json"

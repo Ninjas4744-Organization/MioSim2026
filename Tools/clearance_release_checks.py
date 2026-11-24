@@ -66,6 +66,7 @@ def verify(root: Path, project: Path):
         assert data['runtimeDllSha256'] == dll and data['bundleSha256'] == bundle
         if name == 'systems.json':
             assert data['simulationSpeed'] == 1
+            assert data['burstEnabled']
             assert data['configuredTargetFps'] == 120
             assert all(c['observerSamples'] > 200 for c in data['cases'])
         fresh[name] = {'checks_or_cases': count, 'sha256': sha(release / name)}
@@ -76,6 +77,7 @@ def verify(root: Path, project: Path):
     jam = load(release / 'jam.json')
     assert jam['passed'] and not jam['errors'] and jam['cases']
     assert jam['configuredTargetFps'] == 120
+    assert jam['burstEnabled']
     assert jam['runtimeDllSha256'] == dll and jam['bundleSha256'] == bundle
     assert all(c['observerSamples'] > 200 for c in jam['cases'])
     fresh['jam.json'] = {'cases': len(jam['cases']), 'sha256': sha(release / 'jam.json')}
@@ -85,6 +87,7 @@ def verify(root: Path, project: Path):
         data = load(release / name)
         assert data['passed'] and not data['error'] and data['comparedSteps'] == 480
         assert data['burstEnabled'] == burst
+        assert data['burstSettingRestored']
         assert data['solverSha256'] == sha(source / 'Turbo4744NetSolver.cs')
         assert data['editorRuntimeDllSha256'] == aot['editorManagedSha256']
         fresh[name] = {'compared_steps': 480, 'sha256': sha(release / name)}
@@ -106,7 +109,8 @@ def verify(root: Path, project: Path):
     proof_names = ('build.json', 'runtime-equivalence.json', 'asset-equivalence.json',
                    'platform-bundles.json', 'local-install.json', 'native-startup.json',
                    'net-aot-audit.json', 'live-before.json', 'systems-first-failed.json',
-                   'systems-first-failed-context.json', 'systems-cadence-failed.json')
+                   'systems-first-failed-context.json', 'systems-cadence-failed.json',
+                   'systems-frame-cap-failed.json')
     return {
         'passed': True, 'version': '1.0.3', 'workshop_item': '3843685878',
         'files': files, 'source_sha256': build['source_sha256'],

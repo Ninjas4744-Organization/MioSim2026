@@ -17,6 +17,7 @@ using MoSimLib;
 using Ninjas4744.MoSim;
 using RobotFramework;
 using RobotFramework.Controllers.Drivetrain;
+using Unity.Burst;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -120,6 +121,7 @@ public static class Turbo4744SystemsBench
     private sealed class Report
     {
         public bool passed;
+        public bool burstEnabled;
         public string label;
         public string editorRuntimeDllSha256;
         public string prefabSource,
@@ -270,8 +272,11 @@ public static class Turbo4744SystemsBench
             return;
         if (state == PlayModeStateChange.EnteredPlayMode)
         {
+            BurstCompiler.Options.EnableBurstCompilation = true;
+            BurstCompiler.Options.EnableBurstCompileSynchronously = true;
             report = new Report
             {
+                burstEnabled = BurstCompiler.Options.EnableBurstCompilation,
                 label =
                     Flag("-turboAutomaticPump") ? "automatic-pump"
                     : Indexer ? "indexer-after"
