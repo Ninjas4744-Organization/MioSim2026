@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Ninjas4744.MoSim
 {
     /// <summary>Grounded-only gameplay clearance for loose fuel trapped under
-    /// the chassis. Keeps every structural hitbox solid while clearing trapped fuel.</summary>
+    /// the chassis. Keeps every structural hitbox solid and eases the visible exit.</summary>
     [DefaultExecutionOrder(150)]
     public sealed class Turbo4744UnderbodyClearance : MonoBehaviour
     {
@@ -31,13 +31,25 @@ namespace Ninjas4744.MoSim
         private float nextCheck;
         private int searchCursor,
             robotMask;
-        public int ActiveClearances => 0;
+        private readonly List<Turbo4744ClearanceVisual> visuals =
+            new List<Turbo4744ClearanceVisual>();
+        public int ActiveClearances
+        {
+            get
+            {
+                int count = 0;
+                foreach (var visual in visuals)
+                    if (visual && visual.Playing)
+                        count++;
+                return count;
+            }
+        }
         public int IgnoredCollisionPairs => 0;
         public int AssistedSteps => 0;
         public int CancelledClearances => 0;
         public int LastAssistGroundedWheels => LastClearGroundedWheels;
-        public float LastClearSeconds => 0;
-        public int AnimatedBalls => 0;
+        public float LastClearSeconds { get; private set; }
+        public int AnimatedBalls { get; private set; }
         public int GroundedWheelCount { get; private set; }
         public int ClearedBalls { get; private set; }
         public int BlockedSearches { get; private set; }
@@ -207,6 +219,11 @@ namespace Ninjas4744.MoSim
                     BlockedSearches++;
                     continue;
                 }
+                var visual = ball.GetComponent<Turbo4744ClearanceVisual>();
+                if (!visual)
+                    visual = ball.gameObject.AddComponent<Turbo4744ClearanceVisual>();
+                var displayed = visual.VisiblePosition;
+                var displayedRotation = visual.VisibleRotation;
                 Vector3 from = ball.position;
                 var outward = Vector3
                     .ProjectOnPlane(destination - chassis.position, Vector3.up)
@@ -215,6 +232,16 @@ namespace Ninjas4744.MoSim
                 ball.position = destination;
                 ball.velocity = outward * speed;
                 ball.WakeUp();
+                if (visual.RollFrom(displayed, displayedRotation, radius))
+                {
+                    AnimatedBalls++;
+                    LastClearSeconds = visual.Duration;
+                    if (!visuals.Contains(visual))
+                        visuals.Add(visual);
+                }
+                for (int k = visuals.Count - 1; k >= 0; k--)
+                    if (!visuals[k])
+                        visuals.RemoveAt(k);
                 reserved[moved] = destination;
                 reservedRadii[moved++] = radius;
                 ClearedBalls++;
@@ -360,6 +387,9 @@ namespace Ninjas4744.MoSim
         {
             Array.Clear(ground, 0, ground.Length);
             GroundedWheelCount = 0;
+            // The independent ball presentation finishes normally; no collision
+            // state or force remains attached to this disabled robot.
+            visuals.Clear();
         }
     }
 }
