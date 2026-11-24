@@ -1634,6 +1634,17 @@ public static class Ninjas4744Builder
     [MenuItem("Tools/Modding/Ninjas 4744/Build Windows Mod")]
     public static void Build()
     {
+        BuildPlatforms(false);
+    }
+
+    [MenuItem("Tools/Modding/Ninjas 4744/Build All Platforms")]
+    public static void BuildAll()
+    {
+        BuildPlatforms(true);
+    }
+
+    private static void BuildPlatforms(bool allPlatforms)
+    {
         var metadata = AssetDatabase.LoadAssetAtPath<RebuiltRobotMetadataSO>(
             Root + "/Turbo4744.asset"
         );
@@ -1647,10 +1658,10 @@ public static class Ninjas4744Builder
         Validate();
         Turbo4744NetBurstBuilder.CompileAndEmbed();
         var pack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
-        if (!ModBuildUtility.TryBuildModpack(pack, true, out var path))
+        if (!ModBuildUtility.TryBuildModpack(pack, true, out var path, allPlatforms))
             throw new InvalidOperationException("MoSim mod build failed");
         File.WriteAllText(Artifacts + "/mod-build-path.txt", path);
-        Turbo4744NetBurstBuilder.CopyRuntime(path);
+        Turbo4744NetBurstBuilder.CopyRuntime(path, allPlatforms);
         CheckBundle(path);
         AssetDatabase.ExportPackage(
             Root,
@@ -1665,30 +1676,42 @@ public static class Ninjas4744Builder
     // mod DLL; a code-only SDK build copies the final compiled runtime instead.
     public static void SyncRuntime()
     {
+        SyncRuntimePlatforms(false);
+    }
+
+    public static void SyncRuntimeAll()
+    {
+        SyncRuntimePlatforms(true);
+    }
+
+    private static void SyncRuntimePlatforms(bool allPlatforms)
+    {
         Turbo4744NetBurstBuilder.VerifyRuntime();
         var pack = AssetDatabase.LoadAssetAtPath<BaseModpackSO>(PackPath);
-        if (!ModBuildUtility.TryBuildModpack(pack, false, out var path))
+        if (!ModBuildUtility.TryBuildModpack(pack, false, out var path, allPlatforms))
             throw new InvalidOperationException("Runtime synchronization failed");
-        Turbo4744NetBurstBuilder.CopyRuntime(path);
-        string dll = Path.Combine(
-            path,
-            EditorUserBuildSettings.activeBuildTarget.ToString().ToLowerInvariant(),
-            "Ninjas4744.dll"
-        );
-        if (
-            !File.ReadAllBytes(dll)
-                .SequenceEqual(File.ReadAllBytes(Turbo4744NetBurstBuilder.PlayerAssembly))
-        )
-            throw new InvalidOperationException(
-                "The packaged runtime differs from the compiled assembly"
-            );
+        Turbo4744NetBurstBuilder.CopyRuntime(path, allPlatforms);
+        var platforms = allPlatforms
+            ? ModBuildUtility.PlatformFolderNames
+            : new[] { EditorUserBuildSettings.activeBuildTarget.ToString().ToLowerInvariant() };
+        foreach (string platform in platforms)
+        {
+            string dll = Path.Combine(path, platform, "Ninjas4744.dll");
+            if (
+                !File.ReadAllBytes(dll)
+                    .SequenceEqual(File.ReadAllBytes(Turbo4744NetBurstBuilder.PlayerAssembly))
+            )
+                throw new InvalidOperationException(
+                    "The packaged runtime differs from the compiled assembly: " + platform
+                );
+        }
         CheckBundle(path);
         AssetDatabase.ExportPackage(
             Root,
             Artifacts + "/Ninjas4744-Turbo2026.unitypackage",
             ExportPackageOptions.Recurse
         );
-        Debug.Log("TURBO_RUNTIME_SYNCHRONIZED " + dll);
+        Debug.Log("TURBO_RUNTIME_SYNCHRONIZED " + path);
     }
 
     private static void CheckBundle(string path)

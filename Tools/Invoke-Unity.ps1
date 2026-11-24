@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Mobility','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Underbody','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Mobility','Controls','Performance','NetCollision','Build','BuildAll','Runtime','Test','Travel','Trench','Swerve','Traction','Underbody','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
     [switch]$SyncOnly,
     [switch]$Authoring,
     [switch]$Baseline,
@@ -27,7 +27,7 @@ $versionFile=Join-Path $projectRoot 'ProjectSettings\ProjectVersion.txt'
 if(-not(Test-Path -LiteralPath $versionFile)){throw 'MoSimProject must be the root of the official Unity project.'}
 if((Get-Content -LiteralPath $versionFile -Raw)-notmatch '2023\.2\.22f1'){throw 'This mod targets Unity 2023.2.22f1. Use the pinned MoSim project.'}
 $UseProjectSnapshot = $UseProjectSnapshot -or (Test-Path -LiteralPath (Join-Path $projectRoot '.turbo-source-snapshot'))
-if($UseProjectSnapshot -and ($Task -in @('Assemble','Simple','Build','Runtime') -or $SyncOnly)){throw 'Snapshot mode is for validating an existing build. Remove .turbo-source-snapshot or omit -UseProjectSnapshot before authoring/building.'}
+if($UseProjectSnapshot -and ($Task -in @('Assemble','Simple','Build','BuildAll','Runtime') -or $SyncOnly)){throw 'Snapshot mode is for validating an existing build. Remove .turbo-source-snapshot or omit -UseProjectSnapshot before authoring/building.'}
 if(-not $UseProjectSnapshot){
 $modRelative='Assets\Prefabs\Games\Rebuilt\Robots\Mods\Ninjas4744'
 $modTarget=Join-Path $projectRoot $modRelative
@@ -42,7 +42,7 @@ Get-ChildItem -LiteralPath (Join-Path $repoRoot 'Assets\Editor') -File|Copy-Item
 else {Write-Output 'Using the frozen project source snapshot.'}
 if($SyncOnly){Write-Output 'Turbo assets and editor tools synchronized.';return}
 
-$methods=@{Assemble='Ninjas4744Builder.Assemble';Simple='Ninjas4744Builder.BuildSimpleVariant';Steam='Turbo4744SteamRelease.Prepare';Controls='Turbo4744SimpleControlsRegression.Run';Build='Ninjas4744Builder.Build';Runtime='Ninjas4744Builder.SyncRuntime';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Trench='Turbo4744TrenchRegression.Run';Swerve='Turbo4744TrenchRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';LoadedAim='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Indexer='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
+$methods=@{Assemble='Ninjas4744Builder.Assemble';Simple='Ninjas4744Builder.BuildSimpleVariant';Steam='Turbo4744SteamRelease.Prepare';Controls='Turbo4744SimpleControlsRegression.Run';Build='Ninjas4744Builder.Build';BuildAll='Ninjas4744Builder.BuildAll';Runtime='Ninjas4744Builder.SyncRuntime';Test='Turbo4744Diagnostics.Run';Travel='Turbo4744TravelRegression.Run';Trench='Turbo4744TrenchRegression.Run';Swerve='Turbo4744TrenchRegression.Run';Retention='Turbo4744RetentionRegression.Run';Approach='Turbo4744RetentionRegression.Run';Systems='Turbo4744SystemsBench.Run';Jam='Turbo4744SystemsBench.Run';Moving='Turbo4744SystemsBench.Run';Delivery='Turbo4744SystemsBench.Run';Matrix='Turbo4744SystemsBench.Run';Capacity='Turbo4744CapacityBench.Run';Pile='Turbo4744CapacityBench.Run';WheelPile='Turbo4744CapacityBench.Run';Load='Turbo4744CapacityBench.Run';LoadedAim='Turbo4744CapacityBench.Run';Pulse='Turbo4744SystemsBench.Run';Indexer='Turbo4744SystemsBench.Run';Preview='Ninjas4744Builder.RenderPreview'}
 $methods['Performance']='Turbo4744HopperPerformanceBench.Run'
 $methods['NetCollision']='Turbo4744NetCollisionRegression.Run'
 $methods['Traction']='Turbo4744TrenchRegression.Run'
@@ -122,14 +122,14 @@ try {
     if($Task -eq 'Pulse'){$arguments+='-turboPulse'}
     if($Task -eq 'Indexer'){$arguments+=@('-turboIndexer','-turboStrict');if(-not $Authoring){$arguments+='-turboBundle'}}
     if($Task -eq 'Indexer' -and $IndexerCase){$arguments+=@('-turboIndexerCase',$IndexerCase)}
-    if($Task -in @('Assemble','Simple','Steam','Build','Runtime','Preview','RailVelocity')){$arguments+='-quit'}
+    if($Task -in @('Assemble','Simple','Steam','Build','BuildAll','Runtime','Preview','RailVelocity')){$arguments+='-quit'}
     Write-Output ('Running '+$Task+'. Log: '+$logPath)
     $windowStyle=if($Visible){'Normal'}else{'Hidden'}
     $process=Start-Process -FilePath $editorPath -ArgumentList $arguments -WindowStyle $windowStyle -PassThru
     $process.WaitForExit()
     if($process.ExitCode -ne 0){throw ('Unity exited with code '+$process.ExitCode+'. See '+$logPath)}
     if(Select-String -LiteralPath $logPath -Pattern 'executeMethod method .* threw exception\.|error CS\d+:' -Quiet){throw ('Unity task failed; see '+$logPath)}
-    if($Task -in @('Assemble','Simple','Build')){
+    if($Task -in @('Assemble','Simple','Build','BuildAll')){
         # Keep generated prefab references with their source. Otherwise the next
         # test synchronization overwrites the assembled robot with the old prefab.
         foreach($file in Get-ChildItem -LiteralPath $modTarget -Recurse -File){
@@ -142,8 +142,9 @@ try {
             Copy-Item -LiteralPath $file.FullName -Destination $destination -Force
         }
     }
-    if($Task -eq 'Build'){
-        $syncArgs=@('-batchmode','-quit','-projectPath',('"'+$runProject+'"'),'-logFile',('"'+$logPath+'.runtime.log"'),'-executeMethod','Ninjas4744Builder.SyncRuntime')
+    if($Task -in @('Build','BuildAll')){
+        $syncMethod=if($Task -eq 'BuildAll'){'Ninjas4744Builder.SyncRuntimeAll'}else{'Ninjas4744Builder.SyncRuntime'}
+        $syncArgs=@('-batchmode','-quit','-projectPath',('"'+$runProject+'"'),'-logFile',('"'+$logPath+'.runtime.log"'),'-executeMethod',$syncMethod)
         $sync=Start-Process -FilePath $editorPath -ArgumentList $syncArgs -WindowStyle Hidden -PassThru
         $sync.WaitForExit()
         if($sync.ExitCode -ne 0){throw 'Runtime synchronization failed; inspect the runtime log.'}

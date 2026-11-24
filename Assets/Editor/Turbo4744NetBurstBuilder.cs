@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using GameSystems.Modding.Authoring.GameSystems.Modding.Editor;
 using Ninjas4744.MoSim;
 using UnityEditor;
 using UnityEditor.Build.Player;
@@ -194,14 +195,16 @@ public static class Turbo4744NetBurstBuilder
             );
     }
 
-    public static void CopyRuntime(string modRoot)
+    public static void CopyRuntime(string modRoot, bool allPlatforms = false)
     {
         VerifyRuntime();
-        File.Copy(
-            PlayerAssembly,
-            Path.Combine(modRoot, "standalonewindows64", "Ninjas4744.dll"),
-            true
-        );
+        // Runtime code has no platform defines. The platform gate in the net
+        // loader selects Windows AOT or the portable job path at runtime.
+        var platforms = allPlatforms
+            ? ModBuildUtility.PlatformFolderNames
+            : new[] { "standalonewindows64" };
+        foreach (string platform in platforms)
+            File.Copy(PlayerAssembly, Path.Combine(modRoot, platform, "Ninjas4744.dll"), true);
     }
 
     private static string Hash(string path)
