@@ -25,7 +25,13 @@ namespace Ninjas4744.MoSim
 
         public static void Load(TextAsset library, string entryPoint)
         {
-            if (Application.isEditor || Loaded)
+            // The embedded AOT library and its symbol loader target Windows.
+            // Other players use NetSolver's existing portable job path.
+            if (
+                Application.isEditor
+                || Loaded
+                || Application.platform != RuntimePlatform.WindowsPlayer
+            )
                 return;
             if (!library || !BurstCompiler.IsLoadAdditionalLibrarySupported())
             {
