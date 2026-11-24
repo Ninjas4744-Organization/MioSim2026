@@ -35,7 +35,8 @@ public sealed class Turbo4744MobilityFixture : MonoBehaviour
             direction,
             distance,
             peakTilt,
-            longestStall;
+            longestStall,
+            maximumUpwardVelocity;
         public bool reachedStop,
             escaped;
         public bool feedingObserved;
@@ -46,6 +47,10 @@ public sealed class Turbo4744MobilityFixture : MonoBehaviour
             capturedAfterShoot,
             tireFieldContacts,
             undersideFuelContacts;
+        public int capturedAfterEscapeFeed = -1;
+        public float residualFeedSeconds;
+        public List<Vector3> retainedLocalAfterShoot = new List<Vector3>();
+        public List<Vector3> retainedLocalAfterEscapeFeed = new List<Vector3>();
         public List<string> frames = new List<string>();
         public List<string> contacts = new List<string>();
     }
@@ -259,6 +264,7 @@ public sealed class Turbo4744MobilityFixture : MonoBehaviour
                     yield return DriveFor(trial, 0, 0, 7);
                     Press();
                     trial.capturedAfterShoot = Captured();
+                    trial.retainedLocalAfterShoot = CapturedPositions();
                     Vector3 start = body.position;
                     yield return DriveFor(trial, 1.05f, 1.05f, 5, 1.8f);
                     trial.distance = Vector3
@@ -268,6 +274,21 @@ public sealed class Turbo4744MobilityFixture : MonoBehaviour
                         trial.distance > 1.5f
                         && trial.capturedBeforeShoot > 0
                         && trial.feedingObserved;
+                    if (Environment.GetCommandLineArgs().Contains("-turboMobilityFinishFeed"))
+                    {
+                        // Preserve the original seven-second corner observation,
+                        // then check residual fuel after driving clear of the pile.
+                        Press(Key.Q);
+                        while (trial.residualFeedSeconds < 20 && Captured() > 0)
+                        {
+                            yield return DriveFor(trial, 0, 0, .1f);
+                            trial.residualFeedSeconds += .1f;
+                        }
+                        Press();
+                        trial.capturedAfterEscapeFeed = Captured();
+                        trial.retainedLocalAfterEscapeFeed = CapturedPositions();
+                        trial.escaped &= trial.capturedAfterEscapeFeed == 0;
+                    }
                     Finish(trial);
                     wallA.SetActive(false);
                     wallB.SetActive(false);
@@ -451,6 +472,23 @@ public sealed class Turbo4744MobilityFixture : MonoBehaviour
         fuel.Count(f =>
             f && robot.GetComponent<Turbo4744FuelKeeper>().IsCaptured(f.GetComponent<Rigidbody>())
         );
+
+    private List<Vector3> CapturedPositions() =>
+        fuel.Where(f =>
+                f
+                && robot.GetComponent<Turbo4744FuelKeeper>().IsCaptured(f.GetComponent<Rigidbody>())
+            )
+            .Select(f => robot.transform.InverseTransformPoint(f.transform.position))
+            .ToList();
+
+    private void FixedUpdate()
+    {
+        if (current != null && body)
+            current.maximumUpwardVelocity = Mathf.Max(
+                current.maximumUpwardVelocity,
+                body.velocity.y
+            );
+    }
 
     private void ObserveCollision(Collision collision)
     {

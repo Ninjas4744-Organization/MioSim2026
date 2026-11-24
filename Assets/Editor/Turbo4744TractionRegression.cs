@@ -45,7 +45,8 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             lateralDistance,
             finalTilt,
             maximumProbeOffset,
-            minimumTireClearance;
+            minimumTireClearance,
+            maximumUpwardVelocity;
         public Vector3 fuelLocalEnd,
             secondFuelLocalEnd;
         public bool undersideCleared,
@@ -73,6 +74,7 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
     private Keyboard keyboard;
     private GameObject fuelPrefab;
     private float began;
+    private Trial current;
     private static readonly BindingFlags Fields = BindingFlags.Instance | BindingFlags.NonPublic;
 
     private IEnumerator Start()
@@ -162,6 +164,7 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                 minimumTireClearance = float.PositiveInfinity,
             };
             report.cases.Add(trial);
+            current = trial;
             var clearance = robot.GetComponent<Turbo4744UnderbodyClearance>();
             clearance.Escaped += (_, from, to, grounded) =>
             {
@@ -242,6 +245,10 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                         DriveController.DrivePerspective.RobotRelative
                     );
                 yield return step;
+                trial.maximumUpwardVelocity = Mathf.Max(
+                    trial.maximumUpwardVelocity,
+                    body.velocity.y
+                );
                 int grounded = Grounded();
                 trial.minimumGrounded = Mathf.Min(trial.minimumGrounded, grounded);
                 trial.maximumGrounded = Mathf.Max(trial.maximumGrounded, grounded);
@@ -321,12 +328,15 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                     || trial.distance > 1 && trial.maximumGrounded > 0;
             trial.clearedBalls = clearance.ClearedBalls;
             trial.passed &=
-                trial.clearanceWithoutGround == 0 && (support != 5 || trial.clearedBalls == 0);
+                trial.clearanceWithoutGround == 0
+                && (support == 5 || trial.maximumUpwardVelocity < .5f)
+                && (support != 5 || trial.clearedBalls == 0);
             Debug.Log(
                 $"TURBO_TRACTION {trial.name} deployed={deployed} ground={trial.initialGrounded} distance={trial.distance:F3} passed={trial.passed}"
             );
             // Field systems cache robot references. Retain an inactive object
             // until the scene unloads, as the existing trench fixture does.
+            current = null;
             robot.gameObject.SetActive(false);
             if (fuel)
                 Object.Destroy(fuel.gameObject);
@@ -418,7 +428,14 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
     private IEnumerator Wait(float seconds)
     {
         for (float t = 0; t < seconds; t += Time.fixedDeltaTime)
+        {
             yield return step;
+            if (current != null && body)
+                current.maximumUpwardVelocity = Mathf.Max(
+                    current.maximumUpwardVelocity,
+                    body.velocity.y
+                );
+        }
     }
 
     private void Press(params Key[] keys)

@@ -31,14 +31,14 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             cleared,
             remaining,
             badGroundedClears,
-            movingSamples,
-            maximumActive,
-            assistedSteps;
-        public float maximumStepDistance,
-            maximumEscapeSeconds;
-        public bool collisionPairsRestored,
-            startedBeforeCancellation,
-            noAssistanceAfterCancellation;
+            animated,
+            visibleSamples,
+            maximumActive;
+        public float maximumVisibleStep,
+            maximumPhysicalStep;
+        public bool collisionPairsAlwaysSolid = true,
+            visualsFinished,
+            noNewClearanceWithoutGround = true;
         public bool passed,
             robotUnmoved,
             allBallsPreserved;
@@ -69,7 +69,10 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
     private Turbo4744UnderbodyClearance assist;
     private Trial current;
     private float began;
-    private readonly Dictionary<Rigidbody, Vector3> previous = new Dictionary<Rigidbody, Vector3>();
+    private readonly Dictionary<Rigidbody, Vector3> previousVisible =
+        new Dictionary<Rigidbody, Vector3>();
+    private readonly Dictionary<Rigidbody, Vector3> previousPhysical =
+        new Dictionary<Rigidbody, Vector3>();
     private readonly List<CollisionPair> collisionPairs = new List<CollisionPair>();
 
     private struct CollisionPair
@@ -79,16 +82,21 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
         public bool ignored;
     }
 
-    private bool PairsRestored() =>
-        assist.IgnoredCollisionPairs == 0
-        && collisionPairs.All(p =>
+    private bool PairsUnchanged() =>
+        collisionPairs.All(p =>
             !p.robot || !p.fuel || Physics.GetIgnoreCollision(p.robot, p.fuel) == p.ignored
         );
 
-    private void MeasureCompletion()
+    private void PresentationResult()
     {
-        current.assistedSteps = assist.AssistedSteps;
-        current.collisionPairsRestored = PairsRestored() && assist.ActiveClearances == 0;
+        current.animated = assist.AnimatedBalls;
+        current.visualsFinished = assist.ActiveClearances == 0;
+        current.collisionPairsAlwaysSolid &= PairsUnchanged() && assist.IgnoredCollisionPairs == 0;
+        current.passed &=
+            current.visualsFinished
+            && current.collisionPairsAlwaysSolid
+            && current.maximumVisibleStep < .04f
+            && current.animated == current.cleared;
     }
 
     private IEnumerator Start()
@@ -132,7 +140,7 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             for (int z = 0; z < side; z++)
                 Spawn(new Vector3(6 + (x - side / 2) * .16f, 3.15f, 2 + (z - side / 2) * .16f));
             current.seeded = balls.Count;
-            yield return Wait(pile ? 2.5f : 1.5f);
+            yield return Wait(1.5f);
             current.observedGrounded = assist.GroundedWheelCount;
             current.cleared = assist.ClearedBalls;
             current.remaining = balls.Count(b => IsUnder(b.position));
@@ -141,12 +149,8 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             current.allBallsPreserved = balls.All(b =>
                 b && b.gameObject.activeInHierarchy && !b.isKinematic
             );
-            MeasureCompletion();
             current.passed =
-                current.collisionPairsRestored
-                && current.maximumStepDistance < .04f
-                && (supported == 0 || current.assistedSteps > 0 && current.movingSamples > 2)
-                && current.observedGrounded == supported
+                current.observedGrounded == supported
                 && current.badGroundedClears == 0
                 && current.robotUnmoved
                 && current.allBallsPreserved
@@ -155,6 +159,7 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
                         ? current.cleared == 0
                         : current.remaining == 0 && current.cleared == current.seeded
                 );
+            PresentationResult();
             Save();
             Debug.Log(
                 $"TURBO_UNDERBODY {current.name} support={supported}/{current.observedGrounded} cleared={current.cleared}/{current.seeded} passed={current.passed}"
@@ -183,19 +188,15 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
         current.allBallsPreserved = balls.All(b =>
             b && b.gameObject.activeInHierarchy && !b.isKinematic
         );
-        MeasureCompletion();
         current.passed =
-            current.collisionPairsRestored
-            && current.maximumStepDistance < .04f
-            && current.assistedSteps > 0
-            && current.movingSamples > 2
-            && current.robotUnmoved
+            current.robotUnmoved
             && current.allBallsPreserved
             && current.observedGrounded == 1
             && current.cleared == 1
             && current.remaining == 0
             && balls[0].position.x <= 6.48f
             && current.badGroundedClears == 0;
+        PresentationResult();
         Save();
         Clean();
         // Cached collision points must stop authorizing clearance after support
@@ -235,8 +236,40 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
                 && current.badGroundedClears == 0
                 && current.robotUnmoved
                 && current.allBallsPreserved;
-            MeasureCompletion();
-            current.passed &= current.collisionPairsRestored && current.maximumStepDistance < .04f;
+            PresentationResult();
+            Save();
+            Clean();
+            yield return step;
+        }
+        foreach (int supported in new[] { 0, 1 })
+        {
+            yield return Setup(supported);
+            current = new Trial
+            {
+                name = "rear frame pocket",
+                expectedGrounded = supported,
+                seeded = 1,
+            };
+            report.cases.Add(current);
+            assist.Escaped += Escaped;
+            Spawn(body.position + new Vector3(.0256f, .126f, -.2656f));
+            yield return Wait(1.5f);
+            current.observedGrounded = assist.GroundedWheelCount;
+            current.cleared = assist.ClearedBalls;
+            current.remaining = balls.Count(b => IsUnder(b.position));
+            current.robotUnmoved =
+                Vector3.Distance(body.position, new Vector3(6, 3.18f, 2)) < .001f;
+            current.allBallsPreserved = balls.All(b =>
+                b && b.gameObject.activeInHierarchy && !b.isKinematic
+            );
+            current.passed =
+                current.observedGrounded == supported
+                && current.cleared == supported
+                && current.badGroundedClears == 0
+                && current.robotUnmoved
+                && current.allBallsPreserved
+                && (supported == 0 || current.remaining == 0);
+            PresentationResult();
             Save();
             Clean();
             yield return step;
@@ -246,17 +279,17 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             yield return Setup(1);
             current = new Trial
             {
-                name = disable ? "helper disabled during roll-out" : "ground lost during roll-out",
-                expectedGrounded = 0,
-                seeded = 1,
+                name = disable
+                    ? "helper disabled during visible exit"
+                    : "ground lost during visible exit",
+                expectedGrounded = 1,
+                seeded = 2,
             };
             report.cases.Add(current);
             assist.Escaped += Escaped;
             Spawn(new Vector3(6, 3.15f, 2));
             yield return Wait(.12f);
-            current.startedBeforeCancellation =
-                assist.ActiveClearances > 0 && assist.IgnoredCollisionPairs > 0;
-            int stepsBefore = assist.AssistedSteps;
+            bool began = assist.ClearedBalls == 1 && assist.ActiveClearances == 1;
             if (disable)
                 assist.enabled = false;
             else
@@ -268,28 +301,27 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
                     )
                         prop.SetActive(false);
             Physics.SyncTransforms();
-            yield return step;
-            stepsBefore = assist.AssistedSteps;
-            yield return Wait(.25f);
-            current.noAssistanceAfterCancellation = assist.AssistedSteps == stepsBefore;
+            yield return Wait(.1f);
+            current.expectedGrounded = 0;
+            Spawn(new Vector3(6, 3.15f, 2));
+            yield return Wait(.9f);
             current.observedGrounded = assist.GroundedWheelCount;
             current.cleared = assist.ClearedBalls;
             current.remaining = balls.Count(b => IsUnder(b.position));
+            current.noNewClearanceWithoutGround = assist.ClearedBalls == 1;
             current.robotUnmoved =
                 Vector3.Distance(body.position, new Vector3(6, 3.18f, 2)) < .001f;
             current.allBallsPreserved = balls.All(b =>
                 b && b.gameObject.activeInHierarchy && !b.isKinematic
             );
-            MeasureCompletion();
             current.passed =
-                current.startedBeforeCancellation
-                && current.noAssistanceAfterCancellation
-                && current.collisionPairsRestored
-                && current.cleared == 0
+                began
                 && current.observedGrounded == 0
+                && current.noNewClearanceWithoutGround
+                && current.badGroundedClears == 0
                 && current.robotUnmoved
-                && current.allBallsPreserved
-                && current.maximumStepDistance < .04f;
+                && current.allBallsPreserved;
+            PresentationResult();
             Save();
             Clean();
             yield return step;
@@ -335,13 +367,7 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
     {
         if (grounded < 1 || grounded != current.expectedGrounded)
             current.badGroundedClears++;
-        current.maximumEscapeSeconds = Mathf.Max(
-            current.maximumEscapeSeconds,
-            assist.LastClearSeconds
-        );
-        current.relocations.Add(
-            $"rolled grounded={grounded} from={from:F4} to={to:F4} seconds={assist.LastClearSeconds:F3}"
-        );
+        current.relocations.Add($"grounded={grounded} from={from:F4} to={to:F4}");
     }
 
     private void Spawn(Vector3 point)
@@ -355,7 +381,8 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             )
             .GetComponent<Rigidbody>();
         balls.Add(ball);
-        previous[ball] = ball.position;
+        previousVisible[ball] = ball.GetComponentInChildren<MeshRenderer>().transform.position;
+        previousPhysical[ball] = ball.position;
         var keeper = robot.GetComponent<Turbo4744FuelKeeper>();
         foreach (var own in robot.GetComponentsInChildren<Collider>())
             if (
@@ -410,7 +437,8 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             if (prop && prop.name != "Clearance carpet")
                 prop.SetActive(false);
         balls.Clear();
-        previous.Clear();
+        previousVisible.Clear();
+        previousPhysical.Clear();
         collisionPairs.Clear();
     }
 
@@ -425,17 +453,25 @@ public sealed class Turbo4744UnderbodyFixture : MonoBehaviour
             if (current != null && balls.Count > 0)
             {
                 current.maximumActive = Mathf.Max(current.maximumActive, assist.ActiveClearances);
+                current.collisionPairsAlwaysSolid &=
+                    PairsUnchanged() && assist.IgnoredCollisionPairs == 0;
                 foreach (var ball in balls)
-                    if (ball && previous.TryGetValue(ball, out var from))
+                    if (ball && previousVisible.TryGetValue(ball, out var last))
                     {
-                        float distance = Vector3.Distance(from, ball.position);
-                        current.maximumStepDistance = Mathf.Max(
-                            current.maximumStepDistance,
-                            distance
+                        var visual = ball.GetComponent<Turbo4744ClearanceVisual>();
+                        var visible = visual
+                            ? visual.VisiblePosition
+                            : ball.GetComponentInChildren<MeshRenderer>().transform.position;
+                        float moved = Vector3.Distance(last, visible);
+                        current.maximumVisibleStep = Mathf.Max(current.maximumVisibleStep, moved);
+                        current.maximumPhysicalStep = Mathf.Max(
+                            current.maximumPhysicalStep,
+                            Vector3.Distance(previousPhysical[ball], ball.position)
                         );
-                        if (distance > .0001f)
-                            current.movingSamples++;
-                        previous[ball] = ball.position;
+                        if (moved > .0001f)
+                            current.visibleSamples++;
+                        previousVisible[ball] = visible;
+                        previousPhysical[ball] = ball.position;
                     }
             }
         }
