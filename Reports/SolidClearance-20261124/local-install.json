@@ -1,0 +1,24 @@
+{
+  "installed_utc": "2026-11-24T21:14:56.2653840Z",
+  "label": "solid-contact clearance and smooth presentation private trial",
+  "runtime_module": "59fcb563-73e9-4504-97a8-2fe2bb24cdde",
+  "backup": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\SolidClearance-20261124\\local-backup-20261124-231455",
+  "files": {
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "f2424fdf30e84a8051757a313b7ae50bda2954faec608521dc3b7321c4c2685c",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "113ece8f4c5531a6a2aadf0cb1754c62bc116997c24b110f83cf0dea66b9a07e",
+    "Ninjas4744.dll": "08386c0959ec6365ffc2b409cec135d9837ca6f2120d148cccc719faf23ac566",
+    "modpack.json": "a89c1afc84c51225f50db2b42e347738c4126a762c115a70eafc3b685e459bb9",
+    "standalonewindows64.manifest": "ddb1bcf5d8b68301cd0f165b6b6b1cf3f400bfdeb70907fb56a125e712019f63",
+    "standalonewindows64": "c640fc2ce2c9ea1b18e27772f2947a2dd838b6f1aeb2f72f1c6cfcec584a5a85"
+  },
+  "settings_sha256": {
+    "MatchSettings.json": "889ba4486fcd2cbcea0dd8ebf139cdad62481b406e74de4775fc11fd97e9f628",
+    "AppSettings.json": "345a17bc9d1690a22476d7a35db3b15ebe37a022dc1f96100e56c31604adbb70"
+  },
+  "user_settings_unchanged": true,
+  "steam_workshop_untouched": true,
+  "native_runtime_verified": true,
+  "owner_feedback": "Recovers smoothly; pocket clears.",
+  "native_scope": "Startup capture verifies exact module, four grounded tires and zero recovery collision bypass/force steps. Owner separately confirmed smooth recovery and clearance of the pictured rear frame pocket.",
+  "startup_settings_unchanged": true
+}

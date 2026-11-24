@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "private_trial": true,
+  "version": "1.0.2",
+  "files": {
+    "modpack.json": "a89c1afc84c51225f50db2b42e347738c4126a762c115a70eafc3b685e459bb9",
+    "Ninjas4744.dll": "08386c0959ec6365ffc2b409cec135d9837ca6f2120d148cccc719faf23ac566",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "113ece8f4c5531a6a2aadf0cb1754c62bc116997c24b110f83cf0dea66b9a07e",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "f2424fdf30e84a8051757a313b7ae50bda2954faec608521dc3b7321c4c2685c",
+    "standalonewindows64": "c640fc2ce2c9ea1b18e27772f2947a2dd838b6f1aeb2f72f1c6cfcec584a5a85",
+    "standalonewindows64.manifest": "ddb1bcf5d8b68301cd0f165b6b6b1cf3f400bfdeb70907fb56a125e712019f63"
+  },
+  "evidence_sha256": {
+    "build.json": "a0e672896eb3fe14b6c3ff4b1e60d1bf6b4460b0892aed0de2652858050afaf9",
+    "preserved-release.json": "46978ebc651d0c039b169ca043630d5770bfd26639adc30e923983870eea58ad",
+    "contract.json": "282536fd3db1c4e79f9cc7936337cde3cd0db395da370fe1a9ba54e31f7d2cb3",
+    "traction-forward.json": "d87e470e6068e422c8ba80246034ec8acd4d99733675eaec29770477c3b3fa8c",
+    "traction-reverse-pair.json": "cadf705bd64a8615bdd56ae67df952551fc74c883ac3cfd53ed76da50a6db753",
+    "shooting.json": "918adc05555eee886cc09ea94e3a7295c0881a8dfa42d49b3c73ff5784f1a939",
+    "collection-retention.json": "7c323d5f19e81c7f3c110b84b01ee1d0603092253167ae8b56413525c0f31fad",
+    "corner-pile.json": "97052bd9261520649aea9362476ec217c09833a093eb7cbec27eec8f1ced448c",
+    "corner-pile-seven-second.json": "3f9968d10622c136b233afa8915f31f59ba11ef9c0c4bc63ef6d838282f90340",
+    "local-install.json": "35de7a9a735f73b0fd83fcbcb284e6bb65f45201a352a97e593955bee221bdc7",
+    "native-startup.json": "b55f2a446e1845aabe716bca9564b923963d756d73f51d61f4b4bc81e37d554f"
+  },
+  "source_sha256": {
+    "Turbo4744.cs": "229ed3411083c8d2db20fa234d0b948e80fef78d34ddc21aadc929884b2a6cdb",
+    "Turbo4744BumperContacts.cs": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2",
+    "Turbo4744ClearanceVisual.cs": "1790d73fb9e4c73659d936d7e209de85bf3412c21c2e79aefb3e328ce3e9a451",
+    "Turbo4744DriveController.cs": "9dcfc34126edd01446b666ddeaea9ca7b755fc27e5db47cdc1f5df1582c63d89",
+    "Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744LandingTrace.cs": "6692e1094d1a52eeb9d99a1d5e1fb60fd153202563a90ff1297db96569688b27",
+    "Turbo4744NativeReplay.cs": "2930b468c5b35759ec7e76102f8e72e500369f0e4e574be623b328028f0cef2c",
+    "Turbo4744NetBurst.cs": "0b640f2399abd680d1dbd576d12d3a5ea3242c36616dd52aff92b3602b7de7af",
+    "Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28",
+    "Turbo4744UnderbodyClearance.cs": "f1d498599999782a0b58a4ee3b4454755cc0966b9a2275b741b986a3b7a34ca9"
+  },
+  "solid_contact_presentation": {
+    "maximum_visible_step_metres": 0.010574105195701122,
+    "contacts_unchanged_during_recovery": true,
+    "maximum_supported_upward_velocity_metres_per_second": 0.48504844307899475,
+    "clearance": "immediate safe physical clearance with smooth mesh-only rolling exit"
+  },
+  "motion_continuity": null,
+  "ground_contract_cases": 17,
+  "clearance_behavior": "solid contacts with smooth mesh presentation",
+  "free_body_cases": 26,
+  "fully_unsupported_controls": 4,
+  "free_body_clearances": 32,
+  "shooting_launched": 8,
+  "shooting_scored": 8,
+  "controls_checks": null,
+  "collection_retention_release_balls": 60,
+  "corner_pile_cases": 2,
+  "corner_shooting_observations": {
+    "initial_retained_after_seven_seconds": [
+      2,
+      0
+    ],
+    "repeat_retained_after_seven_seconds": [
+      0,
+      0
+    ],
+    "repeat_retained_after_escape": [
+      0,
+      0
+    ],
+    "residual_feed_seconds": [
+      0.0,
+      0.0
+    ]
+  },
+  "native_module_loaded": "59fcb563-73e9-4504-97a8-2fe2bb24cdde",
+  "native_feedback": "Recovers smoothly; pocket clears.",
+  "native_scope": "Startup capture verifies exact module, four grounded tires and zero recovery collision bypass/force steps. Owner separately confirmed smooth recovery and clearance of the pictured rear frame pocket.",
+  "limits": [
+    "No assistance when all tires are clear of field surfaces",
+    "Retains and retries a ball when no safe nearby floor destination is available",
+    "Physical clearance is immediate; the existing visible mesh trails it for at most 0.65 seconds",
+    "Native startup verifies loading; owner visual and recovery feedback is separate"
+  ]
+}

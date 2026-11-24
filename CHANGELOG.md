@@ -22,7 +22,7 @@
 
 ## Unreleased
 
-- Make the private grounded-clearance recovery continuous: use bounded forces and rolling torque to ease existing underbody balls onto free floor, replacing instant position changes. Briefly relieve the robot's own pinch contacts while rolling, restore every changed pair afterward, and stop assisting when all four tires are clear. Add per-step motion, interrupted-roll-out and contact-restoration checks. [Trial evidence](Reports/Rollout-20261124/README.md).
+- Keep structural robot contacts solid during grounded fuel recovery, removing the private roll-out trial's collision bypass that could admit fuel into frame pockets or restore contacts while overlapping. Return to safe physical clearance and ease the original collider-free ball mesh out with a rolling animation. Cover the low rear pocket behind the feed path; require at least one grounded tire for every new clearance. Add continuous collision-state, visible-motion, interrupted-presentation and upward-velocity checks. [Private trial evidence](Reports/SolidClearance-20261124/README.md).
 
 - Add four solid swerve module housings and restore passive tire-to-fuel collisions, preventing balls from passing through the modules into the bellypan cutouts. Keep fuel excluded from suspension and powered tread queries. Add packaged collision and clear-floor drive regressions.
 

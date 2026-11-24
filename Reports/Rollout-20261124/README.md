@@ -32,6 +32,6 @@ No runtime tuning changed after the build: the additional shooting counters belo
 
 ## Installed native trial
 
-The installed player loads module `c922a9b4-791c-4efb-9c00-7b2e0623a5ce`. Its startup capture contains the new active-clearance, ignored-pair and assisted-step fields and observes four grounded tires. Both settings files remain byte-identical after startup. This confirms loading and ground-state observation; it is not a native visual/recovery test. The owner has been asked to try the running trial; feedback is pending.
+The installed player loaded module `c922a9b4-791c-4efb-9c00-7b2e0623a5ce`. Its startup capture contains the new active-clearance, ignored-pair and assisted-step fields and observes four grounded tires. Both settings files remained byte-identical after startup. The owner subsequently reported reliable recovery but visible chassis jumps, followed by fuel trapped in the rear frame pocket. This trial is superseded by the [solid-contact candidate](../SolidClearance-20261124/README.md). Its earlier automated results remain recorded; their contact-restoration acceptance did not check intermediate overlap or bound upward velocity during the initial settling interval.
 
 The previous instant-clearance private ZIP and every published Steam payload remain unchanged. The new ZIP uses the separate `rolling-clearance-trial` filename. No Steam upload is performed.
