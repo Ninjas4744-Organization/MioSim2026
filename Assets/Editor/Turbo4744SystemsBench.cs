@@ -36,6 +36,8 @@ public static class Turbo4744SystemsBench
         public int underbodyAssistedSteps,
             underbodyClearedBalls,
             underbodyActive;
+        public int observerSamples;
+        public float maximumObserverStep;
         public float closedVisual,
             openedVisual,
             stowedVisual,
@@ -168,7 +170,8 @@ public static class Turbo4744SystemsBench
     private static BaseTimerManager timer;
     private static int index,
         sample;
-    private static float began;
+    private static float began,
+        previousObservation;
     private static double wall;
     private static bool loaded,
         capturedClosed,
@@ -648,6 +651,7 @@ public static class Turbo4744SystemsBench
             balls.Clear();
         }
         began = Time.time;
+        previousObservation = 0;
         loaded =
             capturedClosed =
             capturedOpen =
@@ -1563,6 +1567,12 @@ public static class Turbo4744SystemsBench
                 return;
             }
             float t = Time.time - began;
+            result.observerSamples++;
+            result.maximumObserverStep = Mathf.Max(
+                result.maximumObserverStep,
+                t - previousObservation
+            );
+            previousObservation = t;
             if (
                 Indexer
                 && !indexerSeeded
@@ -1606,6 +1616,7 @@ public static class Turbo4744SystemsBench
                 Capture("closed-top");
                 capturedClosed = true;
                 began = Time.time;
+                previousObservation = 0;
                 Enabled(true);
                 return;
             }
