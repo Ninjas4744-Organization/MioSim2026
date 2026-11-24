@@ -33,6 +33,9 @@ public static class Turbo4744SystemsBench
         public string kind;
         public string alliance;
         public int delivered;
+        public int underbodyAssistedSteps,
+            underbodyClearedBalls,
+            underbodyActive;
         public float closedVisual,
             openedVisual,
             stowedVisual,
@@ -1819,6 +1822,13 @@ public static class Turbo4744SystemsBench
             result.stowed =
                 Mathf.Abs(robot.intakeRail.transform.localPosition.z - intakeClosed) < .035f
                 && Mathf.Abs(robot.hopperRail.transform.localPosition.z - hopperClosed) < .035f;
+            var clearance = robot.GetComponent<Turbo4744UnderbodyClearance>();
+            if (clearance)
+            {
+                result.underbodyAssistedSteps = clearance.AssistedSteps;
+                result.underbodyClearedBalls = clearance.ClearedBalls;
+                result.underbodyActive = clearance.ActiveClearances;
+            }
             Debug.Log("TURBO_SYSTEMS_CASE " + JsonUtility.ToJson(result));
             Press();
             Cleanup();

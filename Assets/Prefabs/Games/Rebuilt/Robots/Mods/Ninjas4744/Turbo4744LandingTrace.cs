@@ -57,6 +57,9 @@ namespace Ninjas4744.MoSim
                 clearedUnderbodyBalls,
                 blockedClearanceSearches,
                 lastClearGroundedWheels;
+            public int activeClearances,
+                ignoredClearancePairs,
+                assistedClearanceSteps;
             public Vector3 lastClearFrom,
                 lastClearTo;
             public int[] contacts = new int[4],
@@ -266,6 +269,9 @@ namespace Ninjas4744.MoSim
                 clearedUnderbodyBalls = clearance ? clearance.ClearedBalls : 0,
                 blockedClearanceSearches = clearance ? clearance.BlockedSearches : 0,
                 lastClearGroundedWheels = clearance ? clearance.LastClearGroundedWheels : 0,
+                activeClearances = clearance ? clearance.ActiveClearances : 0,
+                ignoredClearancePairs = clearance ? clearance.IgnoredCollisionPairs : 0,
+                assistedClearanceSteps = clearance ? clearance.AssistedSteps : 0,
                 lastClearFrom = clearance ? clearance.LastClearFrom : Vector3.zero,
                 lastClearTo = clearance ? clearance.LastClearTo : Vector3.zero,
                 collisions = new Contact[collisionCount],

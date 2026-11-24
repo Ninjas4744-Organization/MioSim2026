@@ -22,7 +22,7 @@
 
 ## Unreleased
 
-- Add a private Windows trial that clears loose low underbody balls to nearby free floor while at least one physical tire touches the field. Preserve balls in play; keep the helper off with all four tires clear. Validate grounded counts, piles, blocked exits, recovery, controls, collection and shooting. [Trial evidence](Reports/Underbody-20261124/README.md).
+- Make the private grounded-clearance recovery continuous: use bounded forces and rolling torque to ease existing underbody balls onto free floor, replacing instant position changes. Briefly relieve the robot's own pinch contacts while rolling, restore every changed pair afterward, and stop assisting when all four tires are clear. Add per-step motion, interrupted-roll-out and contact-restoration checks. [Trial evidence](Reports/Rollout-20261124/README.md).
 
 - Add four solid swerve module housings and restore passive tire-to-fuel collisions, preventing balls from passing through the modules into the bellypan cutouts. Keep fuel excluded from suspension and powered tread queries. Add packaged collision and clear-floor drive regressions.
 

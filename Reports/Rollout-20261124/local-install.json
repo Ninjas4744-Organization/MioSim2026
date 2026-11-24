@@ -1,0 +1,25 @@
+{
+  "installed_utc": "2026-11-24T20:49:48.3891136Z",
+  "label": "continuous rolling clearance private trial",
+  "runtime_module": "c922a9b4-791c-4efb-9c00-7b2e0623a5ce",
+  "backup": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\Rollout-20261124\\local-backup-20261124-224948",
+  "files": {
+    "standalonewindows64": "e196060464204845461d9539e66f8c7b52a19f5bdbbac213cfb4bd1dc3dc6dbe",
+    "modpack.json": "a89c1afc84c51225f50db2b42e347738c4126a762c115a70eafc3b685e459bb9",
+    "standalonewindows64.manifest": "e8134f4ed0158ed3e00f4f733c4dd3955ca479fa58bcda50bcb23d2b34fb8c83",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "5dca88fe3c59863f43f142e7ebc8255cc6ab448feaa531fede51ab990f32d4ee",
+    "Ninjas4744.dll": "eea7d90ee4b37864b2afa64e7e41c3471fe3e4bd6187aa4151b8d56940dcbdc7",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "bbf55834635288982910b42df64fcdb6085f3bc17f6172c6d8da483d963c295d"
+  },
+  "settings_sha256": {
+    "MatchSettings.json": "889ba4486fcd2cbcea0dd8ebf139cdad62481b406e74de4775fc11fd97e9f628",
+    "AppSettings.json": "345a17bc9d1690a22476d7a35db3b15ebe37a022dc1f96100e56c31604adbb70"
+  },
+  "user_settings_unchanged": true,
+  "steam_workshop_untouched": true,
+  "native_runtime_verified": true,
+  "owner_feedback": "Pending",
+  "native_capture": "native-startup.json",
+  "native_grounded_wheels": 4,
+  "native_scope": "Startup, physical ground observation and new clearance telemetry verified; owner visual/recovery feedback pending"
+}

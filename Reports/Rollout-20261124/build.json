@@ -1,0 +1,37 @@
+{
+  "label": "continuous roll-out private trial",
+  "build_log": "Artifacts/Build-20261124-223344.log",
+  "files": {
+    "modpack.json": "a89c1afc84c51225f50db2b42e347738c4126a762c115a70eafc3b685e459bb9",
+    "Ninjas4744.dll": "eea7d90ee4b37864b2afa64e7e41c3471fe3e4bd6187aa4151b8d56940dcbdc7",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "5dca88fe3c59863f43f142e7ebc8255cc6ab448feaa531fede51ab990f32d4ee",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "bbf55834635288982910b42df64fcdb6085f3bc17f6172c6d8da483d963c295d",
+    "standalonewindows64": "e196060464204845461d9539e66f8c7b52a19f5bdbbac213cfb4bd1dc3dc6dbe",
+    "standalonewindows64.manifest": "e8134f4ed0158ed3e00f4f733c4dd3955ca479fa58bcda50bcb23d2b34fb8c83"
+  },
+  "source_sha256": {
+    "Turbo4744.cs": "229ed3411083c8d2db20fa234d0b948e80fef78d34ddc21aadc929884b2a6cdb",
+    "Turbo4744BumperContacts.cs": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2",
+    "Turbo4744DriveController.cs": "9dcfc34126edd01446b666ddeaea9ca7b755fc27e5db47cdc1f5df1582c63d89",
+    "Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744LandingTrace.cs": "6692e1094d1a52eeb9d99a1d5e1fb60fd153202563a90ff1297db96569688b27",
+    "Turbo4744NativeReplay.cs": "2930b468c5b35759ec7e76102f8e72e500369f0e4e574be623b328028f0cef2c",
+    "Turbo4744NetBurst.cs": "0b640f2399abd680d1dbd576d12d3a5ea3242c36616dd52aff92b3602b7de7af",
+    "Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28",
+    "Turbo4744UnderbodyClearance.cs": "965f62819b0f4059699cd860022040eb8df45d606a09014c6a50640d204aafc1"
+  },
+  "validation_source_sha256": {
+    "Turbo4744UnderbodyRegression.cs": "884aaae659df4bee07d98bd0e5203613aaf426168af448840f400769a08efe03",
+    "Turbo4744TractionRegression.cs": "7a828cb8ba108c820d67a4e0ec8695a8ad1fecdd314a2fadb218876d806a97a8",
+    "Turbo4744SystemsBench.cs": "b14b3cd41db8e905707ba0d03c49f73a0aae726f295935e7313d4e42798ed216"
+  },
+  "additional_harness_scope": "Added read-only clearance counters to the systems report for the focused 3 m diagnostic; runtime build unchanged"
+}

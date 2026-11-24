@@ -163,7 +163,7 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             };
             report.cases.Add(trial);
             var clearance = robot.GetComponent<Turbo4744UnderbodyClearance>();
-            clearance.Relocated += (_, from, to, grounded) =>
+            clearance.Escaped += (_, from, to, grounded) =>
             {
                 if (grounded < 1)
                     trial.clearanceWithoutGround++;
