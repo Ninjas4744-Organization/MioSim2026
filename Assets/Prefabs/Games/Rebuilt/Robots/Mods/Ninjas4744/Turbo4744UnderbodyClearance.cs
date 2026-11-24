@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Ninjas4744.MoSim
 {
     /// <summary>Grounded-only gameplay clearance for loose fuel trapped under
-    /// the chassis. Rolls fuel toward free nearby floor; never moves a body by pose.</summary>
+    /// the chassis. Keeps every structural hitbox solid while clearing trapped fuel.</summary>
     [DefaultExecutionOrder(150)]
     public sealed class Turbo4744UnderbodyClearance : MonoBehaviour
     {
@@ -22,9 +22,8 @@ namespace Ninjas4744.MoSim
         private readonly RaycastHit[] path = new RaycastHit[64];
         private readonly HashSet<Rigidbody> visited = new HashSet<Rigidbody>();
         private readonly Vector3[] candidates = new Vector3[8];
-        private readonly List<Escape> active = new List<Escape>(16);
-        private Collider[] solids;
-        private Turbo4744FuelKeeper keeper;
+        private readonly Vector3[] reserved = new Vector3[2];
+        private readonly float[] reservedRadii = new float[2];
         private Rigidbody chassis;
         private int fieldMask,
             fuelMask,
@@ -32,37 +31,20 @@ namespace Ninjas4744.MoSim
         private float nextCheck;
         private int searchCursor,
             robotMask;
+        public int ActiveClearances => 0;
+        public int IgnoredCollisionPairs => 0;
+        public int AssistedSteps => 0;
+        public int CancelledClearances => 0;
+        public int LastAssistGroundedWheels => LastClearGroundedWheels;
+        public float LastClearSeconds => 0;
+        public int AnimatedBalls => 0;
         public int GroundedWheelCount { get; private set; }
-        public int ActiveClearances => active.Count;
-        public int IgnoredCollisionPairs { get; private set; }
-        public int AssistedSteps { get; private set; }
-        public int CancelledClearances { get; private set; }
-        public int LastAssistGroundedWheels { get; private set; }
-        public float LastClearSeconds { get; private set; }
         public int ClearedBalls { get; private set; }
         public int BlockedSearches { get; private set; }
         public int LastClearGroundedWheels { get; private set; }
         public Vector3 LastClearFrom { get; private set; }
         public Vector3 LastClearTo { get; private set; }
         public event Action<Rigidbody, Vector3, Vector3, int> Escaped;
-
-        private struct CollisionPair
-        {
-            public Collider robot,
-                fuel;
-        }
-
-        private sealed class Escape
-        {
-            public Rigidbody ball;
-            public float radius,
-                started,
-                retargetAt;
-            public Vector3 from,
-                target;
-            public bool needsTarget;
-            public readonly List<CollisionPair> pairs = new List<CollisionPair>();
-        }
 
         private struct GroundContact
         {
@@ -75,8 +57,6 @@ namespace Ninjas4744.MoSim
         private void Start()
         {
             chassis = GetComponent<Rigidbody>();
-            keeper = GetComponent<Turbo4744FuelKeeper>();
-            solids = GetComponentsInChildren<Collider>();
             fieldMask = LayerMask.GetMask("Field");
             // Query the stock outer fuel sphere; GamePieceAlt is its smaller
             // inner shell and would underestimate placement clearance by 5 mm.
@@ -164,18 +144,13 @@ namespace Ninjas4744.MoSim
                 )
                     GroundedWheelCount++;
             }
-            bool allowed =
-                chassis
-                && GroundedWheelCount > 0
-                && BaseGameManager.Instance
-                && BaseGameManager.Instance.RobotState == RobotState.Enabled;
-            if (!allowed)
-            {
-                StopAll();
-                return;
-            }
-            AdvanceEscapes();
-            if (Time.fixedTime < nextCheck)
+            if (
+                !chassis
+                || GroundedWheelCount == 0
+                || Time.fixedTime < nextCheck
+                || !BaseGameManager.Instance
+                || BaseGameManager.Instance.RobotState != RobotState.Enabled
+            )
                 return;
             nextCheck = Time.fixedTime + .05f;
             int count = Physics.OverlapBoxNonAlloc(
@@ -187,24 +162,12 @@ namespace Ninjas4744.MoSim
                 QueryTriggerInteraction.Ignore
             );
             visited.Clear();
-            int started = 0,
+            int moved = 0,
                 attempted = 0;
-            foreach (var escape in active)
-                if (escape.needsTarget && attempted < 4)
-                {
-                    attempted++;
-                    var local =
-                        Quaternion.Inverse(chassis.rotation)
-                        * (escape.ball.position - chassis.position);
-                    if (FindExit(escape.ball, local, escape.radius, out var target))
-                        escape.target = target;
-                    escape.needsTarget = false;
-                    escape.retargetAt = Time.fixedTime + .25f;
-                }
             // Bound expensive placement searches even when a wall or pile blocks
             // every exit. Rotate the start so one blocked ball cannot starve others.
             int start = count > 0 ? searchCursor % count : 0;
-            for (int i = 0; i < count && started < 2 && active.Count < 16 && attempted < 4; i++)
+            for (int i = 0; i < count && moved < reserved.Length && attempted < 4; i++)
             {
                 searchCursor = start + i + 1;
                 var sphere = nearby[(start + i) % count] as SphereCollider;
@@ -213,7 +176,6 @@ namespace Ninjas4744.MoSim
                     !ball
                     || ball.isKinematic
                     || !visited.Add(ball)
-                    || IsEscaping(ball)
                     || !ball.GetComponent<RebuiltGamePieceController>()
                 )
                     continue;
@@ -221,11 +183,18 @@ namespace Ninjas4744.MoSim
                 // A stale captured flag must not exempt fuel that fell below it.
                 var local =
                     Quaternion.Inverse(chassis.rotation) * (ball.position - chassis.position);
+                bool underbody = local.y >= -.3f && local.y <= .115f;
+                // This low rear strip is behind the accelerator/feed envelope.
+                // It catches misplaced balls resting on top of the rear bellypan.
+                bool rearPocket =
+                    local.z < -.22f
+                    && local.y > .115f
+                    && local.y <= .20f
+                    && Mathf.Abs(local.x) <= .30f;
                 if (
                     Mathf.Abs(local.x) > HalfWidth
                     || Mathf.Abs(local.z) > HalfLength
-                    || local.y > .115f
-                    || local.y < -.3f
+                    || !(underbody || rearPocket)
                 )
                     continue;
                 var scale = sphere.transform.lossyScale;
@@ -233,150 +202,36 @@ namespace Ninjas4744.MoSim
                     sphere.radius
                     * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
                 attempted++;
-                if (!FindExit(ball, local, radius, out var destination))
+                if (!FindExit(ball, local, radius, moved, out var destination))
                 {
                     BlockedSearches++;
                     continue;
                 }
-                BeginEscape(ball, radius, destination);
-                started++;
+                Vector3 from = ball.position;
+                var outward = Vector3
+                    .ProjectOnPlane(destination - chassis.position, Vector3.up)
+                    .normalized;
+                float speed = Mathf.Clamp(Vector3.Dot(ball.velocity, outward), .6f, 1.5f);
+                ball.position = destination;
+                ball.velocity = outward * speed;
+                ball.WakeUp();
+                reserved[moved] = destination;
+                reservedRadii[moved++] = radius;
+                ClearedBalls++;
+                LastClearGroundedWheels = GroundedWheelCount;
+                LastClearFrom = from;
+                LastClearTo = destination;
+                Escaped?.Invoke(ball, from, destination, GroundedWheelCount);
             }
         }
 
-        private bool IsEscaping(Rigidbody ball)
-        {
-            foreach (var escape in active)
-                if (escape.ball == ball)
-                    return true;
-            return false;
-        }
-
-        private void BeginEscape(Rigidbody ball, float radius, Vector3 target)
-        {
-            var escape = new Escape
-            {
-                ball = ball,
-                radius = radius,
-                target = target,
-                from = ball.position,
-                started = Time.fixedTime,
-                retargetAt = Time.fixedTime + .25f,
-            };
-            // Release only this robot's solid pinch while the ball rolls away.
-            // Keep field/ball/other-robot contacts and the keeper's entry pairs.
-            foreach (var fuel in ball.GetComponentsInChildren<Collider>())
-                if (!fuel.isTrigger && fuel.enabled)
-                    foreach (var solid in solids)
-                        if (
-                            solid
-                            && solid.enabled
-                            && !solid.isTrigger
-                            && !(solid is WheelCollider)
-                            && (robotMask & (1 << solid.gameObject.layer)) != 0
-                            && solid.gameObject.activeInHierarchy
-                            && (
-                                !keeper
-                                || solid != keeper.floor
-                                    && solid != keeper.fixedFloor
-                                    && solid != keeper.inlet
-                                    && solid != keeper.frontPanel
-                            )
-                            && !Physics.GetIgnoreCollision(solid, fuel)
-                        )
-                        {
-                            Physics.IgnoreCollision(solid, fuel, true);
-                            escape.pairs.Add(new CollisionPair { robot = solid, fuel = fuel });
-                            IgnoredCollisionPairs++;
-                        }
-            active.Add(escape);
-            ball.WakeUp();
-        }
-
-        private void AdvanceEscapes()
-        {
-            for (int i = active.Count - 1; i >= 0; i--)
-            {
-                var escape = active[i];
-                var ball = escape.ball;
-                if (!ball || !ball.gameObject.activeInHierarchy || ball.isKinematic)
-                {
-                    EndEscape(i, false);
-                    continue;
-                }
-                var local =
-                    Quaternion.Inverse(chassis.rotation) * (ball.position - chassis.position);
-                if (
-                    Mathf.Abs(local.x) > HalfWidth + escape.radius + .005f
-                    || Mathf.Abs(local.z) > HalfLength + escape.radius + .005f
-                )
-                {
-                    EndEscape(i, true);
-                    continue;
-                }
-                if (local.y > .115f || local.y < -.4f || Time.fixedTime - escape.started > 2f)
-                {
-                    EndEscape(i, false);
-                    continue;
-                }
-                var delta = Vector3.ProjectOnPlane(escape.target - ball.position, Vector3.up);
-                var velocity = Vector3.ProjectOnPlane(ball.velocity, Vector3.up);
-                float speed = Mathf.Min(1.1f, Mathf.Sqrt(12f * delta.magnitude));
-                var desired = delta.normalized * speed;
-                // Bounded forces/torque give continuous translation and rolling;
-                // gravity and external collisions determine the vertical motion.
-                ball.AddForce(
-                    Vector3.ClampMagnitude((desired - velocity) / Time.fixedDeltaTime, 16f),
-                    ForceMode.Acceleration
-                );
-                var spin = Vector3.Cross(Vector3.up, desired) / escape.radius;
-                ball.AddTorque(
-                    Vector3.ClampMagnitude(
-                        Vector3.ProjectOnPlane(spin - ball.angularVelocity, Vector3.up)
-                            / Time.fixedDeltaTime,
-                        90f
-                    ),
-                    ForceMode.Acceleration
-                );
-                AssistedSteps++;
-                LastAssistGroundedWheels = GroundedWheelCount;
-                if (
-                    Time.fixedTime >= escape.retargetAt
-                    && (delta.magnitude < .07f || velocity.magnitude < .08f)
-                )
-                    escape.needsTarget = true;
-            }
-        }
-
-        private void EndEscape(int index, bool cleared)
-        {
-            var escape = active[index];
-            foreach (var pair in escape.pairs)
-            {
-                if (pair.robot && pair.fuel)
-                    Physics.IgnoreCollision(pair.robot, pair.fuel, false);
-                IgnoredCollisionPairs--;
-            }
-            active.RemoveAt(index);
-            if (!cleared)
-            {
-                CancelledClearances++;
-                return;
-            }
-            ClearedBalls++;
-            LastClearGroundedWheels = GroundedWheelCount;
-            LastClearSeconds = Time.fixedTime - escape.started;
-            LastClearFrom = escape.from;
-            LastClearTo = escape.ball.position;
-            Escaped?.Invoke(escape.ball, escape.from, escape.ball.position, GroundedWheelCount);
-        }
-
-        private void StopAll()
-        {
-            while (active.Count > 0)
-                EndEscape(active.Count - 1, false);
-        }
-
-        private bool FindExit(Rigidbody ball, Vector3 local, float radius, out Vector3 result)
+        private bool FindExit(
+            Rigidbody ball,
+            Vector3 local,
+            float radius,
+            int moved,
+            out Vector3 result
+        )
         {
             var heading = Quaternion.Euler(0, chassis.rotation.eulerAngles.y, 0);
             for (int ring = 0; ring < 12; ring++)
@@ -435,12 +290,11 @@ namespace Ninjas4744.MoSim
                     )
                         continue;
                     bool free = true;
-                    foreach (var escape in active)
+                    for (int k = 0; k < moved; k++)
                         if (
-                            escape.ball != ball
-                            && (escape.target - target).sqrMagnitude
-                                < (escape.radius + radius + .004f)
-                                    * (escape.radius + radius + .004f)
+                            (reserved[k] - target).sqrMagnitude
+                            < (reservedRadii[k] + radius + .004f)
+                                * (reservedRadii[k] + radius + .004f)
                         )
                             free = false;
                     if (!free)
@@ -504,7 +358,6 @@ namespace Ninjas4744.MoSim
 
         private void OnDisable()
         {
-            StopAll();
             Array.Clear(ground, 0, ground.Length);
             GroundedWheelCount = 0;
         }
