@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "version": "1.0.3",
+  "platforms": {
+    "standalonewindows64": {
+      "target": 19,
+      "bundle_sha256": "ae7bb480a18dd5776696cc76f00774a62930fcde1ca09b0f8ff17ed1bd415111",
+      "runtime_dll_sha256": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+      "manifest_sha256": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+      "objects": 2609,
+      "identical_non_shader_objects": 2602,
+      "platform_shader_objects": 7,
+      "changed_shader_objects": 0,
+      "all_gameplay_objects_match_windows": true
+    },
+    "standalonelinux64": {
+      "target": 24,
+      "bundle_sha256": "d9e922b140dea4e998d92febbe41905c37ddad11248a361b56c828f0984642be",
+      "runtime_dll_sha256": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+      "manifest_sha256": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+      "objects": 2609,
+      "identical_non_shader_objects": 2602,
+      "platform_shader_objects": 7,
+      "changed_shader_objects": 7,
+      "all_gameplay_objects_match_windows": true
+    },
+    "standaloneosx": {
+      "target": 2,
+      "bundle_sha256": "324c496e1185fb70e80a25dcec18cd14c0d4d4bea3c716dcc6e295d417d43408",
+      "runtime_dll_sha256": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+      "manifest_sha256": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+      "objects": 2609,
+      "identical_non_shader_objects": 2602,
+      "platform_shader_objects": 7,
+      "changed_shader_objects": 7,
+      "all_gameplay_objects_match_windows": true
+    }
+  },
+  "scope": "Cross-built target headers, exact shared player assembly, metadata and every non-shader object match. Target-specific shaders contain compiled data. Native macOS/Linux gameplay was not run on this Windows host."
+}

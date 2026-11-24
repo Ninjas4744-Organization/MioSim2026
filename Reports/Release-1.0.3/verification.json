@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "version": "1.0.3",
+  "workshop_item": "3843685878",
+  "files": {
+    "standalonewindows64/modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "standalonewindows64/Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets": "ae7bb480a18dd5776696cc76f00774a62930fcde1ca09b0f8ff17ed1bd415111",
+    "standalonewindows64/standalonewindows64": "2fc2a4627ab781c6935634333bd700305b1576234b791f9ff9024d0717e18975",
+    "standalonelinux64/modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "standalonelinux64/Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standalonelinux64/rebuilt_ninjas_4744_turbo_2026_assets": "d9e922b140dea4e998d92febbe41905c37ddad11248a361b56c828f0984642be",
+    "standalonelinux64/standalonelinux64": "480fd06c3490dddb4de760376e035f049daaa7ebe85b774b4d0fa60e076d7644",
+    "standaloneosx/modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "standaloneosx/Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standaloneosx/rebuilt_ninjas_4744_turbo_2026_assets": "324c496e1185fb70e80a25dcec18cd14c0d4d4bea3c716dcc6e295d417d43408",
+    "standaloneosx/standaloneosx": "62a982077f6e346e0aed929e77ed79a814897fef613c857be4f14845ee65a935"
+  },
+  "source_sha256": {
+    "Turbo4744.cs": "80f2bc18760c826069fbfce49d54b243041b48abc5ba91b9222108e9bc9d874f",
+    "Turbo4744BumperContacts.cs": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2",
+    "Turbo4744ClearanceVisual.cs": "1790d73fb9e4c73659d936d7e209de85bf3412c21c2e79aefb3e328ce3e9a451",
+    "Turbo4744DriveController.cs": "9dcfc34126edd01446b666ddeaea9ca7b755fc27e5db47cdc1f5df1582c63d89",
+    "Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744LandingTrace.cs": "6692e1094d1a52eeb9d99a1d5e1fb60fd153202563a90ff1297db96569688b27",
+    "Turbo4744NativeReplay.cs": "2930b468c5b35759ec7e76102f8e72e500369f0e4e574be623b328028f0cef2c",
+    "Turbo4744NetBurst.cs": "7f635de38810d1fdc885bbe7143b6469b1b44dd2bf852cbdf7f4435b6505c6e0",
+    "Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28",
+    "Turbo4744UnderbodyClearance.cs": "f1d498599999782a0b58a4ee3b4454755cc0966b9a2275b741b986a3b7a34ca9"
+  },
+  "fresh_checks": {
+    "underbody.json": {
+      "checks_or_cases": 17,
+      "sha256": "e74490b17685b1225cbd9be32eed45fc515926c067e68a28e9ceacb702459a1f"
+    },
+    "controls.json": {
+      "checks_or_cases": 58,
+      "sha256": "1fea02dddeea6d22ccf24502409a1fa7863494a5e80220f59c31a4dc1c8e72e2"
+    },
+    "systems.json": {
+      "checks_or_cases": 7,
+      "sha256": "c1c92d8b59da607335a104877a9179eae367cce41c9414aca9647d9ca5cf1670"
+    },
+    "jam.json": {
+      "cases": 1,
+      "sha256": "63987eeb102a31efc2e3419bdb26be0c9a4719691254da284aa883964d48426c"
+    },
+    "net-burst.json": {
+      "compared_steps": 480,
+      "sha256": "b171c72172f97d612893a286433ac3d836466cd379a00d0151bb2434d5282325"
+    },
+    "net-managed.json": {
+      "compared_steps": 480,
+      "sha256": "9fc1b428903007a792ccd8122c98adff74b6f6145aa763ce11c6f2146503d6d1"
+    }
+  },
+  "proof_sha256": {
+    "build.json": "bd841ae54387e7bdc5eb5eed0f84667631bd7bef9a5ccd5eae41040bf909ee33",
+    "runtime-equivalence.json": "b0c3961593090a5f1bf3e5c2ca5e6874ddc77de5fceb06f0882ea9cfb7d94be6",
+    "asset-equivalence.json": "79908575832fda73a21ecabffd361c9d35d0e0fca4655de7352f2749894c8a6f",
+    "platform-bundles.json": "5709279524a995cee5834b9909149a8ca52e95dec049c091c04466f770e2dea0",
+    "local-install.json": "8cfe336e7d782a8ab9e8dfab02d7d88effdbc851f56c9ee268c014c4174f4695",
+    "native-startup.json": "523d09f2db23746ac87fe3ad659ef085c20e6bed8e69760d55176dc0c17981df",
+    "net-aot-audit.json": "79e06578e181bcce553dcc98d5b20f6956d0e0bbe957114b486cd8efe23feb6e",
+    "live-before.json": "593f6a130f06a8773593ca17a66e34d31cc4b6f6a25d1ad29c07357df5c109ab",
+    "systems-first-failed.json": "e32408ed31ff49ca5eb947a0e3d52e6d456cc5539218d20869724c74b17e1210",
+    "systems-first-failed-context.json": "788bdecb3e087a68ef162cd15e6952d625af740cc85f3a3e2dedf5dc8658fd2a",
+    "systems-cadence-failed.json": "9ea5ef5bd8b2f2013de492db3f6569c083443e3bc93aa552590bf266a5a5d028",
+    "systems-frame-cap-failed.json": "75aadb0c818d36a9e930ee58d697cc9382ab926776ac2dd86902310a76473eeb"
+  },
+  "equivalent_trial_reports": {
+    "traction-forward.json": "d87e470e6068e422c8ba80246034ec8acd4d99733675eaec29770477c3b3fa8c",
+    "traction-reverse-pair.json": "cadf705bd64a8615bdd56ae67df952551fc74c883ac3cfd53ed76da50a6db753",
+    "collection-retention.json": "7c323d5f19e81c7f3c110b84b01ee1d0603092253167ae8b56413525c0f31fad",
+    "shooting.json": "918adc05555eee886cc09ea94e3a7295c0881a8dfa42d49b3c73ff5784f1a939",
+    "corner-pile.json": "97052bd9261520649aea9362476ec217c09833a093eb7cbec27eec8f1ced448c"
+  },
+  "trial_certificate_sha256": "b179ac5ba7bcafd9b8cc84c1bc3b974520c53fabce3d485f972824e9c481feaa",
+  "owner_confirmation": "Recovers smoothly; pocket clears.",
+  "native_windows_module": "56add812-eca0-4aef-b06f-dfe35725f97e",
+  "limits": [
+    "Native gameplay checks ran on Windows only; macOS and Linux were cross-built and structurally inspected.",
+    "macOS and Linux use the existing portable net solver; Windows retains its AOT dispatch.",
+    "Recovery clears the physical ball immediately and smooths its existing visible mesh for up to 0.65 seconds.",
+    "The initial private corner run retained two balls at seven seconds; a repeat emptied both headings. Both observations remain in the trial evidence."
+  ],
+  "code_commit": "0d535ef37b7cbff238b5883254d9e78ae3db0635"
+}

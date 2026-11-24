@@ -1,0 +1,58 @@
+{
+  "version": "1.0.3",
+  "build_log": "Artifacts/BuildAll-20261124-233540.log",
+  "scope": "Fresh three-platform bundles with shared portable player assembly. Windows AOT net loader retained behind a checked runtime platform gate.",
+  "source_sha256": {
+    "Turbo4744.cs": "80f2bc18760c826069fbfce49d54b243041b48abc5ba91b9222108e9bc9d874f",
+    "Turbo4744BumperContacts.cs": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2",
+    "Turbo4744ClearanceVisual.cs": "1790d73fb9e4c73659d936d7e209de85bf3412c21c2e79aefb3e328ce3e9a451",
+    "Turbo4744DriveController.cs": "9dcfc34126edd01446b666ddeaea9ca7b755fc27e5db47cdc1f5df1582c63d89",
+    "Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744LandingTrace.cs": "6692e1094d1a52eeb9d99a1d5e1fb60fd153202563a90ff1297db96569688b27",
+    "Turbo4744NativeReplay.cs": "2930b468c5b35759ec7e76102f8e72e500369f0e4e574be623b328028f0cef2c",
+    "Turbo4744NetBurst.cs": "7f635de38810d1fdc885bbe7143b6469b1b44dd2bf852cbdf7f4435b6505c6e0",
+    "Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28",
+    "Turbo4744UnderbodyClearance.cs": "f1d498599999782a0b58a4ee3b4454755cc0966b9a2275b741b986a3b7a34ca9"
+  },
+  "validation_source_sha256": {
+    "Turbo4744UnderbodyRegression.cs": "7b72c3a3c32ac4a6d0631cc820ee4aae53d6f79f9e4e7b8d4d184494c365de8b",
+    "Turbo4744SimpleControlsRegression.cs": "a5610aec68dc5d1b0823135f32ac7a88a6cd55191d9f5b9bf40b5e562d352047",
+    "Turbo4744NetCollisionRegression.cs": "fa149264e09fb21cba4586847fae27ce21035df09faeb5182a38ebe45d2cbc82",
+    "Turbo4744SystemsBench.cs": "2a18e77ee9c83e630e2e265dc3500607847cd2fe23cb42f311480a4ba6f20897"
+  },
+  "platform_files": {
+    "standalonewindows64": {
+      "modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+      "Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+      "rebuilt_ninjas_4744_turbo_2026_assets": "ae7bb480a18dd5776696cc76f00774a62930fcde1ca09b0f8ff17ed1bd415111",
+      "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "8bc412b7eef80ffae2551c5ed118e0b4aae47f256ac85128c5c68568d379a7fd",
+      "standalonewindows64": "2fc2a4627ab781c6935634333bd700305b1576234b791f9ff9024d0717e18975",
+      "standalonewindows64.manifest": "e0a6a30aaa861856364f6462a4202b4bd86a197ddccaf17ab610198c9b812d3c"
+    },
+    "standalonelinux64": {
+      "modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+      "Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+      "rebuilt_ninjas_4744_turbo_2026_assets": "d9e922b140dea4e998d92febbe41905c37ddad11248a361b56c828f0984642be",
+      "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "2452e901b4f9aa9209a2a3a9702343f6d63934c3ac5bdede4dbc95e5a3ae9a9b",
+      "standalonelinux64": "480fd06c3490dddb4de760376e035f049daaa7ebe85b774b4d0fa60e076d7644",
+      "standalonelinux64.manifest": "f19ef4bff91b046c41773b4fa4b1a847f5a618117881ac4d5b1e02ab4e1f960f"
+    },
+    "standaloneosx": {
+      "modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+      "Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+      "rebuilt_ninjas_4744_turbo_2026_assets": "324c496e1185fb70e80a25dcec18cd14c0d4d4bea3c716dcc6e295d417d43408",
+      "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "dc5248d9df7acff52c52355b456c996782a408b82685158b706ae228df091e12",
+      "standaloneosx": "62a982077f6e346e0aed929e77ed79a814897fef613c857be4f14845ee65a935",
+      "standaloneosx.manifest": "33956b9522b02a6ad3176c1089b2661bbc1919c7eeae658bcaa9beabde057ed9"
+    }
+  },
+  "harness_note": "Record cadence; normalize test rendering and explicitly enable Burst for normal mechanism checks. Net comparison now restores original Burst settings. All low-cadence failed runs retained; shipped runtime unchanged."
+}

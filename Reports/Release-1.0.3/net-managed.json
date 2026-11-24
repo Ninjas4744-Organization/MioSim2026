@@ -1,0 +1,24 @@
+{
+    "passed": true,
+    "burstEnabled": false,
+    "burstSettingRestored": true,
+    "cpu": "AMD Ryzen 5 9600X 6-Core Processor ",
+    "error": "",
+    "solverSha256": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "editorRuntimeDllSha256": "8a2a5e5259e09df982d63279f27bf3c29db44e9338ebbc5fe2e458cd1ff775cd",
+    "comparedSteps": 480,
+    "comparedImpulses": 913095,
+    "candidates": 120,
+    "narrowphaseChecks": 8684,
+    "unfilteredChecks": 579840,
+    "originalMicroseconds": 100322.175,
+    "optimizedMicroseconds": 21608.7859375,
+    "checks": [
+        "Scenario 0: 0 fuel, 96 steps, bitwise state and ordered impulses equal",
+        "Scenario 1: 60 fuel, 96 steps, bitwise state and ordered impulses equal",
+        "Scenario 2: 60 fuel, 96 steps, bitwise state and ordered impulses equal",
+        "Scenario 3: 60 fuel, 96 steps, bitwise state and ordered impulses equal",
+        "Scenario 4: 128 fuel, 96 steps, bitwise state and ordered impulses equal",
+        "Disable/re-enable and Rebuild preserve matching state"
+    ]
+}

@@ -1,0 +1,30 @@
+{
+  "installed_utc": "2026-11-24T21:42:11.5938136Z",
+  "label": "1.0.3 release Windows smoke check",
+  "runtime_module": "56add812-eca0-4aef-b06f-dfe35725f97e",
+  "backup": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\Release-1.0.3\\local-backup-20261124-234211",
+  "files": {
+    "standalonewindows64": "2fc2a4627ab781c6935634333bd700305b1576234b791f9ff9024d0717e18975",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "8bc412b7eef80ffae2551c5ed118e0b4aae47f256ac85128c5c68568d379a7fd",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "ae7bb480a18dd5776696cc76f00774a62930fcde1ca09b0f8ff17ed1bd415111",
+    "modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standalonewindows64.manifest": "e0a6a30aaa861856364f6462a4202b4bd86a197ddccaf17ab610198c9b812d3c"
+  },
+  "settings_sha256": {
+    "MatchSettings.json": "889ba4486fcd2cbcea0dd8ebf139cdad62481b406e74de4775fc11fd97e9f628",
+    "AppSettings.json": "345a17bc9d1690a22476d7a35db3b15ebe37a022dc1f96100e56c31604adbb70"
+  },
+  "user_settings_unchanged": true,
+  "steam_workshop_untouched": true,
+  "native_runtime_verified": true,
+  "owner_feedback": "Equivalent promotion of the owner-approved smooth-recovery trial; fresh startup smoke test only.",
+  "native_net_dispatch_verified": true,
+  "startup_settings_unchanged": true,
+  "native_scope": "Exact module and grounded tires observed in the Windows player; native net ABI 568 initializes. Recovery gameplay inherits the owner-approved identical methods and assets.",
+  "startup_log_lines": [
+    "[Turbo net] Native dispatch ready; job bytes 568",
+    "[Turbo runtime] build=sliding-hopper-r3 module=56add812-eca0-4aef-b06f-dfe35725f97e drive=Ninjas4744.MoSim.Turbo4744DriveController",
+    "[Turbo runtime] mechanism controls started"
+  ]
+}

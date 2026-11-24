@@ -1,0 +1,26 @@
+{
+  "version": "1.0.3",
+  "workshop_item": "3843685878",
+  "release_ready": true,
+  "code_commit": "0d535ef37b7cbff238b5883254d9e78ae3db0635",
+  "policy": "Fresh builds for Windows, Linux and macOS, sharing the approved recovery code.",
+  "staging_folder": "C:\\Users\\kfiros\\code\\projects\\frc\\ninjas4744\\MoSim2026\\Artifacts\\PumpingProject-20261121\\BuiltMods\\_Staging\\rebuilt_ninjas_4744_turbo_2026",
+  "files": {
+    "standalonewindows64/modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "standalonewindows64/Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets": "ae7bb480a18dd5776696cc76f00774a62930fcde1ca09b0f8ff17ed1bd415111",
+    "standalonewindows64/standalonewindows64": "2fc2a4627ab781c6935634333bd700305b1576234b791f9ff9024d0717e18975",
+    "standalonelinux64/modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "standalonelinux64/Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standalonelinux64/rebuilt_ninjas_4744_turbo_2026_assets": "d9e922b140dea4e998d92febbe41905c37ddad11248a361b56c828f0984642be",
+    "standalonelinux64/standalonelinux64": "480fd06c3490dddb4de760376e035f049daaa7ebe85b774b4d0fa60e076d7644",
+    "standaloneosx/modpack.json": "77d2e7b8dedad6fdc978223b49510892563d7bd998cb66ee2a53e3bdd68d8996",
+    "standaloneosx/Ninjas4744.dll": "d1db30eb1e322977da75a58e47f98e1ae1e6d784bd228eb6abdbcc28332ea438",
+    "standaloneosx/rebuilt_ninjas_4744_turbo_2026_assets": "324c496e1185fb70e80a25dcec18cd14c0d4d4bea3c716dcc6e295d417d43408",
+    "standaloneosx/standaloneosx": "62a982077f6e346e0aed929e77ed79a814897fef613c857be4f14845ee65a935"
+  },
+  "archive": {
+    "filename": "Ninjas4744-Turbo2026-1.0.3-Steam.zip",
+    "sha256": "8308bf45a59992dd370ebbcbff3ad698664d443d4e7acce320b59e7d7410bb83"
+  }
+}

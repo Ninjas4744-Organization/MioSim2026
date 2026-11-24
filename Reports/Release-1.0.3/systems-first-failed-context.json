@@ -1,0 +1,8 @@
+{
+  "report_sha256": "e32408ed31ff49ca5eb947a0e3d52e6d456cc5539218d20869724c74b17e1210",
+  "harness_sha256": "b14b3cd41db8e905707ba0d03c49f73a0aae726f295935e7313d4e42798ed216",
+  "runtime_changed_for_repeat": false,
+  "launched": 40,
+  "scored": 5,
+  "context": "Native MoSim startup UI was operated while the visible editor shooting matrix ran. Failed report preserved. Repeat closes MoSim and records read-only observation cadence; scoring acceptance remains unchanged."
+}
