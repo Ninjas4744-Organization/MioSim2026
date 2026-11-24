@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$MoSimProject,
     [Parameter(Mandatory=$true)][string]$UnityEditor,
-    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Mobility','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
+    [ValidateSet('Assemble','Simple','Steam','SteamInspect','SteamUpload','RailVelocity','Mobility','Controls','Performance','NetCollision','Build','Runtime','Test','Travel','Trench','Swerve','Traction','Underbody','Retention','Approach','Systems','Jam','Moving','Delivery','Matrix','Capacity','Pile','WheelPile','Load','LoadedAim','Pulse','Indexer','Preview')][string]$Task='Build',
     [switch]$SyncOnly,
     [switch]$Authoring,
     [switch]$Baseline,
@@ -46,6 +46,7 @@ $methods=@{Assemble='Ninjas4744Builder.Assemble';Simple='Ninjas4744Builder.Build
 $methods['Performance']='Turbo4744HopperPerformanceBench.Run'
 $methods['NetCollision']='Turbo4744NetCollisionRegression.Run'
 $methods['Traction']='Turbo4744TrenchRegression.Run'
+$methods['Underbody']='Turbo4744UnderbodyRegression.Run'
 $methods['SteamInspect']='Turbo4744SteamUpload.Inspect'
 $methods['SteamUpload']='Turbo4744SteamUpload.Run'
 $methods['RailVelocity']='Turbo4744RailVelocityRegression.Run'
@@ -101,6 +102,7 @@ try {
     if($Task -in @('Trench','Traction') -and $Baseline){$arguments+='-turboBaseline'}
     if($Task -eq 'Swerve'){$arguments+='-turboSwerve'}
     if($Task -eq 'Traction'){$arguments+='-turboTraction'}
+    if($Task -eq 'Underbody'){$arguments+='-turboUnderbody'}
     if($Task -in @('Pile','WheelPile','Load','LoadedAim')){$arguments+='-turboPile';if(-not $Baseline){$arguments+='-turboFixed'}}
     if($Task -eq 'LoadedAim'){$arguments+='-turboLoadedAim'}
     if($Task -eq 'WheelPile'){$arguments+='-turboWheelPile'}
@@ -147,7 +149,7 @@ try {
         if($sync.ExitCode -ne 0){throw 'Runtime synchronization failed; inspect the runtime log.'}
     }
     $buildArtifacts=Join-Path $projectRoot 'BuildArtifacts'
-    foreach($name in @('assembly-audit.json','bundle-audit.json','simple-controls.json','physics-diagnostics.json','travel-after.json','swerve-modules.json','trench-before.json','trench-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','systems-indexer-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
+    foreach($name in @('underbody-clearance.json','assembly-audit.json','bundle-audit.json','simple-controls.json','physics-diagnostics.json','travel-after.json','swerve-modules.json','trench-before.json','trench-after.json','retention-after.json','approach-before.json','approach-after.json','pile-before.json','pile-after.json','wheel-pile-after.json','load-after.json','systems-after.json','systems-jam.json','systems-moving-after.json','systems-delivery-after.json','systems-matrix-after.json','capacity-after.json','systems-pulse-after.json','systems-indexer-after.json','Turbo4744-unity-preview.png','Turbo4744-stowed.png','Turbo4744-deployed.png','Turbo4744-v4-closed.png','Turbo4744-v4-opened.png','Turbo4744-v4-loaded.png')){
         $file=Join-Path $buildArtifacts $name
         if(Test-Path -LiteralPath $file){Copy-Item -LiteralPath $file -Destination $artifactRoot -Force}
     }

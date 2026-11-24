@@ -26,6 +26,8 @@ namespace Ninjas4744.MoSim
             if (!contacts)
                 contacts = gameObject.AddComponent<Turbo4744BumperContacts>();
             contacts.RefreshContacts();
+            if (!GetComponent<Turbo4744UnderbodyClearance>())
+                gameObject.AddComponent<Turbo4744UnderbodyClearance>();
             Turbo4744LandingTrace.AttachIfRequested(this);
         }
 

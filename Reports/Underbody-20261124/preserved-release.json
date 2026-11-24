@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "published_archive": "dist\\Ninjas4744-Turbo2026-1.0.2-Steam.zip",
+  "archive_sha256": "beb09160be86eadf6ab5263f5aed04b05c8c29a28c58cfd5d378c7700ee7bcf1",
+  "all_12_published_payloads_match_upload_receipt": true,
+  "unchanged_published_payloads": {
+    "standalonelinux64/Ninjas4744.dll": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+    "standalonelinux64/modpack.json": "5726c7192860ba92e6af6f666ac0ff896d6bc8670e65f796779ece54bbd5fd76",
+    "standalonelinux64/rebuilt_ninjas_4744_turbo_2026_assets": "6906dbdd5cb0cbe9d93c440f7c60e93c3318129658c72dda78044d6d032a9dd6",
+    "standalonelinux64/standalonelinux64": "3828629b77552dc53511e2a00e81df1336eb94add1caee06d473161fbff8b89d",
+    "standaloneosx/Ninjas4744.dll": "035246dac093f2117ac8d42a10ee826fa70ffeaada5bb38e52d7826015149a68",
+    "standaloneosx/modpack.json": "5726c7192860ba92e6af6f666ac0ff896d6bc8670e65f796779ece54bbd5fd76",
+    "standaloneosx/rebuilt_ninjas_4744_turbo_2026_assets": "88116f8dbc75d3765e2097e312c19dc9e5b2f6b0a604ce98642c31a958bef298",
+    "standaloneosx/standaloneosx": "cb5253b53ce6492514a1d4fc123ef3e23ea0efa9baec388a713d6f64c7d34624",
+    "standalonewindows64/Ninjas4744.dll": "d19e535c556d38728782832b4e8898667cac72476f0041f332315550074fb455",
+    "standalonewindows64/modpack.json": "a89c1afc84c51225f50db2b42e347738c4126a762c115a70eafc3b685e459bb9",
+    "standalonewindows64/rebuilt_ninjas_4744_turbo_2026_assets": "530e4b51774b2db2d16da31ec6bdb8677a91298cb8ae9ff08a1c85b428799af1",
+    "standalonewindows64/standalonewindows64": "74b3895eddd13f514b86c3773a9305ee70930ebe93a1dcd2a259ac0e9737f21c"
+  },
+  "new_steam_upload_performed": false
+}

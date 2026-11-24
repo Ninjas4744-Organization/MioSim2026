@@ -53,6 +53,12 @@ namespace Ninjas4744.MoSim
             public float playerTurn;
             public bool kinematic;
             public int constraints;
+            public int clearanceGroundedWheels,
+                clearedUnderbodyBalls,
+                blockedClearanceSearches,
+                lastClearGroundedWheels;
+            public Vector3 lastClearFrom,
+                lastClearTo;
             public int[] contacts = new int[4],
                 floorContacts = new int[4];
             public float[] normalLoad = new float[4],
@@ -87,6 +93,7 @@ namespace Ninjas4744.MoSim
         private readonly HashSet<Collider> underside = new HashSet<Collider>();
         private DriveController drive;
         private Turbo4744 robot;
+        private Turbo4744UnderbodyClearance clearance;
         private Rigidbody body;
         private Array patches;
         private DriveWheel[] wheels;
@@ -125,6 +132,7 @@ namespace Ninjas4744.MoSim
             {
                 drive = GetComponent<DriveController>();
                 robot = GetComponent<Turbo4744>();
+                clearance = GetComponent<Turbo4744UnderbodyClearance>();
                 body = GetComponent<Rigidbody>();
                 patches = (Array)
                     typeof(DriveController)
@@ -254,6 +262,12 @@ namespace Ninjas4744.MoSim
                 tilt = Vector3.Angle(body.rotation * Vector3.up, Vector3.up),
                 kinematic = body.isKinematic,
                 constraints = (int)body.constraints,
+                clearanceGroundedWheels = clearance ? clearance.GroundedWheelCount : 0,
+                clearedUnderbodyBalls = clearance ? clearance.ClearedBalls : 0,
+                blockedClearanceSearches = clearance ? clearance.BlockedSearches : 0,
+                lastClearGroundedWheels = clearance ? clearance.LastClearGroundedWheels : 0,
+                lastClearFrom = clearance ? clearance.LastClearFrom : Vector3.zero,
+                lastClearTo = clearance ? clearance.LastClearTo : Vector3.zero,
                 collisions = new Contact[collisionCount],
             };
             for (int i = 0; i < 4; i++)

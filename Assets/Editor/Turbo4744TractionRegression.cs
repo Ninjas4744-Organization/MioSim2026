@@ -35,7 +35,9 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
             undersideSlidePrototype;
         public int initialGrounded,
             minimumGrounded,
-            maximumGrounded;
+            maximumGrounded,
+            clearedBalls,
+            clearanceWithoutGround;
         public float distance,
             height,
             fuelMovement,
@@ -160,6 +162,12 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                 minimumTireClearance = float.PositiveInfinity,
             };
             report.cases.Add(trial);
+            var clearance = robot.GetComponent<Turbo4744UnderbodyClearance>();
+            clearance.Relocated += (_, from, to, grounded) =>
+            {
+                if (grounded < 1)
+                    trial.clearanceWithoutGround++;
+            };
             Rigidbody fuel = null;
             Rigidbody secondFuel = null;
             GameObject stand = null;
@@ -311,6 +319,9 @@ public sealed class Turbo4744TractionFixture : MonoBehaviour
                         && trial.maximumGrounded > 0
                 : support == 4 && trial.physicallyBeached
                     || trial.distance > 1 && trial.maximumGrounded > 0;
+            trial.clearedBalls = clearance.ClearedBalls;
+            trial.passed &=
+                trial.clearanceWithoutGround == 0 && (support != 5 || trial.clearedBalls == 0);
             Debug.Log(
                 $"TURBO_TRACTION {trial.name} deployed={deployed} ground={trial.initialGrounded} distance={trial.distance:F3} passed={trial.passed}"
             );

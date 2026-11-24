@@ -96,7 +96,9 @@ public static class Turbo4744TrenchRegression
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 120;
         var fixture = new GameObject("Robot contact regression");
-        if (Environment.GetCommandLineArgs().Contains("-turboMobility"))
+        if (Environment.GetCommandLineArgs().Contains("-turboUnderbody"))
+            fixture.AddComponent<Turbo4744UnderbodyFixture>();
+        else if (Environment.GetCommandLineArgs().Contains("-turboMobility"))
             fixture.AddComponent<Turbo4744MobilityFixture>();
         else if (Environment.GetCommandLineArgs().Contains("-turboLanding"))
             fixture.AddComponent<Turbo4744LandingFixture>();

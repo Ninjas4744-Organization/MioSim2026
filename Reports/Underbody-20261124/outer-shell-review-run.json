@@ -1,0 +1,230 @@
+{
+  "passed": false,
+  "scope": "Frozen chassis contact-contract fixtures; actual tire/field collision callbacks; independent dynamic fuel",
+  "runtimeDllSha256": "fb3441def0a343ec1f92d571d572fc2cb1f497405c1eea6cf667b181aa8e9157",
+  "bundleSha256": "2eeac32d7be86e3fe7c2ba8309db7c071fc22f186795bf13a87ec12bf9499014",
+  "cases": [
+    {
+      "name": "single underbody ball",
+      "expectedGrounded": 0,
+      "observedGrounded": 0,
+      "seeded": 1,
+      "cleared": 0,
+      "remaining": 1,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": []
+    },
+    {
+      "name": "underbody pile",
+      "expectedGrounded": 0,
+      "observedGrounded": 0,
+      "seeded": 9,
+      "cleared": 0,
+      "remaining": 9,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": []
+    },
+    {
+      "name": "single underbody ball",
+      "expectedGrounded": 1,
+      "observedGrounded": 1,
+      "seeded": 1,
+      "cleared": 1,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=1 from=(6.0000, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)"
+      ]
+    },
+    {
+      "name": "underbody pile",
+      "expectedGrounded": 1,
+      "observedGrounded": 1,
+      "seeded": 9,
+      "cleared": 9,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=1 from=(6.0000, 3.1500, 2.1600) to=(6.0000, 3.0730, 2.5650)",
+        "grounded=1 from=(6.1600, 3.1500, 2.1600) to=(6.5150, 3.0730, 2.1600)",
+        "grounded=1 from=(6.1600, 3.1500, 1.8400) to=(6.5150, 3.0730, 1.8400)",
+        "grounded=1 from=(6.1600, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)",
+        "grounded=1 from=(5.8400, 3.1500, 2.0000) to=(5.4800, 3.0780, 2.0000)",
+        "grounded=1 from=(6.0000, 3.1500, 2.0000) to=(6.0000, 3.0730, 1.4350)",
+        "grounded=1 from=(5.8400, 3.1500, 1.8400) to=(5.4800, 3.0780, 1.8400)",
+        "grounded=1 from=(6.0000, 3.1500, 1.8400) to=(6.5200, 3.0780, 1.4300)",
+        "grounded=1 from=(5.8400, 3.1500, 2.1600) to=(5.4850, 3.0730, 2.1600)"
+      ]
+    },
+    {
+      "name": "single underbody ball",
+      "expectedGrounded": 2,
+      "observedGrounded": 2,
+      "seeded": 1,
+      "cleared": 1,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=2 from=(6.0000, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)"
+      ]
+    },
+    {
+      "name": "underbody pile",
+      "expectedGrounded": 2,
+      "observedGrounded": 2,
+      "seeded": 9,
+      "cleared": 9,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=2 from=(6.0000, 3.1500, 2.1600) to=(6.0000, 3.0730, 2.5650)",
+        "grounded=2 from=(6.1600, 3.1500, 2.1600) to=(6.5150, 3.0730, 2.1600)",
+        "grounded=2 from=(6.1600, 3.1500, 1.8400) to=(6.5150, 3.0730, 1.8400)",
+        "grounded=2 from=(6.1600, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)",
+        "grounded=2 from=(5.8400, 3.1500, 2.0000) to=(5.4800, 3.0780, 2.0000)",
+        "grounded=2 from=(6.0000, 3.1500, 2.0000) to=(6.0000, 3.0730, 1.4350)",
+        "grounded=2 from=(5.8400, 3.1500, 1.8400) to=(5.4800, 3.0780, 1.8400)",
+        "grounded=2 from=(6.0000, 3.1500, 1.8400) to=(6.5200, 3.0780, 1.4300)",
+        "grounded=2 from=(5.8400, 3.1500, 2.1600) to=(5.4850, 3.0730, 2.1600)"
+      ]
+    },
+    {
+      "name": "single underbody ball",
+      "expectedGrounded": 3,
+      "observedGrounded": 3,
+      "seeded": 1,
+      "cleared": 1,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=3 from=(6.0000, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)"
+      ]
+    },
+    {
+      "name": "underbody pile",
+      "expectedGrounded": 3,
+      "observedGrounded": 3,
+      "seeded": 9,
+      "cleared": 9,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=3 from=(6.0000, 3.1500, 2.1600) to=(6.0000, 3.0730, 2.5650)",
+        "grounded=3 from=(6.1600, 3.1500, 2.1600) to=(6.5150, 3.0730, 2.1600)",
+        "grounded=3 from=(6.1600, 3.1500, 1.8400) to=(6.5150, 3.0730, 1.8400)",
+        "grounded=3 from=(6.1600, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)",
+        "grounded=3 from=(5.8400, 3.1500, 2.0000) to=(5.4800, 3.0780, 2.0000)",
+        "grounded=3 from=(6.0000, 3.1500, 2.0000) to=(6.0000, 3.0730, 1.4350)",
+        "grounded=3 from=(5.8400, 3.1500, 1.8400) to=(5.4800, 3.0780, 1.8400)",
+        "grounded=3 from=(6.0000, 3.1500, 1.8400) to=(6.5200, 3.0780, 1.4300)",
+        "grounded=3 from=(5.8400, 3.1500, 2.1600) to=(5.4850, 3.0730, 2.1600)"
+      ]
+    },
+    {
+      "name": "single underbody ball",
+      "expectedGrounded": 4,
+      "observedGrounded": 4,
+      "seeded": 1,
+      "cleared": 1,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=4 from=(6.0000, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)"
+      ]
+    },
+    {
+      "name": "underbody pile",
+      "expectedGrounded": 4,
+      "observedGrounded": 4,
+      "seeded": 9,
+      "cleared": 9,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=4 from=(6.0000, 3.1500, 2.1600) to=(6.0000, 3.0730, 2.5650)",
+        "grounded=4 from=(6.1600, 3.1500, 2.1600) to=(6.5150, 3.0730, 2.1600)",
+        "grounded=4 from=(6.1600, 3.1500, 1.8400) to=(6.5150, 3.0730, 1.8400)",
+        "grounded=4 from=(6.1600, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)",
+        "grounded=4 from=(5.8400, 3.1500, 2.0000) to=(5.4800, 3.0780, 2.0000)",
+        "grounded=4 from=(6.0000, 3.1500, 2.0000) to=(6.0000, 3.0730, 1.4350)",
+        "grounded=4 from=(5.8400, 3.1500, 1.8400) to=(5.4800, 3.0780, 1.8400)",
+        "grounded=4 from=(6.0000, 3.1500, 1.8400) to=(6.5200, 3.0780, 1.4300)",
+        "grounded=4 from=(5.8400, 3.1500, 2.1600) to=(5.4850, 3.0730, 2.1600)"
+      ]
+    },
+    {
+      "name": "blocked nearest exit",
+      "expectedGrounded": 1,
+      "observedGrounded": 1,
+      "seeded": 1,
+      "cleared": 1,
+      "remaining": 0,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=1 from=(6.2200, 3.1500, 2.0000) to=(6.2200, 3.0730, 1.4350)"
+      ]
+    },
+    {
+      "name": "support disabled",
+      "expectedGrounded": 0,
+      "observedGrounded": 0,
+      "seeded": 1,
+      "cleared": 0,
+      "remaining": 1,
+      "badGroundedClears": 0,
+      "passed": true,
+      "robotUnmoved": true,
+      "allBallsPreserved": true,
+      "relocations": []
+    },
+    {
+      "name": "all tires lifted 6 mm",
+      "expectedGrounded": 0,
+      "observedGrounded": 4,
+      "seeded": 1,
+      "cleared": 1,
+      "remaining": 0,
+      "badGroundedClears": 1,
+      "passed": false,
+      "robotUnmoved": false,
+      "allBallsPreserved": true,
+      "relocations": [
+        "grounded=4 from=(6.0000, 3.1500, 2.0000) to=(6.5150, 3.0730, 2.0000)"
+      ]
+    }
+  ],
+  "errors": []
+}

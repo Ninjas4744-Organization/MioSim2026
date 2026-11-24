@@ -1,0 +1,35 @@
+{
+  "label": "grounded clearance private trial",
+  "build_log": "Artifacts/Build-20261124-221132.log",
+  "files": {
+    "modpack.json": "a89c1afc84c51225f50db2b42e347738c4126a762c115a70eafc3b685e459bb9",
+    "Ninjas4744.dll": "9f14b53acebba2fdc54dbd38221d58c95b615bba0db13b8827189058eb755ffc",
+    "rebuilt_ninjas_4744_turbo_2026_assets": "2eeac32d7be86e3fe7c2ba8309db7c071fc22f186795bf13a87ec12bf9499014",
+    "rebuilt_ninjas_4744_turbo_2026_assets.manifest": "07ca4f1fe0e0bbe7ee1f9a48d16b0a8438e8939dd98977c7520c7952e1cd1150",
+    "standalonewindows64": "ed787fa5d6ee0371e8e5d4b2be479c4148a866535ef543de933ea95880f7b79c",
+    "standalonewindows64.manifest": "ed339ed9d6d0d00aa65394005dc50c24e0f5cef22b3198f1b17957aa2671bcea"
+  },
+  "source_sha256": {
+    "Turbo4744.cs": "229ed3411083c8d2db20fa234d0b948e80fef78d34ddc21aadc929884b2a6cdb",
+    "Turbo4744BumperContacts.cs": "08a30940088e32bde3f0ea3dee9aac54417e09b13591aaff8711c4c2f7b886b2",
+    "Turbo4744DriveController.cs": "9dcfc34126edd01446b666ddeaea9ca7b755fc27e5db47cdc1f5df1582c63d89",
+    "Turbo4744FuelCompliance.cs": "009dd54fb046f5b823a4450c917d3f92b5ba15d5048f2d2515d50cbc33640d48",
+    "Turbo4744FuelKeeper.cs": "da0333f06c9643a7feaef19c99acc6639ff4f213b6a4d62a944b7e9b4132b750",
+    "Turbo4744HopperRig.cs": "0eb3ce198afc682f0b5976e6255394226c4386330523f290e2f9ab423b17337f",
+    "Turbo4744Indexer.cs": "e793430a7cd146092c92e8fe170703dd86283de1b23151192a75b068d4d09215",
+    "Turbo4744KickerRig.cs": "e655921ff5f4f10fae0ca89f8c2227ff853417a0fb126b71c1ed410cd52227d3",
+    "Turbo4744LandingTrace.cs": "93ce88bf1cbf5c9799ddbc02489a8344b543988e48d012e89828f6dfc322f050",
+    "Turbo4744NativeReplay.cs": "2930b468c5b35759ec7e76102f8e72e500369f0e4e574be623b328028f0cef2c",
+    "Turbo4744NetBurst.cs": "0b640f2399abd680d1dbd576d12d3a5ea3242c36616dd52aff92b3602b7de7af",
+    "Turbo4744NetEnvironment.cs": "752d8752cc345bf0a3f1261dcf29333c16cab52dd7abdb078dad96d4fd55dca4",
+    "Turbo4744NetOrigin.cs": "6390a125d8bc01fa968f7fef22ce2828030c5725ab22c4db239fcc7ff8141662",
+    "Turbo4744NetRig.cs": "29fd827aee3a0c542b19dadf5c084693ab3ec7e0728617bdfa5279afbab74d05",
+    "Turbo4744NetSolver.cs": "762bbf485017be18714d875277a082ff767e9dc228eb3ffc16db61d935f363f1",
+    "Turbo4744ShooterContact.cs": "e5227363aa3752faedfc09e918e3f4cc032bca0c4058c4d66393360673ef1e28",
+    "Turbo4744UnderbodyClearance.cs": "46aa1aca0ba76e464e99202070c8058c15cba179c68e81ab90008e3e96f9353b"
+  },
+  "validation_source_sha256": {
+    "Turbo4744UnderbodyRegression.cs": "4b5c4e969b487592b6f39e4f19c81772b95bf6d01cb026d90633454b7ca3d440",
+    "Turbo4744TractionRegression.cs": "269c8a4a10871bacc8359531ea11ab70fb038dd82913de74bf9703032f3961d1"
+  }
+}
