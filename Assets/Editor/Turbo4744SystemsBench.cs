@@ -127,6 +127,10 @@ public static class Turbo4744SystemsBench
             runtimeDllSha256;
         public float physicsStep,
             simulationSpeed;
+        public int inheritedTargetFps,
+            inheritedVSync,
+            configuredTargetFps;
+        public float displayRefreshRate;
         public string teamSourceCommit = "2bd34881f2c39f86a74cc7d3ea18ba6e00678493";
         public List<Result> cases = new List<Result>();
         public List<string> errors = new List<string>();
@@ -1518,6 +1522,16 @@ public static class Turbo4744SystemsBench
                     old.gameObject.SetActive(false);
                 if (!prefab)
                 {
+                    report.inheritedTargetFps = Application.targetFrameRate;
+                    report.inheritedVSync = QualitySettings.vSyncCount;
+                    report.displayRefreshRate = (float)
+                        Screen.mainWindowDisplayInfo.refreshRate.value;
+                    // Match the other mechanism/drive fixtures. A virtual
+                    // display's refresh rate must not turn this into a 2 FPS
+                    // input experiment through SettingsService's auto limit.
+                    QualitySettings.vSyncCount = 0;
+                    Application.targetFrameRate = 120;
+                    report.configuredTargetFps = Application.targetFrameRate;
                     if (Flag("-turboBundle") && !Flag("-turboAuthoring"))
                     {
                         string file = Path.GetFullPath(
